@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 
 public class Main extends Application {
-	//OmerAdamisLife
+//SDJASDASJDASIODJIOASJ
 	@FXML
 	private TextField idfield;
 	private static Stage primaryStage;
