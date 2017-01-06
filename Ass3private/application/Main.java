@@ -22,6 +22,7 @@ public class Main extends Application {
 	 public static int port=3336;
 	 public static String host = "localhost";
 	 public static Stage popup;
+	 private int x;
 	
 	
 	@Override
