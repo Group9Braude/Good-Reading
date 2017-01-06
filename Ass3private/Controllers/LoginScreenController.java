@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Entities.Book;
+import Entities.GeneralMessage;
 import Entities.Reader;
 import Entities.User;
 import application.Main;
@@ -12,7 +13,7 @@ import ocsf.client.AbstractClient;
 
 public class LoginScreenController extends AbstractClient {
 
- 
+
 
 	@FXML
 	private TextField idTextField;
@@ -26,33 +27,43 @@ public class LoginScreenController extends AbstractClient {
 		super(host, port);
 
 	}
-	public void onLogin(){
-		User user = new User(idTextField.getText(),passwordTextField.getText());
-		System.out.println("onLogin");
+
+
+	public void sendServer(Object msg, String actionNow){/******************************/
+		((GeneralMessage)msg).actionNow = actionNow;
+		LoginScreenController client = new LoginScreenController();
 		try {
-			LoginScreenController client = new LoginScreenController();
-			try {
-				client.openConnection();
-			}
-			catch (IOException e1) {
-				e1.printStackTrace();
-			} 
-			client.sendToServer(user);
+			client.openConnection();
+			client.sendToServer(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println("onLoginEnd");
 	}
 
+
+
+
+	public void onLogin(){
+		User user = new User(idTextField.getText(),passwordTextField.getText());
+		sendServer(user, "CheckUser");
+
+
+	}
+
+
+
+
 	public void onContinue(){
+		Book book = new Book();
+		book.actionNow="hi";
 		if(whatAmI!=null){
+			
+			book.bookList = new ArrayList<Book>();
+			sendServer(book, "initializeBookList");
+			
 			if(whatAmI=="reader")
 			{
 				Main.showReaderLoginScreen();
-				//LoginReaderController.setReader(readerLogged);
-				//LoginReaderController.setwelcomeText();
-				//LoginReaderController.setsubscribeText();
-				//whatAmI=null;
 			}
 			else if(whatAmI=="worker")
 				try {
@@ -61,10 +72,11 @@ public class LoginScreenController extends AbstractClient {
 				} catch (IOException e) {}
 			else if(whatAmI=="manager")
 			{
-			    try {
-			        System.out.println("Manager!");
-			        Main.showManagerLoggedScreen();
-			       } catch (IOException e) {}
+				try {
+					System.out.println("Manager!");
+					Main.showManagerLoggedScreen();
+				} catch (IOException e) {}
+
 			}
 		}
 
@@ -73,29 +85,37 @@ public class LoginScreenController extends AbstractClient {
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		if (msg instanceof String) 
-			System.out.println((String)msg);
-		else if(msg instanceof Reader)
-		{
-			System.out.println("reader");
-			readerLogged=(Reader)msg;
-			whatAmI="reader";
+		if (msg instanceof String) {
+			System.out.println((String)msg);//Wrong username/password
 		}
 		
-		else if(msg instanceof User)//Correct details were entered
-		{
-			//if(res.getType()==1)
-			//{
-				//readerLogged = new Reader(res.getID(),res.getPassword());
-				//whatAmI="reader";
-			//}
-			User res = (User)msg;
-			if(res.getType()==2)
-				whatAmI="worker";
-			else if(res.getType()==3)
-				whatAmI="manager";
+		else{
+			
+			if(msg instanceof Reader)
+			{
+				System.out.println("reader");
+				readerLogged=(Reader)msg;
+				whatAmI="reader";
+			}
+
+			else if(msg instanceof User)//Correct details were entered
+			{
+				User res = (User)msg;
+				if(res.getType()==2)
+					whatAmI="worker";
+				else if(res.getType()==3)
+					whatAmI="manager";
+			}
+		}//end else
+		if(msg instanceof ArrayList){
+			Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
+			for(Book book:Book.bookList)
+				System.out.println(book.getTitle());
 		}
 	}
+	
+	
+	
 	public static Reader getReaderLogged() {
 		return readerLogged;
 	}

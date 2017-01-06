@@ -44,46 +44,48 @@ public class MyServer extends AbstractServer {
 
 	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		if(msg instanceof User)
-			checkUser((User)msg,client);
-		else if(msg instanceof Book)
-			addBook((Book)msg, client);
-		else if((msg instanceof ArrayList)&&WorkerController.flag==0)/******************************/
-			updateBooks((ArrayList<Book>)msg, client);
-		else if((msg instanceof ArrayList)&&WorkerController.flag==1)
-			removeBook((ArrayList<Book>)msg, client);
+
+		switch(((GeneralMessage)msg).actionNow){
+		case "AddBook":
+			addBook((Book)msg, client);break;
+		case "RemoveBook":
+			removeBook((ArrayList<Book>)msg, client);break;
+		case "CheckUser":
+			checkUser((User)msg,client);break;
+		case "initializeBookList":
+			initializeBookList((Book)msg, client);break;
+		default:
+			break;
 		}
-	
+	}
 
 
 
-	public void updateBooks(ArrayList<Book> bookList, ConnectionToClient client){/*******************************************/
-		System.out.println("update");
+
+	public void initializeBookList(Book book, ConnectionToClient client){/*******************************************/
 		try {
-			System.out.println("updateBooks");
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM books";
 			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<Book> bookList = new ArrayList<Book>();
 			while(rs.next()){
-			Book book = new Book(rs.getString(1),rs.getInt(2),rs.getString(3)
-					,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8));
-			bookList.add(book);
+				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8)));
+
 			}
-			for(Book book:bookList)
-				System.out.println(book.getTitle());
 			client.sendToClient(bookList);
-		} catch (SQLException | IOException  e) {
+		} catch (Exception  e) {
 			e.printStackTrace();
 		}	
 	}
-	
-	
+
+
 
 	public void removeBook(ArrayList<Book> bookList, ConnectionToClient client){/**********************************/
 		System.out.println("remove");
 	}
-	
-	
+
+
 	public void addBook(Book book, ConnectionToClient client){
 		Statement stmt;
 		Book.bookCnt++;
@@ -100,9 +102,9 @@ public class MyServer extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		 
+
 	}
-	
+
 
 
 

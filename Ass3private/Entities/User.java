@@ -2,7 +2,7 @@ package Entities;
 
 import java.io.Serializable;
 
-public class User implements Serializable{
+public class User extends GeneralMessage implements Serializable{
 	/**
 	 * 
 	 */
