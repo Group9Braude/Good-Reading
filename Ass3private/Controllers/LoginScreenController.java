@@ -29,7 +29,7 @@ public class LoginScreenController extends AbstractClient {
 	}
 
 
-	public void sendServer(Object msg, String actionNow){/******************************/
+	public void sendServer(Object msg, String actionNow){
 		((GeneralMessage)msg).actionNow = actionNow;
 		LoginScreenController client = new LoginScreenController();
 		try {
