@@ -35,10 +35,9 @@ public class WorkerController extends AbstractClient {
 	private static Pane mainLayout;
 	@FXML
 	private CheckBox titleCheckBox, authorCheckBox, languageCheckBox, summaryCheckBox, tocCheckBox, keywordCheckBox;
-	private static ArrayList<Book> bookList;
 	public static int flag = -1;//if 0 -> Update booklist, 1->remove from booklist
-	
-	
+
+
 	/*               PROBLEM WITH THE FLAG! NOT RECOGNIZED IN MYSERVER!            */
 
 
@@ -48,48 +47,36 @@ public class WorkerController extends AbstractClient {
 		super(Main.host, Main.port);
 
 	}
-	
-	public void initialize(){
-		flag=0;
-		System.out.println("init");
-		bookList = new ArrayList<Book>();
-		//Initialize bookList
-        Book.bookList = new ArrayList<Book>();/**************************/
-		//Initialize bookList
-        WorkerController client = new WorkerController();
-		try {
-			client.openConnection();
-			client.sendToServer(Book.bookList);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}/*********************************/
-		flag=-1;
-	}
 
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		WorkerController client = new WorkerController();
-			try {
-				client.openConnection();
-				client.sendToServer(msg);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		
-		
+		try {
+			client.openConnection();
+			System.out.println(((GeneralMessage)msg).actionNow);
+			client.sendToServer(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
+
+
+	/*try {
+	mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/LoginScreen.fxml"));
+} catch (IOException e1) {
+	e1.printStackTrace();
+}
+Main.popup.setScene(new Scene(mainLayout));
+Main.popup.show();*/
 	//label1.setTextFill(Color.web("#0076a3"));
+
+
+
+
 	public void onAddBook(){
-		/*try {
-			mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/LoginScreen.fxml"));
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		Main.popup.setScene(new Scene(mainLayout));
-	Main.popup.show();*/
 		File file = null ;
 		Book book = new Book();
 		boolean title, author, language, summary, toc, keyWord;//Check if all the fields were filled.
@@ -131,63 +118,48 @@ public class WorkerController extends AbstractClient {
 		}
 		else{
 			keywordText.setFill(Color.BLACK); keyWord=true; book.setKeyword(keywordTextField.getText());
-		}
-
-		//(Book.getBookList()).add(book);//Adding the book to the arraylist!
-
-		if(title&&author&&language&&summary&&toc&&keyWord){//Every field is filled
-			file = new File("C:/Users/orels/Desktop/Ass3Logos/AddedBook.png");
-			addedButton.setImage(new Image(file.toURI().toString()));
 
 
-			/****************************************/
-			/*WorkerController workerController = new WorkerController();
-			try {
-				workerController.openConnection();
-				workerController.sendToServer(book);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}*/
-			sendServer(book, "AddBook");
+			if(title&&author&&language&&summary&&toc&&keyWord){//Every field is filled
+				file = new File("C:/Users/orels/Desktop/Ass3Logos/AddedBook.png");
+				addedButton.setImage(new Image(file.toURI().toString()));
+				sendServer(book, "AddBook");
+			}
 		}
 	}//End onAddBook
 
 
 
 	/****************************/
-	
-	
+
+
 	public void onRemoveBook(){
 		WorkerController.flag=1;
-		ArrayList<Book> temp = new ArrayList<Book>();
-		boolean flag=false; // Tell me if I should use the temp arraylist or the main arraylist
-		System.out.println("onremovebook");
-		
-		
-		for(Book book:bookList)
-			System.out.println(book.getTitle());
-		
-		
+		Book deleteBook = new Book();
+		boolean flag=false; // Tell me if I should use the deleteBook.deleteBookList arraylist or the main arraylist
+		deleteBook.deleteBookList = new ArrayList<Book>();
+		int j=0;
+
 		//isTitleCheckBox
 		if(titleCheckBox.isSelected()){
 			flag=true;
-			for(Book book:bookList){
+			for(Book book:Book.bookList){
 				if(book.getTitle().equals(titleTextFieldR.getText()))
-					temp.add(book);
+					deleteBook.deleteBookList.add(book);
 			}
 		}//isTitleCheckBox end
 
 		//isAuthorCheckBox
 		if(authorCheckBox.isSelected()){
 			if(flag){
-				for(int i=0;i<temp.size();i++)
-					if(!temp.get(i).getAuthor().equals(authorTextFieldR.getText()))//If the author does not match
-						temp.remove(i);	
+				for(int i=0;i<deleteBook.deleteBookList.size();i++)
+					if(!deleteBook.deleteBookList.get(i).getAuthor().equals(authorTextFieldR.getText()))//If the author does not match
+						deleteBook.deleteBookList.remove(i);	
 			}//end if
 			else{
-				for(Book book:bookList){
+				for(Book book:Book.bookList){
 					if(book.getAuthor().equals(authorTextFieldR.getText()))
-						temp.add(book);
+						deleteBook.deleteBookList.add(book);
 				}
 			}//end else
 		}//isAuthorCheckBox end
@@ -195,15 +167,15 @@ public class WorkerController extends AbstractClient {
 		//isLanguageCheckBox
 		if(languageCheckBox.isSelected()){
 			if(flag){
-				for(int i=0;i<temp.size();i++)
-					if(!temp.get(i).getLanguage().equals(languageTextFieldR.getText()))//If the author does not match
-						temp.remove(i);	
+				for(int i=0;i<deleteBook.deleteBookList.size();i++)
+					if(!deleteBook.deleteBookList.get(i).getLanguage().equals(languageTextFieldR.getText()))//If the author does not match
+						deleteBook.deleteBookList.remove(i);	
 			}//end if
 			else{
 				flag=true;
-				for(Book book:bookList){
+				for(Book book:Book.bookList){
 					if(book.getLanguage().equals(languageTextFieldR.getText()))
-						temp.add(book);
+						deleteBook.deleteBookList.add(book);
 				}
 			}//end else
 		}//isLanguageCheckBox end
@@ -211,16 +183,16 @@ public class WorkerController extends AbstractClient {
 		//isSummaryCheckBox
 		if(summaryCheckBox.isSelected()){
 			if(flag){
-				for(int i=0;i<temp.size();i++)
-					if(!temp.get(i).getSummary().contains(summaryTextFieldR.getText()))//If the author does not match
+				for(int i=0;i<deleteBook.deleteBookList.size();i++)
+					if(!deleteBook.deleteBookList.get(i).getSummary().contains(summaryTextFieldR.getText()))//If the author does not match
 						//Contains because it might be part of
-						temp.remove(i);	
+						deleteBook.deleteBookList.remove(i);	
 			}//end if
 			else{
 				flag=true;
-				for(Book book:bookList){
+				for(Book book:Book.bookList){
 					if(book.getSummary().equals(summaryTextFieldR.getText()))
-						temp.add(book);
+						deleteBook.deleteBookList.add(book);
 				}
 			}//end else
 		}//isSummaryCheckBox end
@@ -228,16 +200,16 @@ public class WorkerController extends AbstractClient {
 		//isTocCheckBox
 		if(tocCheckBox.isSelected()){
 			if(flag){
-				for(int i=0;i<temp.size();i++)
-					if(!temp.get(i).getToc().contains(tocTextFieldR.getText()))//If the author does not match
+				for(int i=0;i<deleteBook.deleteBookList.size();i++)
+					if(!deleteBook.deleteBookList.get(i).getToc().contains(tocTextFieldR.getText()))//If the author does not match
 						//Contains because it might be part of
-						temp.remove(i);	
+						deleteBook.deleteBookList.remove(i);	
 			}//end if
 			else{
 				flag=true;
-				for(Book book:bookList){
+				for(Book book:Book.bookList){
 					if(book.getToc().equals(tocTextFieldR.getText()))
-						temp.add(book);
+						deleteBook.deleteBookList.add(book);
 				}
 			}
 		}//isTocCheckBox end
@@ -245,34 +217,24 @@ public class WorkerController extends AbstractClient {
 		//isKeywordCheckBox
 		if(keywordCheckBox.isSelected()){
 			if(flag){
-				for(int i=0;i<temp.size();i++)
-					if(!temp.get(i).getKeyword().equals(keywordTextFieldR.getText()))//If the author does not match
-						temp.remove(i);	
+				for(int i=0;i<deleteBook.deleteBookList.size();i++)
+					if(!deleteBook.deleteBookList.get(i).getKeyword().equals(keywordTextFieldR.getText()))//If the author does not match
+						deleteBook.deleteBookList.remove(i);	
 			}//end if
 			else{
-				for(Book book:bookList){
+				for(Book book:Book.bookList){
 					if(book.getKeyword().equals(keywordTextFieldR.getText()))
-						temp.add(book);
+						deleteBook.deleteBookList.add(book);
 				}
 			}
 		}//isKeywordCheckBox end
-
-		//Now we have in temp the exact books we're looking to remove	
-		for(Book book:temp){
-			System.out.println(book.getTitle());
-		}
-		sendServer(temp, "RemoveBook");
-		WorkerController.flag=-1;//Reset flag
-
 		
-		
+		for(Book book1:deleteBook.deleteBookList)
+			System.out.println(book1.getTitle());
+		sendServer(deleteBook, "RemoveBook");
+
+
 	}//End onRemoveBook
-
-
-
-	/****************************/
-
-
 
 
 	public void onBack(){
@@ -291,10 +253,9 @@ public class WorkerController extends AbstractClient {
 		else if(msg instanceof ArrayList){
 			for(Book book:(ArrayList<Book>)msg){
 				System.out.println(book.getTitle());
-				bookList.add(book);
+				Book.bookList.add(book);
 			}
 		}
-			
 	}
 
 

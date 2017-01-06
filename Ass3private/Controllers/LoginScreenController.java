@@ -108,11 +108,8 @@ public class LoginScreenController extends AbstractClient {
 					whatAmI="manager";
 			}
 		}//end else
-		if(msg instanceof ArrayList){
+		if(msg instanceof ArrayList)
 			Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
-			for(Book book:Book.bookList)
-				System.out.println(book.getTitle());
-		}
 	}
 	
 	

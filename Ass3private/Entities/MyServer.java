@@ -44,7 +44,7 @@ public class MyServer extends AbstractServer {
 
 	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
+		System.out.println(((GeneralMessage)msg).actionNow);
 		switch(((GeneralMessage)msg).actionNow){
 		case "AddBook":
 			addBook((Book)msg, client);break;
@@ -63,6 +63,17 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
+	
+	public void removeBook(Book book, ConnectionToClient client){/**********************************/
+		System.out.println("DELETE!");
+		try{
+		Statement stmt = conn.createStatement();
+		for(Book bookToDelete:book.deleteBookList)
+			stmt.executeUpdate("DELETE FROM books WHERE bookid=" + bookToDelete.getBookid());
+		System.out.println("deleted!");
+		}catch(SQLException e){e.printStackTrace();}
+		System.out.println("DELETE!");
+	}
 
 	private void addCreditCard(CreditCard card,ConnectionToClient client)
 	{
@@ -118,6 +129,7 @@ public class MyServer extends AbstractServer {
 	public void removeBook(ArrayList<Book> bookList, ConnectionToClient client){/**********************************/
 		System.out.println("remove");
 	}
+
 
 
 	public void addBook(Book book, ConnectionToClient client){
