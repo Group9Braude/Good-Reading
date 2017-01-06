@@ -96,6 +96,7 @@ public class LoginScreenController extends AbstractClient {
 				System.out.println("reader");
 				readerLogged=(Reader)msg;
 				whatAmI="reader";
+				Main.setCurrentUser(readerLogged);
 			}
 
 			else if(msg instanceof User)//Correct details were entered

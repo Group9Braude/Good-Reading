@@ -29,44 +29,41 @@ public class SubscriptionScreenController
 	public SubscriptionScreenController()
 	{
 		primaryStage=Main.getStage();
-		reader = LoginScreenController.getReaderLogged();
+		reader = (Reader)Main.getCurrentUser();
 	}
-	
+
 	public void onMonth()
 	{
-		popUpCredit();
-		/*System.out.println(reader.getSubscribed());
 		if(reader.getSubscribed()==1)//If already subscribed
 			outputText.setText("You're already subscribed for month!");
 		else
 		{
-			if(reader.getCardnum().equals(""))
-			{
-				//Goto "enter credit card" screen 
-			}
-			else outputText.setText("Subscribed successfully");
-		}*/
+			if(reader.getCardnum()==null)
+				popUpCredit();
+			else outputText.setText("Subscribed successfully");//In case the user already has a credit card stored in the db
+		}
 	}
-	
+
 	public void onYear()
 	{
 		System.out.println("entered");
 		if(reader.getSubscribed()==2)//If already subscribed
 			outputText.setText("You're already subscribed for year!");
 	}
-	
+
 	private void popUpCredit()
 	{
-		try {
-			Parent root = FXMLLoader.load(getClass().getResource("/GUI/CreditCardScreen.fxml"));
-			primaryStage.setScene(new Scene(root));
-			primaryStage.initModality(Modality.APPLICATION_MODAL);
-			primaryStage.showAndWait();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		if(reader.getCardnum()==null)
+		{
+			try {
+				mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/CreditCardScreen.fxml"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			Main.popup.setScene(new Scene(mainLayout));
+			Main.popup.show();
 		}
 	}
-	
-	
+
+
 }
