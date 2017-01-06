@@ -29,7 +29,7 @@ public class LoginScreenController extends AbstractClient {
 	}
 
 
-	public void sendServer(Object msg, String actionNow){
+	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		LoginScreenController client = new LoginScreenController();
 		try {
@@ -107,11 +107,8 @@ public class LoginScreenController extends AbstractClient {
 					whatAmI="manager";
 			}
 		}//end else
-		if(msg instanceof ArrayList){
+		if(msg instanceof ArrayList)
 			Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
-			for(Book book:Book.bookList)
-				System.out.println(book.getTitle());
-		}
 	}
 	
 	

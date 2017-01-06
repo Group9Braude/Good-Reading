@@ -7,6 +7,7 @@ public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String title, author, language, summary, toc, keyword;
 	public static ArrayList<Book> bookList;
+	public ArrayList<Book> deleteBookList;
 	private int isSuspend=0 , bookid;
 	public static int bookCnt=10;
 
@@ -14,7 +15,7 @@ public class Book extends GeneralMessage implements Serializable{
 
 	public Book(){}
 
-	public Book(int bookid,String title, String author, String language, String summary, String toc, String keyword, int isSuspend) {
+	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend) {
 		super();
 		this.bookid = bookid;
 		this.title = title;

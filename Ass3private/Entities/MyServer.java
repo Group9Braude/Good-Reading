@@ -44,12 +44,12 @@ public class MyServer extends AbstractServer {
 
 	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-
+		System.out.println(((GeneralMessage)msg).actionNow);
 		switch(((GeneralMessage)msg).actionNow){
 		case "AddBook":
 			addBook((Book)msg, client);break;
 		case "RemoveBook":
-			removeBook((ArrayList<Book>)msg, client);break;
+			removeBook((Book)msg, client);break;
 		case "CheckUser":
 			checkUser((User)msg,client);break;
 		case "initializeBookList":
@@ -59,7 +59,18 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
+	
+	public void removeBook(Book book, ConnectionToClient client){/**********************************/
+		System.out.println("DELETE!");
+		try{
+		Statement stmt = conn.createStatement();
+		for(Book bookToDelete:book.deleteBookList)
+			stmt.executeUpdate("DELETE FROM books WHERE bookid=" + bookToDelete.getBookid());
+		System.out.println("deleted!");
+		}catch(SQLException e){e.printStackTrace();}
+		System.out.println("DELETE!");
 
+	}
 
 
 	public void initializeBookList(Book book, ConnectionToClient client){/*******************************************/
@@ -69,7 +80,7 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery(query);
 			ArrayList<Book> bookList = new ArrayList<Book>();
 			while(rs.next()){
-				bookList.add( new Book (rs.getInt(2),rs.getString(1),rs.getString(3)
+				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
 						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8)));
 
 			}
@@ -81,9 +92,7 @@ public class MyServer extends AbstractServer {
 
 
 
-	public void removeBook(ArrayList<Book> bookList, ConnectionToClient client){/**********************************/
-		System.out.println("remove");
-	}
+
 
 
 	public void addBook(Book book, ConnectionToClient client){
