@@ -3,7 +3,7 @@ package Entities;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Book implements Serializable{
+public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
 	private String title, author, language, summary, toc, keyword;
 	public static ArrayList<Book> bookList;
@@ -26,15 +26,6 @@ public class Book implements Serializable{
 		this.isSuspend = isSuspend;
 	}
 
-	public static ArrayList<Book> getBookList() {
-		return bookList;
-	}
-	public static void setBookList(Book book) {
-		bookList.add(book);
-
-
-		
-	}
 	public int getisSuspend(){
 		return this.isSuspend;
 	}

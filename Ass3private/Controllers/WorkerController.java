@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Entities.Book;
+import Entities.GeneralMessage;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -66,7 +67,8 @@ public class WorkerController extends AbstractClient {
 	}
 
 
-	public void sendServer(Object msg){/******************************/
+	public void sendServer(Object msg, String actionNow){/******************************/
+		((GeneralMessage)msg).actionNow = actionNow;
 		WorkerController client = new WorkerController();
 			try {
 				client.openConnection();
@@ -146,7 +148,7 @@ public class WorkerController extends AbstractClient {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}*/
-			sendServer(book);
+			sendServer(book, "AddBook");
 		}
 	}//End onAddBook
 
@@ -259,7 +261,7 @@ public class WorkerController extends AbstractClient {
 		for(Book book:temp){
 			System.out.println(book.getTitle());
 		}
-		sendServer(temp);
+		sendServer(temp, "RemoveBook");
 		WorkerController.flag=-1;//Reset flag
 
 		
