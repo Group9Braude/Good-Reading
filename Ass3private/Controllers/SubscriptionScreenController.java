@@ -1,11 +1,17 @@
 package Controllers;
 
+import java.io.IOException;
+
 import Entities.Reader;
 import application.Main;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class SubscriptionScreenController 
@@ -28,7 +34,8 @@ public class SubscriptionScreenController
 	
 	public void onMonth()
 	{
-		System.out.println(reader.getSubscribed());
+		popUpCredit();
+		/*System.out.println(reader.getSubscribed());
 		if(reader.getSubscribed()==1)//If already subscribed
 			outputText.setText("You're already subscribed for month!");
 		else
@@ -38,7 +45,7 @@ public class SubscriptionScreenController
 				//Goto "enter credit card" screen 
 			}
 			else outputText.setText("Subscribed successfully");
-		}
+		}*/
 	}
 	
 	public void onYear()
@@ -48,6 +55,18 @@ public class SubscriptionScreenController
 			outputText.setText("You're already subscribed for year!");
 	}
 	
+	private void popUpCredit()
+	{
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("/GUI/CreditCardScreen.fxml"));
+			primaryStage.setScene(new Scene(root));
+			primaryStage.initModality(Modality.APPLICATION_MODAL);
+			primaryStage.showAndWait();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	
 }

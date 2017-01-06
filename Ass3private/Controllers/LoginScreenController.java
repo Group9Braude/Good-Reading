@@ -12,7 +12,7 @@ import ocsf.client.AbstractClient;
 
 public class LoginScreenController extends AbstractClient {
 
- 
+
 
 	@FXML
 	private TextField idTextField;
@@ -61,10 +61,10 @@ public class LoginScreenController extends AbstractClient {
 				} catch (IOException e) {}
 			else if(whatAmI=="manager")
 			{
-			    try {
-			        System.out.println("Manager!");
-			        Main.showManagerLoggedScreen();
-			       } catch (IOException e) {}
+				try {
+					System.out.println("Manager!");
+					Main.showManagerLoggedScreen();
+				} catch (IOException e) {}
 			}
 		}
 
@@ -75,28 +75,26 @@ public class LoginScreenController extends AbstractClient {
 	protected void handleMessageFromServer(Object msg) {
 		if (msg instanceof String) 
 			System.out.println((String)msg);
-		else if(msg instanceof Reader)
-		{
-			System.out.println("reader");
-			readerLogged=(Reader)msg;
-			whatAmI="reader";
-		}
-		
 		else if(msg instanceof User)//Correct details were entered
 		{
-			//if(res.getType()==1)
-			//{
-				//readerLogged = new Reader(res.getID(),res.getPassword());
-				//whatAmI="reader";
-			//}
-			User res = (User)msg;
-			if(res.getType()==2)
-				whatAmI="worker";
-			else if(res.getType()==3)
-				whatAmI="manager";
+			if(msg instanceof Reader)
+			{
+				Main.setCurrentUser((Reader)msg);
+				readerLogged=(Reader)msg;
+				whatAmI="reader";
+			}
+
+			else
+			{
+				User res = (User)msg;
+				if(res.getType()==2)
+					whatAmI="worker";
+				else if(res.getType()==3)
+					whatAmI="manager";
+			}
 		}
 	}
-	public static Reader getReaderLogged() {
-		return readerLogged;
+		public static Reader getReaderLogged() {
+			return readerLogged;
+		}
 	}
-}
