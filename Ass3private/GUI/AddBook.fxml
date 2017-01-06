@@ -28,7 +28,7 @@
       <Text fx:id="summaryText" layoutX="92.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Summary" wrappingWidth="70.13671875" />
       <Text fx:id="keywordText" layoutX="87.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Key Word" wrappingWidth="80.13671875" />
       <Text fx:id="tocText" layoutX="92.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Table Of Contents" wrappingWidth="49.13671875" />
-      <Button fx:id="addBookButton" graphicTextGap="5.0" layoutX="186.0" layoutY="480.0" mnemonicParsing="false" onAction="#onAddBook" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: #b9b8d8;" text="ADD BOOK" textAlignment="JUSTIFY" textOverrun="WORD_ELLIPSIS">
+      <Button fx:id="addBookButton" graphicTextGap="5.0" layoutX="189.0" layoutY="475.0" mnemonicParsing="false" onAction="#onAddBook" prefHeight="25.0" prefWidth="102.0" style="-fx-background-color: #b9b8d8;" text="ADD BOOK" textAlignment="JUSTIFY" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>

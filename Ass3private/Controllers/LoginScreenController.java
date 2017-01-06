@@ -36,14 +36,8 @@ public class LoginScreenController extends AbstractClient {
 			}
 			catch (IOException e1) {
 				e1.printStackTrace();
-			}
-			//Initialize bookList
-			ArrayList<Book> bookList = Book.getBookList();
-	        bookList = new ArrayList<Book>();
-			//Initialize bookList
-	        
+			} 
 			client.sendToServer(user);
-			client.sendToServer(bookList);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

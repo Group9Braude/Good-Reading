@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import Controllers.WorkerController;
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -47,37 +48,46 @@ public class MyServer extends AbstractServer {
 			checkUser((User)msg,client);
 		else if(msg instanceof Book)
 			addBook((Book)msg, client);
-		else if(msg instanceof ArrayList){
-			updateBooks();
+		else if((msg instanceof ArrayList)&&WorkerController.flag==0)/******************************/
+			updateBooks((ArrayList<Book>)msg, client);
+		else if((msg instanceof ArrayList)&&WorkerController.flag==1)
+			removeBook((ArrayList<Book>)msg, client);
 		}
-	}
+	
 
 
-	public void updateBooks(){
+
+	public void updateBooks(ArrayList<Book> bookList, ConnectionToClient client){/*******************************************/
+		System.out.println("update");
 		try {
+			System.out.println("updateBooks");
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM books";
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				Book book = new Book(rs.getString(1),rs.getString(2),rs.getString(3)
-						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8));
-				(Book.getBookList()).add(book);
+			Book book = new Book(rs.getString(1),rs.getInt(2),rs.getString(3)
+					,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8));
+			bookList.add(book);
 			}
-			System.out.println("Books added successfully");
-
-		} catch (SQLException e) {
+			for(Book book:bookList)
+				System.out.println(book.getTitle());
+			client.sendToClient(bookList);
+		} catch (SQLException | IOException  e) {
 			e.printStackTrace();
-		}
-
-
-
-
+		}	
 	}
+	
+	
 
+	public void removeBook(ArrayList<Book> bookList, ConnectionToClient client){/**********************************/
+		System.out.println("remove");
+	}
+	
+	
 	public void addBook(Book book, ConnectionToClient client){
 		Statement stmt;
-		bookCnt++;
-		String query = "insert into books values ('" + bookCnt + "','" + book.getTitle() + "','" + book.getAuthor() + "','" + 
+		Book.bookCnt++;
+		String query = "insert into books values ('" + book.getTitle() + "','" + Book.bookCnt + "','" + book.getAuthor() + "','" + 
 				book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0');";
 		try {
 			stmt = conn.createStatement();
@@ -90,9 +100,9 @@ public class MyServer extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
+		 
 	}
-
+	
 
 
 

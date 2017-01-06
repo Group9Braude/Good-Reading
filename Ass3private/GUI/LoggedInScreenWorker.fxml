@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="170.0" fitWidth="395.0" layoutX="3.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../Desktop/Ass3Logos/HelloWorker.png" />
+            <Image url="@../../../../../Desktop/Ass3Logos/HelloWorker.png" />
          </image>
       </ImageView>
       <Text layoutX="46.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like to do?">
@@ -22,7 +22,7 @@
       <Button layoutX="39.0" layoutY="251.0" mnemonicParsing="false" onAction="#onAddBook" prefHeight="25.0" prefWidth="86.0" text="Add Book" />
       <Button layoutX="39.0" layoutY="313.0" mnemonicParsing="false" text="Update Book" />
       <Button layoutX="114.0" layoutY="374.0" mnemonicParsing="false" text="Organize Book Catalogue" />
-      <Button layoutX="140.0" layoutY="251.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Remove Book" />
+      <Button layoutX="140.0" layoutY="251.0" mnemonicParsing="false" onAction="#onRemoveBook" prefHeight="25.0" prefWidth="100.0" text="Remove Book" />
       <Button layoutX="140.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Search User" />
       <Button layoutX="256.0" layoutY="251.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Check New Review" />
       <Button layoutX="256.0" layoutY="313.0" mnemonicParsing="false" text="Enter Reader Details" />
