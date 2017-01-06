@@ -49,11 +49,15 @@ public class MyServer extends AbstractServer {
 		case "AddBook":
 			addBook((Book)msg, client);break;
 		case "RemoveBook":
-			removeBook((Book)msg, client);break;
+			removeBook((ArrayList<Book>)msg, client);break;
 		case "CheckUser":
 			checkUser((User)msg,client);break;
 		case "initializeBookList":
 			initializeBookList((Book)msg, client);break;
+		case "Logout":
+			LogOutUser((User)msg,client);
+		case "creditCard":
+			addCreditCard((CreditCard)msg,client); break;
 		default:
 			break;
 		}
@@ -69,9 +73,39 @@ public class MyServer extends AbstractServer {
 		System.out.println("deleted!");
 		}catch(SQLException e){e.printStackTrace();}
 		System.out.println("DELETE!");
-
 	}
 
+	private void addCreditCard(CreditCard card,ConnectionToClient client)
+	{
+			Statement stmt;
+			try {
+				stmt = conn.createStatement();
+				stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"';");
+				//To add credit card checks
+				client.sendToClient("Credit card added successfully");
+			} catch (SQLException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
+		
+	}
+	
+	private void LogOutUser(User user,ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			if(user instanceof Reader)
+			{
+				stmt.executeUpdate("UPDATE readers SET isLoggedIn=0 WHERE readerID='" + user.getID() + "'");
+				client.sendToClient("You've logged out successfully");
+			}
+			//else: handle workers here
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void initializeBookList(Book book, ConnectionToClient client){/*******************************************/
 		try {
@@ -92,6 +126,9 @@ public class MyServer extends AbstractServer {
 
 
 
+	public void removeBook(ArrayList<Book> bookList, ConnectionToClient client){/**********************************/
+		System.out.println("remove");
+	}
 
 
 
@@ -113,14 +150,6 @@ public class MyServer extends AbstractServer {
 		}
 
 	}
-
-
-
-
-
-
-
-
 
 	public void connectToDB() {
 		try {

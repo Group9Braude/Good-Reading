@@ -2,10 +2,8 @@ package Entities;
 
 import java.io.Serializable;
 
-public class User extends GeneralMessage implements Serializable{
-	/**
-	 * 
-	 */
+public class User extends GeneralMessage implements Serializable
+{
 	private static final long serialVersionUID = 1L;
 	private String id,password;
 	private int type;//1 - reader,2 - librarian,3 - manager

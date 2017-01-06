@@ -15,7 +15,8 @@ public class Book extends GeneralMessage implements Serializable{
 
 	public Book(){}
 
-	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend) {
+	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend) 
+	{
 		super();
 		this.bookid = bookid;
 		this.title = title;
@@ -33,7 +34,8 @@ public class Book extends GeneralMessage implements Serializable{
 	public void setisSuspend(){
 		this.isSuspend=0;
 	}
-	public int getBookid() {
+	public int getBookid() 
+	{
 		return bookid;
 	}
 	public void setBookid(int bookid) {
@@ -75,7 +77,8 @@ public class Book extends GeneralMessage implements Serializable{
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-	public static long getSerialversionuid() {
+	public static long getSerialversionuid() 
+	{
 		return serialVersionUID;
 	}
 
