@@ -27,7 +27,7 @@ public class CreditCard extends GeneralMessage implements Serializable
 		this.cardNum = cardNum;
 	}
 	public String getId() {
-		return id;
+		return id;  
 	}
 	public void setId(String id) {
 		this.id = id;
