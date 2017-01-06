@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginScreenController">
+   <children>
+      <ImageView fitHeight="390.0" fitWidth="263.0" layoutX="8.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../Desktop/Ass3Logos/Logo.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="134.0" layoutY="262.0" mnemonicParsing="false" onAction="#onLogin" text="LOGIN" />
+      <Button layoutX="37.0" layoutY="262.0" mnemonicParsing="false" text="EXIT" />
+      <TextField fx:id="idTextField" layoutX="37.0" layoutY="165.0" promptText="User ID" />
+      <TextField fx:id="passwordTextField" layoutX="37.0" layoutY="217.0" promptText="Password" />
+      <Button layoutX="69.0" layoutY="312.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="84.0" text="SEARCH" textFill="#0944e8" />
+      <Button layoutX="70.0" layoutY="350.0" mnemonicParsing="false" onAction="#onContinue" prefHeight="25.0" prefWidth="84.0" text="CONTINUE" />
+   </children>
+</AnchorPane>
