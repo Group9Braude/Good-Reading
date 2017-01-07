@@ -54,7 +54,6 @@ public class WorkerController extends AbstractClient {
 		WorkerController client = new WorkerController();
 		try {
 			client.openConnection();
-			System.out.println(((GeneralMessage)msg).actionNow);
 			client.sendToServer(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -228,9 +227,7 @@ Main.popup.show();*/
 				}
 			}
 		}//isKeywordCheckBox end
-		
-		for(Book book1:deleteBook.deleteBookList)
-			System.out.println(book1.getTitle());
+
 		sendServer(deleteBook, "RemoveBook");
 
 
@@ -251,10 +248,9 @@ Main.popup.show();*/
 		if(msg instanceof String)
 			System.out.println((String)msg);
 		else if(msg instanceof ArrayList){
-			for(Book book:(ArrayList<Book>)msg){
-				System.out.println(book.getTitle());
+			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
-			}
+
 		}
 	}
 

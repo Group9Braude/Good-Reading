@@ -44,12 +44,11 @@ public class MyServer extends AbstractServer {
 
 	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		System.out.println(((GeneralMessage)msg).actionNow);
 		switch(((GeneralMessage)msg).actionNow){
 		case "AddBook":
 			addBook((Book)msg, client);break;
 		case "RemoveBook":
-			removeBook((ArrayList<Book>)msg, client);break;
+			removeBook((Book)msg, client);break;
 		case "CheckUser":
 			checkUser((User)msg,client);break;
 		case "initializeBookList":
@@ -65,14 +64,12 @@ public class MyServer extends AbstractServer {
 
 	
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
-		System.out.println("DELETE!");
 		try{
 		Statement stmt = conn.createStatement();
 		for(Book bookToDelete:book.deleteBookList)
 			stmt.executeUpdate("DELETE FROM books WHERE bookid=" + bookToDelete.getBookid());
 		System.out.println("deleted!");
 		}catch(SQLException e){e.printStackTrace();}
-		System.out.println("DELETE!");
 	}
 
 	private void addCreditCard(CreditCard card,ConnectionToClient client)
@@ -158,7 +155,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
 			System.out.println("SQL connection succeed");
 		}
 		catch (SQLException ex) {
