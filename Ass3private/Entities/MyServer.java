@@ -203,7 +203,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
@@ -257,6 +257,7 @@ public class MyServer extends AbstractServer {
 						{
 							Reader reader = new Reader(rs1.getString(1),password);
 							reader.setFirstName(rs1.getString(3));
+							System.out.println(reader.getFirstName());
 							reader.setLastName(rs1.getString(4));
 							reader.setSubscribed(rs1.getInt(5));
 							reader.setIBookValid(rs1.getInt(6));
