@@ -1,7 +1,5 @@
 package Entities;
-/*
- * Decompiled with CFR 0_118.
- */
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
-import Controllers.WorkerController;
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -19,7 +15,16 @@ public class MyServer extends AbstractServer {
 	Connection conn;
 	private static int bookCnt;
 
-
+		public static void main(String[] args) {
+	int port = 0;
+	try {
+		port = Integer.parseInt(args[0]);
+	}
+	catch (Throwable t) {
+		port = Main.port;
+	}
+	MyServer s1 = new MyServer(port);
+	}
 
 	public MyServer(int port) {
 		super(port);
@@ -292,13 +297,3 @@ public class MyServer extends AbstractServer {
 
 
 
-/*	public static void main(String[] args) {
-int port = 0;
-try {
-	port = Integer.parseInt(args[0]);
-}
-catch (Throwable t) {
-	port = Main.port;
-}
-//MyServer s1 = new MyServer(port);
-}*/

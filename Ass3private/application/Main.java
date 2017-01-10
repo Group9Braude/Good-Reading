@@ -33,7 +33,6 @@ public class Main extends Application {
 		popup = new Stage();
 		popup.initModality(Modality.APPLICATION_MODAL);
 		popup.initOwner(primaryStage);
-		MyServer s = new MyServer(Main.port);
 		showMainMenu();
 	}
 

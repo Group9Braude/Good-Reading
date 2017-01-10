@@ -255,47 +255,48 @@ Main.popup.show();*/
 	public void onWorkerSearch(){
 		ArrayList<Worker> workers = new ArrayList<Worker>();
 		boolean flag=false;//To know if I should remove from the new arraylist or the main into the new
+		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
+				workerID=workerIDTextFieldW.getText();
 
-
-		if((idTextFieldW.getText()=="")){
+		if((id=="")){
 			for(Worker worker:Worker.workerList)
-				if(worker.getId().equals(idTextFieldW.getText())){
+				if(worker.getId().equals(id)){
 					workers.add(worker);
 					break;
 				}
 		}
 
-		else if((workerIDTextFieldW.getText()=="")){
+		else if((workerID=="")){
 
 			for(Worker worker:Worker.workerList)
-				if(worker.getId().contains(workerIDTextFieldW.getText())){
+				if(worker.getId().contains(workerID)){
 					workers.add(worker);
 					break;
 				}
 		}
 
 		else{
-			if((firstNameTextFieldW.getText()!="")){
-				System.out.println("thefuck");
+			if((firstName=="")){
 				flag=true;
+				workers = new ArrayList<Worker>();
 				for(Worker worker:Worker.workerList)
-					if(worker.getFirstName().contains(firstNameTextFieldW.getText()))
+					if(worker.getFirstName().contains(firstName))
 						workers.add(worker);
 			}
 
-
-
-			if((lastNameTextFieldW.getText()==""))				
+			if((lastName!=""))				
 				if(!flag){
 					flag=true;
+					workers = new ArrayList<Worker>();
 					for(Worker worker:Worker.workerList)
-						if(worker.getLastName().contains(lastNameTextFieldW.getText()))
+						if(worker.getLastName().contains(lastName))
 							workers.add(worker);
 				}
-				else{
-					for(int i=0;i<workers.size();i++)
-						if(!workers.get(i).getLastName().contains(lastNameTextFieldW.getText()))
-							workers.remove(i);
+				else {
+						for(int i=0;i<workers.size();i++)
+							if(!workers.get(i).getLastName()
+									.contains(lastName))
+								workers.remove(i);
 				}
 
 
@@ -358,15 +359,22 @@ Main.popup.show();*/
 	}
 
 	public void onAllManagers(){
-
+		for(Worker worker:Worker.workerList)
+			if(worker.getIsManager()==1)
+				System.out.println(worker.getFirstName());	
 	}
 
 
 	public void onAllWorkers(){
-
+		for(Worker worker:Worker.workerList)
+			if(worker.getIsManager()!=1)
+				System.out.println(worker.getFirstName());
 	}
 
 	public void onLoggedWorkers(){
+		for(Worker worker:Worker.workerList)
+			if(worker.getIsLoggedIn()==1)
+				System.out.println(worker.getFirstName());
 
 	}
 
