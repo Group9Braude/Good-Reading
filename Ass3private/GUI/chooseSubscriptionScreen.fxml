@@ -5,12 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="212.0" prefWidth="336.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SubscriptionScreenController">
+<AnchorPane prefHeight="264.0" prefWidth="336.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SubscriptionScreenController">
    <children>
       <Button fx:id="month" layoutX="25.0" layoutY="118.0" mnemonicParsing="false" onAction="#onMonth" text="Subscribe for a month" />
       <Button fx:id="year" layoutX="182.0" layoutY="118.0" mnemonicParsing="false" onAction="#onYear" text="Subscribe for a year" />
       <TextField editable="false" layoutX="83.0" layoutY="34.0" prefHeight="25.0" prefWidth="171.0" style="-fx-background-color: cyan;" text="Choose a subscription period" />
-      <Button fx:id="back" layoutX="137.0" layoutY="163.0" mnemonicParsing="false" onAction="#onBack" text="&lt;- BACK" />
+      <Button fx:id="back" layoutX="138.0" layoutY="214.0" mnemonicParsing="false" onAction="#onBack" text="&lt;- BACK" />
       <TextField fx:id="outputText" alignment="CENTER" editable="false" layoutX="62.0" layoutY="81.0" prefHeight="25.0" prefWidth="211.0" />
+      <Button layoutX="99.0" layoutY="169.0" mnemonicParsing="false" onAction="#popUpCredit" text="Enter a new credit card" />
    </children>
 </AnchorPane>

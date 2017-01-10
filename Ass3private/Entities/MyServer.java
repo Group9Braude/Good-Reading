@@ -44,7 +44,7 @@ public class MyServer extends AbstractServer {
 
 	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		System.out.println(((GeneralMessage)msg).actionNow);
+		//System.out.println(((GeneralMessage)msg).actionNow);
 		switch(((GeneralMessage)msg).actionNow){
 		case "AddBook":
 			addBook((Book)msg, client);break;
@@ -58,11 +58,26 @@ public class MyServer extends AbstractServer {
 			LogOutUser((User)msg,client);
 		case "creditCard":
 			addCreditCard((CreditCard)msg,client); break;
+		case "Monthly":
+			subscribe((Reader)msg,1,client); break;
+		case "Yearly":
+			subscribe((Reader)msg,2,client); break;
 		default:
 			break;
 		}
 	}
-
+	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
+	{
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update readers set subscription= "+type+" where readerID = '"+reader.getID()+"';");
+			client.sendToClient(type);//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
 		System.out.println("DELETE!");
@@ -87,8 +102,6 @@ public class MyServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		
-		
 	}
 	
 	private void LogOutUser(User user,ConnectionToClient client)
@@ -168,14 +181,6 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
-
-
-
-
-
-
-
-
 	private void checkUser(User user,ConnectionToClient client)
 	{
 		String id = user.getID();
@@ -225,7 +230,7 @@ public class MyServer extends AbstractServer {
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
-							client.sendToClient(reader);
+							client.sendToClient((Object)reader);
 						}
 					}
 					else

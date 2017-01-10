@@ -19,18 +19,27 @@ public class LoginReaderController {
 	static ComboBox<?> bookList;
 	@FXML
 	static Button Subscribe;
-	static private Reader reader;
+	private Reader reader;
 	
-	public static void setReader(Reader reader)
+	public LoginReaderController()
 	{
-		LoginReaderController.reader=reader;
-	}
-	public static void setwelcomeText()
-	{
-		welcomeText.setText("Hello "/*+reader.getName()*/);
+		System.out.println("enter");
+		setReader((Reader)Main.getCurrentUser());
+		System.out.println(reader.getName());
+		this.setwelcomeText();
+		this.setsubscribeText();
 	}
 	
-	public static void setsubscribeText()
+	private void setReader(Reader reader)
+	{
+		this.reader=reader;
+	}
+	public void setwelcomeText()
+	{
+		welcomeText.setText("Hello " + reader.getName());
+	}
+	
+	public void setsubscribeText()
 	{
 		int status = reader.getSubscribed();
 		switch(status)

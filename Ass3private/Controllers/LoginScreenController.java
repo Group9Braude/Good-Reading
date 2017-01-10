@@ -86,15 +86,16 @@ public class LoginScreenController extends AbstractClient {
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		if (msg instanceof String) {
-			System.out.println((String)msg);//Wrong username/password
+			System.out.println((String)msg);//Wrong user name password
 		}
 		
 		else{
 			
 			if(msg instanceof Reader)
 			{
-				System.out.println("reader");
+				
 				readerLogged=(Reader)msg;
+				System.out.println(readerLogged.getName());
 				whatAmI="reader";
 				Main.setCurrentUser(readerLogged);
 			}
