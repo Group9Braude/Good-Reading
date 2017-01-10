@@ -32,7 +32,7 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR;
 
-	private static Pane mainLayout;
+
 	@FXML
 	private CheckBox titleCheckBox, authorCheckBox, languageCheckBox, summaryCheckBox, tocCheckBox, keywordCheckBox;
 	public static int flag = -1;//if 0 -> Update booklist, 1->remove from booklist
@@ -54,7 +54,6 @@ public class WorkerController extends AbstractClient {
 		WorkerController client = new WorkerController();
 		try {
 			client.openConnection();
-			System.out.println(((GeneralMessage)msg).actionNow);
 			client.sendToServer(msg);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -121,8 +120,11 @@ Main.popup.show();*/
 
 
 			if(title&&author&&language&&summary&&toc&&keyWord){//Every field is filled
+				//set picture
 				file = new File("C:/Users/orels/Desktop/Ass3Logos/AddedBook.png");
 				addedButton.setImage(new Image(file.toURI().toString()));
+				Book.bookList.add(book);//Update our ARRAYLIST!
+
 				sendServer(book, "AddBook");
 			}
 		}
@@ -228,9 +230,7 @@ Main.popup.show();*/
 				}
 			}
 		}//isKeywordCheckBox end
-		
-		for(Book book1:deleteBook.deleteBookList)
-			System.out.println(book1.getTitle());
+
 		sendServer(deleteBook, "RemoveBook");
 
 
@@ -251,10 +251,9 @@ Main.popup.show();*/
 		if(msg instanceof String)
 			System.out.println((String)msg);
 		else if(msg instanceof ArrayList){
-			for(Book book:(ArrayList<Book>)msg){
-				System.out.println(book.getTitle());
+			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
-			}
+
 		}
 	}
 
