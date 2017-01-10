@@ -56,7 +56,18 @@ public class MyServer extends AbstractServer {
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-
+	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
+	{
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update readers set subscription= "+type+" where readerID = '"+reader.getID()+"';");
+			client.sendToClient(type);//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	
 
