@@ -3,13 +3,14 @@ package application;
 import java.io.IOException;
 
 import Controllers.LoginScreenController;
+import Entities.MyServer;
 import Entities.User;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -19,7 +20,7 @@ public class Main extends Application {
 	@FXML
 	private TextField idfield;
 	private static Stage primaryStage;
-	private static Pane mainLayout;
+	private static Parent mainLayout;
 	public static int port=3336;
 	public static String host = "localhost";
 	public static Stage popup;
@@ -32,6 +33,7 @@ public class Main extends Application {
 		popup = new Stage();
 		popup.initModality(Modality.APPLICATION_MODAL);
 		popup.initOwner(primaryStage);
+		MyServer s = new MyServer(Main.port);
 		showMainMenu();
 	}
 

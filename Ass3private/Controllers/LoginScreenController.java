@@ -7,6 +7,7 @@ import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Reader;
 import Entities.User;
+import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -53,12 +54,23 @@ public class LoginScreenController extends AbstractClient {
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
-		Book book = new Book();
 		while(whatAmI=="")
 			try {Thread.sleep(10);} 
 		catch (InterruptedException e) {e.printStackTrace();}
-		book.bookList = new ArrayList<Book>();
-		sendServer(book, "initializeBookList");//Get the book list in a static array
+		
+		Thread initialize = new Thread(){
+			public void run(){
+				Book book = new Book();
+				Worker worker = new Worker();
+				book.bookList = new ArrayList<Book>();
+				worker.workerList = new ArrayList<Worker>();
+				sendServer(book, "InitializeBookList");//Get the book list in a static array
+				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+				
+			}
+		};
+		initialize.start();
+
 
 		try {
 			switch(whatAmI){
@@ -74,6 +86,7 @@ public class LoginScreenController extends AbstractClient {
 	}//End onLogin
 
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		if (msg instanceof String) {
@@ -101,8 +114,13 @@ public class LoginScreenController extends AbstractClient {
 					whatAmI="manager";
 			}
 		}//end else
-		if(msg instanceof ArrayList)
-			Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
+		if(msg instanceof ArrayList){
+			if(((ArrayList<?>)msg).get(0) instanceof Book)
+				Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
+			else if(((ArrayList<?>)msg).get(0) instanceof Worker)
+				Worker.workerList.addAll(((ArrayList<Worker>)msg));//now we have the workers in arraylist
+			
+		}//end if arraylist
 	}
 
 

@@ -17,18 +17,9 @@ import ocsf.server.ConnectionToClient;
 
 public class MyServer extends AbstractServer {
 	Connection conn;
-	private static int bookCnt=6;
+	private static int bookCnt;
 
-	public static void main(String[] args) {
-		int port = 0;
-		try {
-			port = Integer.parseInt(args[0]);
-		}
-		catch (Throwable t) {
-			port = Main.port;
-		}
-		MyServer s1 = new MyServer(port);
-	}
+
 
 	public MyServer(int port) {
 		super(port);
@@ -44,26 +35,26 @@ public class MyServer extends AbstractServer {
 
 	@Override
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
-		switch(((GeneralMessage)msg).actionNow){
-		case "AddBook":
-			addBook((Book)msg, client);break;
-		case "RemoveBook":
-			removeBook((Book)msg, client);break;
-		case "CheckUser":
-			checkUser((User)msg,client);break;
-		case "initializeBookList":
-			initializeBookList((Book)msg, client);break;
-		case "Logout":
-			LogOutUser((User)msg,client);
-		case "creditCard":
-			addCreditCard((CreditCard)msg,client); break;
-		case "Monthly":
-			subscribe((Reader)msg,1,client); break;
-		case "Yearly":
-			subscribe((Reader)msg,2,client); break;
-		default:
-			break;
-		}
+		try{
+			switch(((GeneralMessage)msg).actionNow){
+			case "AddBook":
+				addBook((Book)msg, client);break;
+			case "RemoveBook":
+				removeBook((Book) msg, client);break;
+			case "CheckUser":
+				checkUser((User)msg,client);break;
+			case "InitializeBookList":
+				initializeBookList((Book)msg, client);break;
+			case "InitializeWorkerList":
+				initializeWorkerList((Worker)msg, client);break;
+			case "Logout":
+				LogOutUser((User)msg,client);
+			case "creditCard":
+				addCreditCard((CreditCard)msg,client); break;
+			default:
+				break;
+			}
+		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
 	{
@@ -77,47 +68,43 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+
+	
+
 	
 	
 	
-	
+
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
 		try{
-		Statement stmt = conn.createStatement();
-		for(Book bookToDelete:book.deleteBookList)
-			stmt.executeUpdate("DELETE FROM books WHERE bookid=" + bookToDelete.getBookid());
-		System.out.println("deleted!");
+			Statement stmt = conn.createStatement();
+			for(Book bookToDelete:book.deleteBookList)
+				stmt.executeUpdate("DELETE FROM books WHERE bookid=" + bookToDelete.getBookid());
 		}catch(SQLException e){e.printStackTrace();}
 	}
 
-	private void addCreditCard(CreditCard card,ConnectionToClient client)
-	{
-			Statement stmt;
-			try {
-				stmt = conn.createStatement();
-				stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"';");
-				//To add credit card checks
-				client.sendToClient("Credit card added successfully");
-			} catch (SQLException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-	}
-	
-	private void LogOutUser(User user,ConnectionToClient client)
-	{
+
+
+
+
+	@SuppressWarnings( "static-access" )
+	public void initializeWorkerList(Worker worker, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
-			if(user instanceof Reader)
-			{
-				stmt.executeUpdate("UPDATE readers SET isLoggedIn=0 WHERE readerID='" + user.getID() + "'");
-				client.sendToClient("You've logged out successfully");
+			String query = "SELECT * FROM workers";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<Worker> workerList = new ArrayList<Worker>();
+			while(rs.next()){
+				workerList.add( new Worker (rs.getString(1),rs.getString(3)
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8), rs.getInt(9),rs.getInt(10)));
 			}
-			
-		} catch (SQLException | IOException e) {
+			client.sendToClient(workerList);
+		} catch (Exception  e) {
 			e.printStackTrace();
-		}
+		}	
+
 	}
+
 
 	public void initializeBookList(Book book, ConnectionToClient client){/*******************************************/
 		try {
@@ -138,9 +125,48 @@ public class MyServer extends AbstractServer {
 
 
 
-	public void removeBook(ArrayList<Book> bookList, ConnectionToClient client){/**********************************/
-		System.out.println("remove");
+
+
+
+
+
+
+	private void addCreditCard(CreditCard card,ConnectionToClient client)
+	{
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"';");
+			//To add credit card checks
+			client.sendToClient("Credit card added successfully");
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 	}
+
+
+
+
+	private void LogOutUser(User user,ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			if(user instanceof Reader)
+			{
+				stmt.executeUpdate("UPDATE readers SET isLoggedIn=0 WHERE readerID='" + user.getID() + "'");
+				client.sendToClient("You've logged out successfully");
+			}
+
+		} catch (SQLException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
 
 
 
@@ -171,7 +197,7 @@ public class MyServer extends AbstractServer {
 		}
 		try {
 			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
-			System.out.println("SQL connection succeed");
+			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
 			System.out.println("SQLException: " + ex.getMessage());
@@ -180,12 +206,19 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
+
+
+
+
+
+
+
+
 	private void checkUser(User user,ConnectionToClient client)
 	{
 		String id = user.getID();
 		String password = user.getPassword();
 		Statement stmt,stmt1;
-		System.out.println("checkUser");
 		try {
 			stmt = conn.createStatement();
 			stmt1 = conn.createStatement();
@@ -245,7 +278,6 @@ public class MyServer extends AbstractServer {
 				} catch (IOException e) {
 					e.printStackTrace();
 				} 
-			System.out.println("Done");
 
 			return;
 		}
@@ -254,3 +286,20 @@ public class MyServer extends AbstractServer {
 		}
 	}
 }
+
+
+
+
+
+
+
+/*	public static void main(String[] args) {
+int port = 0;
+try {
+	port = Integer.parseInt(args[0]);
+}
+catch (Throwable t) {
+	port = Main.port;
+}
+//MyServer s1 = new MyServer(port);
+}*/
