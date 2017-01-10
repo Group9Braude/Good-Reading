@@ -23,7 +23,7 @@
       <Button layoutX="39.0" layoutY="313.0" mnemonicParsing="false" text="Update Book" />
       <Button layoutX="114.0" layoutY="374.0" mnemonicParsing="false" text="Organize Book Catalogue" />
       <Button layoutX="140.0" layoutY="251.0" mnemonicParsing="false" onAction="#onRemoveBook" prefHeight="25.0" prefWidth="100.0" text="Remove Book" />
-      <Button layoutX="140.0" layoutY="313.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" text="Search User" />
+      <Button layoutX="140.0" layoutY="313.0" mnemonicParsing="false" onAction="#onSearchUser" prefHeight="25.0" prefWidth="100.0" text="Search User" />
       <Button layoutX="256.0" layoutY="251.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="123.0" text="Check New Review" />
       <Button layoutX="256.0" layoutY="313.0" mnemonicParsing="false" text="Enter Reader Details" />
    </children>

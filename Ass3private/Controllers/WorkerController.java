@@ -32,7 +32,7 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR;
 
-	private static Pane mainLayout;
+
 	@FXML
 	private CheckBox titleCheckBox, authorCheckBox, languageCheckBox, summaryCheckBox, tocCheckBox, keywordCheckBox;
 	public static int flag = -1;//if 0 -> Update booklist, 1->remove from booklist
@@ -120,8 +120,11 @@ Main.popup.show();*/
 
 
 			if(title&&author&&language&&summary&&toc&&keyWord){//Every field is filled
+				//set picture
 				file = new File("C:/Users/orels/Desktop/Ass3Logos/AddedBook.png");
 				addedButton.setImage(new Image(file.toURI().toString()));
+				Book.bookList.add(book);//Update our ARRAYLIST!
+
 				sendServer(book, "AddBook");
 			}
 		}

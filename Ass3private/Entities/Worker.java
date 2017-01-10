@@ -2,7 +2,7 @@ package Entities;
 
 import java.io.Serializable;
 
-public class Worker implements Serializable {
+public class Worker extends User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String name;
 	private String dept;

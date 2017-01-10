@@ -40,7 +40,13 @@ public class Main extends Application {
 		return primaryStage;
 	}
 
-
+	public static void showSearchUser() throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/SearchUser.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
 
 	public void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 

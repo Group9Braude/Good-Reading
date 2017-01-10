@@ -63,6 +63,9 @@ public class MyServer extends AbstractServer {
 	}
 
 	
+	
+	
+	
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
 		try{
 		Statement stmt = conn.createStatement();
@@ -97,9 +100,8 @@ public class MyServer extends AbstractServer {
 				stmt.executeUpdate("UPDATE readers SET isLoggedIn=0 WHERE readerID='" + user.getID() + "'");
 				client.sendToClient("You've logged out successfully");
 			}
-			//else: handle workers here
+			
 		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
