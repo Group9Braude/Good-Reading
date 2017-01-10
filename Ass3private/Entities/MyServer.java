@@ -61,6 +61,8 @@ public class MyServer extends AbstractServer {
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
+	
+	
 	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
 	{
 		Statement stmt;
