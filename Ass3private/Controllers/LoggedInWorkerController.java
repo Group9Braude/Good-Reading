@@ -9,6 +9,7 @@ public class LoggedInWorkerController {
 
 
 	public void  onAddBook(){
+		System.out.println(Book.bookCnt);
 		try {
 			Main.showAddBook();
 		} catch (IOException e) {e.printStackTrace();}

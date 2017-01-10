@@ -7,14 +7,15 @@ import java.util.ArrayList;
 
 import Entities.Book;
 import Entities.GeneralMessage;
+import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import ocsf.client.AbstractClient;
@@ -25,20 +26,19 @@ public class WorkerController extends AbstractClient {
 	private Button addBookButton;
 	@FXML
 	private ImageView addedButton;
-	@FXML
+	@FXML//TextFields for book search/add
 	private TextField titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText;
-	@FXML
+	@FXML//TextFields for book removal
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR;
-
-
+	@FXML//TextFields for Worker search
+	private TextField workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW;
 	@FXML
 	private CheckBox titleCheckBox, authorCheckBox, languageCheckBox, summaryCheckBox, tocCheckBox, keywordCheckBox;
-	public static int flag = -1;//if 0 -> Update booklist, 1->remove from booklist
+	@FXML 
+	private ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
 
-
-	/*               PROBLEM WITH THE FLAG! NOT RECOGNIZED IN MYSERVER!            */
 
 
 
@@ -136,11 +136,12 @@ Main.popup.show();*/
 
 
 	public void onRemoveBook(){
-		WorkerController.flag=1;
+		//WorkerController.flag=1;
 		Book deleteBook = new Book();
 		boolean flag=false; // Tell me if I should use the deleteBook.deleteBookList arraylist or the main arraylist
 		deleteBook.deleteBookList = new ArrayList<Book>();
 		int j=0;
+
 
 		//isTitleCheckBox
 		if(titleCheckBox.isSelected()){
@@ -230,11 +231,13 @@ Main.popup.show();*/
 				}
 			}
 		}//isKeywordCheckBox end
-
 		sendServer(deleteBook, "RemoveBook");
 
 
 	}//End onRemoveBook
+
+
+
 
 
 	public void onBack(){
@@ -245,6 +248,136 @@ Main.popup.show();*/
 		}
 
 	}
+
+
+
+
+	public void onWorkerSearch(){
+		ArrayList<Worker> workers = new ArrayList<Worker>();
+		boolean flag=false;//To know if I should remove from the new arraylist or the main into the new
+
+
+		if((idTextFieldW.getText()=="")){
+			for(Worker worker:Worker.workerList)
+				if(worker.getId().equals(idTextFieldW.getText())){
+					workers.add(worker);
+					break;
+				}
+		}
+
+		else if((workerIDTextFieldW.getText()=="")){
+
+			for(Worker worker:Worker.workerList)
+				if(worker.getId().contains(workerIDTextFieldW.getText())){
+					workers.add(worker);
+					break;
+				}
+		}
+
+		else{
+			if((firstNameTextFieldW.getText()!="")){
+				System.out.println("thefuck");
+				flag=true;
+				for(Worker worker:Worker.workerList)
+					if(worker.getFirstName().contains(firstNameTextFieldW.getText()))
+						workers.add(worker);
+			}
+
+
+
+			if((lastNameTextFieldW.getText()==""))				
+				if(!flag){
+					flag=true;
+					for(Worker worker:Worker.workerList)
+						if(worker.getLastName().contains(lastNameTextFieldW.getText()))
+							workers.add(worker);
+				}
+				else{
+					for(int i=0;i<workers.size();i++)
+						if(!workers.get(i).getLastName().contains(lastNameTextFieldW.getText()))
+							workers.remove(i);
+				}
+
+
+			/*if((roleChoiceBox.getSelectionModel().getSelectedItem().toString()!=""))				
+				if(!flag){
+					flag=true;
+					for(Worker worker:Worker.workerList)
+						if(worker.getRole()==roleChoiceBox.getSelectionModel().getSelectedItem().toString())
+							workers.add(worker);
+				}
+				else{
+					for(int i=0;i<workers.size();i++)
+						if(workers.get(i).getRole()!=roleChoiceBox.getSelectionModel().getSelectedItem().toString())
+							workers.remove(i);
+				}
+
+
+			if((departmentChoiceBox.getSelectionModel().getSelectedItem().toString()!=""))				
+				if(!flag){
+					flag=true;
+					for(Worker worker:Worker.workerList)
+						if(worker.getDepartment()==departmentChoiceBox.getSelectionModel().getSelectedItem().toString())
+							workers.add(worker);
+				}
+				else{
+					for(int i=0;i<workers.size();i++)
+						if(workers.get(i).getDepartment()!=departmentChoiceBox.getSelectionModel().getSelectedItem().toString())
+							workers.remove(i);
+				}*/
+			for(Worker worker:workers)
+				System.out.println("Workers:\n" + worker.getFirstName());
+
+		}
+
+	}//End onWorker
+
+	public void onReaderSearch(){
+
+	}
+
+
+
+
+
+
+
+
+
+
+	public void onLoggedReaders(){
+
+	}
+
+	public void onDebtReaders(){
+
+	}
+
+	public void onFrozenReaders(){
+
+	}
+
+	public void onAllManagers(){
+
+	}
+
+
+	public void onAllWorkers(){
+
+	}
+
+	public void onLoggedWorkers(){
+
+	}
+
+
+
+
+
+
+
+
+
 
 
 	protected void handleMessageFromServer(Object msg) {
