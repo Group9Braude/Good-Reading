@@ -24,8 +24,8 @@ public class LoginReaderController {
 	public LoginReaderController()
 	{
 		System.out.println("enter");
-		setReader((Reader)Main.getCurrentUser());
-		System.out.println(reader.getName());
+		setReader(((Reader)Main.getCurrentUser()));
+		System.out.println(reader.getID());
 		this.setwelcomeText();
 		this.setsubscribeText();
 	}

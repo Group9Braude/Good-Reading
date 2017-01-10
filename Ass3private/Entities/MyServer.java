@@ -170,7 +170,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("SQL connection succeed");
 		}
 		catch (SQLException ex) {
@@ -217,6 +217,7 @@ public class MyServer extends AbstractServer {
 						{
 							Reader reader = new Reader(rs1.getString(1),password);
 							reader.setFirstName(rs1.getString(3));
+							System.out.println(reader.getFirstName());
 							reader.setLastName(rs1.getString(4));
 							reader.setSubscribed(rs1.getInt(5));
 							reader.setIBookValid(rs1.getInt(6));
@@ -229,7 +230,7 @@ public class MyServer extends AbstractServer {
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
-							client.sendToClient((Object)reader);
+							client.sendToClient(reader);
 						}
 					}
 					else
