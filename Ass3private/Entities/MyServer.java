@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -56,12 +57,25 @@ public class MyServer extends AbstractServer {
 				LogOutUser((User)msg,client);
 			case "creditCard":
 				addCreditCard((CreditCard)msg,client); break;
+			case "TempRemoveAbook":
+				tempremoveabook((Book)msg,client); break;
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 	
+	private void tempremoveabook(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 1 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
 	{
