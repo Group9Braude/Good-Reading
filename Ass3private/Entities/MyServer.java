@@ -58,6 +58,9 @@ public class MyServer extends AbstractServer {
 			case "CreditCard":
 				addCreditCard((CreditCard)msg,client); break;
 
+			case "TempRemoveAbook":
+				tempremoveabook((Book)msg,client); break;
+
 			case "Monthly":
 				subscribe((Reader)msg,1,client);break;
 			case "Yearly":
@@ -78,12 +81,26 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 	
+
+	private void tempremoveabook(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 1 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	public void findReaders(Reader reader, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -162,6 +179,7 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(arr);
 		}catch(Exception e){e.printStackTrace();}
 	}*/
+
 	
 	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
 	{

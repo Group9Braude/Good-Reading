@@ -60,7 +60,11 @@ public class LoginScreenController extends AbstractClient {
 		catch (InterruptedException e) {e.printStackTrace();}
 		boolean flag=false;
 		while(whatAmI==""){
+<<<<<<< HEAD
+			try {Thread.sleep(50);} 
+=======
 			try {Thread.sleep(10);} 
+>>>>>>> refs/remotes/origin/master
 			catch (InterruptedException e) {e.printStackTrace();}
 		}
 		Thread initialize = new Thread(){
@@ -70,7 +74,19 @@ public class LoginScreenController extends AbstractClient {
 				book.bookList = new ArrayList<Book>();
 				worker.workerList = new ArrayList<Worker>();
 				sendServer(book, "InitializeBookList");//Get the book list in a static array
+<<<<<<< HEAD
 				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+=======
+				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+<<<<<<< HEAD
+
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
+>>>>>>> refs/remotes/origin/master
+>>>>>>> refs/remotes/origin/master
 			}
 		};
 		initialize.start();
@@ -106,8 +122,19 @@ public class LoginScreenController extends AbstractClient {
 
 		else{
 
+<<<<<<< HEAD
 			if(msg instanceof Reader)
+=======
+			if(msg instanceof Reader)
+<<<<<<< HEAD
+			{  
+=======
+<<<<<<< HEAD
+			{
+=======
+>>>>>>> refs/remotes/origin/master
 			{		
+>>>>>>> refs/remotes/origin/master
 				System.out.println("its a reader!");
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getFirstName());
