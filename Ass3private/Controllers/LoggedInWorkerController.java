@@ -26,4 +26,8 @@ public class LoggedInWorkerController {
 			Main.showSearchUser();
 		}catch(IOException e){e.printStackTrace();}
 	}
+	
+	public void onLogout(){
+		WorkerController.onLogout();
+	}
 }

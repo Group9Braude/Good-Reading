@@ -11,8 +11,7 @@
       <ComboBox layoutX="70.0" layoutY="149.0" prefWidth="150.0" />
       <Text layoutX="118.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My books:" />
       <Button layoutX="283.0" layoutY="112.0" mnemonicParsing="false" onAction="#onSubscribe" text="Subscribe" />
-      <TextArea fx:id="welcomeText" editable="false" layoutX="86.0" layoutY="46.0" prefHeight="25.0" prefWidth="270.0" />
-      <TextArea fx:id="subscribeText" editable="false" layoutX="229.0" layoutY="149.0" prefHeight="25.0" prefWidth="175.0" />
+      <TextField fx:id="welcomeText" editable="false" layoutX="134.0" layoutY="31.0" />
+      <TextField fx:id="subscribeText" editable="false" layoutX="243.0" layoutY="149.0" />
    </children>
 </AnchorPane>
-  

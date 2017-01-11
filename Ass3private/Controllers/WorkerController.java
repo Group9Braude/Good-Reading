@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import Entities.Book;
 import Entities.GeneralMessage;
+import Entities.Reader;
+import Entities.User;
 import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
@@ -26,17 +28,13 @@ public class WorkerController extends AbstractClient {
 	private Button addBookButton;
 	@FXML
 	private ImageView addedButton;
-	@FXML//TextFields for book search/add
-	private TextField titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText;
-	@FXML//TextFields for book removal
-	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR;
-	@FXML//TextFields for Worker search
-	private TextField workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW;
 	@FXML
-	private CheckBox titleCheckBox, authorCheckBox, languageCheckBox, summaryCheckBox, tocCheckBox, keywordCheckBox;
-	@FXML 
+	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR,//TextFields for book removal
+	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
+	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
+	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
 	private ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
 
 
@@ -136,106 +134,31 @@ Main.popup.show();*/
 
 
 	public void onRemoveBook(){
-		//WorkerController.flag=1;
-		Book deleteBook = new Book();
-		boolean flag=false; // Tell me if I should use the deleteBook.deleteBookList arraylist or the main arraylist
-		deleteBook.deleteBookList = new ArrayList<Book>();
-		int j=0;
-
-
-		//isTitleCheckBox
-		if(titleCheckBox.isSelected()){
-			flag=true;
-			for(Book book:Book.bookList){
-				if(book.getTitle().equals(titleTextFieldR.getText()))
-					deleteBook.deleteBookList.add(book);
-			}
-		}//isTitleCheckBox end
-
-		//isAuthorCheckBox
-		if(authorCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getAuthor().equals(authorTextFieldR.getText()))//If the author does not match
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				for(Book book:Book.bookList){
-					if(book.getAuthor().equals(authorTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}//end else
-		}//isAuthorCheckBox end
-
-		//isLanguageCheckBox
-		if(languageCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getLanguage().equals(languageTextFieldR.getText()))//If the author does not match
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				flag=true;
-				for(Book book:Book.bookList){
-					if(book.getLanguage().equals(languageTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}//end else
-		}//isLanguageCheckBox end
-
-		//isSummaryCheckBox
-		if(summaryCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getSummary().contains(summaryTextFieldR.getText()))//If the author does not match
-						//Contains because it might be part of
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				flag=true;
-				for(Book book:Book.bookList){
-					if(book.getSummary().equals(summaryTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}//end else
-		}//isSummaryCheckBox end
-
-		//isTocCheckBox
-		if(tocCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getToc().contains(tocTextFieldR.getText()))//If the author does not match
-						//Contains because it might be part of
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				flag=true;
-				for(Book book:Book.bookList){
-					if(book.getToc().equals(tocTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}
-		}//isTocCheckBox end
-
-		//isKeywordCheckBox
-		if(keywordCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getKeyword().equals(keywordTextFieldR.getText()))//If the author does not match
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				for(Book book:Book.bookList){
-					if(book.getKeyword().equals(keywordTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}
-		}//isKeywordCheckBox end
-		sendServer(deleteBook, "RemoveBook");
-
-
-	}//End onRemoveBook
-
+		Book book = new Book();
+		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
+				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
+				toc = tocTextFieldR.getText(), keyword = keywordTextFieldR.getText();
+		book.query = "DELETE FROM books WHERE ";
+		if(!title.equals(""))
+			book.query +="title = '" + title + "' AND ";
+		if(!author.equals(""))
+			book.query +="author = '" + author + "' AND ";
+		if(!language.equals(""))
+			book.query+="language = '" + language + "' AND ";
+		if(!summary.equals(""))
+			book.query+="summary LIKE '%" + summary + "%' AND ";
+		if(!toc.equals(""))
+			book.query+="tableOfContents = '" + toc + "' AND ";
+		if(!keyword.equals(""))
+			book.query+="keyWord = '" + keyword + "' AND ";
+		String query = "";
+		for(int i=0;i<book.query.length()-5;i++)
+			query+=book.query.charAt(i);
+		query+=";";
+		book.query=query;
+		//System.out.println(query);
+		sendServer(book, "RemoveBook");
+		}//end onRemoveBook
 
 
 
@@ -253,153 +176,107 @@ Main.popup.show();*/
 
 
 	public void onWorkerSearch(){
-		ArrayList<Worker> workers = new ArrayList<Worker>();
-		boolean flag=false;//To know if I should remove from the new arraylist or the main into the new
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
-				workerID=workerIDTextFieldW.getText();
-
-		if((id=="")){
-			for(Worker worker:Worker.workerList)
-				if(worker.getId().equals(id)){
-					workers.add(worker);
-					break;
-				}
-		}
-
-		else if((workerID=="")){
-
-			for(Worker worker:Worker.workerList)
-				if(worker.getId().contains(workerID)){
-					workers.add(worker);
-					break;
-				}
-		}
-
-		else{
-			if((firstName=="")){
-				flag=true;
-				workers = new ArrayList<Worker>();
-				for(Worker worker:Worker.workerList)
-					if(worker.getFirstName().contains(firstName))
-						workers.add(worker);
-			}
-
-			if((lastName==""))				
-				if(!flag){
-					flag=true;
-					workers = new ArrayList<Worker>();
-					for(Worker worker:Worker.workerList)
-						if(worker.getLastName().contains(lastName))
-							workers.add(worker);
-				}
-				else {
-						for(int i=0;i<workers.size();i++)
-							if(!workers.get(i).getLastName()
-									.contains(lastName))
-								workers.remove(i);
-				}
-
-
-			/*if((roleChoiceBox.getSelectionModel().getSelectedItem().toString()!=""))				
-				if(!flag){
-					flag=true;
-					for(Worker worker:Worker.workerList)
-						if(worker.getRole()==roleChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.add(worker);
-				}
-				else{
-					for(int i=0;i<workers.size();i++)
-						if(workers.get(i).getRole()!=roleChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.remove(i);
-				}
-
-
-			if((departmentChoiceBox.getSelectionModel().getSelectedItem().toString()!=""))				
-				if(!flag){
-					flag=true;
-					for(Worker worker:Worker.workerList)
-						if(worker.getDepartment()==departmentChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.add(worker);
-				}
-				else{
-					for(int i=0;i<workers.size();i++)
-						if(workers.get(i).getDepartment()!=departmentChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.remove(i);
-				}*/
-			for(Worker worker:workers)
-				System.out.println("Workers:\n" + worker.getFirstName());
-
-		}
-
-	}//End onWorker
+			workerID=workerIDTextFieldW.getText();
+			// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
+			//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+				
+		Worker worker = new Worker();
+		worker.query="SELECT * FROM workers WHERE ";
+		if(!firstName.equals(""))
+			worker.query+=("firstName LIKE '%"+firstName +"%' AND ");
+		if(!lastName.equals(""))
+			worker.query +=("lastName LIKE '%"+lastName+"%' AND ");
+		if(!workerID.equals(""))
+			worker.query +=("workerID='"+workerID+"' AND ");
+		if(!id.equals(""))
+			worker.query +=("id='"+id+"' AND ");
+		String query = "";
+		for(int i=0;i<worker.query.length()-5;i++)
+			query+=worker.query.charAt(i);
+		query+=";";
+		worker.query="";
+		worker.query += query;
+		sendServer(worker, "FindWorkers");
+	}//End onWorkerSearch
 	
 	
-	public void onLogout(){
-		//sendServer()
+	public static void onLogout(){
+		System.out.println(User.currentWorker.getWorkerID());
+		//sendServer(new User(), "LogOutUser");
+		//try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
+		
 	}
 
+	
+	
+	
 	public void onReaderSearch(){
-
+		String lastName=lastNameTextFieldR.getText(),firstName=firstNameTextFieldR.getText(), id=idTextFieldR.getText(),
+				readerID = readerIDTextFieldR.getText();
+				// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
+				//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+					
+			Reader reader = new Reader();
+			reader.query="SELECT * FROM readers WHERE ";
+			if(!firstName.equals(""))
+				reader.query+=("firstName LIKE '%"+firstName +"%' AND ");
+			if(!lastName.equals(""))
+				reader.query +=("lastName LIKE '%"+lastName+"%' AND ");
+			if(!readerID.equals(""))
+				reader.query +=("readerID='"+readerID+"' AND ");
+			if(!id.equals(""))
+				reader.query +=("id='"+id+"' AND ");
+			String query = "";
+			for(int i=0;i<reader.query.length()-5;i++)
+				query+=reader.query.charAt(i);
+			query+=";";
+			reader.query="";
+			reader.query += query;
+			sendServer(reader, "FindReaders");
+		
+		
 	}
-
-
-
-
-
-
-
-
-
-
 	public void onLoggedReaders(){
-
+		Reader reader = new Reader();
+		sendServer(reader, "FindLoggedReaders");
 	}
-
 	public void onDebtReaders(){
-
+		Reader reader = new Reader();
+		sendServer(reader, "FindDebtReaders");
 	}
-
 	public void onFrozenReaders(){
-
+		Reader reader = new Reader();
+		sendServer(reader, "FindFrozenReaders");
 	}
-
 	public void onAllManagers(){
-		for(Worker worker:Worker.workerList)
-			if(worker.getIsManager()==1)
-				System.out.println(worker.getFirstName());	
+		Worker worker = new Worker();
+		sendServer(worker, "FindAllManagers");
 	}
-
-
 	public void onAllWorkers(){
-		for(Worker worker:Worker.workerList)
-			if(worker.getIsManager()!=1)
-				System.out.println(worker.getFirstName());
+		Worker worker = new Worker();
+		sendServer(worker, "FindAllWorkers");
 	}
-
 	public void onLoggedWorkers(){
-		for(Worker worker:Worker.workerList)
-			if(worker.getIsLoggedIn()==1)
-				System.out.println(worker.getFirstName());
-
+		Worker worker=  new Worker();
+		sendServer(worker, "FindLoggedWorkers");
 	}
 
 
+<<<<<<< HEAD
 
-
-
-
-
-
-
-
-
+=======
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof String)
 			System.out.println((String)msg);
-		else if(msg instanceof ArrayList){
+		else if(((ArrayList<?>)msg).get(0) instanceof Book){
 			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
-
+		}
+		else if(((ArrayList<?>)msg).get(0) instanceof String){
+			for(String str:(ArrayList<String>)msg)
+				System.out.println(str);
 		}
 	}
 

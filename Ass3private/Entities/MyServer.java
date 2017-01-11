@@ -54,17 +54,44 @@ public class MyServer extends AbstractServer {
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
 			case "Logout":
-				LogOutUser((User)msg,client);
-			case "creditCard":
+				LogOutUser((User)msg,client);break;
+			case "CreditCard":
 				addCreditCard((CreditCard)msg,client); break;
+<<<<<<< HEAD
 			case "TempRemoveAbook":
 				tempremoveabook((Book)msg,client); break;
+=======
+<<<<<<< HEAD
+			case "Monthly":
+				subscribe((Reader)msg,1,client);break;
+			case "Yearly":
+				subscribe((Reader)msg,2,client);break;
+=======
+			case "FindLoggedReaders":
+				find("readers", "isLoggedIn='1';", " is logged in!",client);break;
+			case "FindLoggedWorkers":
+				find("workers", "isLoggedIn='1';", " is logged in!",client);break;
+			case "FindAllManagers":
+				find("workers", "isManager='1';", " is a manager!",client);break;
+			case "FindAllWorkers":
+				find("workers", "isManager='0';", " is a worker!",client);break;
+			case "FindDebtReaders":
+				find("readers", "debt is not null;", " is in debt!",client);break;
+			case "FindFrozenReaders":
+				find("readers", "isFrozen='1';", " has his account frozen!",client);break;
+			case "FindWorkers":
+				findWorkers((Worker)msg, client);break;
+			case "FindReaders":
+				findReaders((Reader)msg, client);break;
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
+>>>>>>> refs/remotes/origin/master
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 	
+<<<<<<< HEAD
 	private void tempremoveabook(Book b, ConnectionToClient client){
 		Statement stmt;
 		try {
@@ -76,6 +103,86 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+=======
+	public void findReaders(Reader reader, ConnectionToClient client){
+		try {
+			Statement stmt = conn.createStatement();
+			System.out.println("Query:" + reader.query);
+			ResultSet rs = stmt.executeQuery(reader.query);
+			while(rs.next())
+				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a reader!");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void findWorkers(Worker worker, ConnectionToClient client){
+		try {
+			Statement stmt = conn.createStatement();
+			System.out.println("Query:" + worker.query);
+			ResultSet rs = stmt.executeQuery(worker.query);
+			while(rs.next())
+				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a worker!");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void find(String from, String where,String isWhat, ConnectionToClient client){
+		ArrayList<String> arr = new ArrayList<String>();
+		Statement stmt;
+		try{
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM " + from + " WHERE " + where;
+			System.out.println(query);
+			String str;
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				str = rs.getString(3) + " " + rs.getString(4) + isWhat;
+				arr.add(str);
+			}
+			client.sendToClient(arr);
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
+		
+	
+	
+	
+/*	public void findLoggedWorkers(String from, String where, ConnectionToClient client){
+		ArrayList<String> arr = new ArrayList<String>();
+		Statement stmt;
+		try{
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM" + from + "WHERE" + from;
+			String str;
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				str = rs.getString(3) + rs.getString(4) + " is logged in!";
+				arr.add(str);
+			}
+			client.sendToClient(arr);
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
+	public void findLoggedReaders(ConnectionToClient client){
+		ArrayList<String> arr = new ArrayList<String>();
+		Statement stmt;
+		try{
+			stmt = conn.createStatement();
+			String query = "SELECT * FROM readers WHERE isLoggedIn = '1'";
+			String str;
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next()){
+				str = rs.getString(3) + rs.getString(4) + "is logged in!";
+				arr.add(str);
+			}
+			client.sendToClient(arr);
+		}catch(Exception e){e.printStackTrace();}
+	}*/
+>>>>>>> refs/remotes/origin/master
 	
 	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
 	{
@@ -99,8 +206,8 @@ public class MyServer extends AbstractServer {
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
 		try{
 			Statement stmt = conn.createStatement();
-			for(Book bookToDelete:book.deleteBookList)
-				stmt.executeUpdate("DELETE FROM books WHERE bookid=" + bookToDelete.getBookid());
+			System.out.println(book.query);
+			stmt.executeUpdate(book.query);
 		}catch(SQLException e){e.printStackTrace();}
 	}
 
@@ -244,7 +351,10 @@ public class MyServer extends AbstractServer {
 		String password = user.getPassword();
 		Statement stmt,stmt1;
 		Reader reader;
+<<<<<<< HEAD
+=======
 		Worker worker;
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 		try {
 			stmt = conn.createStatement();
 			stmt1 = conn.createStatement();
@@ -260,6 +370,7 @@ public class MyServer extends AbstractServer {
 							user.setType(2);//It is a worker!
 							worker = new Worker();
 							worker.setWorkerID(rs.getString(1));
+							stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");
 							client.sendToClient(worker);
 						}
 						client.sendToClient(user);
@@ -270,7 +381,7 @@ public class MyServer extends AbstractServer {
 			catch (IOException e) {
 				e.printStackTrace();
 			}
-			else if(rs1.next())
+			else if(rs1.next())//The ID was found in the readers table
 				try {
 					if(rs1.getString(2).equals(password))
 					{

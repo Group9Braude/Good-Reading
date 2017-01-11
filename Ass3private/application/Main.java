@@ -22,7 +22,7 @@ public class Main extends Application {
 	private TextField idfield;
 	private static Stage primaryStage;
 	private static Parent mainLayout;
-	public static int port=3336;
+	public static int port=3307;
 	public static String host = "localhost";
 	public static Stage popup;
 	private static User currentUser;
@@ -57,7 +57,7 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 
-	public void showMainMenu() throws IOException{
+	public static void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
@@ -154,9 +154,9 @@ public class Main extends Application {
 
 	public void stop()
 	{
-		LoginScreenController sender = new LoginScreenController();
 		if(currentUser != null)
 		{
+			LoginScreenController sender = new LoginScreenController();
 			User toLogOut = currentUser;
 			sender.sendServer(toLogOut, "Logout");
 		}
