@@ -25,6 +25,7 @@ public class LoginScreenController extends AbstractClient {
 	private static String host = "localhost";
 	private static int port = Main.port;
 	private static Reader readerLogged;
+	private static Worker currentWorker;
 	private static boolean isLoggedFlag=false;
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 
@@ -53,12 +54,11 @@ public class LoginScreenController extends AbstractClient {
 
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
-		System.out.println("TEST TEST TEST!");
 		sendServer(user, "CheckUser");
 		boolean flag=false;
 		while(whatAmI==""){
-		try {Thread.sleep(50);} 
-		catch (InterruptedException e) {e.printStackTrace();}
+			try {Thread.sleep(10);} 
+			catch (InterruptedException e) {e.printStackTrace();}
 		}
 		Thread initialize = new Thread(){
 			public void run(){
@@ -68,7 +68,7 @@ public class LoginScreenController extends AbstractClient {
 				worker.workerList = new ArrayList<Worker>();
 				sendServer(book, "InitializeBookList");//Get the book list in a static array
 				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-				
+
 			}
 		};
 		initialize.start();
@@ -108,10 +108,17 @@ public class LoginScreenController extends AbstractClient {
 
 			else if(msg instanceof User)//Correct details were entered
 			{
+
 				isLoggedFlag=true;
 				User res = (User)msg;
-				if(res.getType()==2)
-					whatAmI="worker";
+				if(res.getType()==2){
+					/*System.out.println("its a Worker!");
+					Worker worker = new Worker();
+					worker = (Worker)msg;
+					currentWorker = (Worker)msg;
+					System.out.println(currentWorker.getWorkerID());*/
+					whatAmI="worker";						
+				}//end if
 				else if(res.getType()==3)
 					whatAmI="manager";
 			}
@@ -121,7 +128,7 @@ public class LoginScreenController extends AbstractClient {
 				Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
 			else if(((ArrayList<?>)msg).get(0) instanceof Worker)
 				Worker.workerList.addAll(((ArrayList<Worker>)msg));//now we have the workers in arraylist
-			
+
 		}//end if arraylist
 	}
 

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import Entities.Book;
 import Entities.GeneralMessage;
+import Entities.Reader;
+import Entities.User;
 import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
@@ -34,8 +36,6 @@ public class WorkerController extends AbstractClient {
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR;
 	@FXML//TextFields for Worker search
 	private TextField workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW;
-	@FXML
-	private CheckBox titleCheckBox, authorCheckBox, languageCheckBox, summaryCheckBox, tocCheckBox, keywordCheckBox;
 	@FXML 
 	private ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
 
@@ -137,12 +137,38 @@ Main.popup.show();*/
 
 	public void onRemoveBook(){
 		//WorkerController.flag=1;
-		Book deleteBook = new Book();
+		Book book = new Book();
 		boolean flag=false; // Tell me if I should use the deleteBook.deleteBookList arraylist or the main arraylist
-		deleteBook.deleteBookList = new ArrayList<Book>();
 		int j=0;
+		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
+				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
+				toc = tocTextFieldR.getText(), keyword = keywordTextFieldR.getText();
+		book.query = "DELETE FROM books WHERE ";
+		if(!title.equals(""))
+			book.query +="title = '" + title + "' AND ";
+		if(!author.equals(""))
+			book.query +="author = '" + author + "' AND ";
+		if(!language.equals(""))
+			book.query+="language = '" + language + "' AND ";
+		if(!summary.equals(""))
+			book.query+="summary LIKE '%" + summary + "%' AND ";
+		if(!toc.equals(""))
+			book.query+="tableOfContents = '" + toc + "' AND ";
+		if(!keyword.equals(""))
+			book.query+="keyWord = '" + keyword + "' AND ";
+		String query = "";
+		for(int i=0;i<book.query.length()-5;i++)
+			query+=book.query.charAt(i);
+		query+=";";
+		book.query=query;
+		//System.out.println(query);
+		sendServer(book, "RemoveBook");
 
-
+		
+		}//end onRemoveBook
+			
+		
+/*
 		//isTitleCheckBox
 		if(titleCheckBox.isSelected()){
 			flag=true;
@@ -231,10 +257,10 @@ Main.popup.show();*/
 				}
 			}
 		}//isKeywordCheckBox end
-		sendServer(deleteBook, "RemoveBook");
+		*/
 
 
-	}//End onRemoveBook
+	//}//End onRemoveBook
 
 
 
@@ -256,131 +282,67 @@ Main.popup.show();*/
 		ArrayList<Worker> workers = new ArrayList<Worker>();
 		boolean flag=false;//To know if I should remove from the new arraylist or the main into the new
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
-				workerID=workerIDTextFieldW.getText();
-
-		if((id=="")){
-			for(Worker worker:Worker.workerList)
-				if(worker.getId().equals(id)){
-					workers.add(worker);
-					break;
-				}
-		}
-
-		else if((workerID=="")){
-
-			for(Worker worker:Worker.workerList)
-				if(worker.getId().contains(workerID)){
-					workers.add(worker);
-					break;
-				}
-		}
-
-		else{
-			if((firstName=="")){
-				flag=true;
-				workers = new ArrayList<Worker>();
-				for(Worker worker:Worker.workerList)
-					if(worker.getFirstName().contains(firstName))
-						workers.add(worker);
-			}
-
-			if((lastName==""))				
-				if(!flag){
-					flag=true;
-					workers = new ArrayList<Worker>();
-					for(Worker worker:Worker.workerList)
-						if(worker.getLastName().contains(lastName))
-							workers.add(worker);
-				}
-				else {
-						for(int i=0;i<workers.size();i++)
-							if(!workers.get(i).getLastName()
-									.contains(lastName))
-								workers.remove(i);
-				}
-
-
-			/*if((roleChoiceBox.getSelectionModel().getSelectedItem().toString()!=""))				
-				if(!flag){
-					flag=true;
-					for(Worker worker:Worker.workerList)
-						if(worker.getRole()==roleChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.add(worker);
-				}
-				else{
-					for(int i=0;i<workers.size();i++)
-						if(workers.get(i).getRole()!=roleChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.remove(i);
-				}
-
-
-			if((departmentChoiceBox.getSelectionModel().getSelectedItem().toString()!=""))				
-				if(!flag){
-					flag=true;
-					for(Worker worker:Worker.workerList)
-						if(worker.getDepartment()==departmentChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.add(worker);
-				}
-				else{
-					for(int i=0;i<workers.size();i++)
-						if(workers.get(i).getDepartment()!=departmentChoiceBox.getSelectionModel().getSelectedItem().toString())
-							workers.remove(i);
-				}*/
-			for(Worker worker:workers)
-				System.out.println("Workers:\n" + worker.getFirstName());
-
-		}
-
+			workerID=workerIDTextFieldW.getText();
+			
+			// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
+			//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+				
+		Worker worker = new Worker();
+		worker.query="SELECT * FROM workers WHERE ";
+		if(!firstName.equals(""))
+			worker.query+=("firstName='"+firstName +"' AND ");
+		if(!lastName.equals(""))
+			worker.query +=("lastName='"+lastName+"' AND ");
+		if(!workerID.equals(""))
+			worker.query +=("workerID='"+workerID+"' AND ");
+		if(!id.equals(""))
+			worker.query +=("id='"+id+"' AND ");
+		String query = "";
+		for(int i=0;i<worker.query.length()-5;i++)
+			query+=worker.query.charAt(i);
+		query+=";";
+		worker.query="";
+		worker.query += query;
+		sendServer(worker, "FindWorkers");
 	}//End onWorker
 	
 	
-	public void onLogout(){
-		//sendServer()
+	public static void onLogout(){
+		System.out.println(User.currentWorker.getWorkerID());
+		//sendServer(new User(), "LogOutUser");
+		//try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
+		
 	}
 
+	
+	
+	
 	public void onReaderSearch(){
 
 	}
-
-
-
-
-
-
-
-
-
-
 	public void onLoggedReaders(){
-
+		Reader reader = new Reader();
+		sendServer(reader, "FindLoggedReaders");
 	}
-
 	public void onDebtReaders(){
-
+		Reader reader = new Reader();
+		sendServer(reader, "FindDebtReaders");
 	}
-
 	public void onFrozenReaders(){
-
+		Reader reader = new Reader();
+		sendServer(reader, "FindFrozenReaders");
 	}
-
 	public void onAllManagers(){
-		for(Worker worker:Worker.workerList)
-			if(worker.getIsManager()==1)
-				System.out.println(worker.getFirstName());	
+		Worker worker = new Worker();
+		sendServer(worker, "FindAllManagers");
 	}
-
-
 	public void onAllWorkers(){
-		for(Worker worker:Worker.workerList)
-			if(worker.getIsManager()!=1)
-				System.out.println(worker.getFirstName());
+		Worker worker = new Worker();
+		sendServer(worker, "FindAllWorkers");
 	}
-
 	public void onLoggedWorkers(){
-		for(Worker worker:Worker.workerList)
-			if(worker.getIsLoggedIn()==1)
-				System.out.println(worker.getFirstName());
-
+		Worker worker=  new Worker();
+		sendServer(worker, "FindLoggedWorkers");
 	}
 
 
@@ -396,10 +358,13 @@ Main.popup.show();*/
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof String)
 			System.out.println((String)msg);
-		else if(msg instanceof ArrayList){
+		else if(((ArrayList<?>)msg).get(0) instanceof Book){
 			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
-
+		}
+		else if(((ArrayList<?>)msg).get(0) instanceof String){
+			for(String str:(ArrayList<String>)msg)
+				System.out.println(str);
 		}
 	}
 

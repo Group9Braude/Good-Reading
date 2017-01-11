@@ -9,6 +9,8 @@ public class Reader extends User
 	private int IBookValid,allowed,debt,isFrozen,premission;
 	private String cardnum,secCode,expDate;
 	
+	public Reader(){}// LOOK ERAN! ADDED!
+	
 	public Reader(String id, String password) 
 	{
 		super(id, password);

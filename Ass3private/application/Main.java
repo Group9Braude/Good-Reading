@@ -50,7 +50,7 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 
-	public void showMainMenu() throws IOException{
+	public static void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
