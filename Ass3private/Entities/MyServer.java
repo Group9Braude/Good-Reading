@@ -71,10 +71,25 @@ public class MyServer extends AbstractServer {
 				find("readers", "isFrozen='1';", " has his account frozen!",client);break;
 			case "FindWorkers":
 				findWorkers((Worker)msg, client);break;
+			case "FindReaders":
+				findReaders((Reader)msg, client);break;
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
+	}
+	
+	public void findReaders(Reader reader, ConnectionToClient client){
+		try {
+			Statement stmt = conn.createStatement();
+			System.out.println("Query:" + reader.query);
+			ResultSet rs = stmt.executeQuery(reader.query);
+			while(rs.next())
+				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a reader!");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void findWorkers(Worker worker, ConnectionToClient client){

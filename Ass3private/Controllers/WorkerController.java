@@ -28,15 +28,13 @@ public class WorkerController extends AbstractClient {
 	private Button addBookButton;
 	@FXML
 	private ImageView addedButton;
-	@FXML//TextFields for book search/add
-	private TextField titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText;
-	@FXML//TextFields for book removal
-	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR;
-	@FXML//TextFields for Worker search
-	private TextField workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW;
-	@FXML 
+	@FXML
+	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR,//TextFields for book removal
+	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
+	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
+	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
 	private ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
 
 
@@ -136,10 +134,7 @@ Main.popup.show();*/
 
 
 	public void onRemoveBook(){
-		//WorkerController.flag=1;
 		Book book = new Book();
-		boolean flag=false; // Tell me if I should use the deleteBook.deleteBookList arraylist or the main arraylist
-		int j=0;
 		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				toc = tocTextFieldR.getText(), keyword = keywordTextFieldR.getText();
@@ -163,105 +158,7 @@ Main.popup.show();*/
 		book.query=query;
 		//System.out.println(query);
 		sendServer(book, "RemoveBook");
-
-		
 		}//end onRemoveBook
-			
-		
-/*
-		//isTitleCheckBox
-		if(titleCheckBox.isSelected()){
-			flag=true;
-			for(Book book:Book.bookList){
-				if(book.getTitle().equals(titleTextFieldR.getText()))
-					deleteBook.deleteBookList.add(book);
-			}
-		}//isTitleCheckBox end
-
-		//isAuthorCheckBox
-		if(authorCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getAuthor().equals(authorTextFieldR.getText()))//If the author does not match
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				for(Book book:Book.bookList){
-					if(book.getAuthor().equals(authorTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}//end else
-		}//isAuthorCheckBox end
-
-		//isLanguageCheckBox
-		if(languageCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getLanguage().equals(languageTextFieldR.getText()))//If the author does not match
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				flag=true;
-				for(Book book:Book.bookList){
-					if(book.getLanguage().equals(languageTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}//end else
-		}//isLanguageCheckBox end
-
-		//isSummaryCheckBox
-		if(summaryCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getSummary().contains(summaryTextFieldR.getText()))//If the author does not match
-						//Contains because it might be part of
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				flag=true;
-				for(Book book:Book.bookList){
-					if(book.getSummary().equals(summaryTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}//end else
-		}//isSummaryCheckBox end
-
-		//isTocCheckBox
-		if(tocCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getToc().contains(tocTextFieldR.getText()))//If the author does not match
-						//Contains because it might be part of
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				flag=true;
-				for(Book book:Book.bookList){
-					if(book.getToc().equals(tocTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}
-		}//isTocCheckBox end
-
-		//isKeywordCheckBox
-		if(keywordCheckBox.isSelected()){
-			if(flag){
-				for(int i=0;i<deleteBook.deleteBookList.size();i++)
-					if(!deleteBook.deleteBookList.get(i).getKeyword().equals(keywordTextFieldR.getText()))//If the author does not match
-						deleteBook.deleteBookList.remove(i);	
-			}//end if
-			else{
-				for(Book book:Book.bookList){
-					if(book.getKeyword().equals(keywordTextFieldR.getText()))
-						deleteBook.deleteBookList.add(book);
-				}
-			}
-		}//isKeywordCheckBox end
-		*/
-
-
-	//}//End onRemoveBook
-
 
 
 
@@ -279,20 +176,17 @@ Main.popup.show();*/
 
 
 	public void onWorkerSearch(){
-		ArrayList<Worker> workers = new ArrayList<Worker>();
-		boolean flag=false;//To know if I should remove from the new arraylist or the main into the new
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
 			workerID=workerIDTextFieldW.getText();
-			
 			// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
 			//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
 				
 		Worker worker = new Worker();
 		worker.query="SELECT * FROM workers WHERE ";
 		if(!firstName.equals(""))
-			worker.query+=("firstName='"+firstName +"' AND ");
+			worker.query+=("firstName LIKE '%"+firstName +"%' AND ");
 		if(!lastName.equals(""))
-			worker.query +=("lastName='"+lastName+"' AND ");
+			worker.query +=("lastName LIKE '%"+lastName+"%' AND ");
 		if(!workerID.equals(""))
 			worker.query +=("workerID='"+workerID+"' AND ");
 		if(!id.equals(""))
@@ -304,7 +198,7 @@ Main.popup.show();*/
 		worker.query="";
 		worker.query += query;
 		sendServer(worker, "FindWorkers");
-	}//End onWorker
+	}//End onWorkerSearch
 	
 	
 	public static void onLogout(){
@@ -318,7 +212,30 @@ Main.popup.show();*/
 	
 	
 	public void onReaderSearch(){
-
+		String lastName=lastNameTextFieldR.getText(),firstName=firstNameTextFieldR.getText(), id=idTextFieldR.getText(),
+				readerID = readerIDTextFieldR.getText();
+				// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
+				//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+					
+			Reader reader = new Reader();
+			reader.query="SELECT * FROM readers WHERE ";
+			if(!firstName.equals(""))
+				reader.query+=("firstName LIKE '%"+firstName +"%' AND ");
+			if(!lastName.equals(""))
+				reader.query +=("lastName LIKE '%"+lastName+"%' AND ");
+			if(!readerID.equals(""))
+				reader.query +=("readerID='"+readerID+"' AND ");
+			if(!id.equals(""))
+				reader.query +=("id='"+id+"' AND ");
+			String query = "";
+			for(int i=0;i<reader.query.length()-5;i++)
+				query+=reader.query.charAt(i);
+			query+=";";
+			reader.query="";
+			reader.query += query;
+			sendServer(reader, "FindReaders");
+		
+		
 	}
 	public void onLoggedReaders(){
 		Reader reader = new Reader();
@@ -344,15 +261,6 @@ Main.popup.show();*/
 		Worker worker=  new Worker();
 		sendServer(worker, "FindLoggedWorkers");
 	}
-
-
-
-
-
-
-
-
-
 
 
 	protected void handleMessageFromServer(Object msg) {
