@@ -109,13 +109,10 @@ public class LoginScreenController extends AbstractClient {
 			{
 				isLoggedFlag=true;
 				User res = (User)msg;
-				 if(res.getType()==3)
-					whatAmI="manager";
-			}
-			else if(msg instanceof Worker){
-				isLoggedFlag=true;
+				if(res.getType()==2)
 					whatAmI="worker";
-					Worker.currentWorker = (Worker)msg;
+				else if(res.getType()==3)
+					whatAmI="manager";
 			}
 		}//end else
 		if(msg instanceof ArrayList){
