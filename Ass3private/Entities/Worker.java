@@ -9,6 +9,7 @@ public class Worker extends User implements Serializable {
 	role;
 	private int isManager, isLoggedIn;
 	public static ArrayList<Worker> workerList;
+	public String query;
 	
 	
 	public Worker(String workerID, String firstName, String lastName, String id, String email, String role,

@@ -15,7 +15,7 @@
                <children>
                   <ImageView fitHeight="175.0" fitWidth="162.0" layoutX="6.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Desktop/Ass3Logos/Workers.png" />
+                        <Image url="@../../../../../Desktop/Ass3Logos/Workers.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="175.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="49.13671875" />
@@ -44,26 +44,28 @@
                <children>
                   <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../Desktop/Ass3Logos/Readers.png" />
+                        <Image url="@../../../../../Desktop/Ass3Logos/Readers.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="175.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="49.13671875" />
                   <Text layoutX="175.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" wrappingWidth="60.13671875" />
                   <Text layoutX="409.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" wrappingWidth="64.13671875" />
-                  <Text layoutX="175.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Permission" wrappingWidth="59.13671875" />
-                  <Text layoutX="409.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Allowed" wrappingWidth="70.13671875" />
-                  <Text fx:id="subscriptionTextFieldR" layoutX="409.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription" wrappingWidth="69.13671875" />
+                  <Text layoutX="175.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Permission" wrappingWidth="59.13671875" />
+                  <Text layoutX="175.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Allowed" wrappingWidth="70.13671875" />
+                  <Text fx:id="subscriptionTextFieldR" layoutX="406.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription" wrappingWidth="69.13671875" />
                   <Button layoutX="18.0" layoutY="275.0" mnemonicParsing="false" onAction="#onFrozenReaders" prefHeight="25.0" prefWidth="138.0" text="See All Frozen Readers" />
                   <Button layoutX="17.0" layoutY="186.0" mnemonicParsing="false" onAction="#onLoggedReaders" text="See Logged In Readers" />
-                  <TextField fx:id="idTextFieldR" layoutX="175.0" layoutY="37.0" />
-                  <TextField fx:id="lastNameTextFieldR" layoutX="175.0" layoutY="95.0" />
-                  <TextField fx:id="firstNameTextFieldR" layoutX="410.0" layoutY="37.0" />
-                  <ChoiceBox fx:id="permissionChoiceBoxR" layoutX="175.0" layoutY="148.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="allowedChoiceBoxR" layoutX="409.0" layoutY="148.0" prefWidth="150.0" />
+                  <TextField fx:id="idTextFieldR" layoutX="175.0" layoutY="37.0" promptText="id" />
+                  <TextField fx:id="lastNameTextFieldR" layoutX="175.0" layoutY="95.0" promptText="last name" />
+                  <TextField fx:id="firstNameTextFieldR" layoutX="410.0" layoutY="37.0" promptText="first name" />
+                  <ChoiceBox fx:id="permissionChoiceBoxR" layoutX="175.0" layoutY="199.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="allowedChoiceBoxR" layoutX="409.0" layoutY="199.0" prefWidth="150.0" />
                   <Button layoutX="18.0" layoutY="232.0" mnemonicParsing="false" onAction="#onDebtReaders" prefHeight="25.0" prefWidth="138.0" text="See Readers In Debt" />
-                  <ChoiceBox fx:id="subscriptionChoiceBoxR" layoutX="409.0" layoutY="89.0" prefWidth="150.0" />
-                  <Button layoutX="324.0" layoutY="207.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="101.0" text="Search" />
+                  <ChoiceBox fx:id="subscriptionChoiceBoxR" layoutX="175.0" layoutY="152.0" prefWidth="150.0" />
+                  <Button layoutX="325.0" layoutY="245.0" mnemonicParsing="false" onAction="#onReaderSearch" prefHeight="25.0" prefWidth="101.0" text="Search" />
                   <Button layoutX="18.0" layoutY="319.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="138.0" text="BACK" />
+                  <TextField fx:id="readerIDTextFieldR" layoutX="410.0" layoutY="95.0" promptText="reader id" />
+                  <Text layoutX="415.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader ID" />
                </children></AnchorPane>
       </content>
     </Tab>

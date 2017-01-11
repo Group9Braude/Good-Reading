@@ -24,6 +24,11 @@ public class LoginScreenController extends AbstractClient {
 	private static String whatAmI;
 	private static String host = "localhost";
 	private static int port = Main.port;
+<<<<<<< HEAD
+=======
+	private static Reader readerLogged;
+	private static Worker currentWorker;
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 	private static boolean isLoggedFlag=false;
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 
@@ -53,10 +58,18 @@ public class LoginScreenController extends AbstractClient {
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
+<<<<<<< HEAD
 		//while(whatAmI=="")
 		try {Thread.sleep(10);} 
 		catch (InterruptedException e) {e.printStackTrace();}
 
+=======
+		boolean flag=false;
+		while(whatAmI==""){
+			try {Thread.sleep(10);} 
+			catch (InterruptedException e) {e.printStackTrace();}
+		}
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 		Thread initialize = new Thread(){
 			public void run(){
 				Book book = new Book();
@@ -65,6 +78,10 @@ public class LoginScreenController extends AbstractClient {
 				worker.workerList = new ArrayList<Worker>();
 				sendServer(book, "InitializeBookList");//Get the book list in a static array
 				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 			}
 		};
 		initialize.start();
@@ -101,7 +118,14 @@ public class LoginScreenController extends AbstractClient {
 		else{
 
 			if(msg instanceof Reader)
+<<<<<<< HEAD
 			{
+=======
+			{		
+				System.out.println("its a reader!");
+				readerLogged=(Reader)msg;
+				System.out.println(readerLogged.getName());
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 				isLoggedFlag=true;
 				whatAmI="reader";
 				Main.setCurrentUser((Reader)msg);
@@ -109,10 +133,17 @@ public class LoginScreenController extends AbstractClient {
 
 			else if(msg instanceof User)//Correct details were entered
 			{
+
 				isLoggedFlag=true;
 				User res = (User)msg;
-				if(res.getType()==2)
-					whatAmI="worker";
+				if(res.getType()==2){
+					/*System.out.println("its a Worker!");
+					Worker worker = new Worker();
+					worker = (Worker)msg;
+					currentWorker = (Worker)msg;
+					System.out.println(currentWorker.getWorkerID());*/
+					whatAmI="worker";						
+				}//end if
 				else if(res.getType()==3)
 					whatAmI="manager";
 			}

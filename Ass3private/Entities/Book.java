@@ -10,6 +10,7 @@ public class Book extends GeneralMessage implements Serializable{
 	public ArrayList<Book> deleteBookList;
 	private int isSuspend=0 , bookid;
 	public static int bookCnt=51;
+	public String query;
 
 
 

@@ -7,6 +7,12 @@ public class User extends GeneralMessage
 	private static final long serialVersionUID = 1L;
 	private String id,password;
 	private int type;//1 - reader,2 - librarian,3 - manager
+<<<<<<< HEAD
+=======
+	private String name;
+	public static Worker currentWorker;
+
+>>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 	
 	
 	

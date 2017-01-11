@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="390.0" fitWidth="263.0" layoutX="2.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../Desktop/Ass3Logos/Logo.png" />
+            <Image url="@../../../../../Desktop/Ass3Logos/Logo.png" />
          </image>
       </ImageView>
       <Button layoutX="134.0" layoutY="262.0" mnemonicParsing="false" onAction="#onLogin" text="LOGIN" />

@@ -2,8 +2,9 @@ package application;
 
 import java.io.IOException;
 
+import com.sun.prism.Image;
+
 import Controllers.LoginScreenController;
-import Entities.MyServer;
 import Entities.User;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -21,7 +22,7 @@ public class Main extends Application {
 	private TextField idfield;
 	private static Stage primaryStage;
 	private static Parent mainLayout;
-	public static int port=3336;
+	public static int port=3307;
 	public static String host = "localhost";
 	public static Stage popup;
 	private static User currentUser;
@@ -49,11 +50,12 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 
-	public void showMainMenu() throws IOException{
+	public static void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
+		//primaryStage.getIcons().add(new Image("C:\\Users\\orels\\Desktop\\Reader")
 		primaryStage.show();
 	}
 
