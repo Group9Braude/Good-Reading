@@ -53,6 +53,7 @@ public class LoginScreenController extends AbstractClient {
 
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
+		System.out.println("TEST TEST TEST!");
 		sendServer(user, "CheckUser");
 		boolean flag=false;
 		while(whatAmI==""){
