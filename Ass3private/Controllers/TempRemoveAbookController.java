@@ -41,7 +41,6 @@ public class TempRemoveAbookController extends AbstractClient  {
 			}
 		}
 		booknames.setItems(options);
-
 	}
 
 	public void sendServer(Object msg, String actionNow){/******************************/
