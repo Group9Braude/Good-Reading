@@ -79,7 +79,7 @@ public class CreditCardController extends AbstractClient
 		if(card && month && year && code)
 		{
 			CreditCard newCard = new CreditCard(cardNumField.getText(),monthField.getText(),yearField.getText(),codeField.getText(),Main.getCurrentUser().getID());
-			newCard.actionNow="creditCard";
+			newCard.actionNow="CreditCard";
 
 			try {
 				this.sendToServer(newCard);

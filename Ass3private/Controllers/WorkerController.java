@@ -380,14 +380,6 @@ Main.popup.show();*/
 
 
 
-
-
-
-
-
-
-
-
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof String)
 			System.out.println((String)msg);

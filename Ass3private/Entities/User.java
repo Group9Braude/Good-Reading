@@ -7,10 +7,10 @@ public class User extends GeneralMessage
 	private static final long serialVersionUID = 1L;
 	private String id,password;
 	private int type;//1 - reader,2 - librarian,3 - manager
-	private String name;
 	
 	
-	public User(){}//Possible?????????????????????????????????????? yes it is possible. NOOB
+	
+	public User(){}
 	
 	public User(String id,String password)
 	{  
@@ -34,9 +34,5 @@ public class User extends GeneralMessage
 	public void setType(int type)
 	{
 		this.type=type;
-	}
-	public String getName()
-	{
-		return name;
 	}
 }

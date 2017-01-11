@@ -53,9 +53,13 @@ public class MyServer extends AbstractServer {
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
 			case "Logout":
-				LogOutUser((User)msg,client);
-			case "creditCard":
+				LogOutUser((User)msg,client);break;
+			case "CreditCard":
 				addCreditCard((CreditCard)msg,client); break;
+			case "Monthly":
+				subscribe((Reader)msg,1,client);break;
+			case "Yearly":
+				subscribe((Reader)msg,2,client);break;
 			default:
 				break;
 			}
@@ -226,6 +230,7 @@ public class MyServer extends AbstractServer {
 		String id = user.getID();
 		String password = user.getPassword();
 		Statement stmt,stmt1;
+		Reader reader;
 		try {
 			stmt = conn.createStatement();
 			stmt1 = conn.createStatement();
@@ -255,7 +260,7 @@ public class MyServer extends AbstractServer {
 							client.sendToClient("You're already signed in!");
 						else
 						{
-							Reader reader = new Reader(rs1.getString(1),password);
+							reader = new Reader(rs1.getString(1),password);
 							reader.setFirstName(rs1.getString(3));
 							System.out.println(reader.getFirstName());
 							reader.setLastName(rs1.getString(4));

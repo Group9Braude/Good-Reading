@@ -24,7 +24,6 @@ public class LoginScreenController extends AbstractClient {
 	private static String whatAmI;
 	private static String host = "localhost";
 	private static int port = Main.port;
-	private static Reader readerLogged;
 	private static boolean isLoggedFlag=false;
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 
@@ -54,10 +53,10 @@ public class LoginScreenController extends AbstractClient {
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
-		while(whatAmI=="")
-			try {Thread.sleep(10);} 
+		//while(whatAmI=="")
+		try {Thread.sleep(10);} 
 		catch (InterruptedException e) {e.printStackTrace();}
-		
+
 		Thread initialize = new Thread(){
 			public void run(){
 				Book book = new Book();
@@ -66,7 +65,6 @@ public class LoginScreenController extends AbstractClient {
 				worker.workerList = new ArrayList<Worker>();
 				sendServer(book, "InitializeBookList");//Get the book list in a static array
 				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-				
 			}
 		};
 		initialize.start();
@@ -75,7 +73,14 @@ public class LoginScreenController extends AbstractClient {
 		try {
 			switch(whatAmI){
 			case "reader":
-				Main.showReaderLoginScreen();break;
+				try{
+					System.out.println("Bazooka");
+					Main.showReaderLoginScreen();
+				}catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+				break;
 			case "worker":
 				Main.showLoggedInScreenWorker();break;
 			case "manager":
@@ -97,11 +102,9 @@ public class LoginScreenController extends AbstractClient {
 
 			if(msg instanceof Reader)
 			{
-				
-				readerLogged=(Reader)msg;
-				System.out.println(readerLogged.getName());
 				isLoggedFlag=true;
 				whatAmI="reader";
+				Main.setCurrentUser((Reader)msg);
 			}
 
 			else if(msg instanceof User)//Correct details were entered
@@ -119,13 +122,7 @@ public class LoginScreenController extends AbstractClient {
 				Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
 			else if(((ArrayList<?>)msg).get(0) instanceof Worker)
 				Worker.workerList.addAll(((ArrayList<Worker>)msg));//now we have the workers in arraylist
-			
+
 		}//end if arraylist
-	}
-
-
-
-	public static Reader getReaderLogged() {
-		return readerLogged;
 	}
 }

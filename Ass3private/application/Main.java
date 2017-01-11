@@ -145,9 +145,9 @@ public class Main extends Application {
 
 	public void stop()
 	{
-		LoginScreenController sender = new LoginScreenController();
 		if(currentUser != null)
 		{
+			LoginScreenController sender = new LoginScreenController();
 			User toLogOut = currentUser;
 			sender.sendServer(toLogOut, "Logout");
 		}

@@ -6,40 +6,28 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 public class LoginReaderController {
  
 	@FXML
-	static
-	TextArea welcomeText;
+	TextField welcomeText;
 	@FXML
-	static
-	TextArea subscribeText;
+	TextField subscribeText;
     @FXML
 	static ComboBox<?> bookList;
 	@FXML
-	static Button Subscribe;
+	Button Subscribe;
 	private Reader reader;
-	
-	public LoginReaderController()
+	@FXML
+	private void initialize()
 	{
-		System.out.println("enter");
-		setReader(((Reader)Main.getCurrentUser()));
-		System.out.println(reader.getID());
-		this.setwelcomeText();
-		this.setsubscribeText();
+		reader=((Reader)Main.getCurrentUser());
+		welcomeText.setText("Hello " + reader.getFirstName());
+		this.setSubscribeText();
 	}
 	
-	private void setReader(Reader reader)
-	{
-		this.reader=reader;
-	}
-	public void setwelcomeText()
-	{
-		welcomeText.setText("Hello " + reader.getName());
-	}
-	
-	public void setsubscribeText()
+	public void setSubscribeText()
 	{
 		int status = reader.getSubscribed();
 		switch(status)
