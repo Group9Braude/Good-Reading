@@ -3,11 +3,27 @@ package Controllers;
 import java.io.IOException;
 
 import Entities.Book;
+import Entities.GeneralMessage;
+import Entities.User;
+import Entities.Worker;
 import application.Main;
 
 public class LoggedInWorkerController {
 
 
+
+	public void sendServer(Object msg, String actionNow){/******************************/
+		((GeneralMessage)msg).actionNow = actionNow;
+		WorkerController client = new WorkerController();
+		try {
+			client.openConnection();
+			client.sendToServer(msg);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	public void  onAddBook(){
 		System.out.println(Book.bookCnt);
 		try {
@@ -27,7 +43,10 @@ public class LoggedInWorkerController {
 		}catch(IOException e){e.printStackTrace();}
 	}
 	
-	public void onLogout(){
-		WorkerController.onLogout();
+	public  void onLogout(){
+		sendServer(LoginScreenController.currentWorker, "Logout");
+		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
+		
 	}
+
 }

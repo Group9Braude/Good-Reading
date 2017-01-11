@@ -16,7 +16,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 
-
 public class Main extends Application {
 	@FXML
 	private TextField idfield;
@@ -45,13 +44,6 @@ public class Main extends Application {
 	public static void showSearchUser() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/SearchUser.fxml"));
-		mainLayout = loader.load();
-		primaryStage.setScene(new Scene(mainLayout));
-		primaryStage.show();
-	}
-	public static void showSuspendSuccess() throws IOException{
-		FXMLLoader loader = new FXMLLoader(); 
-		loader.setLocation(Main.class.getResource("/GUI/SuspendSuccess.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
@@ -154,9 +146,9 @@ public class Main extends Application {
 
 	public void stop()
 	{
+		LoginScreenController sender = new LoginScreenController();
 		if(currentUser != null)
 		{
-			LoginScreenController sender = new LoginScreenController();
 			User toLogOut = currentUser;
 			sender.sendServer(toLogOut, "Logout");
 		}

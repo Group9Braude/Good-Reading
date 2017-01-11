@@ -16,15 +16,15 @@ public class MyServer extends AbstractServer {
 	Connection conn;
 	private static int bookCnt;
 
-		public static void main(String[] args) {
-	int port = 0;
-	try {
-		port = Integer.parseInt(args[0]);
-	}
-	catch (Throwable t) {
-		port = Main.port;
-	}
-	MyServer s1 = new MyServer(port);
+	public static void main(String[] args) {
+		int port = 0;
+		try {
+			port = Integer.parseInt(args[0]);
+		}
+		catch (Throwable t) {
+			port = Main.port;
+		}
+		MyServer s1 = new MyServer(port);
 	}
 
 	public MyServer(int port) {
@@ -54,17 +54,9 @@ public class MyServer extends AbstractServer {
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
 			case "Logout":
-				LogOutUser((User)msg,client);break;
-			case "CreditCard":
+				LogoutUser((User)msg,client);break;
+			case "creditCard":
 				addCreditCard((CreditCard)msg,client); break;
-
-			case "TempRemoveAbook":
-				tempremoveabook((Book)msg,client); break;
-
-			case "Monthly":
-				subscribe((Reader)msg,1,client);break;
-			case "Yearly":
-				subscribe((Reader)msg,2,client);break;
 			case "FindLoggedReaders":
 				find("readers", "isLoggedIn='1';", " is logged in!",client);break;
 			case "FindLoggedWorkers":
@@ -81,24 +73,10 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
-
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
-	}
-	
-
-	private void tempremoveabook(Book b, ConnectionToClient client){
-		Statement stmt;
-		try {
-			stmt = conn.createStatement();
-			stmt.executeUpdate("Update books set isSuspend= 1 where bookid = '"+b.getBookid()+"';");
-			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
-		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void findReaders(Reader reader, ConnectionToClient client){
@@ -108,12 +86,12 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery(reader.query);
 			while(rs.next())
 				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a reader!");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void findWorkers(Worker worker, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -121,12 +99,12 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery(worker.query);
 			while(rs.next())
 				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a worker!");
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void find(String from, String where,String isWhat, ConnectionToClient client){
 		ArrayList<String> arr = new ArrayList<String>();
 		Statement stmt;
@@ -143,44 +121,7 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(arr);
 		}catch(Exception e){e.printStackTrace();}
 	}
-	
-		
-	
-	
-	
-/*	public void findLoggedWorkers(String from, String where, ConnectionToClient client){
-		ArrayList<String> arr = new ArrayList<String>();
-		Statement stmt;
-		try{
-			stmt = conn.createStatement();
-			String query = "SELECT * FROM" + from + "WHERE" + from;
-			String str;
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				str = rs.getString(3) + rs.getString(4) + " is logged in!";
-				arr.add(str);
-			}
-			client.sendToClient(arr);
-		}catch(Exception e){e.printStackTrace();}
-	}
-	
-	public void findLoggedReaders(ConnectionToClient client){
-		ArrayList<String> arr = new ArrayList<String>();
-		Statement stmt;
-		try{
-			stmt = conn.createStatement();
-			String query = "SELECT * FROM readers WHERE isLoggedIn = '1'";
-			String str;
-			ResultSet rs = stmt.executeQuery(query);
-			while(rs.next()){
-				str = rs.getString(3) + rs.getString(4) + "is logged in!";
-				arr.add(str);
-			}
-			client.sendToClient(arr);
-		}catch(Exception e){e.printStackTrace();}
-	}*/
 
-	
 	private void subscribe(Reader reader,int type, ConnectionToClient client)//type is the type of subscription
 	{
 		Statement stmt;
@@ -194,11 +135,7 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
-	
 
-	
-	
-	
 
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
 		try{
@@ -207,8 +144,6 @@ public class MyServer extends AbstractServer {
 			stmt.executeUpdate(book.query);
 		}catch(SQLException e){e.printStackTrace();}
 	}
-
-
 
 
 
@@ -251,11 +186,6 @@ public class MyServer extends AbstractServer {
 
 
 
-
-
-
-
-
 	private void addCreditCard(CreditCard card,ConnectionToClient client)
 	{
 		Statement stmt;
@@ -272,21 +202,21 @@ public class MyServer extends AbstractServer {
 
 	}
 
- 
 
 
-	private void LogOutUser(User user,ConnectionToClient client)
+
+	private void LogoutUser(User user,ConnectionToClient client)
 	{
 		try {
 			Statement stmt = conn.createStatement();
 			if(user instanceof Reader)
-			{
-				stmt.executeUpdate("UPDATE readers SET isLoggedIn=0 WHERE readerID='" + user.getID() + "'");
-				client.sendToClient("You've logged out successfully");
-			}
+				stmt.executeUpdate("UPDATE readers SET isLoggedIn=0 WHERE readerID='" + user.getID() + "';");
 			if(user instanceof Worker){
-				
+				System.out.println("worker logout");
+				Worker worker = (Worker)user;
+				stmt.executeUpdate("UPDATE workers SET isLoggedIn=0 WHERE workerID='" + worker.getWorkerID()+"';");
 			}
+			client.sendToClient("You've logged out successfully");
 
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
@@ -324,7 +254,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
