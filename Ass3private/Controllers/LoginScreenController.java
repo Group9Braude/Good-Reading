@@ -56,8 +56,8 @@ public class LoginScreenController extends AbstractClient {
 		sendServer(user, "CheckUser");
 		boolean flag=false;
 		while(whatAmI==""){
-		try {Thread.sleep(50);} 
-		catch (InterruptedException e) {e.printStackTrace();}
+			try {Thread.sleep(50);} 
+			catch (InterruptedException e) {e.printStackTrace();}
 		}
 		Thread initialize = new Thread(){
 			public void run(){
@@ -67,7 +67,7 @@ public class LoginScreenController extends AbstractClient {
 				worker.workerList = new ArrayList<Worker>();
 				sendServer(book, "InitializeBookList");//Get the book list in a static array
 				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-				
+
 			}
 		};
 		initialize.start();
@@ -97,7 +97,7 @@ public class LoginScreenController extends AbstractClient {
 		else{
 
 			if(msg instanceof Reader)
-			{		
+			{  
 				System.out.println("its a reader!");
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getName());
@@ -109,13 +109,10 @@ public class LoginScreenController extends AbstractClient {
 			{
 				isLoggedFlag=true;
 				User res = (User)msg;
-				 if(res.getType()==3)
-					whatAmI="manager";
-			}
-			else if(msg instanceof Worker){
-				isLoggedFlag=true;
+				if(res.getType()==2)
 					whatAmI="worker";
-					Worker.currentWorker = (Worker)msg;
+				else if(res.getType()==3)
+					whatAmI="manager";
 			}
 		}//end else
 		if(msg instanceof ArrayList){
@@ -123,7 +120,7 @@ public class LoginScreenController extends AbstractClient {
 				Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
 			else if(((ArrayList<?>)msg).get(0) instanceof Worker)
 				Worker.workerList.addAll(((ArrayList<Worker>)msg));//now we have the workers in arraylist
-			
+
 		}//end if arraylist
 	}
 
