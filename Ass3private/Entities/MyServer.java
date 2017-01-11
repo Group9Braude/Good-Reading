@@ -154,7 +154,7 @@ public class MyServer extends AbstractServer {
 
 	}
 
-
+ 
 
 
 	private void LogOutUser(User user,ConnectionToClient client)
@@ -165,6 +165,9 @@ public class MyServer extends AbstractServer {
 			{
 				stmt.executeUpdate("UPDATE readers SET isLoggedIn=0 WHERE readerID='" + user.getID() + "'");
 				client.sendToClient("You've logged out successfully");
+			}
+			if(user instanceof Worker){
+				
 			}
 
 		} catch (SQLException | IOException e) {
@@ -203,7 +206,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
@@ -226,6 +229,8 @@ public class MyServer extends AbstractServer {
 		String id = user.getID();
 		String password = user.getPassword();
 		Statement stmt,stmt1;
+		Reader reader;
+		Worker worker;
 		try {
 			stmt = conn.createStatement();
 			stmt1 = conn.createStatement();
@@ -237,8 +242,12 @@ public class MyServer extends AbstractServer {
 					{
 						if(rs.getInt(9)==1)//It is a manager!
 							user.setType(3);
-						else
+						else{
 							user.setType(2);//It is a worker!
+							worker = new Worker();
+							worker.setWorkerID(rs.getString(1));
+							client.sendToClient(worker);
+						}
 						client.sendToClient(user);
 					}
 					else
@@ -255,7 +264,7 @@ public class MyServer extends AbstractServer {
 							client.sendToClient("You're already signed in!");
 						else
 						{
-							Reader reader = new Reader(rs1.getString(1),password);
+							reader = new Reader(rs1.getString(1),password);
 							reader.setFirstName(rs1.getString(3));
 							System.out.println(reader.getFirstName());
 							reader.setLastName(rs1.getString(4));
@@ -270,6 +279,7 @@ public class MyServer extends AbstractServer {
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
+							System.out.println(reader.getFirstName());
 							client.sendToClient(reader);
 						}
 					}

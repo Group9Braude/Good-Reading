@@ -54,10 +54,11 @@ public class LoginScreenController extends AbstractClient {
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
-		while(whatAmI=="")
-			try {Thread.sleep(10);} 
+		boolean flag=false;
+		while(whatAmI==""){
+		try {Thread.sleep(50);} 
 		catch (InterruptedException e) {e.printStackTrace();}
-		
+		}
 		Thread initialize = new Thread(){
 			public void run(){
 				Book book = new Book();
@@ -96,8 +97,8 @@ public class LoginScreenController extends AbstractClient {
 		else{
 
 			if(msg instanceof Reader)
-			{
-				
+			{		
+				System.out.println("its a reader!");
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getName());
 				isLoggedFlag=true;
@@ -108,10 +109,13 @@ public class LoginScreenController extends AbstractClient {
 			{
 				isLoggedFlag=true;
 				User res = (User)msg;
-				if(res.getType()==2)
-					whatAmI="worker";
-				else if(res.getType()==3)
+				 if(res.getType()==3)
 					whatAmI="manager";
+			}
+			else if(msg instanceof Worker){
+				isLoggedFlag=true;
+					whatAmI="worker";
+					Worker.currentWorker = (Worker)msg;
 			}
 		}//end else
 		if(msg instanceof ArrayList){

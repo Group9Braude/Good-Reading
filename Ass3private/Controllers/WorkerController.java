@@ -284,7 +284,7 @@ Main.popup.show();*/
 						workers.add(worker);
 			}
 
-			if((lastName!=""))				
+			if((lastName==""))				
 				if(!flag){
 					flag=true;
 					workers = new ArrayList<Worker>();
@@ -332,6 +332,11 @@ Main.popup.show();*/
 		}
 
 	}//End onWorker
+	
+	
+	public void onLogout(){
+		//sendServer()
+	}
 
 	public void onReaderSearch(){
 

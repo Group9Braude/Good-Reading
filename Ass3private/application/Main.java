@@ -2,8 +2,9 @@ package application;
 
 import java.io.IOException;
 
+import com.sun.prism.Image;
+
 import Controllers.LoginScreenController;
-import Entities.MyServer;
 import Entities.User;
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -54,6 +55,7 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
+		//primaryStage.getIcons().add(new Image("C:\\Users\\orels\\Desktop\\Reader")
 		primaryStage.show();
 	}
 
