@@ -57,12 +57,11 @@ public class MyServer extends AbstractServer {
 				LogOutUser((User)msg,client);break;
 			case "CreditCard":
 				addCreditCard((CreditCard)msg,client); break;
-<<<<<<< HEAD
+
 			case "Monthly":
 				subscribe((Reader)msg,1,client);break;
 			case "Yearly":
 				subscribe((Reader)msg,2,client);break;
-=======
 			case "FindLoggedReaders":
 				find("readers", "isLoggedIn='1';", " is logged in!",client);break;
 			case "FindLoggedWorkers":
@@ -79,7 +78,6 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
->>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 			default:
 				break;
 			}
@@ -308,7 +306,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
@@ -332,10 +330,7 @@ public class MyServer extends AbstractServer {
 		String password = user.getPassword();
 		Statement stmt,stmt1;
 		Reader reader;
-<<<<<<< HEAD
-=======
 		Worker worker;
->>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 		try {
 			stmt = conn.createStatement();
 			stmt1 = conn.createStatement();

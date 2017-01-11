@@ -263,10 +263,7 @@ Main.popup.show();*/
 	}
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'master' of https://github.com/Group9Braude/Good-Reading.git
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof String)
 			System.out.println((String)msg);
