@@ -1,12 +1,17 @@
 package Controllers;
 
+import java.util.ArrayList;
+
+import Entities.OrderedBook;
 import Entities.Reader;
 import application.Main;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.ComboBoxListCell;
 
 public class LoginReaderController {
  
@@ -15,14 +20,19 @@ public class LoginReaderController {
 	@FXML
 	TextField subscribeText;
     @FXML
-	static ComboBox<?> bookList;
+    public ObservableList <OrderedBook> items= FXCollections.observableArrayList();
+    public ListView <OrderedBook> bookList= new ListView<OrderedBook>(items);
 	@FXML
 	Button Subscribe;
 	private Reader reader;
+	ArrayList<String>names = new ArrayList<String>();
+	
 	@FXML
-	private void initialize()
+	public void initialize()
 	{
 		reader=((Reader)Main.getCurrentUser());
+		items=FXCollections.observableArrayList(reader.getMyBooks());
+		bookList.setItems(items);
 		welcomeText.setText("Hello " + reader.getFirstName());
 		this.setSubscribeText();
 	}

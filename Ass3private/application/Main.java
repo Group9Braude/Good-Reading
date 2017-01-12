@@ -161,8 +161,7 @@ public class Main extends Application {
 			sender.sendServer(toLogOut, "Logout");
 		}
 	}
-
-
+	
 	public static void main(String[] args) {
 		launch(args);
 	}

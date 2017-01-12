@@ -8,10 +8,15 @@
 
 <AnchorPane prefHeight="449.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginReaderController">
    <children>
-      <ComboBox layoutX="70.0" layoutY="149.0" prefWidth="150.0" />
-      <Text layoutX="118.0" layoutY="137.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My books:" />
-      <Button layoutX="283.0" layoutY="112.0" mnemonicParsing="false" onAction="#onSubscribe" text="Subscribe" />
-      <TextField fx:id="welcomeText" editable="false" layoutX="134.0" layoutY="31.0" />
-      <TextField fx:id="subscribeText" editable="false" layoutX="243.0" layoutY="149.0" />
+      <Text layoutX="29.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My books:" />
+      <Button layoutX="285.0" layoutY="25.0" mnemonicParsing="false" onAction="#onSubscribe" text="Subscribe" />
+      <TextField fx:id="welcomeText" editable="false" layoutX="37.0" layoutY="25.0" />
+      <TextField fx:id="subscribeText" editable="false" layoutX="245.0" layoutY="58.0" />
+      <ListView fx:id="bookList" editable="true" layoutX="29.0" layoutY="105.0" prefHeight="327.0" prefWidth="179.0" />
+      <Button layoutX="239.0" layoutY="181.0" mnemonicParsing="false" text="Write a review" />
+      <Button layoutX="242.0" layoutY="218.0" mnemonicParsing="false" text="Get book in doc" />
+      <Button layoutX="242.0" layoutY="256.0" mnemonicParsing="false" text="Get book in pdf" />
+      <Button layoutX="242.0" layoutY="295.0" mnemonicParsing="false" text="Get book in fb2" />
+      <Button layoutX="242.0" layoutY="331.0" mnemonicParsing="false" text="Order a new Book" />
    </children>
 </AnchorPane>

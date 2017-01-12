@@ -397,8 +397,17 @@ public class MyServer extends AbstractServer {
 							reader.setCardnum(rs1.getString(12));
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
+							
+							//Getting the list of books the current user has ordered
+							Statement stmt2 = conn.createStatement();
+							ResultSet rs2 = stmt2.executeQuery("select * from orderedbooks where readerID='"+reader.getID()+"';");
+							ArrayList<OrderedBook> books = new ArrayList<OrderedBook>();
+							while(rs2.next())
+								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
+							reader.setMyBooks(books);
+							//Getting the list of books the current user has ordered
+							
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
-							System.out.println(reader.getFirstName());
 							client.sendToClient(reader);
 						}
 					}
