@@ -73,12 +73,45 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+<<<<<<< HEAD
+			case "activeBooks":
+				activeBooks((Book)msg, client);break;
+
+=======
+>>>>>>> refs/remotes/origin/master
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
+<<<<<<< HEAD
+	
+	private void activeBooks(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 0 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void tempremoveabook(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 1 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
+=======
+
+>>>>>>> refs/remotes/origin/master
 	public void findReaders(Reader reader, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -327,8 +360,17 @@ public class MyServer extends AbstractServer {
 							reader.setCardnum(rs1.getString(12));
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
+							
+							//Getting the list of books the current user has ordered
+							Statement stmt2 = conn.createStatement();
+							ResultSet rs2 = stmt2.executeQuery("select * from orderedbooks where readerID='"+reader.getID()+"';");
+							ArrayList<OrderedBook> books = new ArrayList<OrderedBook>();
+							while(rs2.next())
+								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
+							reader.setMyBooks(books);
+							//Getting the list of books the current user has ordered
+							
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
-							System.out.println(reader.getFirstName());
 							client.sendToClient(reader);
 						}
 					}

@@ -32,8 +32,8 @@ public class Book extends GeneralMessage implements Serializable{
 	public int getisSuspend(){
 		return this.isSuspend;
 	}
-	public void setisSuspend(){
-		this.isSuspend=0;
+	public void setisSuspend(int x){
+		this.isSuspend=x;
 	}
 	public int getBookid() 
 	{

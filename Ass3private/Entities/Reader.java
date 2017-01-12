@@ -1,5 +1,7 @@
 package Entities;
 
+import java.util.ArrayList;
+
 public class Reader extends User
 {
 	private static final long serialVersionUID = 1L;
@@ -8,13 +10,15 @@ public class Reader extends User
 	private String firstName,lastName;
 	private int IBookValid,allowed,debt,isFrozen,premission;
 	private String cardnum,secCode,expDate;
+	private ArrayList<OrderedBook> myBooks = new ArrayList<OrderedBook>();
 	public String query;
 	
-	public Reader(){}// LOOK ERAN! ADDED!
+	public Reader(){}// LOOK ERAN! ADDED! Answer: I didn't need it so I didn't add it
 	
 	public Reader(String id, String password) 
 	{
 		super(id, password);
+		
 	}
 	public int getIsLogged() {
 		return isLogged;
@@ -87,6 +91,14 @@ public class Reader extends User
 	}
 	public void setPremission(int premission) {
 		this.premission = premission;
+	}
+
+	public ArrayList<OrderedBook> getMyBooks() {
+		return myBooks;
+	}
+
+	public void setMyBooks(ArrayList<OrderedBook> myBooks) {
+		this.myBooks = myBooks;
 	}
 
 }
