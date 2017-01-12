@@ -28,11 +28,7 @@ public class LoginScreenController extends AbstractClient {
 	private static String host = "localhost";
 	private static int port = Main.port;
 	private static Reader readerLogged;
-<<<<<<< HEAD
-	private static Worker currentWorker;
-=======
 	public static Worker currentWorker;
->>>>>>> refs/remotes/origin/master
 	private static boolean isLoggedFlag=false;
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 	@FXML
@@ -56,6 +52,9 @@ public class LoginScreenController extends AbstractClient {
 		}
 	}
 
+	public void onExit(){
+		Main.exit();
+	}
 
 
 
@@ -66,35 +65,11 @@ public class LoginScreenController extends AbstractClient {
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
-<<<<<<< HEAD
-		//while(whatAmI=="")
-		try {Thread.sleep(10);} 
-		catch (InterruptedException e) {e.printStackTrace();}
-=======
->>>>>>> refs/remotes/origin/master
 		boolean flag=false;
 		while(whatAmI==""){
-<<<<<<< HEAD
-			try {
-				Thread.sleep(50);
-				}
-
-=======
 			try {Thread.sleep(10);} 
->>>>>>> refs/remotes/origin/master
 			catch (InterruptedException e) {e.printStackTrace();}
 		}
-<<<<<<< HEAD
-		Thread initialize = new Thread(){
-			public void run(){
-				Book book = new Book();
-				Worker worker = new Worker();
-				book.bookList = new ArrayList<Book>();
-				worker.workerList = new ArrayList<Worker>();
-				sendServer(book, "InitializeBookList");//Get the book list in a static array
-
-				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-=======
 		if(whatAmI!="User does not exist in the DB"){
 			Thread initialize = new Thread(){
 				public void run(){
@@ -104,20 +79,11 @@ public class LoginScreenController extends AbstractClient {
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
->>>>>>> refs/remotes/origin/master
 
-<<<<<<< HEAD
-				sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-			}
-		};
-		initialize.start();
-
-=======
 				}
 			};
 			initialize.start();
 		}
->>>>>>> refs/remotes/origin/master
 
 		try {
 			switch(whatAmI){
@@ -149,17 +115,10 @@ public class LoginScreenController extends AbstractClient {
 		}
 
 		else{
-<<<<<<< HEAD
-=======
 			if(msg instanceof Worker)
 				currentWorker = (Worker)msg;
->>>>>>> refs/remotes/origin/master
 			if(msg instanceof Reader)
-<<<<<<< HEAD
-			{  
-=======
 			{		
->>>>>>> refs/remotes/origin/master
 				System.out.println("its a reader!");
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getFirstName());

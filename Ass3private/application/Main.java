@@ -86,6 +86,9 @@ public class Main extends Application {
 
 	}	 
 
+	public static void exit(){
+		primaryStage.close();
+	}
 
 	public static void showLoggedInScreenWorker() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
