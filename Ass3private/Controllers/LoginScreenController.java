@@ -56,8 +56,8 @@ public class LoginScreenController extends AbstractClient {
 
 
 	public void onLogin(){
-        File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
-        Image image = new Image(file.toURI().toString());
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
+		Image image = new Image(file.toURI().toString());
 		loginImageView.setImage(image);
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
@@ -97,8 +97,8 @@ public class LoginScreenController extends AbstractClient {
 
 	public void onPress(){
 		System.out.println("Press");
-        File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
-        Image image = new Image(file.toURI().toString());
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
+		Image image = new Image(file.toURI().toString());
 		loginImageView.
 		setImage(image);
 	}
