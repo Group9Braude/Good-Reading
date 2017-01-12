@@ -143,6 +143,13 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
+	public static void showActiveBooks() throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/ActiveBooks.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
 
 	public static void showRemoveBook() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 

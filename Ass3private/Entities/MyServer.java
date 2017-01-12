@@ -81,6 +81,8 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+			case "activeBooks":
+				activeBooks((Book)msg, client);break;
 
 			default:
 				break;
@@ -88,7 +90,17 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 	
-
+	private void activeBooks(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 0 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	private void tempremoveabook(Book b, ConnectionToClient client){
 		Statement stmt;
 		try {

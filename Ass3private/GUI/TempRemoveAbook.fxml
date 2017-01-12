@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="424.0" style="-fx-background-color: #79cea2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TempRemoveAbookController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="424.0" style="-fx-background-color: #78aece;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TempRemoveAbookController">
    <children>
       <ChoiceBox fx:id="booknames" layoutX="59.0" layoutY="87.0" prefHeight="31.0" prefWidth="314.0" />
       <Button layoutX="12.0" layoutY="146.0" mnemonicParsing="false" onAction="#onSuspend" text="Suspend" />
@@ -15,5 +15,6 @@
             <Font name="Verdana Pro SemiBold" size="15.0" />
          </font></Text>
       <Button layoutX="335.0" layoutY="146.0" mnemonicParsing="false" onAction="#onBack" prefHeight="31.0" prefWidth="77.0" text="Back" />
+      <Button layoutX="212.0" layoutY="146.0" mnemonicParsing="false" onAction="#onActivate" text="Activate books" />
    </children>
 </Pane>
