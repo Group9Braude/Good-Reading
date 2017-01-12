@@ -201,10 +201,12 @@ Main.popup.show();*/
 	}//End onWorkerSearch
 	
 	
-	public static void onLogout(){
+	public  void onLogout(){
 		System.out.println(User.currentWorker.getWorkerID());
-		//sendServer(new User(), "LogOutUser");
-		//try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
+		Worker worker = new Worker();
+		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
+		sendServer(worker, "LogOutUser");
+		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 		
 	}
 
@@ -261,7 +263,6 @@ Main.popup.show();*/
 		Worker worker=  new Worker();
 		sendServer(worker, "FindLoggedWorkers");
 	}
-
 
 
 	protected void handleMessageFromServer(Object msg) {
