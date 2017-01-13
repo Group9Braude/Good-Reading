@@ -60,29 +60,33 @@ public class MyServer extends AbstractServer {
 			case "creditCard":
 				addCreditCard((CreditCard)msg,client); break;
 			case "FindLoggedReaders":
-				find("readers", "isLoggedIn='1';", " is logged in!",client);break;
+				find("readers", "isLoggedIn='1';", "LoggedReaders",client);break;
 			case "FindLoggedWorkers":
-				find("workers", "isLoggedIn='1';", " is logged in!",client);break;
+				find("workers", "isLoggedIn='1';", "LoggedWorkers",client);break;
 			case "FindAllManagers":
-				find("workers", "isManager='1';", " is a manager!",client);break;
+				find("workers", "isManager='1';", "AllManagers",client);break;
 			case "FindAllWorkers":
-				find("workers", "isManager='0';", " is a worker!",client);break;
+				find("workers", "isManager='0';", "AllWorkers",client);break;
 			case "FindDebtReaders":
-				find("readers", "debt is not null;", " is in debt!",client);break;
+				find("readers", "debt is not null;", "DebtReaders",client);break;
 			case "FindFrozenReaders":
-				find("readers", "isFrozen='1';", " has his account frozen!",client);break;
+				find("readers", "isFrozen='1';", "FrozenReaders",client);break;
 			case "FindWorkers":
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+<<<<<<< HEAD
 				case "activeBooks":
 				activeBooks((Book)msg, client);break;
 
+=======
+>>>>>>> refs/remotes/origin/master
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
+<<<<<<< HEAD
 	
 
 	private void getUserBooks(Reader msg, ConnectionToClient client) {
@@ -124,27 +128,38 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+=======
+>>>>>>> refs/remotes/origin/master
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/master
 	public void findReaders(Reader reader, ConnectionToClient client){
+		ArrayList<String> readersList = new ArrayList<String>();
+		readersList.add("Readers");
 		try {
 			Statement stmt = conn.createStatement();
 			System.out.println("Query:" + reader.query);
 			ResultSet rs = stmt.executeQuery(reader.query);
-			while(rs.next())
-				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a reader!");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			while(rs.next())
+				readersList.add(rs.getString(1) + "  " + rs.getString(3) + "   " + rs.getString(4));
+			client.sendToClient(readersList);
+		} catch (Exception e) {e.printStackTrace();}
 	}
 
+
 	public void findWorkers(Worker worker, ConnectionToClient client){
+		ArrayList<String> workersList = new ArrayList<String>();
+		workersList.add("Workers");
 		try {
 			Statement stmt = conn.createStatement();
 			System.out.println("Query:" + worker.query);
 			ResultSet rs = stmt.executeQuery(worker.query);
 			while(rs.next())
-				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a worker!");
+				workersList.add(rs.getString(3) + " " + rs.getString(4));
+			client.sendToClient(workersList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -153,16 +168,15 @@ public class MyServer extends AbstractServer {
 
 	public void find(String from, String where,String isWhat, ConnectionToClient client){
 		ArrayList<String> arr = new ArrayList<String>();
+		System.out.println(isWhat);
+		arr.add(isWhat);
 		Statement stmt;
 		try{
 			stmt = conn.createStatement();
 			String query = "SELECT * FROM " + from + " WHERE " + where;
-			System.out.println(query);
-			String str;
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				str = rs.getString(3) + " " + rs.getString(4) + isWhat;
-				arr.add(str);
+				arr.add(rs.getString(3) + " " + rs.getString(4));
 			}
 			client.sendToClient(arr);
 		}catch(Exception e){e.printStackTrace();}
@@ -373,17 +387,8 @@ public class MyServer extends AbstractServer {
 							reader.setCardnum(rs1.getString(12));
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
-							
-							//Getting the list of books the current user has ordered
-							Statement stmt2 = conn.createStatement();
-							ResultSet rs2 = stmt2.executeQuery("select * from orderedbooks where readerID='"+reader.getID()+"';");
-							ArrayList<OrderedBook> books = new ArrayList<OrderedBook>();
-							while(rs2.next())
-								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
-							reader.setMyBooks(books);
-							//Getting the list of books the current user has ordered
-							
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
+							System.out.println(reader.getFirstName());
 							client.sendToClient(reader);
 						}
 					}

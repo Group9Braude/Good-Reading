@@ -53,12 +53,15 @@ public class LoginScreenController extends AbstractClient {
 		}
 	}
 
+	public void onExit(){
+		Main.exit();
+	}
 
 
 
 	public void onLogin(){
-        File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
-        Image image = new Image(file.toURI().toString());
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
+		Image image = new Image(file.toURI().toString());
 		loginImageView.setImage(image);
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
@@ -78,6 +81,10 @@ public class LoginScreenController extends AbstractClient {
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+<<<<<<< HEAD
+=======
+
+>>>>>>> refs/remotes/origin/master
 				}
 			};
 			initialize.start();
@@ -98,8 +105,8 @@ public class LoginScreenController extends AbstractClient {
 
 	public void onPress(){
 		System.out.println("Press");
-        File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
-        Image image = new Image(file.toURI().toString());
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
+		Image image = new Image(file.toURI().toString());
 		loginImageView.
 		setImage(image);
 	}
