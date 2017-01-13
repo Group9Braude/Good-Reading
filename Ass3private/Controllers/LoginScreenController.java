@@ -81,10 +81,6 @@ public class LoginScreenController extends AbstractClient {
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/master
 				}
 			};
 			initialize.start();
