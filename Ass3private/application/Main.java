@@ -2,8 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import com.sun.prism.Image;
-
 import Controllers.LoginScreenController;
 import Entities.User;
 import javafx.application.Application;
@@ -12,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -153,12 +153,34 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
-
+	
+	public static void showReviewScreen()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/ReviewScreen.fxml"));
+		try 
+		{
+			mainLayout = loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
+	public static void showReports() throws IOException {
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/Reports.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();		
+	}
 	public void stop()
 	{
-		LoginScreenController sender = new LoginScreenController();
 		if(currentUser != null)
 		{
+			LoginScreenController sender = new LoginScreenController();
 			User toLogOut = currentUser;
 			sender.sendServer(toLogOut, "Logout");
 		}

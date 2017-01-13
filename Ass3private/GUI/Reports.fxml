@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.RerportsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="773.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReportsController">
    <top>
       <TabPane prefHeight="217.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
@@ -26,6 +26,7 @@
                            </font>
                         </Text>
                         <TextField fx:id="id" layoutX="364.0" layoutY="62.0" promptText="ID" />
+                        <Button layoutX="585.0" layoutY="62.0" mnemonicParsing="false" onAction="#onEnter" text="Enter" />
                      </children></AnchorPane>
             </content>
           </Tab>
@@ -48,6 +49,6 @@
       </TabPane>
    </top>
    <left>
-      <ListView prefHeight="388.0" prefWidth="912.0" BorderPane.alignment="CENTER" />
+      <ListView fx:id="myBooks" prefHeight="369.0" prefWidth="774.0" BorderPane.alignment="CENTER" />
    </left>
 </BorderPane>

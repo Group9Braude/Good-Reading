@@ -10,7 +10,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="306.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManagerLoggedController">
    <children>
-      <Button fx:id="GetPeriodicReports" layoutX="59.0" layoutY="117.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Get Periodic Reports" textFill="WHITE">
+      <Button fx:id="GetPeriodicReports" layoutX="59.0" layoutY="117.0" mnemonicParsing="false" onAction="#onReports" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Get Periodic Reports" textFill="WHITE">
          <font>
             <Font name="Eras Demi ITC" size="11.0" />
          </font>

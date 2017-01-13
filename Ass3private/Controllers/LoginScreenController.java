@@ -52,9 +52,6 @@ public class LoginScreenController extends AbstractClient {
 		}
 	}
 
-	public void onExit(){
-		Main.exit();
-	}
 
 
 
@@ -78,8 +75,12 @@ public class LoginScreenController extends AbstractClient {
 					book.bookList = new ArrayList<Book>();
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
+<<<<<<< HEAD
+					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+=======
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
 
+>>>>>>> refs/remotes/origin/master
 				}
 			};
 			initialize.start();
@@ -118,10 +119,11 @@ public class LoginScreenController extends AbstractClient {
 			if(msg instanceof Worker)
 				currentWorker = (Worker)msg;
 			if(msg instanceof Reader)
-			{		
+			{  
 				System.out.println("its a reader!");
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getFirstName());
+				Main.setCurrentUser((Reader)msg);
 				isLoggedFlag=true;
 				whatAmI="reader";
 			}
@@ -133,11 +135,11 @@ public class LoginScreenController extends AbstractClient {
 				User res = (User)msg;
 				if(res.getType()==2){
 					/*System.out.println("its a Worker!");
-					Worker worker = new Worker();
-					worker = (Worker)msg;
-					currentWorker = (Worker)msg;
-					System.out.println(currentWorker.getWorkerID());*/
-					whatAmI="worker";						
+     Worker worker = new Worker();
+     worker = (Worker)msg;
+     currentWorker = (Worker)msg;
+     System.out.println(currentWorker.getWorkerID());*/
+					whatAmI="worker";      
 				}//end if
 				else if(res.getType()==3)
 					whatAmI="manager";

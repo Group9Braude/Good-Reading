@@ -53,51 +53,111 @@ public class MyServer extends AbstractServer {
 				initializeBookList((Book)msg, client);break;
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
+			case "getUserBooks":
+				getUserBooks((Reader)msg, client);break;
+			case "TempRemoveAbook":
+				tempremoveabook((Book)msg,client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
 			case "creditCard":
 				addCreditCard((CreditCard)msg,client); break;
 			case "FindLoggedReaders":
-				find("readers", "isLoggedIn='1';", "LoggedReaders",client);break;
+				find("readers", "isLoggedIn='1';", " is logged in!",client);break;
 			case "FindLoggedWorkers":
-				find("workers", "isLoggedIn='1';", "LoggedWorkers",client);break;
+				find("workers", "isLoggedIn='1';", " is logged in!",client);break;
 			case "FindAllManagers":
-				find("workers", "isManager='1';", "AllManagers",client);break;
+				find("workers", "isManager='1';", " is a manager!",client);break;
 			case "FindAllWorkers":
-				find("workers", "isManager='0';", "AllWorkers",client);break;
+				find("workers", "isManager='0';", " is a worker!",client);break;
 			case "FindDebtReaders":
-				find("readers", "debt is not null;", "DebtReaders",client);break;
+				find("readers", "debt is not null;", " is in debt!",client);break;
 			case "FindFrozenReaders":
-				find("readers", "isFrozen='1';", "FrozenReaders",client);break;
+				find("readers", "isFrozen='1';", " has his account frozen!",client);break;
 			case "FindWorkers":
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+			case "AddReview":
+				addReview((Review)msg,client);
+			case "activeBooks":
+				activeBooks((Book)msg, client);break;
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
+	
+	private void addReview(Review review, ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getReaderID() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "');" );
+			client.sendToClient("Thank you for submitting a review! If your review will be approved by one of our workers, it will be published.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void getUserBooks(Reader msg, ConnectionToClient client) {
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM orderedbooks WHERE readerID= '"+((Reader)msg).getID()+"';";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<OrderedBook> userbooks = new ArrayList<OrderedBook>();
+			while(rs.next()){
+				userbooks.add( new OrderedBook (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4)));
+
+			}
+			client.sendToClient(userbooks);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}			
+	}
+
+	private void activeBooks(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 0 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void tempremoveabook(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 1 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 
 
 	public void findReaders(Reader reader, ConnectionToClient client){
-		ArrayList<String> readersList = new ArrayList<String>();
-		readersList.add("Readers");
 		try {
 			Statement stmt = conn.createStatement();
 			System.out.println("Query:" + reader.query);
 			ResultSet rs = stmt.executeQuery(reader.query);
-
 			while(rs.next())
-				readersList.add(rs.getString(1) + "  " + rs.getString(3) + "   " + rs.getString(4));
-			client.sendToClient(readersList);
-		} catch (Exception e) {e.printStackTrace();}
+				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a reader!");
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
+<<<<<<< HEAD
  
+=======
+>>>>>>> refs/remotes/origin/master
 
 	public void findWorkers(Worker worker, ConnectionToClient client){
-		ArrayList<String> workersList = new ArrayList<String>();
-		workersList.add("Workers");
 		try {
 			Statement stmt = conn.createStatement();
 			System.out.println("Query:" + worker.query);
@@ -113,8 +173,6 @@ public class MyServer extends AbstractServer {
 
 	public void find(String from, String where,String isWhat, ConnectionToClient client){
 		ArrayList<String> arr = new ArrayList<String>();
-		System.out.println(isWhat);
-		arr.add(isWhat);
 		Statement stmt;
 		try{
 			stmt = conn.createStatement();
@@ -259,7 +317,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
@@ -332,8 +390,17 @@ public class MyServer extends AbstractServer {
 							reader.setCardnum(rs1.getString(12));
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
+							
+							//Getting the list of books the current user has ordered
+							Statement stmt2 = conn.createStatement();
+							ResultSet rs2 = stmt2.executeQuery("select * from orderedbooks where readerID='"+reader.getID()+"';");
+							ArrayList<OrderedBook> books = new ArrayList<OrderedBook>();
+							while(rs2.next())
+								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
+							reader.setMyBooks(books);
+							//Getting the list of books the current user has ordered
+							
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
-							System.out.println(reader.getFirstName());
 							client.sendToClient(reader);
 						}
 					}

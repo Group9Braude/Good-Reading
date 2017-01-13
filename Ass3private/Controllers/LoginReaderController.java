@@ -1,6 +1,6 @@
 package Controllers;
 
-import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 import Entities.OrderedBook;
 import Entities.Reader;
@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.ComboBoxListCell;
 
 public class LoginReaderController {
  
@@ -20,12 +19,12 @@ public class LoginReaderController {
 	@FXML
 	TextField subscribeText;
     @FXML
-    public ObservableList <OrderedBook> items= FXCollections.observableArrayList();
-    public ListView <OrderedBook> bookList= new ListView<OrderedBook>(items);
+    public ObservableList <OrderedBook> items = FXCollections.observableArrayList();
+    public ListView <OrderedBook> bookList = new ListView<OrderedBook>(items);
 	@FXML
 	Button Subscribe;
 	private Reader reader;
-	ArrayList<String>names = new ArrayList<String>();
+	public static OrderedBook selectedBook;
 	
 	@FXML
 	public void initialize()
@@ -58,5 +57,13 @@ public class LoginReaderController {
 	public void onSubscribe()
 	{
 		Main.showSubscriptionScreen();
+	}
+	
+	public void onReview()
+	{
+		selectedBook = bookList.getSelectionModel().getSelectedItem();
+		if(selectedBook != null)
+			Main.showReviewScreen();
+		else JOptionPane.showMessageDialog(null, "You must first select a book!");
 	}
 }

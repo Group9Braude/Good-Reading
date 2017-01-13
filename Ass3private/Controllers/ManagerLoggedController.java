@@ -14,7 +14,10 @@ public class ManagerLoggedController {
   * @throws IOException
   */
  public void goTempRemoveAbook() throws IOException{
-  Main.showTempRemoveAbook();
-  
+	 Main.showTempRemoveAbook();
+ }
+ 
+ public void onReports() throws IOException{
+	 Main.showReports();
  }
 }
