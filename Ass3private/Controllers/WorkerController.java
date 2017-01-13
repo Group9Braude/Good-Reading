@@ -11,10 +11,12 @@ import Entities.Reader;
 import Entities.User;
 import Entities.Worker;
 import application.Main;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +25,8 @@ import javafx.scene.text.Text;
 import ocsf.client.AbstractClient;
 
 public class WorkerController extends AbstractClient {
+
+	static private ArrayList<String> foundReaders, foundWorkers;
 
 	@FXML
 	private Button addBookButton;
@@ -35,15 +39,18 @@ public class WorkerController extends AbstractClient {
 	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
 	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
 	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
-	private ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
-
+	@FXML
+	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
+	@FXML
+	private ListView<String> foundReadersListView, foundWorkersListView;
 
 
 
 
 	public WorkerController() {
 		super(Main.host, Main.port);
-
+		foundReaders = null;
+		foundWorkers = null;
 	}
 
 
@@ -158,7 +165,7 @@ Main.popup.show();*/
 		book.query=query;
 		//System.out.println(query);
 		sendServer(book, "RemoveBook");
-		}//end onRemoveBook
+	}//end onRemoveBook
 
 
 
@@ -177,10 +184,10 @@ Main.popup.show();*/
 
 	public void onWorkerSearch(){
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
-			workerID=workerIDTextFieldW.getText();
-			// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
-			//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
-				
+				workerID=workerIDTextFieldW.getText();
+		// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
+		//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+
 		Worker worker = new Worker();
 		worker.query="SELECT * FROM workers WHERE ";
 		if(!firstName.equals(""))
@@ -198,85 +205,137 @@ Main.popup.show();*/
 		worker.query="";
 		worker.query += query;
 		sendServer(worker, "FindWorkers");
+		workerLVUpdate();		
 	}//End onWorkerSearch
-	
-	
+
+
 	public  void onLogout(){
 		System.out.println(User.currentWorker.getWorkerID());
 		Worker worker = new Worker();
 		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
 		sendServer(worker, "LogOutUser");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
-		
+
 	}
 
-	
-	
-	
+
+
+
 	public void onReaderSearch(){
 		String lastName=lastNameTextFieldR.getText(),firstName=firstNameTextFieldR.getText(), id=idTextFieldR.getText(),
 				readerID = readerIDTextFieldR.getText();
-				// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
-				//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
-					
-			Reader reader = new Reader();
-			reader.query="SELECT * FROM readers WHERE ";
-			if(!firstName.equals(""))
-				reader.query+=("firstName LIKE '%"+firstName +"%' AND ");
-			if(!lastName.equals(""))
-				reader.query +=("lastName LIKE '%"+lastName+"%' AND ");
-			if(!readerID.equals(""))
-				reader.query +=("readerID='"+readerID+"' AND ");
-			if(!id.equals(""))
-				reader.query +=("id='"+id+"' AND ");
-			String query = "";
-			for(int i=0;i<reader.query.length()-5;i++)
-				query+=reader.query.charAt(i);
-			query+=";";
-			reader.query="";
-			reader.query += query;
-			sendServer(reader, "FindReaders");
-		
-		
+		// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
+		//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+
+		Reader reader = new Reader();
+		reader.query="SELECT * FROM readers WHERE ";
+		if(!firstName.equals(""))
+			reader.query+=("firstName LIKE '%"+firstName +"%' AND ");
+		if(!lastName.equals(""))
+			reader.query +=("lastName LIKE '%"+lastName+"%' AND ");
+		if(!readerID.equals(""))
+			reader.query +=("readerID='"+readerID+"' AND ");
+		if(!id.equals(""))
+			reader.query +=("id='"+id+"' AND ");
+		String query = "";
+		for(int i=0;i<reader.query.length()-5;i++)
+			query+=reader.query.charAt(i);
+		query+=";";
+		reader.query="";
+		reader.query += query;
+		sendServer(reader, "FindReaders");
+		readerLVUpdate();
+
 	}
+	
+	
+	public void readerLVUpdate(){
+		while(foundReaders==null)
+			try {
+				System.out.println("sleep");
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		ObservableList<String> items =FXCollections.observableArrayList();
+		items.addAll(foundReaders);
+		foundReadersListView.setItems(items);	
+	}
+	
+	public void workerLVUpdate(){
+		while(foundWorkers==null)
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		ObservableList<String> items =FXCollections.observableArrayList();
+		items.addAll(foundWorkers);
+		foundWorkersListView.setItems(items);
+	}
+	
 	public void onLoggedReaders(){
 		Reader reader = new Reader();
 		sendServer(reader, "FindLoggedReaders");
+		readerLVUpdate();
 	}
 	public void onDebtReaders(){
 		Reader reader = new Reader();
 		sendServer(reader, "FindDebtReaders");
+		readerLVUpdate();
 	}
 	public void onFrozenReaders(){
 		Reader reader = new Reader();
 		sendServer(reader, "FindFrozenReaders");
+		readerLVUpdate();
 	}
 	public void onAllManagers(){
 		Worker worker = new Worker();
 		sendServer(worker, "FindAllManagers");
+		workerLVUpdate();
 	}
 	public void onAllWorkers(){
 		Worker worker = new Worker();
 		sendServer(worker, "FindAllWorkers");
+		workerLVUpdate();
 	}
 	public void onLoggedWorkers(){
 		Worker worker=  new Worker();
 		sendServer(worker, "FindLoggedWorkers");
+		workerLVUpdate();
 	}
 
 
+	@SuppressWarnings("unchecked")
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof String)
 			System.out.println((String)msg);
-		else if(((ArrayList<?>)msg).get(0) instanceof Book){
+
+		if(((ArrayList<?>)msg).get(0) instanceof Book){
 			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
 		}
-		else if(((ArrayList<?>)msg).get(0) instanceof String){
-			for(String str:(ArrayList<String>)msg)
-				System.out.println(str);
+		String str = (String)((ArrayList<?>)msg).get(0);
+		System.out.println(str);
+		switch(str){
+		case "Readers":
+			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
+		case "Workers":
+			foundWorkers = new ArrayList<>((ArrayList<String>)msg);break;
+		case "LoggedReaders":
+			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
+		case "LoggedWorkers":
+			foundWorkers = new ArrayList<>((ArrayList<String>)msg);break;
+		case "AllManagers":
+			foundWorkers = new ArrayList<>((ArrayList<String>)msg);break;
+		case "AllWorkers":
+			foundWorkers = new ArrayList<>((ArrayList<String>)msg);break;
+		case "DebtReaders":
+			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
+		case "FrozenReaders":
+			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
+
 		}
 	}
-
-
 }
+
