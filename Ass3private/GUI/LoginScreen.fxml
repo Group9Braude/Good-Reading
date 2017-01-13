@@ -22,5 +22,6 @@
             <Image url="@../../../../../Desktop/Ass3Logos/Button.png" />
          </image>
       </ImageView>
+      <Button layoutX="167.0" layoutY="262.0" mnemonicParsing="false" onAction="#onLogin" text="Login" />
    </children>
 </AnchorPane>

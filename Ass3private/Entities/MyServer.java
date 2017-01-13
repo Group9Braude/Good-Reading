@@ -53,6 +53,8 @@ public class MyServer extends AbstractServer {
 				initializeBookList((Book)msg, client);break;
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
+			case "getUserBooks":
+				getUserBooks((Reader)msg, client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
 			case "creditCard":
@@ -73,19 +75,33 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
-<<<<<<< HEAD
-			case "activeBooks":
+				case "activeBooks":
 				activeBooks((Book)msg, client);break;
 
-=======
->>>>>>> refs/remotes/origin/master
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-<<<<<<< HEAD
 	
+
+	private void getUserBooks(Reader msg, ConnectionToClient client) {
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM orderedbooks WHERE readerID= '"+((Reader)msg).getID()+"';";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<OrderedBook> userbooks = new ArrayList<OrderedBook>();
+			while(rs.next()){
+				userbooks.add( new OrderedBook (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4)));
+
+			}
+			client.sendToClient(userbooks);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}			
+	}
+
 	private void activeBooks(Book b, ConnectionToClient client){
 		Statement stmt;
 		try {
@@ -109,9 +125,6 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
-=======
-
->>>>>>> refs/remotes/origin/master
 	public void findReaders(Reader reader, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -287,7 +300,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
