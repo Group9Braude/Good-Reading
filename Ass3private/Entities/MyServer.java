@@ -55,6 +55,8 @@ public class MyServer extends AbstractServer {
 				initializeWorkerList((Worker)msg, client);break;
 			case "getUserBooks":
 				getUserBooks((Reader)msg, client);break;
+			case "TempRemoveAbook":
+				tempremoveabook((Book)msg,client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
 			case "creditCard":
