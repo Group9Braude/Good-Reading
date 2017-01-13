@@ -119,6 +119,7 @@ public class LoginScreenController extends AbstractClient {
 				System.out.println("its a reader!");
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getFirstName());
+				Main.setCurrentUser((Reader)msg);
 				isLoggedFlag=true;
 				whatAmI="reader";
 			}

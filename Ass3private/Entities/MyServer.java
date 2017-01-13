@@ -73,10 +73,23 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+			case "AddReview":
+				addReview((Review)msg,client);
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
+	}
+	
+	private void addReview(Review review, ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getReaderID() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "');" );
+			client.sendToClient("Thank you for submitting a review! If your review will be approved by one of our workers, it will be published.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void findReaders(Reader reader, ConnectionToClient client){
@@ -254,7 +267,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
