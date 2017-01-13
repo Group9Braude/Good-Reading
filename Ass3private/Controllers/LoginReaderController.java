@@ -53,7 +53,7 @@ public class LoginReaderController {
 		default:break;
 		}
 	} 
-	
+	     
 	public void onSubscribe()
 	{
 		Main.showSubscriptionScreen();

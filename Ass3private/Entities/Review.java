@@ -31,7 +31,7 @@ public class Review extends GeneralMessage
 		this.review = review;
 	}
 	
-	public String getKeyword() {
+	public String getKeyword() { 
 		return keyword;
 	}
 	

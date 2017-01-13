@@ -39,7 +39,7 @@ public class Main extends Application {
 	public static Stage getStage()
 	{ 
 		return primaryStage;
-	}
+	} 
 
 	public static void showSearchUser() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
@@ -48,6 +48,8 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
+	
+	
 
 	public static void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 

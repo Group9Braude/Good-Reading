@@ -14,7 +14,7 @@ public class Reader extends User
 	public String query;
 	
 	public Reader(){}// LOOK ERAN! ADDED! Answer: I didn't need it so I didn't add it
-	
+	 
 	public Reader(String id, String password) 
 	{
 		super(id, password);

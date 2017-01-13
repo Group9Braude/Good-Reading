@@ -11,10 +11,10 @@ public class Worker extends User implements Serializable {
 	public static ArrayList<Worker> workerList;
 	public String query;
 	
-	public String toString(){
+	public String toString(){ 
 		String str;
 		return null;
-	}
+	} 
 	
 	public Worker(String workerID, String firstName, String lastName, String id, String email, String role,
 			String department, int isManager, int isLoggedIn) {

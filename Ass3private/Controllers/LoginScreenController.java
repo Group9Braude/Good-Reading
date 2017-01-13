@@ -37,7 +37,7 @@ public class LoginScreenController extends AbstractClient {
 
 	public LoginScreenController() {
 		super(host, port);
-
+ 
 	}
 
 
@@ -50,6 +50,11 @@ public class LoginScreenController extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void onExit()
+	{
+		
 	}
 
 
@@ -75,12 +80,12 @@ public class LoginScreenController extends AbstractClient {
 					book.bookList = new ArrayList<Book>();
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
-<<<<<<< HEAD
-					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-=======
+
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
 
->>>>>>> refs/remotes/origin/master
+					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+
+
 				}
 			};
 			initialize.start();

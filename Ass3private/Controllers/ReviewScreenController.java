@@ -48,7 +48,7 @@ public class ReviewScreenController extends AbstractClient
 			JOptionPane.showMessageDialog(null, "First enter the missing details");
 		else{
 			Review review = new Review(reviewBook,keywordField.getText(),reviewField.getText(),signatureField.getText(),0);
-			review.actionNow = "AddReview";
+			review.actionNow = "AddReview"; 
 			try {
 				this.openConnection();
 				this.sendToServer(review);

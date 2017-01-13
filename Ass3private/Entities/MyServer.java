@@ -154,11 +154,13 @@ public class MyServer extends AbstractServer {
 	}
 
 	public void findWorkers(Worker worker, ConnectionToClient client){
+		ArrayList<String> workersList = new ArrayList<String>();
+		workersList.add("Workers");
 		try {
 			Statement stmt = conn.createStatement();
 			System.out.println("Query:" + worker.query);
 			ResultSet rs = stmt.executeQuery(worker.query);
-			while(rs.next())
+			while(rs.next()) 
 				workersList.add(rs.getString(3) + " " + rs.getString(4));
 			client.sendToClient(workersList);
 
