@@ -6,6 +6,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import Entities.Book;
 import Entities.GeneralMessage;
+import Entities.OrderedBook;
 import Entities.Reader;
 import Entities.User;
 import Entities.Worker;
@@ -52,12 +53,15 @@ public class LoginScreenController extends AbstractClient {
 		}
 	}
 
+	public void onExit(){
+		Main.exit();
+	}
 
 
 
 	public void onLogin(){
-        File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
-        Image image = new Image(file.toURI().toString());
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
+		Image image = new Image(file.toURI().toString());
 		loginImageView.setImage(image);
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
@@ -68,6 +72,7 @@ public class LoginScreenController extends AbstractClient {
 			catch (InterruptedException e) {e.printStackTrace();}
 		}
 		if(whatAmI!="User does not exist in the DB"){
+			System.out.println("entered");
 			Thread initialize = new Thread(){
 				public void run(){
 					Book book = new Book();
@@ -76,7 +81,10 @@ public class LoginScreenController extends AbstractClient {
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+<<<<<<< HEAD
+=======
 
+>>>>>>> refs/remotes/origin/master
 				}
 			};
 			initialize.start();
@@ -97,8 +105,8 @@ public class LoginScreenController extends AbstractClient {
 
 	public void onPress(){
 		System.out.println("Press");
-        File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
-        Image image = new Image(file.toURI().toString());
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
+		Image image = new Image(file.toURI().toString());
 		loginImageView.
 		setImage(image);
 	}
@@ -146,7 +154,6 @@ public class LoginScreenController extends AbstractClient {
 				Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
 			else if(((ArrayList<?>)msg).get(0) instanceof Worker)
 				Worker.workerList.addAll(((ArrayList<Worker>)msg));//now we have the workers in arraylist
-
 		}//end if arraylist
 	}
 

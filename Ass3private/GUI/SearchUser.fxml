@@ -32,9 +32,10 @@
                   <TextField fx:id="workerIDTextFieldW" layoutX="409.0" layoutY="87.0" />
                   <ChoiceBox fx:id="roleChoiceBox" layoutX="175.0" layoutY="148.0" prefWidth="150.0" />
                   <ChoiceBox fx:id="departmentChoiceBox" layoutX="409.0" layoutY="148.0" prefWidth="150.0" />
-                  <Button layoutX="325.0" layoutY="206.0" mnemonicParsing="false" onAction="#onWorkerSearch" prefHeight="25.0" prefWidth="84.0" text="SEARCH" />
+                  <Button layoutX="324.0" layoutY="193.0" mnemonicParsing="false" onAction="#onWorkerSearch" prefHeight="25.0" prefWidth="84.0" text="SEARCH" />
                   <Button layoutX="11.0" layoutY="322.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="157.0" text="BACK" />
                   <Button layoutX="14.0" layoutY="219.0" mnemonicParsing="false" onAction="#onAllWorkers" prefHeight="25.0" prefWidth="151.0" text="See All The Workers" />
+                  <ListView fx:id="foundWorkersListView" layoutX="200.0" layoutY="222.0" prefHeight="145.0" prefWidth="380.0" />
                </children></AnchorPane>
       </content>
     </Tab>
@@ -52,20 +53,21 @@
                   <Text layoutX="409.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" wrappingWidth="64.13671875" />
                   <Text layoutX="175.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Permission" wrappingWidth="59.13671875" />
                   <Text layoutX="175.0" layoutY="148.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Allowed" wrappingWidth="70.13671875" />
-                  <Text fx:id="subscriptionTextFieldR" layoutX="406.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription" wrappingWidth="69.13671875" />
+                  <Text fx:id="subscriptionTextFieldR" layoutX="406.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription" wrappingWidth="69.13671875" />
                   <Button layoutX="18.0" layoutY="275.0" mnemonicParsing="false" onAction="#onFrozenReaders" prefHeight="25.0" prefWidth="138.0" text="See All Frozen Readers" />
                   <Button layoutX="17.0" layoutY="186.0" mnemonicParsing="false" onAction="#onLoggedReaders" text="See Logged In Readers" />
                   <TextField fx:id="idTextFieldR" layoutX="175.0" layoutY="37.0" promptText="id" />
                   <TextField fx:id="lastNameTextFieldR" layoutX="175.0" layoutY="95.0" promptText="last name" />
                   <TextField fx:id="firstNameTextFieldR" layoutX="410.0" layoutY="37.0" promptText="first name" />
                   <ChoiceBox fx:id="permissionChoiceBoxR" layoutX="175.0" layoutY="199.0" prefWidth="150.0" />
-                  <ChoiceBox fx:id="allowedChoiceBoxR" layoutX="409.0" layoutY="199.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="allowedChoiceBoxR" layoutX="410.0" layoutY="140.0" prefWidth="150.0" />
                   <Button layoutX="18.0" layoutY="232.0" mnemonicParsing="false" onAction="#onDebtReaders" prefHeight="25.0" prefWidth="138.0" text="See Readers In Debt" />
                   <ChoiceBox fx:id="subscriptionChoiceBoxR" layoutX="175.0" layoutY="152.0" prefWidth="150.0" />
-                  <Button layoutX="325.0" layoutY="245.0" mnemonicParsing="false" onAction="#onReaderSearch" prefHeight="25.0" prefWidth="101.0" text="Search" />
+                  <Button layoutX="435.0" layoutY="212.0" mnemonicParsing="false" onAction="#onReaderSearch" prefHeight="25.0" prefWidth="101.0" text="Search" />
                   <Button layoutX="18.0" layoutY="319.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="138.0" text="BACK" />
                   <TextField fx:id="readerIDTextFieldR" layoutX="410.0" layoutY="95.0" promptText="reader id" />
                   <Text layoutX="415.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader ID" />
+                  <ListView fx:id="foundReadersListView" layoutX="168.0" layoutY="230.0" prefHeight="132.0" prefWidth="262.0" />
                </children></AnchorPane>
       </content>
     </Tab>

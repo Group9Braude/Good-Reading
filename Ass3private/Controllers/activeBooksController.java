@@ -14,7 +14,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import ocsf.client.AbstractClient;
 
-public class TempRemoveAbookController extends AbstractClient  {
+public class activeBooksController extends AbstractClient  {
 
 	int index;
 	ObservableList<String> options = FXCollections.observableArrayList();	
@@ -22,7 +22,7 @@ public class TempRemoveAbookController extends AbstractClient  {
 	private ChoiceBox booknames;
 	ArrayList<Book> book;
 
-	public TempRemoveAbookController() {
+	public activeBooksController() {
 		super(Main.host, Main.port);
 		// TODO Auto-generated constructor stub
 	}
@@ -34,7 +34,7 @@ public class TempRemoveAbookController extends AbstractClient  {
 		book=new ArrayList<Book>();
 		/*Making an array list of book names*/
 		for(int i=0;i<Book.bookList.size();i++){
-			if(Book.bookList.get(i).getisSuspend()==0){
+			if(Book.bookList.get(i).getisSuspend()==1){
 				book.add(Book.bookList.get(i));
 				String s="id:"+Book.bookList.get(i).getBookid()+"  "+Book.bookList.get(i).getTitle();
 				options.add(s);
@@ -45,7 +45,7 @@ public class TempRemoveAbookController extends AbstractClient  {
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
-		TempRemoveAbookController client = new TempRemoveAbookController();
+		activeBooksController client = new activeBooksController();
 		try {
 			client.openConnection();
 			client.sendToServer(msg);
@@ -54,13 +54,13 @@ public class TempRemoveAbookController extends AbstractClient  {
 		}
 	}
 
-	public void onSuspend(){
+	public void onActivate(){
 		index=booknames.getSelectionModel().getSelectedIndex();//chosen book; indexs refer to the unsuspend books
 		for(int i=0;i<Book.bookList.size();i++)
 			if(Book.bookList.get(i).getBookid()==book.get(index).getBookid())
-				Book.bookList.get(i).setisSuspend(1);
-		sendServer(book.get(index),"TempRemoveAbook");//send Book type
-		JOptionPane.showMessageDialog(null, "The book has been suspended successfuly!");
+				Book.bookList.get(i).setisSuspend(0);
+		sendServer(book.get(index),"activeBooks");//send Book type
+		JOptionPane.showMessageDialog(null, "The book has been activated successfuly!");
 		try {
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
@@ -76,14 +76,6 @@ public class TempRemoveAbookController extends AbstractClient  {
 	}
 	public void onBack() throws IOException{
 		  Main.showManagerLoggedScreen();
-	}
-	public void onActivate(){
-		try {
-			Main.showActiveBooks();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 	@Override
 	protected void handleMessageFromServer(Object msg) {

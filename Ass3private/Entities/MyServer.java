@@ -53,6 +53,8 @@ public class MyServer extends AbstractServer {
 				initializeBookList((Book)msg, client);break;
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
+			case "getUserBooks":
+				getUserBooks((Reader)msg, client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
 			case "creditCard":
@@ -75,6 +77,8 @@ public class MyServer extends AbstractServer {
 				findReaders((Reader)msg, client);break;
 			case "AddReview":
 				addReview((Review)msg,client);
+			case "activeBooks":
+				activeBooks((Book)msg, client);break;
 			default:
 				break;
 			}
@@ -91,6 +95,48 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+
+	private void getUserBooks(Reader msg, ConnectionToClient client) {
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM orderedbooks WHERE readerID= '"+((Reader)msg).getID()+"';";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<OrderedBook> userbooks = new ArrayList<OrderedBook>();
+			while(rs.next()){
+				userbooks.add( new OrderedBook (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4)));
+
+			}
+			client.sendToClient(userbooks);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}			
+	}
+
+	private void activeBooks(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 0 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	private void tempremoveabook(Book b, ConnectionToClient client){
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate("Update books set isSuspend= 1 where bookid = '"+b.getBookid()+"';");
+			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
+		} catch (SQLException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+
 
 	public void findReaders(Reader reader, ConnectionToClient client){
 		try {
@@ -111,7 +157,8 @@ public class MyServer extends AbstractServer {
 			System.out.println("Query:" + worker.query);
 			ResultSet rs = stmt.executeQuery(worker.query);
 			while(rs.next())
-				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a worker!");
+				workersList.add(rs.getString(3) + " " + rs.getString(4));
+			client.sendToClient(workersList);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,12 +171,9 @@ public class MyServer extends AbstractServer {
 		try{
 			stmt = conn.createStatement();
 			String query = "SELECT * FROM " + from + " WHERE " + where;
-			System.out.println(query);
-			String str;
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				str = rs.getString(3) + " " + rs.getString(4) + isWhat;
-				arr.add(str);
+				arr.add(rs.getString(3) + " " + rs.getString(4));
 			}
 			client.sendToClient(arr);
 		}catch(Exception e){e.printStackTrace();}

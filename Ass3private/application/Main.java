@@ -86,6 +86,9 @@ public class Main extends Application {
 
 	}	 
 
+	public static void exit(){
+		primaryStage.close();
+	}
 
 	public static void showLoggedInScreenWorker() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
@@ -135,6 +138,13 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
+	public static void showActiveBooks() throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/ActiveBooks.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
 
 	public static void showRemoveBook() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
@@ -159,7 +169,13 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-
+	public static void showReports() throws IOException {
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/Reports.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();		
+	}
 	public void stop()
 	{
 		if(currentUser != null)
