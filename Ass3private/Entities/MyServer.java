@@ -62,17 +62,17 @@ public class MyServer extends AbstractServer {
 			case "creditCard":
 				addCreditCard((CreditCard)msg,client); break;
 			case "FindLoggedReaders":
-				find("readers", "isLoggedIn='1';", " is logged in!",client);break;
+				find("readers", "isLoggedIn='1';", "LoggedReaders",client);break;
 			case "FindLoggedWorkers":
-				find("workers", "isLoggedIn='1';", " is logged in!",client);break;
+				find("workers", "isLoggedIn='1';", "LoggedWorkers",client);break;
 			case "FindAllManagers":
-				find("workers", "isManager='1';", " is a manager!",client);break;
+				find("workers", "isManager='1';", "AllManagers",client);break;
 			case "FindAllWorkers":
-				find("workers", "isManager='0';", " is a worker!",client);break;
+				find("workers", "isManager='0';", "AllWorkers",client);break;
 			case "FindDebtReaders":
-				find("readers", "debt is not null;", " is in debt!",client);break;
+				find("readers", "debt is not null;", "DebtReaders",client);break;
 			case "FindFrozenReaders":
-				find("readers", "isFrozen='1';", " has his account frozen!",client);break;
+				find("readers", "isFrozen='1';", "FrozenReaders",client);break;
 			case "FindWorkers":
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
@@ -86,7 +86,7 @@ public class MyServer extends AbstractServer {
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-	
+
 	private void addReview(Review review, ConnectionToClient client)
 	{
 		try {
@@ -97,7 +97,6 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-
 	private void getUserBooks(Reader msg, ConnectionToClient client) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -112,7 +111,7 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(userbooks);
 		} catch (Exception  e) {
 			e.printStackTrace();
-		}			
+		}                        
 	}
 
 	private void activeBooks(Book b, ConnectionToClient client){
@@ -135,27 +134,22 @@ public class MyServer extends AbstractServer {
 		} catch (SQLException | IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-
-
+		}       }
 
 	public void findReaders(Reader reader, ConnectionToClient client){
+		ArrayList<String> readersList = new ArrayList<String>();
+		readersList.add("Readers");
 		try {
 			Statement stmt = conn.createStatement();
 			System.out.println("Query:" + reader.query);
 			ResultSet rs = stmt.executeQuery(reader.query);
-			while(rs.next())
-				System.out.println(rs.getString(3) + " " + rs.getString(4) + " is a reader!");
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+			while(rs.next())
+				readersList.add(rs.getString(1) + "  " + rs.getString(3) + "   " + rs.getString(4));
+			client.sendToClient(readersList);
+		} catch (Exception e) {e.printStackTrace();}
 	}
-<<<<<<< HEAD
- 
-=======
->>>>>>> refs/remotes/origin/master
+
 
 	public void findWorkers(Worker worker, ConnectionToClient client){
 		ArrayList<String> workersList = new ArrayList<String>();
@@ -164,7 +158,7 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			System.out.println("Query:" + worker.query);
 			ResultSet rs = stmt.executeQuery(worker.query);
-			while(rs.next()) 
+			while(rs.next())
 				workersList.add(rs.getString(3) + " " + rs.getString(4));
 			client.sendToClient(workersList);
 
@@ -175,6 +169,8 @@ public class MyServer extends AbstractServer {
 
 	public void find(String from, String where,String isWhat, ConnectionToClient client){
 		ArrayList<String> arr = new ArrayList<String>();
+		System.out.println(isWhat);
+		arr.add(isWhat);
 		Statement stmt;
 		try{
 			stmt = conn.createStatement();
@@ -319,7 +315,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
@@ -353,8 +349,13 @@ public class MyServer extends AbstractServer {
 				try {
 					if(rs.getString(2).equals(password))
 					{
-						if(rs.getInt(9)==1)//It is a manager!
+						if(rs.getInt(9)==1){//It is a manager!
 							user.setType(3);
+							worker = new Worker();
+							worker.setWorkerID(rs.getString(1));
+							stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");
+
+						}
 						else{
 							user.setType(2);//It is a worker!
 							worker = new Worker();
@@ -392,7 +393,6 @@ public class MyServer extends AbstractServer {
 							reader.setCardnum(rs1.getString(12));
 							reader.setExpDate(rs1.getString(13));
 							reader.setSecCode(rs1.getString(14));
-							
 							//Getting the list of books the current user has ordered
 							Statement stmt2 = conn.createStatement();
 							ResultSet rs2 = stmt2.executeQuery("select * from orderedbooks where readerID='"+reader.getID()+"';");
@@ -401,8 +401,8 @@ public class MyServer extends AbstractServer {
 								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
 							reader.setMyBooks(books);
 							//Getting the list of books the current user has ordered
-							
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
+							System.out.println(reader.getFirstName());
 							client.sendToClient(reader);
 						}
 					}
@@ -425,6 +425,9 @@ public class MyServer extends AbstractServer {
 			e1.printStackTrace();
 		}
 	}
+
+
+
 }
 
 

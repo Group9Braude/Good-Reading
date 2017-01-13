@@ -41,6 +41,12 @@ public class Main extends Application {
 		return primaryStage;
 	} 
 
+	
+
+	public static void onExit(){
+		primaryStage.close();
+	}
+	
 	public static void showSearchUser() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/SearchUser.fxml"));
@@ -48,8 +54,8 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
-	
-	
+
+
 
 	public static void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
@@ -65,7 +71,7 @@ public class Main extends Application {
 	{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/GUI/chooseSubscriptionScreen.fxml"));
-		try {			 
+		try {    
 			mainLayout =  loader.load();
 			primaryStage.setScene(new Scene(mainLayout));
 			primaryStage.show();
@@ -86,11 +92,8 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 
-	}	 
+	}  
 
-	public static void exit(){
-		primaryStage.close();
-	}
 
 	public static void showLoggedInScreenWorker() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
@@ -155,7 +158,7 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
-	
+
 	public static void showReviewScreen()
 	{
 		FXMLLoader loader = new FXMLLoader();
@@ -176,7 +179,7 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/Reports.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
-		primaryStage.show();		
+		primaryStage.show();  
 	}
 	public void stop()
 	{
@@ -187,7 +190,7 @@ public class Main extends Application {
 			sender.sendServer(toLogOut, "Logout");
 		}
 	}
-	
+
 	public static void main(String[] args) {
 		launch(args);
 	}

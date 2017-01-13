@@ -52,9 +52,9 @@ public class LoginScreenController extends AbstractClient {
 		}
 	}
 	
-	public void onExit()
-	{
-		
+
+	public static void onExit(){
+		Main.onExit();
 	}
 
 
