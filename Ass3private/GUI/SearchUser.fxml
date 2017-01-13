@@ -3,7 +3,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.image.*?>
-<?import java.lang.*?>
+<?import java.lang.*?> 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -12,10 +12,10 @@
     <Tab text="Worker">
       <content>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-               <children>
+                <children>
                   <ImageView fitHeight="175.0" fitWidth="162.0" layoutX="6.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../Desktop/Ass3Logos/Workers.png" />
+                         <Image url="@../../../../../Desktop/Ass3Logos/Workers.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="175.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="49.13671875" />

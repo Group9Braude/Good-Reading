@@ -152,6 +152,10 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
+ 
+=======
+>>>>>>> refs/remotes/origin/master
 
 	public void findWorkers(Worker worker, ConnectionToClient client){
 		ArrayList<String> workersList = new ArrayList<String>();
