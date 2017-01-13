@@ -93,7 +93,7 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(readersList);
 		} catch (Exception e) {e.printStackTrace();}
 	}
-
+ 
 
 	public void findWorkers(Worker worker, ConnectionToClient client){
 		ArrayList<String> workersList = new ArrayList<String>();
