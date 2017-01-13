@@ -55,6 +55,8 @@ public class MyServer extends AbstractServer {
 				initializeWorkerList((Worker)msg, client);break;
 			case "getUserBooks":
 				getUserBooks((Reader)msg, client);break;
+			case "TempRemoveAbook":
+				tempremoveabook((Book)msg,client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
 			case "creditCard":
@@ -75,20 +77,14 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
-<<<<<<< HEAD
 				case "activeBooks":
 				activeBooks((Book)msg, client);break;
-
-=======
->>>>>>> refs/remotes/origin/master
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-<<<<<<< HEAD
 	
-
 	private void getUserBooks(Reader msg, ConnectionToClient client) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -128,13 +124,7 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-=======
->>>>>>> refs/remotes/origin/master
 
-<<<<<<< HEAD
-=======
-
->>>>>>> refs/remotes/origin/master
 	public void findReaders(Reader reader, ConnectionToClient client){
 		ArrayList<String> readersList = new ArrayList<String>();
 		readersList.add("Readers");

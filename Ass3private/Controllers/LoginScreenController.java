@@ -6,7 +6,6 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 
 import Entities.Book;
 import Entities.GeneralMessage;
-import Entities.OrderedBook;
 import Entities.Reader;
 import Entities.User;
 import Entities.Worker;
@@ -53,9 +52,6 @@ public class LoginScreenController extends AbstractClient {
 		}
 	}
 
-	public void onExit(){
-		Main.exit();
-	}
 
 
 
@@ -72,7 +68,6 @@ public class LoginScreenController extends AbstractClient {
 			catch (InterruptedException e) {e.printStackTrace();}
 		}
 		if(whatAmI!="User does not exist in the DB"){
-			System.out.println("entered");
 			Thread initialize = new Thread(){
 				public void run(){
 					Book book = new Book();
@@ -81,10 +76,7 @@ public class LoginScreenController extends AbstractClient {
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-<<<<<<< HEAD
-=======
 
->>>>>>> refs/remotes/origin/master
 				}
 			};
 			initialize.start();
@@ -123,10 +115,11 @@ public class LoginScreenController extends AbstractClient {
 			if(msg instanceof Worker)
 				currentWorker = (Worker)msg;
 			if(msg instanceof Reader)
-			{		
+			{  
 				System.out.println("its a reader!");
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getFirstName());
+				Main.setCurrentUser((Reader)msg);
 				isLoggedFlag=true;
 				whatAmI="reader";
 			}
@@ -138,11 +131,11 @@ public class LoginScreenController extends AbstractClient {
 				User res = (User)msg;
 				if(res.getType()==2){
 					/*System.out.println("its a Worker!");
-					Worker worker = new Worker();
-					worker = (Worker)msg;
-					currentWorker = (Worker)msg;
-					System.out.println(currentWorker.getWorkerID());*/
-					whatAmI="worker";						
+     Worker worker = new Worker();
+     worker = (Worker)msg;
+     currentWorker = (Worker)msg;
+     System.out.println(currentWorker.getWorkerID());*/
+					whatAmI="worker";      
 				}//end if
 				else if(res.getType()==3)
 					whatAmI="manager";
@@ -153,6 +146,7 @@ public class LoginScreenController extends AbstractClient {
 				Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
 			else if(((ArrayList<?>)msg).get(0) instanceof Worker)
 				Worker.workerList.addAll(((ArrayList<Worker>)msg));//now we have the workers in arraylist
+
 		}//end if arraylist
 	}
 

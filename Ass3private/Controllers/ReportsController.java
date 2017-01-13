@@ -54,6 +54,7 @@ public class ReportsController extends AbstractClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		System.out.println(obsMyBooks);
 		myBooks.setItems(obsMyBooks);
 	}
 
