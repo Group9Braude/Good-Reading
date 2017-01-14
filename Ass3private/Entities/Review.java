@@ -1,7 +1,7 @@
 package Entities;
 
 public class Review extends GeneralMessage
-{
+{ 
 	private static final long serialVersionUID = 1L;
 	private OrderedBook reviewBook;
 	private String keyword,review,signature;

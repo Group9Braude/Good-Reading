@@ -132,7 +132,7 @@ public class MyServer extends AbstractServer {
 	
 	
 	public void getReviews(Review review, ConnectionToClient client){
-		ArrayList<String> reviewList = new ArrayList<String>();
+		ArrayList<String> reviewList = new ArrayList<String>(); 
 		reviewList.add("SearchReviews");
 		try{
 			Statement stmt = conn.createStatement();

@@ -546,7 +546,7 @@ public class WorkerController extends AbstractClient {
 		}catch(IOException e){e.printStackTrace();}
 	}
 
-	public void onLogoutL(){
+	public void onLogoutL(){ 
 		onRlsLogout();
 		sendServer(LoginScreenController.currentWorker, "Logout");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}

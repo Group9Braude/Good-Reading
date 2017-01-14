@@ -37,7 +37,7 @@ public class Main extends Application {
 	}
 	
 
-	public static void showScreen(String str){
+	public static void showScreen(String str){ 
 		primaryStage.close();
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));

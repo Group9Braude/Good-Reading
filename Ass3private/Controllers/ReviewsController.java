@@ -34,7 +34,7 @@ public class ReviewsController {
 		}
 
 	}
-
+ 
 	public void examineID(int isApproved){
 		String str="";
 		int i;
