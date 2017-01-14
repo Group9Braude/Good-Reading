@@ -20,12 +20,12 @@
       <TextField fx:id="titleTextFieldR" layoutX="160.0" layoutY="95.0" onInputMethodTextChanged="#changeRemoveButton" />
       <TextField fx:id="authorTextFieldR" layoutX="160.0" layoutY="138.0" onInputMethodTextChanged="#changeRemoveButton" />
       <TextField fx:id="keywordTextFieldR" layoutX="160.0" layoutY="444.0" onInputMethodTextChanged="#changeRemoveButton" />
-      <TextField fx:id="summaryTextFieldR" layoutX="160.0" layoutY="220.0" onInputMethodTextChanged="#changeRemoveButton" prefHeight="103.0" prefWidth="218.0" promptText="tt">
+      <TextField fx:id="summaryTextFieldR" layoutX="160.0" layoutY="220.0" onInputMethodTextChanged="#changeRemoveButton" prefHeight="103.0" prefWidth="218.0">
          <padding>
             <Insets bottom="85.0" left="3.0" />
          </padding></TextField>
       <TextField fx:id="languageTextFieldR" layoutX="160.0" layoutY="174.0" onInputMethodTextChanged="#changeRemoveButton" />
-      <TextField fx:id="tocTextFieldR" layoutX="160.0" layoutY="343.0" onInputMethodTextChanged="#changeRemoveButton" prefHeight="81.0" prefWidth="218.0" promptText="tt">
+      <TextField fx:id="tocTextFieldR" layoutX="160.0" layoutY="343.0" onInputMethodTextChanged="#changeRemoveButton" prefHeight="81.0" prefWidth="218.0">
          <padding>
             <Insets bottom="60.0" left="3.0" />
          </padding></TextField>

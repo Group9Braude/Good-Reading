@@ -33,9 +33,13 @@ public class FoundClass{
 		int chosen = foundListView.getSelectionModel().getSelectedIndex();
 		String ID="";
 		Book book = new Book();
+		
 		for(int i=0;i<selected.length();i++)
-			if(selected.charAt(i)-'0'<=9 &&selected.charAt(i)-'0'>=0)//Its the ID!
+			if(selected.charAt(i)-'0'<=9 &&selected.charAt(i)-'0'>=0)//It might be the id.
 				ID+=selected.charAt(i);
+			else
+				ID="";
+
 		book.setBookid(Integer.parseInt(ID));
 		WorkerController.foundBooks=null;
 		for(int i=0;i<Book.bookList.size();i++)
@@ -44,12 +48,11 @@ public class FoundClass{
 			}//Update global public books arraylist
 		sendServer(book, "DeleteBook");
 		foundListView.getItems().remove(chosen);
-		
+
 
 	}
 
 	public void initialize(){
-		System.out.println("init");
 		WorkerController.foundBooks.set(0, "Name:                    Author:                       ID:");
 		ObservableList<String> items =FXCollections.observableArrayList();
 		items.addAll(WorkerController.foundBooks);

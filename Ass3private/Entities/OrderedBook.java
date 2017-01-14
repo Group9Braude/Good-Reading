@@ -6,8 +6,13 @@ import java.util.Date;
 
 public class OrderedBook extends GeneralMessage
 {	
+<<<<<<< HEAD
 	private static final long serialVersionUID = 1L;
 	private String readerID,title,author,purchasedate;
+=======
+	private static final long serialVersionUID = 1L; 
+	private String readerID,title,author;
+>>>>>>> refs/remotes/origin/master
 	private int bookid;
 
 	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");

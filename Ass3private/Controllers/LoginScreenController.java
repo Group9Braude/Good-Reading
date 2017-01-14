@@ -37,7 +37,7 @@ public class LoginScreenController extends AbstractClient {
 
 	
 
-	public LoginScreenController() {
+	public LoginScreenController() { 
 		super(host, port);
  
 	}

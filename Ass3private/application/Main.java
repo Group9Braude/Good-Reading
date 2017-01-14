@@ -37,7 +37,8 @@ public class Main extends Application {
 	}
 	
 
-	public static void showScreen(String str){
+	public static void showScreen(String str){ 
+		primaryStage.close();
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));
 		try{
@@ -50,6 +51,14 @@ public class Main extends Application {
 
 	public static void onExit(){
 		primaryStage.close();
+	}
+	
+	public static void showFinalReviewScreen() throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/FinalReviewScreen.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
 	}
 	
 	public static void showSearchUser() throws IOException{
@@ -69,6 +78,19 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		//primaryStage.getIcons().add(new Image("C:\\Users\\orels\\Desktop\\Reader")
 		primaryStage.show();
+	}
+	
+	public static void showOrderScreen()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/OrderBookScreen.fxml"));
+		try {    
+			mainLayout =  loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 
