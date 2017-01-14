@@ -47,7 +47,14 @@ public class ReportsController extends AbstractClient {
 		obsMyBooks=FXCollections.observableArrayList();	
 		obsMyBooks.removeAll(obsMyBooks);
 		sendServer(r,"getUserBooks");
-		while(flag==0){};
+		while(flag==0){
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		};
 		flag=0;
 		for(int i=0;i<arr.size();i++)
 			obsMyBooks.add(arr.get(i).getTitle()+" by "+arr.get(i).getAuthor());

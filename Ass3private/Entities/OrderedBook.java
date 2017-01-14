@@ -1,21 +1,14 @@
 package Entities;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 public class OrderedBook extends GeneralMessage
 {	
-<<<<<<< HEAD
 	private static final long serialVersionUID = 1L;
 	private String readerID,title,author,purchasedate;
-=======
-	private static final long serialVersionUID = 1L; 
-	private String readerID,title,author;
->>>>>>> refs/remotes/origin/master
 	private int bookid;
-
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
 
 	public OrderedBook(){}
 	
@@ -25,10 +18,7 @@ public class OrderedBook extends GeneralMessage
 		this.bookid=bookid;
 		this.title=title;
 		this.author=author;
-		this.purchasedate = sdf.format(new Date());
-	}
-	public String getPurchaseDate() {
-		return purchasedate;
+		purchasedate=sdf.format(new Date());
 	}
 	public String getReaderID() {
 		return readerID;
