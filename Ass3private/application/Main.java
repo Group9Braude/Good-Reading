@@ -36,25 +36,6 @@ public class Main extends Application {
 		showMainMenu();
 	}
 	
-	 public static void showScreen(String str)
-	 {
-		  FXMLLoader loader = new FXMLLoader(); 
-		  loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));
-		  try {
-			mainLayout = loader.load();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		  primaryStage.setScene(new Scene(mainLayout));
-		  primaryStage.show();
-	 }
-
-	public static Stage getStage()
-	{ 
-		return primaryStage;
-	} 
-
 
 	public static void showScreen(String str){
 		FXMLLoader loader = new FXMLLoader(); 
@@ -217,7 +198,7 @@ public class Main extends Application {
 			User toLogOut = currentUser;
 			sender.sendServer(toLogOut, "Logout");
 		}
-	}
+	} 
 
 	public static void main(String[] args) {
 		launch(args);
@@ -230,4 +211,15 @@ public class Main extends Application {
 	public static void setCurrentUser(User currentUser) {
 		Main.currentUser = currentUser;
 	}
+
+
+	public static Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+
+	public static void setPrimaryStage(Stage primaryStage) {
+		Main.primaryStage = primaryStage;
+	}
 }
+

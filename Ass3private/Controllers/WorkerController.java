@@ -203,7 +203,7 @@ public class WorkerController extends AbstractClient {
 	}
 	
 	public void onPressEnter(){	
-		System.out.println("Press");
+		System.out.println("Press"); 
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\EnterReaderSelected.png");
 		Image image = new Image(file.toURI().toString());
 		enterImageView.setImage(image);

@@ -16,7 +16,7 @@ import ocsf.client.AbstractClient;
 public class SubscriptionScreenController extends AbstractClient
 {
 	@FXML 
-	Button back,year,month;
+	Button back,year,month; 
 	@FXML TextField outputText;
 	private static Stage primaryStage;
 	private static Pane mainLayout;
@@ -31,7 +31,7 @@ public class SubscriptionScreenController extends AbstractClient
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		primaryStage=Main.getStage();
+		primaryStage=Main.getPrimaryStage();
 		reader = (Reader)Main.getCurrentUser();
 	}
 	
