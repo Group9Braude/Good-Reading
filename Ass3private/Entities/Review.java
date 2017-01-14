@@ -5,7 +5,9 @@ public class Review extends GeneralMessage
 	private static final long serialVersionUID = 1L;
 	private OrderedBook reviewBook;
 	private String keyword,review,signature;
-	private int isApproved;
+	private int isApproved, reviewID;
+	
+	public Review(){}
 	
 	public Review(OrderedBook reviewBook,String keyword,String review,String signature, int isApproved)
 	{
@@ -51,5 +53,13 @@ public class Review extends GeneralMessage
 	}
 	public void setSignature(String signature) {
 		this.signature = signature;
+	}
+
+	public int getReviewID() {
+		return reviewID;
+	}
+
+	public void setReviewID(int reviewID) {
+		this.reviewID = reviewID;
 	}
 }

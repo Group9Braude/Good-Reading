@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="503.0" prefWidth="550.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Controllers.ReviewsController">
+   <children>
+      <ListView fx:id="foundReviewsListView" prefHeight="296.0" prefWidth="550.0" />
+      <Button layoutX="240.0" layoutY="452.0" mnemonicParsing="false" onAction="#onBack" prefHeight="37.0" prefWidth="87.0" text="BACK" />
+      <Button layoutX="77.0" layoutY="329.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="96.0" text="EDIT REVIEW" />
+      <Button layoutX="230.0" layoutY="329.0" mnemonicParsing="false" onAction="#onDenyReview" prefHeight="48.0" prefWidth="107.0" text="DECLINE REVIEW" />
+      <Button layoutX="406.0" layoutY="329.0" mnemonicParsing="false" onAction="#onAcceptReview" prefHeight="48.0" prefWidth="103.0" text="ACCEPT REVIEW" />
+   </children>
+</AnchorPane>

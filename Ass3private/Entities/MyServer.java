@@ -89,12 +89,44 @@ public class MyServer extends AbstractServer {
 				//bookSearch((Book)msg, client);break;
 			case "DeleteBook":
 				deleteBook((Book)msg, client);break;
+			case "GetReviews":
+				getReviews((Review)msg, client);break;
+			case "AcceptReview":
+				examineReview((Review)msg,1, client);break;
+			case "DenyReview":
+				examineReview((Review)msg, -1 , client);break;
+				
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
+	
+	
+	public void examineReview(Review review,int isApproved, ConnectionToClient client){
+		Statement stmt;
+		try{
+			stmt = conn.createStatement();
+			stmt.executeUpdate("UPDATE reviews SET isApproved = '" + isApproved + "' WHERE reviewid = '" + review.getReviewID() + "';");
+		}catch(Exception e){e.printStackTrace();}
+		
+	}
+	
+	
+	public void getReviews(Review review, ConnectionToClient client){
+		ArrayList<String> reviewList = new ArrayList<String>();
+		reviewList.add("SearchReviews");
+		try{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT title, author, reviewid, review FROM reviews WHERE isApproved='0';");
+			while(rs.next()){
+				reviewList.add(rs.getString(1) + " by " + rs.getString(2) + " _ID:" + rs.getInt(3) + "\nReview:\n" + rs.getString(4));
+			}
+			client.sendToClient(reviewList);
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
 
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();

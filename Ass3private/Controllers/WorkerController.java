@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Reader;
+import Entities.Review;
 import Entities.User;
 import Entities.Worker;
 import application.Main;
@@ -29,7 +30,7 @@ import ocsf.client.AbstractClient;
 public class WorkerController extends AbstractClient {
 
 	static private ArrayList<String> foundReaders, foundWorkers;
-	static public ArrayList<String> foundBooks;
+	static public ArrayList<String> foundBooks, foundReviews;
 	static public String windowNow; 
 	@FXML
 	private Button addBookButton, removeBookButton;
@@ -57,11 +58,10 @@ public class WorkerController extends AbstractClient {
 		foundReaders = null;
 		foundWorkers = null;
 		foundBooks = null;
+		foundReviews = null;
 
 	}
-
-
-
+	
 
 
 	public void sendServer(Object msg, String actionNow){/******************************/
@@ -74,6 +74,14 @@ public class WorkerController extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public void onCheckReview(){
+		
+		
+	}
+	
+	
 
 	public void showFound(){//POPUP
 		System.out.println("show");
@@ -154,6 +162,10 @@ public class WorkerController extends AbstractClient {
 			}
 		}
 	}//End onAddBook
+	
+	
+	
+	
 	/****************************/
 	public void onPressCat(){
 		System.out.println("Press");
@@ -260,6 +272,8 @@ public class WorkerController extends AbstractClient {
 	}
 	/****************************/
 
+	
+	
 
 	public void onRemoveBook(){
 		Book book = new Book();
@@ -381,6 +395,8 @@ public class WorkerController extends AbstractClient {
 		for(int i=0;i<chosen.length();i++)
 			if((chosen.charAt(i)-'0'<=9 && chosen.charAt(i)-'0'>=0))//INTEGER! THE ID IS HERE!
 				str+=chosen.charAt(i);
+			else
+				str="";
 		ID=Integer.parseInt(str);
 		System.out.println(ID);
 		Book book = new Book();
@@ -468,6 +484,10 @@ public class WorkerController extends AbstractClient {
 			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
 		}
+		if(((ArrayList<?>)msg).get(0) instanceof Review){
+			for(Book book:(ArrayList<Book>)msg)
+				Book.bookList.add(book);
+		}
 
 		switch((String)((ArrayList<?>)msg).get(0)){
 		case "Readers":
@@ -490,6 +510,9 @@ public class WorkerController extends AbstractClient {
 			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
 		case "RemoveBook":
 			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
+		case "SearchReviews":
+			foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
+			
 
 		}
 	}
@@ -523,10 +546,23 @@ public class WorkerController extends AbstractClient {
 		}catch(IOException e){e.printStackTrace();}
 	}
 
-	public  void onLogoutL(){
+	public void onLogoutL(){
 		onRlsLogout();
 		sendServer(LoginScreenController.currentWorker, "Logout");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
+	}
+	public void onCheckReviewL(){
+		System.out.println("sup");
+		Review review = new Review();
+		sendServer(review, "GetReviews");
+		while(WorkerController.foundReviews == null)
+			try{Thread.sleep(2);}catch(Exception e){e.printStackTrace();}
+		try {
+			Main.showFinalReviewScreen();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 
