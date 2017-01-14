@@ -81,10 +81,27 @@ public class MyServer extends AbstractServer {
 				addReview((Review)msg,client);
 			case "activeBooks":
 				activeBooks((Book)msg, client);break;
+			case "BookSearch":
+				bookSearch((Book)msg, client);break;
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
+	}
+	
+	
+	public void bookSearch(Book book, ConnectionToClient client){
+		ArrayList<String> bookList = new ArrayList<String>();
+		bookList.add("BookSearch");
+		try{
+		Statement stmt = conn.createStatement();
+		ResultSet rs = stmt.executeQuery("SELECT * FROM books;");
+		while(rs.next())
+			bookList.add(rs.getString(1) + " " + rs.getString(3));
+		client.sendToClient(bookList);
+		
+		}catch(Exception e){e.printStackTrace();}
+		
 	}
 
 	private void addReview(Review review, ConnectionToClient client)
@@ -121,7 +138,6 @@ public class MyServer extends AbstractServer {
 			stmt.executeUpdate("Update books set isSuspend= 0 where bookid = '"+b.getBookid()+"';");
 			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
 		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -132,7 +148,6 @@ public class MyServer extends AbstractServer {
 			stmt.executeUpdate("Update books set isSuspend= 1 where bookid = '"+b.getBookid()+"';");
 			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
 		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}       }
 
@@ -191,7 +206,6 @@ public class MyServer extends AbstractServer {
 			stmt.executeUpdate("Update readers set subscription= "+type+" where readerID = '"+reader.getID()+"';");
 			client.sendToClient(type);//The subscription succeeded
 		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -256,7 +270,6 @@ public class MyServer extends AbstractServer {
 			//To add credit card checks
 			client.sendToClient("Credit card added successfully");
 		} catch (SQLException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -315,7 +328,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {

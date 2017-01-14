@@ -41,6 +41,16 @@ public class Main extends Application {
 		return primaryStage;
 	} 
 
+
+	public static void showScreen(String str){
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));
+		try{
+		mainLayout = loader.load();
+		}catch(IOException e){e.printStackTrace();}
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
 	
 
 	public static void onExit(){
