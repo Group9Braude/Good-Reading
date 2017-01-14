@@ -90,6 +90,11 @@ public class Book extends GeneralMessage implements Serializable{
 	public static void setBookCnt(int bookCnt) {
 		Book.bookCnt = bookCnt;
 	}
+	
+	public String toString()
+	{
+		return title;
+	}
 
 
 }

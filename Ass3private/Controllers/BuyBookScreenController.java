@@ -37,8 +37,13 @@ public class BuyBookScreenController extends AbstractClient
 		{
 			e.printStackTrace();
 		}
+		System.out.println(allBooks.get(0).getTitle());
 		items = FXCollections.observableArrayList(allBooks);
+		for(int i = 0; i< allBooks.size();i++)
+			items.add(allBooks.get(i));
 		bookList.setItems(items);
+		//Obser
+	
 	}
 
 	public BuyBookScreenController() 
@@ -53,11 +58,11 @@ public class BuyBookScreenController extends AbstractClient
 	}
 	
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromServer(Object msg) 
 	{
-		
-		
+		allBooks = (ArrayList<Book>)msg;
 	}
 
 }
