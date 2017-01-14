@@ -66,4 +66,9 @@ public class LoginReaderController {
 			Main.showReviewScreen();
 		else JOptionPane.showMessageDialog(null, "You must first select a book!");
 	}
+	
+	public void onOrder()
+	{
+		Main.showScreen("OrderBookScreen");
+	}
 }

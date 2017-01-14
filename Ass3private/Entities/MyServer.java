@@ -85,6 +85,8 @@ public class MyServer extends AbstractServer {
 				addReview((Review)msg,client);
 			case "activeBooks":
 				activeBooks((Book)msg, client);break;
+			case "getBooks":
+				getBooks(client); break;
 			//case "BookSearch":/***********NEEDED???*/
 				//bookSearch((Book)msg, client);break;
 			case "DeleteBook":
@@ -100,6 +102,21 @@ public class MyServer extends AbstractServer {
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
+	}
+	
+	private void getBooks(ConnectionToClient client)
+	{
+		try {
+			ArrayList <Book> books = new ArrayList<Book>();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select * from books where isSuspend=0");
+			while(rs.next())
+				books.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8)));
+			client.sendToClient(books);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	
@@ -127,7 +144,6 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 	}
 	
-
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
 		System.out.println("Query:" +"DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
@@ -384,7 +400,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
