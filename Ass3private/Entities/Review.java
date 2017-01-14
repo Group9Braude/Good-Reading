@@ -7,6 +7,8 @@ public class Review extends GeneralMessage
 	private String keyword,review,signature;
 	private int isApproved,ReviewID;
 	
+	public Review(){}
+	
 	public Review(OrderedBook reviewBook,String keyword,String review,String signature, int isApproved,int reviewID)
 	{
 		this.reviewBook = reviewBook;

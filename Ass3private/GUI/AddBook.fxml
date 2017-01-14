@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.paint.*?>
 <?import javafx.scene.effect.*?>
@@ -19,9 +20,15 @@
       <TextField fx:id="titleTextField" layoutX="160.0" layoutY="95.0" />
       <TextField fx:id="authorTextField" layoutX="160.0" layoutY="138.0" />
       <TextField fx:id="keywordTextField" layoutX="160.0" layoutY="444.0" />
-      <TextField fx:id="summaryTextField" layoutX="160.0" layoutY="220.0" prefHeight="103.0" prefWidth="218.0" />
+      <TextField fx:id="summaryTextField" layoutX="160.0" layoutY="220.0" prefHeight="103.0" prefWidth="218.0">
+         <padding>
+            <Insets bottom="85.0" left="3.0" />
+         </padding></TextField>
       <TextField fx:id="languageTextField" layoutX="160.0" layoutY="174.0" />
-      <TextField fx:id="tocTextField" layoutX="160.0" layoutY="343.0" prefHeight="81.0" prefWidth="218.0" />
+      <TextField fx:id="tocTextField" layoutX="160.0" layoutY="343.0" prefHeight="81.0" prefWidth="218.0">
+         <padding>
+            <Insets bottom="60.0" left="3.0" />
+         </padding></TextField>
       <Text fx:id="titleText" layoutX="92.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" wrappingWidth="49.13671875" />
       <Text fx:id="authorText" layoutX="92.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="49.13671875" />
       <Text fx:id="languageText" layoutX="87.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language" wrappingWidth="58.13671875" />

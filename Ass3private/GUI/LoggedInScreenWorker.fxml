@@ -4,7 +4,7 @@
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
-<?import javafx.scene.layout.*?> 
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="514.0" prefWidth="511.0" style="-fx-background-color: #92DFE7;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WorkerController">
@@ -19,12 +19,12 @@
             <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/AddBook.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="removeImageView" fitHeight="45.0" fitWidth="162.0" layoutX="155.0" layoutY="241.0" onMouseClicked="#onRemoveBookL" onMousePressed="#onPressRemove" onMouseReleased="#onRlsRemove" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="removeImageView" fitHeight="45.0" fitWidth="162.0" layoutX="153.0" layoutY="241.0" onMouseClicked="#onRemoveBookL" onMousePressed="#onPressRemove" onMouseReleased="#onRlsRemove" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/RemoveBook.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="checkImageView" fitHeight="42.0" fitWidth="169.0" layoutX="332.0" layoutY="240.0" onMousePressed="#onPressCheck" onMouseReleased="#onRlsCheck" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="checkImageView" fitHeight="42.0" fitWidth="169.0" layoutX="332.0" layoutY="240.0" onMouseClicked="#onCheckReviewL" onMousePressed="#onPressCheck" onMouseReleased="#onRlsCheck" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/CheckReviews.png" />
          </image>

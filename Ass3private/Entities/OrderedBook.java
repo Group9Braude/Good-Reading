@@ -2,7 +2,7 @@ package Entities;
 
 public class OrderedBook extends GeneralMessage
 {	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L; 
 	private String readerID,title,author;
 	private int bookid;
 	
