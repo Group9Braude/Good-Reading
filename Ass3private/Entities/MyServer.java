@@ -77,6 +77,10 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+			case "Monthly":
+				subscribe((Reader)msg,1,client); break;
+			case "Yearly":
+				subscribe((Reader)msg,2,client); break;
 			case "AddReview":
 				addReview((Review)msg,client);
 			case "activeBooks":
@@ -315,7 +319,7 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/librarydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
