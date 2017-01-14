@@ -69,6 +69,6 @@ public class LoginReaderController {
 	
 	public void onOrder()
 	{
-		Main.showScreen("OrderBookScreen");
+		Main.showOrderScreen();
 	}
 }

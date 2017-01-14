@@ -1,21 +1,22 @@
 package Entities;
 
 public class Review extends GeneralMessage
-{ 
+{
 	private static final long serialVersionUID = 1L;
 	private OrderedBook reviewBook;
 	private String keyword,review,signature;
-	private int isApproved, reviewID;
+	private int isApproved,ReviewID;
 	
 	public Review(){}
 	
-	public Review(OrderedBook reviewBook,String keyword,String review,String signature, int isApproved)
+	public Review(OrderedBook reviewBook,String keyword,String review,String signature, int isApproved,int reviewID)
 	{
 		this.reviewBook = reviewBook;
 		this.keyword = keyword;
 		this.review = review;
 		this.signature = signature;
 		this.isApproved = isApproved;
+		this.setReviewID(reviewID);
 	}
 	public OrderedBook getReviewBook() {
 		return reviewBook;
@@ -54,12 +55,10 @@ public class Review extends GeneralMessage
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-
 	public int getReviewID() {
-		return reviewID;
+		return ReviewID;
 	}
-
 	public void setReviewID(int reviewID) {
-		this.reviewID = reviewID;
+		ReviewID = reviewID;
 	}
 }

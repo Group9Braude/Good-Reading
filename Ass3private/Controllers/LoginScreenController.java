@@ -65,9 +65,9 @@ public class LoginScreenController extends AbstractClient {
 
 
 	public void onLogin(){
-		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
+	/*	File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
 		Image image = new Image(file.toURI().toString());
-		loginImageView.setImage(image);
+		loginImageView.setImage(image);*/
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
@@ -109,11 +109,11 @@ public class LoginScreenController extends AbstractClient {
 	}//End onLogin
 
 	public void onPress(){
-		System.out.println("Press");
+	/*	System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
 		Image image = new Image(file.toURI().toString());
 		loginImageView.
-		setImage(image);
+		setImage(image);*/
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,9 +1,6 @@
 package Controllers;
-
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 import Entities.GeneralMessage;
 import Entities.OrderedBook;
 import Entities.Reader;
@@ -34,41 +31,44 @@ public class ReportsController extends AbstractClient {
 	}
 
 
-	static int flag=0;
+	public static int flag=0;
 	@FXML
 	public TextField id;
 	@FXML
 	public ListView<String> myBooks;
+	public static  ArrayList<OrderedBook> arr;
 
-
-	public ObservableList<String> obsMyBooks=FXCollections.observableArrayList();
+	public  ObservableList<String> obsMyBooks;
 
 
 	@FXML
 	public void onEnter(){
 		Reader r=new Reader(id.getText(),null);
+		obsMyBooks=FXCollections.observableArrayList();	
+		obsMyBooks.removeAll(obsMyBooks);
 		sendServer(r,"getUserBooks");
-		try {
-			Thread.sleep(400);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		while(flag==0){
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		};
+		flag=0;
+		for(int i=0;i<arr.size();i++)
+			obsMyBooks.add(arr.get(i).getTitle()+" by "+arr.get(i).getAuthor());
 		System.out.println(obsMyBooks);
 		myBooks.setItems(obsMyBooks);
+
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		
-		ArrayList <OrderedBook> userbooks=new ArrayList<OrderedBook>();
-		userbooks.addAll(((ArrayList<OrderedBook>)msg));		
-		for(int i=0;i<((ArrayList<OrderedBook>)msg).size();i++)
-			obsMyBooks.add(userbooks.get(i).getTitle()+" by "+userbooks.get(i).getAuthor()+"id: "+userbooks.get(i).getBookid());
-
-
+		arr = new ArrayList <OrderedBook>((ArrayList <OrderedBook>)msg);
+		ReportsController.flag=1;
 	}
 
 

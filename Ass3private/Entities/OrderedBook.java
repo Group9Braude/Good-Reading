@@ -1,11 +1,15 @@
 package Entities;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class OrderedBook extends GeneralMessage
 {	
-	private static final long serialVersionUID = 1L; 
-	private String readerID,title,author;
+	private static final long serialVersionUID = 1L;
+	private String readerID,title,author,purchasedate;
 	private int bookid;
-	
+	SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
+
 	public OrderedBook(){}
 	
 	public OrderedBook(String readerID,int bookid,String title, String author)
@@ -14,8 +18,8 @@ public class OrderedBook extends GeneralMessage
 		this.bookid=bookid;
 		this.title=title;
 		this.author=author;
+		purchasedate=sdf.format(new Date());
 	}
-	
 	public String getReaderID() {
 		return readerID;
 	}
