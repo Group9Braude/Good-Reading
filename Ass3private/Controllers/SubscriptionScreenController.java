@@ -62,7 +62,6 @@ public class SubscriptionScreenController extends AbstractClient
 
 	public void onYear()
 	{
-		System.out.println("entered");
 		if(reader.getSubscribed()==2)//If already subscribed
 			outputText.setText("You're already subscribed for year!");
 		else if(reader.getCardnum().equals(""))
@@ -78,6 +77,7 @@ public class SubscriptionScreenController extends AbstractClient
 			}
 		}
 	}
+	
 
 	public void popUpCredit()
 	{
@@ -91,14 +91,12 @@ public class SubscriptionScreenController extends AbstractClient
 		Main.popup.show();
 	}
 	@Override
-	protected void handleMessageFromServer(Object msg) {
+	protected void handleMessageFromServer(Object msg) 
+	{
 		if(msg instanceof Integer)
 		{
 			((Reader)Main.getCurrentUser()).setSubscribed((int)msg);
 			outputText.setText("Subscribed successfully");
 		}
-		
 	}
-
-
 }

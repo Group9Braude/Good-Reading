@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="432.0" prefWidth="564.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+   <children>
+      <Button layoutX="455.0" layoutY="387.0" mnemonicParsing="false" text="Order" />
+      <Button layoutX="62.0" layoutY="387.0" mnemonicParsing="false" text="&lt;- Back" />
+      <TableView fx:id="bookList" layoutX="56.0" layoutY="14.0" prefHeight="364.0" prefWidth="452.0">
+        <columns>
+          <TableColumn prefWidth="75.0" text="Title" />
+          <TableColumn prefWidth="75.0" text="BookID" />
+            <TableColumn prefWidth="75.0" text="Author" />
+            <TableColumn prefWidth="75.0" text="Language" />
+            <TableColumn prefWidth="75.0" text="Summary" />
+            <TableColumn prefWidth="75.0" text="Key word" />
+        </columns>
+      </TableView>
+      <Button layoutX="250.0" layoutY="387.0" mnemonicParsing="false" text="Search" />
+   </children>
+</AnchorPane>

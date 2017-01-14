@@ -77,6 +77,10 @@ public class MyServer extends AbstractServer {
 				findWorkers((Worker)msg, client);break;
 			case "FindReaders":
 				findReaders((Reader)msg, client);break;
+			case "Monthly":
+				subscribe((Reader)msg,1,client); break;
+			case "Yearly":
+				subscribe((Reader)msg,2,client); break;
 			case "AddReview":
 				addReview((Review)msg,client);
 			case "activeBooks":
