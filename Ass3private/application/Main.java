@@ -20,7 +20,7 @@ public class Main extends Application {
 	@FXML
 	private TextField idfield;
 	private static Stage primaryStage;
-	private static Parent mainLayout;
+	public static Parent mainLayout;
 	public static int port=3307;
 	public static String host = "localhost";
 	public static Stage popup;

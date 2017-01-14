@@ -11,15 +11,15 @@ import Entities.Reader;
 import Entities.User;
 import Entities.Worker;
 import application.Main;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -29,7 +29,7 @@ import ocsf.client.AbstractClient;
 public class WorkerController extends AbstractClient {
 
 	static private ArrayList<String> foundReaders, foundWorkers;
-	static private ArrayList<String> foundBooks;
+	static public ArrayList<String> foundBooks;
 	static public String windowNow; 
 	@FXML
 	private Button addBookButton, removeBookButton;
@@ -46,6 +46,7 @@ public class WorkerController extends AbstractClient {
 	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
+
 
 
 
@@ -74,10 +75,28 @@ public class WorkerController extends AbstractClient {
 		}
 	}
 
+	public void showFound(){//POPUP
+		System.out.println("show");
+		try{
+			Main.mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/FoundScreen.fxml"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Main.popup.setScene(new Scene(Main.mainLayout));
+		Main.popup.show();
+	}
 
 
 
-
+	public void changeRemoveButton(){
+		System.out.println("Easy");
+		if(titleTextFieldR.getText()!="" || authorTextFieldR.getText()!="" ||  languageTextFieldR.getText()!="" || 
+				summaryTextFieldR.getText()!="" ||  tocTextFieldR.getText()!="" ||  keywordTextFieldR.getText()!="")
+		removeBookButton.setText("FIND BOOKS");
+		else
+			removeBookButton.setText("ALL BOOKS");
+		
+	}
 
 
 
@@ -131,7 +150,6 @@ public class WorkerController extends AbstractClient {
 				file = new File("C:/Users/orels/Desktop/Ass3Logos/AddedBook.png");
 				addedButton.setImage(new Image(file.toURI().toString()));
 				Book.bookList.add(book);//Update our ARRAYLIST!
-
 				sendServer(book, "AddBook");
 			}
 		}
@@ -149,7 +167,7 @@ public class WorkerController extends AbstractClient {
 		Image image = new Image(file.toURI().toString());
 		catImageView.setImage(image);
 	}
-	
+
 	public void onPressAdd(){
 		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\AddBookSelected.png");
@@ -162,7 +180,7 @@ public class WorkerController extends AbstractClient {
 		Image image = new Image(file.toURI().toString());
 		addImageView.setImage(image);
 	}
-	
+
 	public void onPressRemove(){
 		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBookSelected.png");
@@ -175,7 +193,7 @@ public class WorkerController extends AbstractClient {
 		Image image = new Image(file.toURI().toString());
 		removeImageView.setImage(image);
 	}
-	
+
 	public void onPressUpdate(){
 		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\UpdateBookSelected.png");
@@ -188,7 +206,7 @@ public class WorkerController extends AbstractClient {
 		Image image = new Image(file.toURI().toString());
 		updateImageView.setImage(image);
 	}
-	
+
 	public void onPressSearchU(){
 		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\SearchUserSelected.png");
@@ -201,7 +219,7 @@ public class WorkerController extends AbstractClient {
 		Image image = new Image(file.toURI().toString());
 		searchImageView.setImage(image);
 	}
-	
+
 	public void onPressEnter(){	
 		System.out.println("Press"); 
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\EnterReaderSelected.png");
@@ -227,7 +245,7 @@ public class WorkerController extends AbstractClient {
 		Image image = new Image(file.toURI().toString());
 		logoutImageView.setImage(image);
 	}
-	
+
 	public void onPressCheck(){//C:\Users\orels\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
 		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviewsSelected.png");
@@ -248,26 +266,31 @@ public class WorkerController extends AbstractClient {
 		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				toc = tocTextFieldR.getText(), keyword = keywordTextFieldR.getText();
-		book.query = "DELETE FROM books WHERE ";
+		book.query = "SELECT * FROM books WHERE";
 		if(!title.equals(""))
-			book.query +="title = '" + title + "' AND ";
+			book.query +=" title LIKE  '%" + title + "%' AND ";
 		if(!author.equals(""))
-			book.query +="author = '" + author + "' AND ";
+			book.query +=" author LIKE '%" + author + "%' AND ";
 		if(!language.equals(""))
-			book.query+="language = '" + language + "' AND ";
+			book.query+=" language LIKE '%" + language + "%' AND ";
 		if(!summary.equals(""))
-			book.query+="summary LIKE '%" + summary + "%' AND ";
+			book.query+=" summary LIKE '%" + summary + "%' AND ";
 		if(!toc.equals(""))
-			book.query+="tableOfContents = '" + toc + "' AND ";
+			book.query+=" tableOfContents LIKE '%" + toc + "%' AND ";
 		if(!keyword.equals(""))
-			book.query+="keyWord = '" + keyword + "' AND ";
+			book.query+=" keyWord LIKE '%" + keyword + "%' AND ";
 		String query = "";
 		for(int i=0;i<book.query.length()-5;i++)
-			query+=book.query.charAt(i);
+			query+=book.query.charAt(i);//Remove the and from the end of the query
 		query+=";";
 		book.query=query;
-		//System.out.println(query);
+		System.out.println(query);
 		sendServer(book, "RemoveBook");
+		while(foundBooks==null)
+			try{
+				Thread.sleep(5);
+			}catch(Exception e){e.printStackTrace();}
+		showFound();
 	}//end onRemoveBook
 
 
@@ -464,8 +487,9 @@ public class WorkerController extends AbstractClient {
 		case "FrozenReaders":
 			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
 		case "BookSearch":
-			foundBooks = new ArrayList<>(((ArrayList<String>)msg));
-			bookLVUpdate();break;
+			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
+		case "RemoveBook":
+			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
 
 		}
 	}

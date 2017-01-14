@@ -85,28 +85,41 @@ public class MyServer extends AbstractServer {
 				addReview((Review)msg,client);
 			case "activeBooks":
 				activeBooks((Book)msg, client);break;
-			case "BookSearch":
-				bookSearch((Book)msg, client);break;
+			//case "BookSearch":/***********NEEDED???*/
+				//bookSearch((Book)msg, client);break;
+			case "DeleteBook":
+				deleteBook((Book)msg, client);break;
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-	
-	
-	public void bookSearch(Book book, ConnectionToClient client){
+
+
+	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
+		System.out.println("Query:" +"DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
 		bookList.add("BookSearch");
 		try{
-		Statement stmt = conn.createStatement();
-		ResultSet rs = stmt.executeQuery("SELECT * FROM books;");
-		while(rs.next())
-			bookList.add(rs.getString(1) + " " + rs.getString(3));
-		client.sendToClient(bookList);
-		
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
 		}catch(Exception e){e.printStackTrace();}
 		
 	}
+	
+/*	public void bookSearch(Book book, ConnectionToClient client){/***********NEEDED???*/
+	/*	ArrayList<String> bookList = new ArrayList<String>();
+		bookList.add("BookSearch");
+		try{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM books;");
+			while(rs.next())
+				bookList.add(rs.getString(1) + " " + rs.getString(3));
+			client.sendToClient(bookList);
+
+		}catch(Exception e){e.printStackTrace();}
+
+	}*/
 
 	private void addReview(Review review, ConnectionToClient client)
 	{
@@ -153,7 +166,9 @@ public class MyServer extends AbstractServer {
 			client.sendToClient("Book has been suspended successfuly");//The subscription succeeded
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
-		}       }
+
+		}      
+	}
 
 	public void findReaders(Reader reader, ConnectionToClient client){
 		ArrayList<String> readersList = new ArrayList<String>();
@@ -217,11 +232,16 @@ public class MyServer extends AbstractServer {
 
 
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
+		ArrayList<String> list = new ArrayList<String>();
+		list.add("RemoveBook");
 		try{
 			Statement stmt = conn.createStatement();
 			System.out.println(book.query);
-			stmt.executeUpdate(book.query);
-		}catch(SQLException e){e.printStackTrace();}
+			ResultSet rs = stmt.executeQuery(book.query);
+			while(rs.next())
+				list.add(rs.getString(1) + "                                        " + rs.getString(3) + "                            " + Integer.toString(rs.getInt(2)));
+			client.sendToClient(list);
+		}catch(SQLException | IOException e){e.printStackTrace();}
 	}
 
 
