@@ -39,7 +39,7 @@ public class OrderedBook extends GeneralMessage
 	}
 	public void setBookid(int bookid) {
 		this.bookid = bookid;
-	}
+	} 
 	
 	@Override
 	public String toString()

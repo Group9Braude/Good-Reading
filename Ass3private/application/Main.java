@@ -2,8 +2,6 @@ package application;
 
 import java.io.IOException;
 
-import com.sun.prism.Image;
-
 import Controllers.LoginScreenController;
 import Entities.User;
 import javafx.application.Application;
@@ -12,6 +10,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -20,7 +20,7 @@ public class Main extends Application {
 	@FXML
 	private TextField idfield;
 	private static Stage primaryStage;
-	private static Parent mainLayout;
+	public static Parent mainLayout;
 	public static int port=3307;
 	public static String host = "localhost";
 	public static Stage popup;
@@ -35,12 +35,23 @@ public class Main extends Application {
 		popup.initOwner(primaryStage);
 		showMainMenu();
 	}
+	
 
-	public static Stage getStage()
-	{ 
-		return primaryStage;
+	public static void showScreen(String str){
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));
+		try{
+		mainLayout = loader.load();
+		}catch(IOException e){e.printStackTrace();}
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
 	}
+	
 
+	public static void onExit(){
+		primaryStage.close();
+	}
+	
 	public static void showSearchUser() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/SearchUser.fxml"));
@@ -48,6 +59,8 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
+
+
 
 	public static void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
@@ -63,7 +76,7 @@ public class Main extends Application {
 	{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/GUI/chooseSubscriptionScreen.fxml"));
-		try {			 
+		try {    
 			mainLayout =  loader.load();
 			primaryStage.setScene(new Scene(mainLayout));
 			primaryStage.show();
@@ -84,11 +97,8 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 
-	}	 
+	}  
 
-	public static void exit(){
-		primaryStage.close();
-	}
 
 	public static void showLoggedInScreenWorker() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
@@ -153,23 +163,43 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
+
+	public static void showReviewScreen()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/ReviewScreen.fxml"));
+		try 
+		{
+			mainLayout = loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+	}
 	public static void showReports() throws IOException {
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/Reports.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
-		primaryStage.show();		
+		primaryStage.show();  
 	}
+	
+	
+	
+	
 	public void stop()
 	{
-		LoginScreenController sender = new LoginScreenController();
 		if(currentUser != null)
 		{
+			LoginScreenController sender = new LoginScreenController();
 			User toLogOut = currentUser;
 			sender.sendServer(toLogOut, "Logout");
 		}
-	}
-	
+	} 
+
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -182,5 +212,14 @@ public class Main extends Application {
 		Main.currentUser = currentUser;
 	}
 
-	
+
+	public static Stage getPrimaryStage() {
+		return primaryStage;
+	}
+
+
+	public static void setPrimaryStage(Stage primaryStage) {
+		Main.primaryStage = primaryStage;
+	}
 }
+

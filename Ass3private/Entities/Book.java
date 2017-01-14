@@ -8,7 +8,7 @@ public class Book extends GeneralMessage implements Serializable{
 	private String title, author, language, summary, toc, keyword;
 	public static ArrayList<Book> bookList;
 	public ArrayList<Book> deleteBookList;
-	private int isSuspend=0 , bookid;
+	private int isSuspend=0 , bookid; 
 	public static int bookCnt=51;
 	public String query;
 
@@ -89,6 +89,11 @@ public class Book extends GeneralMessage implements Serializable{
 
 	public static void setBookCnt(int bookCnt) {
 		Book.bookCnt = bookCnt;
+	}
+	
+	public String toString()
+	{
+		return title;
 	}
 
 

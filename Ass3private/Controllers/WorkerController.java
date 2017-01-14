@@ -14,6 +14,8 @@ import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
@@ -27,11 +29,12 @@ import ocsf.client.AbstractClient;
 public class WorkerController extends AbstractClient {
 
 	static private ArrayList<String> foundReaders, foundWorkers;
-
+	static public ArrayList<String> foundBooks;
+	static public String windowNow; 
 	@FXML
-	private Button addBookButton;
+	private Button addBookButton, removeBookButton;
 	@FXML
-	private ImageView addedButton;
+	private ImageView addedButton, catImageView, addImageView, removeImageView, checkImageView, updateImageView, searchImageView, enterImageView, logoutImageView;
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText;
 	@FXML
@@ -42,16 +45,23 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
 	@FXML
-	private ListView<String> foundReadersListView, foundWorkersListView;
+	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
+
 
 
 
 
 	public WorkerController() {
 		super(Main.host, Main.port);
+		System.out.println("WorkerControllerConstructor");
 		foundReaders = null;
 		foundWorkers = null;
+		foundBooks = null;
+
 	}
+
+
+
 
 
 	public void sendServer(Object msg, String actionNow){/******************************/
@@ -65,17 +75,28 @@ public class WorkerController extends AbstractClient {
 		}
 	}
 
+	public void showFound(){//POPUP
+		System.out.println("show");
+		try{
+			Main.mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/FoundScreen.fxml"));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		Main.popup.setScene(new Scene(Main.mainLayout));
+		Main.popup.show();
+	}
 
 
 
-	/*try {
-	mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/LoginScreen.fxml"));
-} catch (IOException e1) {
-	e1.printStackTrace();
-}
-Main.popup.setScene(new Scene(mainLayout));
-Main.popup.show();*/
-	//label1.setTextFill(Color.web("#0076a3"));
+	public void changeRemoveButton(){
+		System.out.println("Easy");
+		if(titleTextFieldR.getText()!="" || authorTextFieldR.getText()!="" ||  languageTextFieldR.getText()!="" || 
+				summaryTextFieldR.getText()!="" ||  tocTextFieldR.getText()!="" ||  keywordTextFieldR.getText()!="")
+		removeBookButton.setText("FIND BOOKS");
+		else
+			removeBookButton.setText("ALL BOOKS");
+		
+	}
 
 
 
@@ -129,14 +150,114 @@ Main.popup.show();*/
 				file = new File("C:/Users/orels/Desktop/Ass3Logos/AddedBook.png");
 				addedButton.setImage(new Image(file.toURI().toString()));
 				Book.bookList.add(book);//Update our ARRAYLIST!
-
 				sendServer(book, "AddBook");
 			}
 		}
 	}//End onAddBook
+	/****************************/
+	public void onPressCat(){
+		System.out.println("Press");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCatSelected.png");
+		Image image = new Image(file.toURI().toString());
+		catImageView.setImage(image);
+	}
 
+	public void onRlsCat(){
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCat.png");
+		Image image = new Image(file.toURI().toString());
+		catImageView.setImage(image);
+	}
 
+	public void onPressAdd(){
+		System.out.println("Press");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\AddBookSelected.png");
+		Image image = new Image(file.toURI().toString());
+		addImageView.setImage(image);
+	}
 
+	public void onRlsAdd(){
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\AddBook.png");
+		Image image = new Image(file.toURI().toString());
+		addImageView.setImage(image);
+	}
+
+	public void onPressRemove(){
+		System.out.println("Press");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBookSelected.png");
+		Image image = new Image(file.toURI().toString());
+		removeImageView.setImage(image);
+	}
+
+	public void onRlsRemove(){
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBook.png");
+		Image image = new Image(file.toURI().toString());
+		removeImageView.setImage(image);
+	}
+
+	public void onPressUpdate(){
+		System.out.println("Press");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\UpdateBookSelected.png");
+		Image image = new Image(file.toURI().toString());
+		updateImageView.setImage(image);
+	}
+
+	public void onRlsUpdate(){
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\Update Book.png");
+		Image image = new Image(file.toURI().toString());
+		updateImageView.setImage(image);
+	}
+
+	public void onPressSearchU(){
+		System.out.println("Press");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\SearchUserSelected.png");
+		Image image = new Image(file.toURI().toString());
+		searchImageView.setImage(image);
+	}
+
+	public void onRlsSearchU(){
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\Search User.png");
+		Image image = new Image(file.toURI().toString());
+		searchImageView.setImage(image);
+	}
+
+	public void onPressEnter(){	
+		System.out.println("Press"); 
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\EnterReaderSelected.png");
+		Image image = new Image(file.toURI().toString());
+		enterImageView.setImage(image);
+	}
+
+	public void onRlsEnter(){
+		System.out.println("Rls");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\Enter Reader.png");
+		Image image = new Image(file.toURI().toString());
+		enterImageView.setImage(image);
+	}
+	public void onPressLogout(){//C:\Users\orels\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
+		System.out.println("Press");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\LogoutSelected.png");
+		Image image = new Image(file.toURI().toString());
+		logoutImageView.setImage(image);
+	}
+
+	public void onRlsLogout(){
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\Logout.png");
+		Image image = new Image(file.toURI().toString());
+		logoutImageView.setImage(image);
+	}
+
+	public void onPressCheck(){//C:\Users\orels\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
+		System.out.println("Press");
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviewsSelected.png");
+		Image image = new Image(file.toURI().toString());
+		checkImageView.setImage(image);
+	}
+
+	public void onRlsCheck(){
+		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviews.png");
+		Image image = new Image(file.toURI().toString());
+		checkImageView.setImage(image);
+	}
 	/****************************/
 
 
@@ -145,26 +266,31 @@ Main.popup.show();*/
 		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				toc = tocTextFieldR.getText(), keyword = keywordTextFieldR.getText();
-		book.query = "DELETE FROM books WHERE ";
+		book.query = "SELECT * FROM books WHERE";
 		if(!title.equals(""))
-			book.query +="title = '" + title + "' AND ";
+			book.query +=" title LIKE  '%" + title + "%' AND ";
 		if(!author.equals(""))
-			book.query +="author = '" + author + "' AND ";
+			book.query +=" author LIKE '%" + author + "%' AND ";
 		if(!language.equals(""))
-			book.query+="language = '" + language + "' AND ";
+			book.query+=" language LIKE '%" + language + "%' AND ";
 		if(!summary.equals(""))
-			book.query+="summary LIKE '%" + summary + "%' AND ";
+			book.query+=" summary LIKE '%" + summary + "%' AND ";
 		if(!toc.equals(""))
-			book.query+="tableOfContents = '" + toc + "' AND ";
+			book.query+=" tableOfContents LIKE '%" + toc + "%' AND ";
 		if(!keyword.equals(""))
-			book.query+="keyWord = '" + keyword + "' AND ";
+			book.query+=" keyWord LIKE '%" + keyword + "%' AND ";
 		String query = "";
 		for(int i=0;i<book.query.length()-5;i++)
-			query+=book.query.charAt(i);
+			query+=book.query.charAt(i);//Remove the and from the end of the query
 		query+=";";
 		book.query=query;
-		//System.out.println(query);
+		System.out.println(query);
 		sendServer(book, "RemoveBook");
+		while(foundBooks==null)
+			try{
+				Thread.sleep(5);
+			}catch(Exception e){e.printStackTrace();}
+		showFound();
 	}//end onRemoveBook
 
 
@@ -247,12 +373,27 @@ Main.popup.show();*/
 		readerLVUpdate();
 
 	}
-	
-	
+
+	public void onBookChosen(){
+		String str="";
+		int ID;
+		String chosen = foundBookListView.getSelectionModel().getSelectedItem();
+		for(int i=0;i<chosen.length();i++)
+			if((chosen.charAt(i)-'0'<=9 && chosen.charAt(i)-'0'>=0))//INTEGER! THE ID IS HERE!
+				str+=chosen.charAt(i);
+		ID=Integer.parseInt(str);
+		System.out.println(ID);
+		Book book = new Book();
+		book.setBookid(ID);
+		sendServer(book, "UpdateBook");
+
+	}
+
+
 	public void readerLVUpdate(){
+		System.out.println("TEST");
 		while(foundReaders==null)
 			try {
-				System.out.println("sleep");
 				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -261,7 +402,7 @@ Main.popup.show();*/
 		items.addAll(foundReaders);
 		foundReadersListView.setItems(items);	
 	}
-	
+
 	public void workerLVUpdate(){
 		while(foundWorkers==null)
 			try {
@@ -273,7 +414,18 @@ Main.popup.show();*/
 		items.addAll(foundWorkers);
 		foundWorkersListView.setItems(items);
 	}
-	
+
+	public void bookLVUpdate(){
+		foundBooks = new ArrayList<String>();
+		ObservableList<String> items =FXCollections.observableArrayList();
+		for(Book book:Book.bookList)
+			foundBooks.add(book.getTitle() + "           " + book.getAuthor() + "           " + book.getBookid());
+		items.addAll(foundBooks);
+		foundBookListView.setItems(items);	
+
+	}
+
+
 	public void onLoggedReaders(){
 		Reader reader = new Reader();
 		sendServer(reader, "FindLoggedReaders");
@@ -308,6 +460,7 @@ Main.popup.show();*/
 
 	@SuppressWarnings("unchecked")
 	protected void handleMessageFromServer(Object msg) {
+		System.out.println("WorkerControllerHandler");
 		if(msg instanceof String)
 			System.out.println((String)msg);
 
@@ -315,9 +468,8 @@ Main.popup.show();*/
 			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
 		}
-		String str = (String)((ArrayList<?>)msg).get(0);
-		System.out.println(str);
-		switch(str){
+
+		switch((String)((ArrayList<?>)msg).get(0)){
 		case "Readers":
 			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
 		case "Workers":
@@ -334,8 +486,62 @@ Main.popup.show();*/
 			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
 		case "FrozenReaders":
 			foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
+		case "BookSearch":
+			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
+		case "RemoveBook":
+			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
 
 		}
 	}
+
+
+	/*           LoggedInWorkerController          */
+
+	public void onUpdateBookL(){
+		Main.showScreen("UpdateBookScreen");
+	}
+
+	public void  onAddBookL(){
+		onRlsAdd();
+		System.out.println(Book.bookCnt);
+		try {
+			Main.showAddBook();
+		} catch (IOException e) {e.printStackTrace();}
+	}
+
+	public void onRemoveBookL(){
+		onRlsRemove();
+		try{
+			Main.showRemoveBook();
+		}catch (IOException e){e.printStackTrace();}
+	}
+
+	public void onSearchUserL(){
+		onRlsSearchU();
+		try{
+			Main.showSearchUser();
+		}catch(IOException e){e.printStackTrace();}
+	}
+
+	public  void onLogoutL(){
+		onRlsLogout();
+		sendServer(LoginScreenController.currentWorker, "Logout");
+		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
+	}
+
+
+	/*           LoggedInWorkerController          */
+
+
+
+
 }
 
+/*try {
+mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/LoginScreen.fxml"));
+} catch (IOException e1) {
+e1.printStackTrace();
+}
+Main.popup.setScene(new Scene(mainLayout));
+Main.popup.show();*/
+//label1.setTextFill(Color.web("#0076a3"));

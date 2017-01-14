@@ -11,6 +11,7 @@ import Entities.User;
 import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,10 +35,11 @@ public class LoginScreenController extends AbstractClient {
 	@FXML
 	ImageView loginImageView;
 
+	
 
 	public LoginScreenController() {
 		super(host, port);
-
+ 
 	}
 
 
@@ -51,8 +53,15 @@ public class LoginScreenController extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
+	
 
+	public  void onExit(){
+		Main.onExit();
+	}
 
+	 
+
+	
 
 
 	public void onLogin(){
@@ -75,7 +84,11 @@ public class LoginScreenController extends AbstractClient {
 					book.bookList = new ArrayList<Book>();
 					worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
+
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+
+					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
+
 
 				}
 			};
@@ -130,11 +143,6 @@ public class LoginScreenController extends AbstractClient {
 				isLoggedFlag=true;
 				User res = (User)msg;
 				if(res.getType()==2){
-					/*System.out.println("its a Worker!");
-     Worker worker = new Worker();
-     worker = (Worker)msg;
-     currentWorker = (Worker)msg;
-     System.out.println(currentWorker.getWorkerID());*/
 					whatAmI="worker";      
 				}//end if
 				else if(res.getType()==3)
@@ -146,7 +154,9 @@ public class LoginScreenController extends AbstractClient {
 				Book.bookList.addAll(((ArrayList<Book>)msg));//Now we have the books in arraylist!
 			else if(((ArrayList<?>)msg).get(0) instanceof Worker)
 				Worker.workerList.addAll(((ArrayList<Worker>)msg));//now we have the workers in arraylist
-
+			if(((ArrayList<?>)msg).get(0).equals("BookSearch")){
+				
+			}
 		}//end if arraylist
 	}
 
