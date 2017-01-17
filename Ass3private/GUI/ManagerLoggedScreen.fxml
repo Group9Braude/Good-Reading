@@ -8,32 +8,37 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="306.0" prefWidth="315.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManagerLoggedController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="707.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManagerLoggedController">
    <children>
-      <Button fx:id="GetPeriodicReports" layoutX="59.0" layoutY="117.0" mnemonicParsing="false" onAction="#onReports" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Get Periodic Reports" textFill="WHITE">
+      <Button fx:id="GetPeriodicReports" layoutX="276.0" layoutY="150.0" mnemonicParsing="false" onAction="#onReports" prefHeight="35.0" prefWidth="190.0" text="Get Periodic Reports" textFill="WHITE">
          <font>
             <Font name="Eras Demi ITC" size="11.0" />
          </font>
       </Button>
-      <Button fx:id="TemporarilyRemoveABook" layoutX="59.0" layoutY="212.0" mnemonicParsing="false" onAction="#goTempRemoveAbook" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Temporarily Remove A Book / Actiavte" textFill="WHITE">
+      <Button fx:id="TemporarilyRemoveABook" layoutX="276.0" layoutY="341.0" mnemonicParsing="false" onAction="#goTempRemoveAbook" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Temporarily Remove A Book / Actiavte" textFill="WHITE">
          <font>
             <Font name="Eras Demi ITC" size="9.0" />
          </font>
       </Button>
-      <ImageView fitHeight="103.0" fitWidth="200.0" layoutX="54.0" layoutY="14.0">
+      <Button fx:id="GetPeriodicReports1" layoutX="288.0" layoutY="238.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Edit Reviews" textFill="WHITE">
+         <font>
+            <Font name="Eras Demi ITC" size="11.0" />
+         </font>
+      </Button>
+      <Button fx:id="GetPeriodicReports11" layoutX="325.0" layoutY="478.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Catalouging" textFill="WHITE">
+         <font>
+            <Font name="Eras Demi ITC" size="11.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="30.0" fitWidth="200.0" layoutY="112.0">
          <image>
-            <Image url="@../../../../Desktop/Ass3Logos/welcomemanger.png" />
+            <Image url="@../../../../Desktop/button_get-periodic-reports.png" />
          </image>
       </ImageView>
-      <Button fx:id="GetPeriodicReports1" layoutX="59.0" layoutY="167.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Edit Reviews" textFill="WHITE">
+      <Text layoutX="14.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back">
          <font>
-            <Font name="Eras Demi ITC" size="11.0" />
+            <Font name="Californian FB" size="24.0" />
          </font>
-      </Button>
-      <Button fx:id="GetPeriodicReports11" layoutX="59.0" layoutY="257.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="190.0" style="-fx-background-color: #b9b8d8;" text="Catalouging" textFill="WHITE">
-         <font>
-            <Font name="Eras Demi ITC" size="11.0" />
-         </font>
-      </Button>
+      </Text>
    </children>
 </Pane>

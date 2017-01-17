@@ -1,14 +1,13 @@
 package Entities;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class OrderedBook extends GeneralMessage
 {	
 	private static final long serialVersionUID = 1L;
-	private String readerID,title,author,purchasedate;
+	private String readerID,title,author;
+	private String purchasedate;
 	private int bookid;
-	SimpleDateFormat sdf = new SimpleDateFormat("dd/M/yyyy");
 
 	public OrderedBook(){}
 	
@@ -18,7 +17,10 @@ public class OrderedBook extends GeneralMessage
 		this.bookid=bookid;
 		this.title=title;
 		this.author=author;
-		purchasedate=sdf.format(new Date());
+		purchasedate = LocalDate.now().toString();
+	}
+	public String getPurchaseDate(){
+		return purchasedate;
 	}
 	public String getReaderID() {
 		return readerID;
