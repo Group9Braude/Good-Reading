@@ -1,6 +1,7 @@
 package Entities;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class OrderedBook extends GeneralMessage
 {	
@@ -8,6 +9,7 @@ public class OrderedBook extends GeneralMessage
 	private String readerID,title,author;
 	private String purchasedate;
 	private int bookid;
+	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
 	public OrderedBook(){}
 	
@@ -17,7 +19,7 @@ public class OrderedBook extends GeneralMessage
 		this.bookid=bookid;
 		this.title=title;
 		this.author=author;
-		purchasedate = LocalDate.now().toString();
+		purchasedate=(LocalDate.now()).format(formatter);
 	}
 	public String getPurchaseDate(){
 		return purchasedate;
