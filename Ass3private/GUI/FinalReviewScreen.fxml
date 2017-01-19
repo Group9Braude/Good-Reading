@@ -5,13 +5,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="503.0" prefWidth="550.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="Controllers.ReviewsController">
+<AnchorPane prefHeight="503.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReviewsController">
    <children>
       <ListView fx:id="foundReviewsListView" prefHeight="296.0" prefWidth="550.0" />
-      <Button layoutX="240.0" layoutY="452.0" mnemonicParsing="false" onAction="#onBack" prefHeight="37.0" prefWidth="87.0" text="BACK" />
-      <Button layoutX="77.0" layoutY="329.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="96.0" text="EDIT REVIEW" />
-      <Button layoutX="230.0" layoutY="329.0" mnemonicParsing="false" onAction="#onDenyReview" prefHeight="48.0" prefWidth="107.0" text="DECLINE REVIEW" />
-      <Button layoutX="406.0" layoutY="329.0" mnemonicParsing="false" onAction="#onAcceptReview" prefHeight="48.0" prefWidth="103.0" text="ACCEPT REVIEW" />
+      <Button fx:id="back" layoutX="381.0" layoutY="441.0" mnemonicParsing="false" onAction="#onBack" prefHeight="48.0" prefWidth="128.0" text="BACK" />
+      <Button layoutX="381.0" layoutY="368.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="128.0" text="EDIT REVIEW" />
+      <Button layoutX="211.0" layoutY="305.0" mnemonicParsing="false" onAction="#onDenyReview" prefHeight="48.0" prefWidth="128.0" text="DECLINE REVIEW" />
+      <Button layoutX="381.0" layoutY="305.0" mnemonicParsing="false" onAction="#onAcceptReview" prefHeight="48.0" prefWidth="128.0" text="ACCEPT REVIEW" />
+      <Button layoutX="29.0" layoutY="305.0" mnemonicParsing="false" onAction="#onAcceptedReviews" prefHeight="48.0" prefWidth="128.0" text="ACCEPTED REVIEWS" />
+      <Button layoutX="29.0" layoutY="368.0" mnemonicParsing="false" onAction="#onDeclinedReviews" prefHeight="48.0" prefWidth="128.0" text="DECLINED REVIEWS" />
+      <Button fx:id="holdButton" layoutX="211.0" layoutY="368.0" mnemonicParsing="false" onAction="#onHoldReview" prefHeight="48.0" prefWidth="128.0" text="PUT BACK ON HOLD" />
+      <Button layoutX="29.0" layoutY="429.0" mnemonicParsing="false" onAction="#onHoldReviews" prefHeight="48.0" prefWidth="128.0" text="HOLD REVIEWS" />
    </children>
 </AnchorPane>

@@ -27,6 +27,10 @@ public class Main extends Application {
 	private static User currentUser;
 
 
+	public static void Sleep(int time){//Public class, to shorten the writing of sleep.
+		try {Thread.sleep(time);} catch (InterruptedException e) {e.printStackTrace();}
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		Main.primaryStage = primaryStage;
@@ -243,5 +247,6 @@ public class Main extends Application {
 	public static void setPrimaryStage(Stage primaryStage) {
 		Main.primaryStage = primaryStage;
 	}
+
 }
 

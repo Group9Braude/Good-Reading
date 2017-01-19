@@ -92,25 +92,28 @@ public class MyServer extends AbstractServer {
 				activeBooks((Book)msg, client);break;
 			case "getBooks":
 				getBooks(client); break;
-				//case "BookSearch":/***********NEEDED???*/
-				//bookSearch((Book)msg, client);break;
 			case "DeleteBook":
 				deleteBook((Book)msg, client);break;
 			case "GetReviews":
-				getReviews((Review)msg, client);break;
+				getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);break;
+			case "FindDeclinedReviews":
+				getReviews("title, author, reviewid, review", "reviews" , "isApproved='-1'",client);break;
+			case "FindAcceptedReviews":
+				getReviews("title, author, reviewid, review", "reviews" , "isApproved='1'",client);break;
 			case "AcceptReview":
 				examineReview((Review)msg,1, client);break;
 			case "DenyReview":
 				examineReview((Review)msg, -1 , client);break;
-
+			case "HoldReview":
+				examineReview((Review)msg, 0, client);break;
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-	
-	
-	
+
+
+
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
 
@@ -152,28 +155,30 @@ public class MyServer extends AbstractServer {
 
 
 
-	public void examineReview(Review review,int isApproved, ConnectionToClient client){
+	public void examineReview(Review review,int isApproved, ConnectionToClient client){//-1 >NOT APPROVED, 0 - NOT CHECKED YET, 1 - APPROVED
 		Statement stmt;
 		try{
 			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE reviews SET isApproved = '" + isApproved + "' WHERE reviewid = '" + review.getReviewID() + "';");
 		}catch(Exception e){e.printStackTrace();}
-
+		//getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);
 	}
 
 
-	public void getReviews(Review review, ConnectionToClient client){
+	public void getReviews(String select, String from, String where, ConnectionToClient client){
 		ArrayList<String> reviewList = new ArrayList<String>(); 
 		reviewList.add("SearchReviews");
+		System.out.println("Query : \n" +  "SELECT " + select + " FROM " + from + " WHERE " + where + ";");
 		try{
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT title, author, reviewid, review FROM reviews WHERE isApproved='0';");
+			ResultSet rs = stmt.executeQuery("SELECT " + select + " FROM " + from + " WHERE " + where + ";");
 			while(rs.next()){
 				reviewList.add(rs.getString(1) + " by " + rs.getString(2) + " _ID:" + rs.getInt(3) + "\nReview:\n" + rs.getString(4));
 			}
 			client.sendToClient(reviewList);
 		}catch(Exception e){e.printStackTrace();}
 	}
+
 
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
@@ -185,6 +190,7 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 
 	}
+
 
 	/*	public void bookSearch(Book book, ConnectionToClient client){/***********NEEDED???*/
 	/*	ArrayList<String> bookList = new ArrayList<String>();
@@ -409,7 +415,7 @@ public class MyServer extends AbstractServer {
 		Statement stmt;
 		Book.bookCnt++;
 		String query = "insert into books values ('" + book.getTitle() + "','" + Book.bookCnt + "','" + book.getAuthor() + "','" + 
-				book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0');";
+				book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0');";
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -463,9 +469,12 @@ public class MyServer extends AbstractServer {
 			ResultSet rs1 = stmt1.executeQuery("SELECT * FROM readers WHERE readerID='" + id + "';");
 			if (rs.next())//The ID was found in the workers table
 				try {
+					User.currentWorker = new Worker();
 					if(rs.getString(2).equals(password))
 					{
 						if(rs.getInt(9)==1){//It is a manager!
+							User.currentWorker.setType(3);
+							worker = new Worker();
 							user.setType(3);
 							worker = new Worker();
 							worker.setWorkerID(rs.getString(1));
@@ -474,6 +483,7 @@ public class MyServer extends AbstractServer {
 						}
 						else{
 							user.setType(2);//It is a worker!
+							User.currentWorker.setType(2);
 							worker = new Worker();
 							worker.setWorkerID(rs.getString(1));
 							stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");

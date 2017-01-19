@@ -91,7 +91,7 @@ public class ReportsController extends AbstractClient {
 		for(int i=0;i<Book.bookList.size();i++){
 			if(Book.bookList.get(i).getBookid()==bookidd){
 				title=Book.bookList.get(i).getTitle();
-				author=Book.bookList.get(i).getAuthor();
+				//author=Book.bookList.get(i).getAuthor();
 				System.out.println(Book.bookList.get(i).getBookid());
 				found=1;
 				break;}

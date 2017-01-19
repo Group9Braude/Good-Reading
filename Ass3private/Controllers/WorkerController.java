@@ -512,6 +512,7 @@ public class WorkerController extends AbstractClient {
 			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
 		case "SearchReviews":
 			foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
+		//case 
 			
 
 		}
@@ -552,7 +553,6 @@ public class WorkerController extends AbstractClient {
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 	}
 	public void onCheckReviewL(){
-		System.out.println("sup");
 		Review review = new Review();
 		sendServer(review, "GetReviews");
 		while(WorkerController.foundReviews == null)
