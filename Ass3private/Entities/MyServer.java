@@ -61,6 +61,14 @@ public class MyServer extends AbstractServer {
 				removeBook((Book) msg, client);break;
 			case "CheckUser":
 				checkUser((User)msg,client);break;
+			case "AddGenre":
+				addGenre((Genre)msg,client);break;
+			case "DeleteGenre":
+				deleteGenre((Genre)msg,client);break;
+			case "UpdateGenre":
+				updateGenre((Genre)msg,client);break;
+			case "InitializeGenreList":
+				initializeGenreList((Genre)msg, client);break;
 			case "InitializeBookList":
 				initializeBookList((Book)msg, client);break;
 			case "InitializeWorkerList":
@@ -99,22 +107,100 @@ public class MyServer extends AbstractServer {
 				activeBooks((Book)msg, client);break;
 			case "getBooks":
 				getBooks(client); break;
-				//case "BookSearch":/***********NEEDED???*/
-				//bookSearch((Book)msg, client);break;
 			case "DeleteBook":
 				deleteBook((Book)msg, client);break;
 			case "GetReviews":
-				getReviews((Review)msg, client);break;
+				getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);break;
+			case "FindDeclinedReviews":
+				getReviews("title, author, reviewid, review", "reviews" , "isApproved='-1'",client);break;
+			case "FindAcceptedReviews":
+				getReviews("title, author, reviewid, review", "reviews" , "isApproved='1'",client);break;
 			case "AcceptReview":
 				examineReview((Review)msg,1, client);break;
 			case "DenyReview":
 				examineReview((Review)msg, -1 , client);break;
-
+			case "HoldReview":
+				examineReview((Review)msg, 0, client);break;
+			case "EditReview":
+				editReview((Review)msg, client);
+			case "GetAllGenres":
+				getAllGenres(client);
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
+
+	
+	public void initializeGenreList(Genre genre, ConnectionToClient client){/*******************************************/
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM genre";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<Genre> genreList = new ArrayList<Genre>();	
+			while(rs.next()){
+				System.out.println("test");
+				genreList.add( new Genre (rs.getString(1),rs.getString(2)));
+			}
+			client.sendToClient(genreList);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}	
+	}
+
+public void addGenre(Genre genre, ConnectionToClient client){
+		Statement stmt;
+		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getBookNum()+"', '"+genre.getComments()+"');";
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Added!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+public void updateGenre(Genre genre,ConnectionToClient client){
+	try{
+		Statement stmt=conn.createStatement();
+		String query = "UPDATE genre SET name='"+genre.getGenre()+"', comments= '"+genre.getComments()+
+				"' WHERE name='"+genre.getOldGenre()+"';";
+		stmt = conn.createStatement();
+		stmt.executeUpdate(query);
+		}catch (SQLException e) {
+			System.out.println("Error update genre.");
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Updated!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+public void deleteGenre(Genre genre,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "DELETE FROM genre WHERE name= '"+genre.getGenre()+"';";
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			}catch (SQLException e) {
+				System.out.println("Error deleting genre.");
+				e.printStackTrace();
+			}
+			try {
+				client.sendToClient("Deleted!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
 
 
 	private void getGeneralPop(Book b, ConnectionToClient client) {
@@ -206,6 +292,19 @@ public class MyServer extends AbstractServer {
 		}
 
 	}
+	
+	public void editReview(Review review, ConnectionToClient client){
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "UPDATE reviews SET review = '" + review.getReview() +  "' WHERE reviewid = '" + review.getReviewID() + "';";
+			System.out.println("Query: " + query);
+			stmt.executeUpdate(query);
+			ArrayList<String> arr = new ArrayList<String>();
+			arr.add("EditReview");
+			getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);
+		} catch (Exception e) {e.printStackTrace();}
+	}
+
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
 
@@ -214,7 +313,6 @@ public class MyServer extends AbstractServer {
 		arr.add(0);
 		try {
 			Statement stmt = conn.createStatement();
-
 			ResultSet rs = stmt.executeQuery("Select *  FROM orderedbook WHERE bookid="+ s.getBookid() +
 					" AND purchasedate BETWEEN '" + s.getFrom() +"' AND '" + s.getUntil() + "';");
 			while(rs.next())
@@ -237,7 +335,8 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from books where isSuspend=0");
 			while(rs.next())
-				books.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8)));
+				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getString(11)));
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -247,22 +346,21 @@ public class MyServer extends AbstractServer {
 
 
 
-	public void examineReview(Review review,int isApproved, ConnectionToClient client){
+	public void examineReview(Review review,int isApproved, ConnectionToClient client){//-1 >NOT APPROVED, 0 - NOT CHECKED YET, 1 - APPROVED
 		Statement stmt;
 		try{
 			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE reviews SET isApproved = '" + isApproved + "' WHERE reviewid = '" + review.getReviewID() + "';");
 		}catch(Exception e){e.printStackTrace();}
-
 	}
 
 
-	public void getReviews(Review review, ConnectionToClient client){
+	public void getReviews(String select, String from, String where, ConnectionToClient client){
 		ArrayList<String> reviewList = new ArrayList<String>(); 
 		reviewList.add("SearchReviews");
 		try{
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT title, author, reviewid, review FROM reviews WHERE isApproved='0';");
+			ResultSet rs = stmt.executeQuery("SELECT " + select + " FROM " + from + " WHERE " + where + ";");
 			while(rs.next()){
 				reviewList.add(rs.getString(1) + " by " + rs.getString(2) + " _ID:" + rs.getInt(3) + "\nReview:\n" + rs.getString(4));
 			}
@@ -270,9 +368,9 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 	}
 
+
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
-		System.out.println("Query:" +"DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
 		bookList.add("BookSearch");
 		try{
 			Statement stmt = conn.createStatement();
@@ -280,6 +378,7 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 
 	}
+
 
 	/*	public void bookSearch(Book book, ConnectionToClient client){/***********NEEDED???*/
 	/*	ArrayList<String> bookList = new ArrayList<String>();
@@ -349,7 +448,6 @@ public class MyServer extends AbstractServer {
 		readersList.add("Readers");
 		try {
 			Statement stmt = conn.createStatement();
-			System.out.println("Query:" + reader.query);
 			ResultSet rs = stmt.executeQuery(reader.query);
 
 			while(rs.next())
@@ -364,7 +462,6 @@ public class MyServer extends AbstractServer {
 		workersList.add("Workers");
 		try {
 			Statement stmt = conn.createStatement();
-			System.out.println("Query:" + worker.query);
 			ResultSet rs = stmt.executeQuery(worker.query);
 			while(rs.next())
 				workersList.add(rs.getString(3) + " " + rs.getString(4));
@@ -504,13 +601,12 @@ public class MyServer extends AbstractServer {
 		Statement stmt;
 		Book.bookCnt++;
 		String query = "insert into books values ('" + book.getTitle() + "','" + Book.bookCnt + "','" + book.getAuthor() + "','" + 
-				book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0');";
+				book.getGenre() + "','" + book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0', 'lol');";
+		System.out.println(query);
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) {e.printStackTrace();}
 		try {
 			client.sendToClient("Added!");
 		} catch (IOException e) {
@@ -558,9 +654,12 @@ public class MyServer extends AbstractServer {
 			ResultSet rs1 = stmt1.executeQuery("SELECT * FROM readers WHERE readerID='" + id + "';");
 			if (rs.next())//The ID was found in the workers table
 				try {
+					User.currentWorker = new Worker();
 					if(rs.getString(2).equals(password))
 					{
 						if(rs.getInt(9)==1){//It is a manager!
+							User.currentWorker.setType(3);
+							worker = new Worker();
 							user.setType(3);
 							worker = new Worker();
 							worker.setWorkerID(rs.getString(1));
@@ -569,6 +668,7 @@ public class MyServer extends AbstractServer {
 						}
 						else{
 							user.setType(2);//It is a worker!
+							User.currentWorker.setType(2);
 							worker = new Worker();
 							worker.setWorkerID(rs.getString(1));
 							stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");

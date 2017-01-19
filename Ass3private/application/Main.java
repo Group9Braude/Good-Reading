@@ -27,6 +27,10 @@ public class Main extends Application {
 	private static User currentUser;
 
 
+	public static void Sleep(int time){//Public class, to shorten the writing of sleep.
+		try {Thread.sleep(time);} catch (InterruptedException e) {e.printStackTrace();}
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws IOException {
 		Main.primaryStage = primaryStage;
@@ -106,8 +110,21 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void showEditGenre()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/EditGenre.fxml"));
+		try {    
+			mainLayout =  loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-
+	
 	public static void showReaderLoginScreen(){
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreenReader.fxml"));
@@ -243,5 +260,6 @@ public class Main extends Application {
 	public static void setPrimaryStage(Stage primaryStage) {
 		Main.primaryStage = primaryStage;
 	}
+
 }
 
