@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.chart.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
@@ -36,7 +37,26 @@
                 </Tab>
                 <Tab text="Book statistics by date">
                   <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="65.0" prefWidth="782.0" />
+                    <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="65.0" prefWidth="782.0">
+                           <children>
+                              <ImageView fitHeight="575.0" fitWidth="841.0" layoutX="-34.0" layoutY="-4.0">
+                                 <image>
+                                    <Image url="@../../../../Desktop/Ass3Logos/orange_statistic_cart.jpg" />
+                                 </image>
+                              </ImageView>
+                              <DatePicker fx:id="from" layoutX="223.0" layoutY="62.0" prefHeight="31.0" prefWidth="173.0" promptText="from" />
+                              <DatePicker fx:id="until" layoutX="425.0" layoutY="62.0" prefHeight="31.0" prefWidth="173.0" promptText="until" />
+                              <BarChart fx:id="mybar" barGap="6.0" focusTraversable="true" layoutX="27.0" layoutY="147.0" prefHeight="352.0" prefWidth="415.0">
+                                <xAxis>
+                                  <CategoryAxis startMargin="1.0" fx:id="x" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis fx:id="y" side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                              <TextField fx:id="bookid" layoutX="102.0" layoutY="62.0" prefHeight="31.0" prefWidth="90.0" promptText="Book id" />
+                              <Button fx:id="check" layoutX="638.0" layoutY="62.0" mnemonicParsing="false" onAction="#onCheck" text="Check" />
+                           </children></AnchorPane>
                   </content>
                 </Tab>
                   <Tab text="Book's absolute popularity">

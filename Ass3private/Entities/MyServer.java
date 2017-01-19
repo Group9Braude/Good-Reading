@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.mysql.jdbc.PreparedStatement;
+
+import java.sql.Date;
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -43,6 +46,8 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
+			case "getStatistics":
+				getStatistics((Search)msg,client);break;
 			case "AddBook":
 				addBook((Book)msg, client);break;
 			case "RemoveBook":
@@ -87,7 +92,7 @@ public class MyServer extends AbstractServer {
 				activeBooks((Book)msg, client);break;
 			case "getBooks":
 				getBooks(client); break;
-			//case "BookSearch":/***********NEEDED???*/
+				//case "BookSearch":/***********NEEDED???*/
 				//bookSearch((Book)msg, client);break;
 			case "DeleteBook":
 				deleteBook((Book)msg, client);break;
@@ -97,13 +102,39 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg,1, client);break;
 			case "DenyReview":
 				examineReview((Review)msg, -1 , client);break;
-				
+
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 	
+	
+	
+	private void getStatistics(Search s,ConnectionToClient client){
+		System.out.println(s.getFrom()+"  "+s.getUntil());
+
+		ArrayList<Integer> arr=new ArrayList<Integer>();
+		arr.add(0);
+		arr.add(0);
+		try {
+			Statement stmt = conn.createStatement();
+
+			ResultSet rs = stmt.executeQuery("Select *  FROM orderedbook WHERE bookid="+ s.getBookid() +
+					" AND purchasedate BETWEEN '" + s.getFrom() +"' AND '" + s.getUntil() + "';");
+			while(rs.next())
+				arr.set(0, arr.get(0)+1);
+			Statement stmt1 = conn.createStatement();
+			ResultSet rs1 = stmt1.executeQuery("Select *  FROM searchbook WHERE bookid=" + s.getBookid() +" AND searchdate BETWEEN '" + s.getFrom() +"' AND '" + s.getUntil() + "';");
+			while(rs1.next())
+				arr.set(1, arr.get(1)+1);
+			System.out.println("getstatistifcs in server"+arr);
+			client.sendToClient(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	private void getBooks(ConnectionToClient client)
 	{
 		try {
@@ -116,21 +147,21 @@ public class MyServer extends AbstractServer {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
-	
-	
+
+
 	public void examineReview(Review review,int isApproved, ConnectionToClient client){
 		Statement stmt;
 		try{
 			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE reviews SET isApproved = '" + isApproved + "' WHERE reviewid = '" + review.getReviewID() + "';");
 		}catch(Exception e){e.printStackTrace();}
-		
+
 	}
-	
-	
+
+
 	public void getReviews(Review review, ConnectionToClient client){
 		ArrayList<String> reviewList = new ArrayList<String>(); 
 		reviewList.add("SearchReviews");
@@ -143,7 +174,7 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(reviewList);
 		}catch(Exception e){e.printStackTrace();}
 	}
-	
+
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
 		System.out.println("Query:" +"DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
@@ -152,10 +183,10 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
 		}catch(Exception e){e.printStackTrace();}
-		
+
 	}
-	
-/*	public void bookSearch(Book book, ConnectionToClient client){/***********NEEDED???*/
+
+	/*	public void bookSearch(Book book, ConnectionToClient client){/***********NEEDED???*/
 	/*	ArrayList<String> bookList = new ArrayList<String>();
 		bookList.add("BookSearch");
 		try{
@@ -182,7 +213,7 @@ public class MyServer extends AbstractServer {
 	private void getUserBooks(Reader msg, ConnectionToClient client) {
 		try {
 			Statement stmt = conn.createStatement();
-			String query = "SELECT * FROM orderedbooks WHERE readerID= '"+((Reader)msg).getID()+"';";
+			String query = "SELECT * FROM orderedbook WHERE readerID= '"+((Reader)msg).getID()+"';";
 			ResultSet rs = stmt.executeQuery(query);
 			ArrayList<OrderedBook> userbooks = new ArrayList<OrderedBook>();
 			while(rs.next()){
@@ -480,7 +511,7 @@ public class MyServer extends AbstractServer {
 							reader.setSecCode(rs1.getString(14));
 							//Getting the list of books the current user has ordered
 							Statement stmt2 = conn.createStatement();
-							ResultSet rs2 = stmt2.executeQuery("select * from orderedbooks where readerID='"+reader.getID()+"';");
+							ResultSet rs2 = stmt2.executeQuery("select * from orderedbook where readerID='"+reader.getID()+"';");
 							ArrayList<OrderedBook> books = new ArrayList<OrderedBook>();
 							while(rs2.next())
 								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
