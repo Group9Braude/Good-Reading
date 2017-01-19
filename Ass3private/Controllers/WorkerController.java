@@ -311,6 +311,10 @@ public class WorkerController extends AbstractClient {
 
 
 
+	public void onEditGenre() throws IOException{
+		System.out.println("lol");
+		Main.showEditGenre();
+	}
 
 	public void onBack(){
 		try {

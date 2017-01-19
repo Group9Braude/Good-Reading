@@ -54,6 +54,14 @@ public class MyServer extends AbstractServer {
 				removeBook((Book) msg, client);break;
 			case "CheckUser":
 				checkUser((User)msg,client);break;
+			case "AddGenre":
+				addGenre((Genre)msg,client);break;
+			case "DeleteGenre":
+				deleteGenre((Genre)msg,client);break;
+			case "UpdateGenre":
+				updateGenre((Genre)msg,client);break;
+			case "InitializeGenreList":
+				initializeGenreList((Genre)msg, client);break;
 			case "InitializeBookList":
 				initializeBookList((Book)msg, client);break;
 			case "InitializeWorkerList":
@@ -116,6 +124,77 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
+	
+	public void initializeGenreList(Genre genre, ConnectionToClient client){/*******************************************/
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM genre";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<Genre> genreList = new ArrayList<Genre>();	
+			while(rs.next()){
+				System.out.println("test");
+				genreList.add( new Genre (rs.getString(1),rs.getInt(2),rs.getString(3)));
+			}
+			client.sendToClient(genreList);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}	
+	}
+
+public void addGenre(Genre genre, ConnectionToClient client){
+		Statement stmt;
+		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getBookNum()+"', '"+genre.getComments()+"');";
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Added!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+public void updateGenre(Genre genre,ConnectionToClient client){
+	try{
+		Statement stmt=conn.createStatement();
+		String query = "UPDATE genre SET name='"+genre.getGenre()+"', comments= '"+genre.getComments()+
+				"' WHERE name='"+genre.getOldGenre()+"';";
+		stmt = conn.createStatement();
+		stmt.executeUpdate(query);
+		}catch (SQLException e) {
+			System.out.println("Error update genre.");
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Updated!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+
+public void deleteGenre(Genre genre,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "DELETE FROM genre WHERE name= '"+genre.getGenre()+"';";
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			}catch (SQLException e) {
+				System.out.println("Error deleting genre.");
+				e.printStackTrace();
+			}
+			try {
+				client.sendToClient("Deleted!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
+	
 	
 	public void getAllGenres(ConnectionToClient client){
 		try {

@@ -110,8 +110,21 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void showEditGenre()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/EditGenre.fxml"));
+		try {    
+			mainLayout =  loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
-
+	
 	public static void showReaderLoginScreen(){
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreenReader.fxml"));

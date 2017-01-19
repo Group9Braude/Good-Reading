@@ -30,13 +30,10 @@ public class EditGenre extends AbstractClient {
 	}
 
 	public void initialize(){
+		flag=0;
+		int j=0;
 		int i=0;
-		try {
-			this.openConnection();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
+		
 		genre.actionNow="InitializeGenreList";
 		try {
 			this.sendToServer(genre);
@@ -46,6 +43,7 @@ public class EditGenre extends AbstractClient {
 		}
 		while(flag==0){
 			try {
+			//	System.out.println(" "+j++);
 				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -87,6 +85,7 @@ public class EditGenre extends AbstractClient {
 		obsGenre.add(genre.getGenre());
 		genre.actionNow="AddGenre";
 		try {
+			this.openConnection();
 			this.sendToServer(genre);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -109,6 +108,7 @@ public class EditGenre extends AbstractClient {
 				obsGenre.remove(genre.getGenre());
 				genre.actionNow="DeleteGenre";
 				try {
+					this.openConnection();
 					this.sendToServer(genre);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
