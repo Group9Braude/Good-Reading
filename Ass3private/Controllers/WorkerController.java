@@ -54,7 +54,6 @@ public class WorkerController extends AbstractClient {
 
 	public WorkerController() {
 		super(Main.host, Main.port);
-		System.out.println("WorkerControllerConstructor");
 		foundReaders = null;
 		foundWorkers = null;
 		foundBooks = null;
@@ -84,7 +83,6 @@ public class WorkerController extends AbstractClient {
 	
 
 	public void showFound(){//POPUP
-		System.out.println("show");
 		try{
 			Main.mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/FoundScreen.fxml"));
 		} catch (IOException e1) {
@@ -97,7 +95,6 @@ public class WorkerController extends AbstractClient {
 
 
 	public void changeRemoveButton(){
-		System.out.println("Easy");
 		if(titleTextFieldR.getText()!="" || authorTextFieldR.getText()!="" ||  languageTextFieldR.getText()!="" || 
 				summaryTextFieldR.getText()!="" ||  tocTextFieldR.getText()!="" ||  keywordTextFieldR.getText()!="")
 		removeBookButton.setText("FIND BOOKS");
@@ -168,7 +165,6 @@ public class WorkerController extends AbstractClient {
 	
 	/****************************/
 	public void onPressCat(){
-		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCatSelected.png");
 		Image image = new Image(file.toURI().toString());
 		catImageView.setImage(image);
@@ -181,7 +177,6 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onPressAdd(){
-		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\AddBookSelected.png");
 		Image image = new Image(file.toURI().toString());
 		addImageView.setImage(image);
@@ -194,7 +189,6 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onPressRemove(){
-		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBookSelected.png");
 		Image image = new Image(file.toURI().toString());
 		removeImageView.setImage(image);
@@ -207,7 +201,6 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onPressUpdate(){
-		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\UpdateBookSelected.png");
 		Image image = new Image(file.toURI().toString());
 		updateImageView.setImage(image);
@@ -220,7 +213,6 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onPressSearchU(){
-		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\SearchUserSelected.png");
 		Image image = new Image(file.toURI().toString());
 		searchImageView.setImage(image);
@@ -233,20 +225,17 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onPressEnter(){	
-		System.out.println("Press"); 
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\EnterReaderSelected.png");
 		Image image = new Image(file.toURI().toString());
 		enterImageView.setImage(image);
 	}
 
 	public void onRlsEnter(){
-		System.out.println("Rls");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\Enter Reader.png");
 		Image image = new Image(file.toURI().toString());
 		enterImageView.setImage(image);
 	}
 	public void onPressLogout(){//C:\Users\orels\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
-		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\LogoutSelected.png");
 		Image image = new Image(file.toURI().toString());
 		logoutImageView.setImage(image);
@@ -259,7 +248,6 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onPressCheck(){//C:\Users\orels\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
-		System.out.println("Press");
 		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviewsSelected.png");
 		Image image = new Image(file.toURI().toString());
 		checkImageView.setImage(image);
@@ -298,7 +286,6 @@ public class WorkerController extends AbstractClient {
 			query+=book.query.charAt(i);//Remove the and from the end of the query
 		query+=";";
 		book.query=query;
-		System.out.println(query);
 		sendServer(book, "RemoveBook");
 		while(foundBooks==null)
 			try{
@@ -350,7 +337,6 @@ public class WorkerController extends AbstractClient {
 
 
 	public  void onLogout(){
-		System.out.println(User.currentWorker.getWorkerID());
 		Worker worker = new Worker();
 		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
 		sendServer(worker, "LogOutUser");
@@ -387,6 +373,8 @@ public class WorkerController extends AbstractClient {
 		readerLVUpdate();
 
 	}
+	
+	
 
 	public void onBookChosen(){
 		String str="";
@@ -398,7 +386,6 @@ public class WorkerController extends AbstractClient {
 			else
 				str="";
 		ID=Integer.parseInt(str);
-		System.out.println(ID);
 		Book book = new Book();
 		book.setBookid(ID);
 		sendServer(book, "UpdateBook");
@@ -407,7 +394,6 @@ public class WorkerController extends AbstractClient {
 
 
 	public void readerLVUpdate(){
-		System.out.println("TEST");
 		while(foundReaders==null)
 			try {
 				Thread.sleep(10);
@@ -472,11 +458,13 @@ public class WorkerController extends AbstractClient {
 		sendServer(worker, "FindLoggedWorkers");
 		workerLVUpdate();
 	}
+	
+	
+	
 
 
 	@SuppressWarnings("unchecked")
 	protected void handleMessageFromServer(Object msg) {
-		System.out.println("WorkerControllerHandler");
 		if(msg instanceof String)
 			System.out.println((String)msg);
 
@@ -512,6 +500,8 @@ public class WorkerController extends AbstractClient {
 			foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
 		case "SearchReviews":
 			foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
+		case "EditReview":
+			EditReviewController.backOn=true;
 		//case 
 			
 
@@ -527,7 +517,6 @@ public class WorkerController extends AbstractClient {
 
 	public void  onAddBookL(){
 		onRlsAdd();
-		System.out.println(Book.bookCnt);
 		try {
 			Main.showAddBook();
 		} catch (IOException e) {e.printStackTrace();}
@@ -555,9 +544,9 @@ public class WorkerController extends AbstractClient {
 	public void onCheckReviewL(){
 		Review review = new Review();
 		sendServer(review, "GetReviews");
-		while(WorkerController.foundReviews == null)
+		while(foundReviews == null)
 			try{Thread.sleep(2);}catch(Exception e){e.printStackTrace();}
-		try {
+				try {
 			Main.showFinalReviewScreen();
 		} catch (IOException e) {
 			e.printStackTrace();

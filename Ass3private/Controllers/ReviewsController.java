@@ -2,6 +2,8 @@ package Controllers;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import Entities.GeneralMessage;
 import Entities.Review;
 import Entities.User;
@@ -9,18 +11,27 @@ import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 
 public class ReviewsController {
 
-	@FXML
-	ListView<String> foundReviewsListView;
-	@FXML
-	Button holdButton, back;
-	static String  status = "";
 
-	private static boolean isHoldScreen = false;
+	@FXML
+	public  ListView<String> foundReviewsListView;
+	@FXML
+	Button holdButton, back, acceptReviewButton, declineReviewButton, editReviewButton;
+
+	public static ObservableList<String> list;
+	static public String  status = "";
+	public static boolean isHoldScreen = false, firstTime=true, returnFromEdit=false;
+	public static int editID;
+
+
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 
@@ -34,18 +45,36 @@ public class ReviewsController {
 		}
 	}
 
+	public ReviewsController(){//called before initialize!
+		if(returnFromEdit){
+			Review review = new Review();
+			sendServer(review, "GetReviews");
+			while(WorkerController.foundReviews==null)
+				Main.Sleep(10);
+			returnFromEdit=false;
+		}
+
+	}
 
 
 	public void initialize(){
 
+		if(firstTime){
+			firstTime=false;
+			holdButton.setVisible(false);
+		}
+		try{
+			ObservableList<String> items =FXCollections.observableArrayList();
+			items.addAll(WorkerController.foundReviews);
+			foundReviewsListView.setItems(items);
+		}catch(Exception e){}
 
-		ObservableList<String> items =FXCollections.observableArrayList();
-		items.addAll(WorkerController.foundReviews);
-		foundReviewsListView.setItems(items);	
+
+
+
 	}
 
 	public void onBack(){
-		System.out.println("hereback: " + User.currentWorker.getType());
 		try {
 			if(User.currentWorker.getType()==2)	
 				Main.showLoggedInScreenWorker();
@@ -61,51 +90,49 @@ public class ReviewsController {
 		int i;
 		String s="", chosen = null;
 		try{
-		 chosen = foundReviewsListView.getSelectionModel().getSelectedItem();
-
-
-		for( i=0;i<chosen.length();i++){
-			s=""+ chosen.charAt(i);
-			if(s.equals("" + "_"))
-				str="";
-			else if((chosen.charAt(i)-'0'<=9 && chosen.charAt(i)-'0'>=0))//INTEGER! THE ID MIGHT BE HERE!
+			chosen = foundReviewsListView.getSelectionModel().getSelectedItem();
+			i=chosen.indexOf("_ID");
+			i+=4;
+			for(;chosen.charAt(i)<='9' && chosen.charAt(i)>='0';i++)
 				str+=chosen.charAt(i);
-		}
+			int ID=Integer.parseInt(str);
+			Review review = new Review();
+			review.setReviewID(ID);
+			if(isApproved==1)
+				sendServer(review, "AcceptReview");
+			else if(isApproved==-1)
+				sendServer(review, "DenyReview");
+			else if(isApproved ==0)
+				sendServer(review, "HoldReview");
 
-		int ID=Integer.parseInt(str);
-		Review review = new Review();
-		review.setReviewID(ID);
-		if(isApproved==1)
-			sendServer(review, "AcceptReview");
-		else if(isApproved==-1)
-			sendServer(review, "DenyReview");
-		else if(isApproved ==0)
-			sendServer(review, "HoldReview");
-		
-		WorkerController.foundReviews=null;
+			WorkerController.foundReviews=null;
 
-		switch(status){
-		case "AcceptedReviews":
-			onAcceptedReviews();break;
-		case "DeclinedReviews":
-			onDeclinedReviews();break;
-		default:
-			sendServer(new Review(), "GetReviews");break;
-		}
-		
-		while(WorkerController.foundReviews==null)
-			Main.Sleep(10);
+			switch(status){
+			case "AcceptedReviews":
+				onAcceptedReviews();break;
+			case "DeclinedReviews":
+				onDeclinedReviews();break;
+			default:
+				sendServer(new Review(), "GetReviews");break;
+			}
 
-		initialize();
+			while(WorkerController.foundReviews==null)
+				Main.Sleep(10);
+			initialize();
 		}catch(Exception e){}
 
 	}
 
 	public void onAcceptedReviews(){
+
+		declineReviewButton.setVisible(true);
+		holdButton.setVisible(true);
+		acceptReviewButton.setVisible(false);
+		editReviewButton.setVisible(false);
+
 		status = "AcceptedReviews";
 		WorkerController.foundReviews=null;
 		isHoldScreen=true;
-		holdButton.setVisible(true);
 		Review review = new Review();
 		sendServer(review, "FindAcceptedReviews");
 		while(WorkerController.foundReviews==null)
@@ -114,22 +141,31 @@ public class ReviewsController {
 	}
 
 	public void onDeclinedReviews(){
+
+		acceptReviewButton.setVisible(true);
+		holdButton.setVisible(true);
+		declineReviewButton.setVisible(false);
+		editReviewButton.setVisible(false);
 		status = "DeclinedReviews";
 		WorkerController.foundReviews=null;
 		isHoldScreen=true;
-		holdButton.setVisible(true);
 		Review review = new Review();
 		sendServer(review, "FindDeclinedReviews");
 		while(WorkerController.foundReviews==null)
 			Main.Sleep(10);
 		initialize();
 	}
-	
+
 	public void onHoldReviews(){
+
+		declineReviewButton.setVisible(true);
+		acceptReviewButton.setVisible(true);
+		holdButton.setVisible(false);
+		editReviewButton.setVisible(true);
+
 		status = "HoldReviews";
 		WorkerController.foundReviews=null;
 		isHoldScreen=false;
-		holdButton.setVisible(false);
 		Review review = new Review();
 		sendServer(review, "GetReviews");
 		while(WorkerController.foundReviews==null)
@@ -150,12 +186,40 @@ public class ReviewsController {
 		examineID(0);
 	}
 
-public void onEdit(){
-	
-}
-public void onBackEdit(){
-	Main.showReviewScreen();
-}
+
+
+	public void onEdit(){
+
+	}
+
+
+
+	public void onEditReview(){
+		list = foundReviewsListView.getSelectionModel().getSelectedItems(); 
+		if(list.get(0)==null){
+			JOptionPane.showMessageDialog(null, "Please select a review", "REVIEW NOT CHOSEN", JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
+
+		String str="", chosen;
+		int i;
+		try{
+			chosen = foundReviewsListView.getSelectionModel().getSelectedItem();
+			i=chosen.indexOf("_ID");
+			i+=4;
+			for(;chosen.charAt(i)<='9' && chosen.charAt(i)>='0';i++)
+				str+=chosen.charAt(i);
+
+			editID=Integer.parseInt(str);
+		}catch(Exception e){e.printStackTrace(); }
+
+		try {
+			Parent parent = FXMLLoader.load(Main.class.getResource("/GUI/EditReview.fxml"));
+			Main.popup.setScene(new Scene(parent));
+			Main.getPrimaryStage().close();
+			Main.popup.show();
+		} catch (IOException e1) {e1.printStackTrace();}
+	}
 
 
 }

@@ -106,13 +106,25 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg, -1 , client);break;
 			case "HoldReview":
 				examineReview((Review)msg, 0, client);break;
+			case "EditReview":
+				editReview((Review)msg, client);
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
-
+	public void editReview(Review review, ConnectionToClient client){
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "UPDATE reviews SET review = '" + review.getReview() +  "' WHERE reviewid = '" + review.getReviewID() + "';";
+			System.out.println("Query: " + query);
+			stmt.executeUpdate(query);
+			ArrayList<String> arr = new ArrayList<String>();
+			arr.add("EditReview");
+			getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);
+		} catch (Exception e) {e.printStackTrace();}
+	}
 
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
@@ -122,7 +134,6 @@ public class MyServer extends AbstractServer {
 		arr.add(0);
 		try {
 			Statement stmt = conn.createStatement();
-
 			ResultSet rs = stmt.executeQuery("Select *  FROM orderedbook WHERE bookid="+ s.getBookid() +
 					" AND purchasedate BETWEEN '" + s.getFrom() +"' AND '" + s.getUntil() + "';");
 			while(rs.next())
@@ -161,14 +172,12 @@ public class MyServer extends AbstractServer {
 			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE reviews SET isApproved = '" + isApproved + "' WHERE reviewid = '" + review.getReviewID() + "';");
 		}catch(Exception e){e.printStackTrace();}
-		//getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);
 	}
 
 
 	public void getReviews(String select, String from, String where, ConnectionToClient client){
 		ArrayList<String> reviewList = new ArrayList<String>(); 
 		reviewList.add("SearchReviews");
-		System.out.println("Query : \n" +  "SELECT " + select + " FROM " + from + " WHERE " + where + ";");
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT " + select + " FROM " + from + " WHERE " + where + ";");
@@ -182,7 +191,6 @@ public class MyServer extends AbstractServer {
 
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
-		System.out.println("Query:" +"DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
 		bookList.add("BookSearch");
 		try{
 			Statement stmt = conn.createStatement();
@@ -260,7 +268,6 @@ public class MyServer extends AbstractServer {
 		readersList.add("Readers");
 		try {
 			Statement stmt = conn.createStatement();
-			System.out.println("Query:" + reader.query);
 			ResultSet rs = stmt.executeQuery(reader.query);
 
 			while(rs.next())
@@ -275,7 +282,6 @@ public class MyServer extends AbstractServer {
 		workersList.add("Workers");
 		try {
 			Statement stmt = conn.createStatement();
-			System.out.println("Query:" + worker.query);
 			ResultSet rs = stmt.executeQuery(worker.query);
 			while(rs.next())
 				workersList.add(rs.getString(3) + " " + rs.getString(4));
