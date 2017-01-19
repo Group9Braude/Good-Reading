@@ -1,9 +1,7 @@
 package Controllers;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.OrderedBook;
@@ -14,12 +12,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import ocsf.client.AbstractClient;
 
 public class ReportsController extends AbstractClient {
@@ -41,32 +40,119 @@ public class ReportsController extends AbstractClient {
 	}
 	public static int flag=0;
 	@FXML
-	public TextField id;
+	public TextField id,bookidd;
 	@FXML
 	public ListView<String> myBooks;
 	@FXML
 	public DatePicker from;
 	@FXML
 	public DatePicker until;
-	@FXML
-	public TextField bookid;
+
 	@FXML
 	public BarChart<?,?> mybar;
+	ObservableList<String> genres = FXCollections.observableArrayList();	
 	@FXML
-	public CategoryAxis x;
+	public ChoiceBox genre;
 	@FXML
-	public NumberAxis y;
+	public TextField genrebookid;
+	@FXML 
+	public Button enter1;
+	@FXML
+	public Button checkpop;
+	@FXML
+	public Text please,notfound;
+	@FXML
+	public TextField result;
 	public int found=0;
 	public static  ArrayList<OrderedBook> arr;
 	public static  ArrayList<Integer> arrint;
-
+	public static  ArrayList<String> arrstring;
+	public static String pop;
 	public  ObservableList<String> obsMyBooks;
 
-	
+
+
 	@FXML
 	private void initialize(){
 		mybar.setVisible(false);
 	}
+
+
+	@FXML
+	public TextField bookid;
+	@FXML
+	public Text notfound1,generalpop;
+
+	/*check in general popularity*/
+	public void onCheckk(){
+		sendServer(new Book(Integer.parseInt(bookidd.getText())),"getGeneralPop");//getting book's genres
+		while(flag==0){
+			try {
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		};
+		if(!pop.equals("0/5")){
+			notfound1.setVisible(false);
+			generalpop.setText(pop);
+			generalpop.setVisible(true);
+		}
+		else {
+			generalpop.setVisible(false);
+			notfound1.setVisible(true);
+		}
+		flag=0;
+
+	}
+	/*enter in genre popularity*/
+	public void onEnter1(){
+		notfound.setVisible(false);
+		result.clear();
+		genres.clear();
+		result.setVisible(false);
+		sendServer(new Book(Integer.parseInt(genrebookid.getText())),"getBookGenres");//getting book's genres
+		while(flag==0){
+			try {
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		};
+		System.out.println("arrstring:"+arrstring);
+		if(!arrstring.get(0).equals("end")){
+			please.setVisible(true);
+			genre.setVisible(true);
+			checkpop.setVisible(true);
+			for(int i=0;i<arrstring.size()-1;i++)
+				genres.add(arrstring.get(i));
+			genre.setItems(genres);
+		}
+		else{
+			notfound.setVisible(true);
+		}
+		flag=0;
+		arrstring.removeAll(arrstring);
+	}
+	/*check pop in genre pop*/
+	public void onCheckpop(){
+		sendServer(new Book(Integer.parseInt(genrebookid.getText()),genre.getSelectionModel().getSelectedItem().toString()), "gettingGenrePlace");//getting how many books in the selected genre
+		while(flag==0){
+			try {
+				Thread.sleep(30);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		};
+		result.setText(pop);
+		result.setVisible(true);
+		genres.removeAll();
+		flag=0;
+	}
+
 	@SuppressWarnings("unchecked")
 	@FXML
 	public void onCheck(){
@@ -96,22 +182,16 @@ public class ReportsController extends AbstractClient {
 				found=1;
 				break;}
 		}
-		if(found==1){
+		if(found==1)
 			mybar.setTitle("Statistics of "+title+" by "+author);
-			mybar.setAnimated(true);
-			XYChart.Series set=new XYChart.Series();
-			set.getData().add(new XYChart.Data("#Purchases",arrint.get(0)));
-			set.getData().add(new XYChart.Data("#Searches",arrint.get(1)));
-			mybar.getData().addAll(set);
-		}
 		else{ 
-			mybar.setAnimated(false);
 			mybar.setTitle("Book is not found");
-			XYChart.Series set=new XYChart.Series();
-			set.getData().add(new XYChart.Data("#Purchases",0));
-			set.getData().add(new XYChart.Data("#Searches",0));
-			mybar.getData().addAll(set);
 		}
+		XYChart.Series set=new XYChart.Series();
+		set.getData().add(new XYChart.Data("#Purchases",arrint.get(0)));
+		set.getData().add(new XYChart.Data("#Searches",arrint.get(1)));
+		mybar.getData().addAll(set);
+		flag=0;
 	}
 	@FXML
 	public void onEnter(){
@@ -142,16 +222,23 @@ public class ReportsController extends AbstractClient {
 		if(msg instanceof ArrayList){
 			if(((ArrayList<?>)msg).get(0) instanceof OrderedBook){
 				arr = new ArrayList <OrderedBook>((ArrayList <OrderedBook>)msg);
-				ReportsController.flag=1;
 			}
-			else {
+			else if (((ArrayList<?>)msg).get(0) instanceof Integer) {
 				arrint = new ArrayList <Integer>((ArrayList <Integer>)msg);
-				ReportsController.flag=1;
 				System.out.println("handle message from server:"+arrint);
 
 			}
+			else if (((ArrayList<?>)msg).get(0) instanceof String){
+				arrstring = new ArrayList <String>((ArrayList <String>)msg);
+				System.out.println("handle message from server:"+arrstring);
+			}
 		}
-
+		else{
+			pop=((Book)msg).getTitle();	/*its not really type of book, it is just to get a string*/
+			System.out.println("pop: "+pop);
+			System.out.println("handle message from server:"+pop);
+		}
+		ReportsController.flag=1;
 
 	}
 

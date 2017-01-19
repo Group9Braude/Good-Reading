@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import com.mysql.jdbc.PreparedStatement;
 
@@ -46,6 +47,12 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
+			case "getGeneralPop":
+				getGeneralPop((Book)msg,client);break;
+			case "gettingGenrePlace":
+				gettingGenrePlace((Book)msg,client);break;
+			case "getBookGenres":
+				getBookGenres((Book)msg,client);break;
 			case "getStatistics":
 				getStatistics((Search)msg,client);break;
 			case "AddBook":
@@ -108,9 +115,97 @@ public class MyServer extends AbstractServer {
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-	
-	
-	
+
+
+	private void getGeneralPop(Book b, ConnectionToClient client) {
+		ArrayList <Book_NumOfPurchases> arr=new ArrayList<Book_NumOfPurchases>();
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select *  FROM books;");
+			while(rs.next())
+				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(10)));
+			Collections.sort(arr);
+			for(int i=0;i<arr.size();i++)
+				System.out.println("place: "+(arr.size()-i)+" bookid:"+arr.get(i).bookid+" num of purchases:"+arr.get(i).numofpurchases);
+			int i=0;
+			for(i=0;i<arr.size();i++)
+				if(arr.get(i).bookid==b.getBookid())
+					break;
+			System.out.println("place:"+(arr.size()-i));
+			System.out.println("total:"+arr.size());
+			client.sendToClient(new Book(0,Integer.toString((arr.size()-i))+"/"+Integer.toString(arr.size())));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
+	/*class that helps for organizing and sorting to get ranking of a book*/
+	public class Book_NumOfPurchases implements Comparable<Book_NumOfPurchases> {
+		public int bookid;
+		public int numofpurchases;
+		public Book_NumOfPurchases(int bookid,int numofpurchases){
+			this.bookid=bookid;
+			this.numofpurchases=numofpurchases;
+		}
+		public void setnumofpurchases(int x){
+			this.numofpurchases=x;
+		}
+		public int compareTo(Book_NumOfPurchases info) {
+			if (this.numofpurchases < info.numofpurchases) {
+				return -1;
+			} else if (this.numofpurchases > info.numofpurchases) {
+				return 1;
+			} else {
+				return 0;
+			}
+		}
+
+	}
+	private void gettingGenrePlace(Book b, ConnectionToClient client) {
+		ArrayList <Book_NumOfPurchases> arr=new ArrayList<Book_NumOfPurchases>();
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE genre='"+ b.getTitle() + "';");
+			while(rs.next())
+				arr.add(new Book_NumOfPurchases(rs.getInt(2),6));//Updating books id's
+			for(int i=0;i<arr.size();i++){//updating their number of purchases
+				Statement stmt1 = conn.createStatement();
+				ResultSet rs1 = stmt1.executeQuery("Select numofpurchases  FROM books WHERE bookid="+ arr.get(i).bookid + ";");
+				while(rs1.next())
+					arr.get(i).setnumofpurchases(rs1.getInt(1));
+			}
+			Collections.sort(arr);
+			for(int i=0;i<arr.size();i++)
+				System.out.println("place: "+(arr.size()-i)+" bookid:"+arr.get(i).bookid+" num of purchases:"+arr.get(i).numofpurchases);
+			int i=0;
+			for(i=0;i<arr.size();i++)
+				if(arr.get(i).bookid==b.getBookid())
+					break;
+			System.out.println("place:"+(arr.size()-i));
+			System.out.println("total:"+arr.size());
+			System.out.println(Integer.toString((arr.size()-i))+"/"+Integer.toString(arr.size()));
+			client.sendToClient(new Book(0,Integer.toString(i+1)+"/"+Integer.toString(arr.size())));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private void getBookGenres(Book b,ConnectionToClient client){
+		ArrayList<String> arr=new ArrayList<String>();
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE bookid="+ b.getBookid() + ";");
+			while(rs.next())
+				arr.add(rs.getString(1));//Adding genres to array
+			Statement stmt1 = conn.createStatement();
+			arr.add("end");
+			client.sendToClient(arr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+	}
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
 
@@ -352,7 +447,7 @@ public class MyServer extends AbstractServer {
 			ArrayList<Book> bookList = new ArrayList<Book>();
 			while(rs.next()){
 				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
-						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8)));
+						,rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8), rs.getInt(9)));
 
 			}
 			client.sendToClient(bookList);

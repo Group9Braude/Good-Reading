@@ -15,7 +15,14 @@ public class Book extends GeneralMessage implements Serializable{
 
 
 	public Book(){}
-
+	
+	public Book(int bookid){
+		this.bookid=bookid;
+	}
+	public Book(int bookid,String title){
+		this.bookid=bookid;
+		this.title=title;
+	}
 	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend) 
 	{
 		super();
