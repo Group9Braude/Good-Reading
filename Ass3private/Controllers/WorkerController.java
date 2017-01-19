@@ -268,11 +268,16 @@ public class WorkerController extends AbstractClient {
 		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				toc = tocTextFieldR.getText(), keyword = keywordTextFieldR.getText();
+		String[] authors = author.split(",");//a,b,c ->[a][b][c]
+		for(String str:authors)
+			System.out.println(str);
 		book.query = "SELECT * FROM books WHERE";
 		if(!title.equals(""))
 			book.query +=" title LIKE  '%" + title + "%' AND ";
-		if(!author.equals(""))
-			book.query +=" author LIKE '%" + author + "%' AND ";
+	//	if(!author.equals(""))
+		//	book.query +=" author LIKE '%" + author + "%' AND ";
+		for(String str:authors)
+			book.query+=" author LIKE '%" + str + "%' AND ";
 		if(!language.equals(""))
 			book.query+=" language LIKE '%" + language + "%' AND ";
 		if(!summary.equals(""))

@@ -29,7 +29,7 @@ public class ReviewsController {
 	public static ObservableList<String> list;
 	static public String  status = "";
 	public static boolean isHoldScreen = false, firstTime=true, returnFromEdit=false;
-	public static int editID;
+	public static int editID, doubleClick=0, indexClicked=-1;
 
 
 
@@ -195,6 +195,8 @@ public class ReviewsController {
 
 
 	public void onEditReview(){
+		if(foundReviewsListView.getSelectionModel().getSelectedIndex()==0)
+			return;
 		list = foundReviewsListView.getSelectionModel().getSelectedItems(); 
 		if(list.get(0)==null){
 			JOptionPane.showMessageDialog(null, "Please select a review", "REVIEW NOT CHOSEN", JOptionPane.INFORMATION_MESSAGE);
@@ -219,6 +221,27 @@ public class ReviewsController {
 			Main.getPrimaryStage().close();
 			Main.popup.show();
 		} catch (IOException e1) {e1.printStackTrace();}
+	}
+	
+	public void onReviewPress(){
+		if(doubleClick==1&&indexClicked==foundReviewsListView.getSelectionModel().getSelectedIndex()&&indexClicked!=0){
+			doubleClick++;
+			onEditReview();
+			return;
+		}
+		if(doubleClick==2)
+			doubleClick=0;
+		indexClicked = foundReviewsListView.getSelectionModel().getSelectedIndex();
+		doubleClick++;
+
+		Thread thread = new Thread(){
+			public void run(){
+				try {Thread.sleep(300);} catch (InterruptedException e) {e.printStackTrace();}
+				doubleClick=0;
+			}
+		};
+		thread.start();
+		
 	}
 
 
