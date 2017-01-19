@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private String title, author, language, summary, toc, keyword;
+	/*             Book Properties          */
+	private String title, author, language, summary, toc, keyword, genre;
+	private int isSuspend=0 , bookid, numOfPurchases;
+	/*             Book Properties          */
 	public static ArrayList<Book> bookList;
 	public ArrayList<Book> deleteBookList;
-	private int isSuspend=0 , bookid; 
 	public static int bookCnt=90;
 	public String query;
 
@@ -16,9 +18,12 @@ public class Book extends GeneralMessage implements Serializable{
 
 	public Book(){}
 
-	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend) 
+	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword,String genre, int isSuspend
+			,int numOfPurchases) 
 	{
 		super();
+		this.numOfPurchases = numOfPurchases;
+		this.genre = genre;
 		this.bookid = bookid;
 		this.title = title;
 		this.author = author;

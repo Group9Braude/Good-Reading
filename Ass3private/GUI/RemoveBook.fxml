@@ -17,24 +17,20 @@
             <Font name="Segoe Print" size="37.0" />
          </font>
       </Text>
-      <TextField fx:id="titleTextFieldR" layoutX="160.0" layoutY="95.0" onInputMethodTextChanged="#changeRemoveButton" />
-      <TextField fx:id="authorTextFieldR" layoutX="160.0" layoutY="138.0" onInputMethodTextChanged="#changeRemoveButton" />
-      <TextField fx:id="keywordTextFieldR" layoutX="160.0" layoutY="444.0" onInputMethodTextChanged="#changeRemoveButton" />
-      <TextField fx:id="summaryTextFieldR" layoutX="160.0" layoutY="220.0" onInputMethodTextChanged="#changeRemoveButton" prefHeight="103.0" prefWidth="218.0">
+      <TextField fx:id="titleTextFieldR" layoutX="160.0" layoutY="95.0" onInputMethodTextChanged="#changeRemoveButton" promptText="Title" />
+      <TextField fx:id="authorTextFieldR" layoutX="161.0" layoutY="147.0" onInputMethodTextChanged="#changeRemoveButton" promptText="Author" />
+      <TextField fx:id="keywordTextFieldR" layoutX="160.0" layoutY="444.0" onInputMethodTextChanged="#changeRemoveButton" promptText="Key Word" />
+      <TextField fx:id="summaryTextFieldR" layoutX="160.0" layoutY="257.0" onInputMethodTextChanged="#changeRemoveButton" prefHeight="103.0" prefWidth="218.0" promptText="Summary">
          <padding>
             <Insets bottom="85.0" left="3.0" />
          </padding></TextField>
-      <TextField fx:id="languageTextFieldR" layoutX="160.0" layoutY="174.0" onInputMethodTextChanged="#changeRemoveButton" />
-      <TextField fx:id="tocTextFieldR" layoutX="160.0" layoutY="343.0" onInputMethodTextChanged="#changeRemoveButton" prefHeight="81.0" prefWidth="218.0">
-         <padding>
-            <Insets bottom="60.0" left="3.0" />
-         </padding></TextField>
+      <TextField fx:id="languageTextFieldR" layoutX="160.0" layoutY="205.0" onInputMethodTextChanged="#changeRemoveButton" promptText="Language" />
       <Text fx:id="titleText" layoutX="92.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" wrappingWidth="49.13671875" />
-      <Text fx:id="authorText" layoutX="92.0" layoutY="155.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="49.13671875" />
-      <Text fx:id="languageText" layoutX="87.0" layoutY="191.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language" wrappingWidth="58.13671875" />
-      <Text fx:id="summaryText" layoutX="92.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Summary" wrappingWidth="70.13671875" />
+      <Text fx:id="authorText" layoutX="91.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" wrappingWidth="49.13671875" />
+      <Text fx:id="languageText" layoutX="87.0" layoutY="222.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language" wrappingWidth="58.13671875" />
+      <Text fx:id="summaryText" layoutX="80.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Summary" wrappingWidth="70.13671875" />
       <Text fx:id="keywordText" layoutX="87.0" layoutY="461.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Key Word" wrappingWidth="80.13671875" />
-      <Text fx:id="tocText" layoutX="92.0" layoutY="350.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Table Of Contents" wrappingWidth="49.13671875" />
+      <Text fx:id="tocText" layoutX="102.0" layoutY="400.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genre" wrappingWidth="49.13671875" />
       <Button fx:id="removeBookButton" graphicTextGap="5.0" layoutX="189.0" layoutY="475.0" mnemonicParsing="false" onAction="#onRemoveBook" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #b9b8d8;" text="SEARCH" textAlignment="JUSTIFY" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font name="System Bold Italic" size="12.0" />
@@ -50,5 +46,7 @@
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
+      <Text layoutX="324.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="For more than 1 author, seperate the names with ',' i.e:           Author1,Author2" wrappingWidth="93.13671875" />
+      <ComboBox fx:id="genresComboBox" layoutX="160.0" layoutY="383.0" onMousePressed="#onGenresPress" prefWidth="150.0" promptText="Genres" />
    </children>
 </Pane>

@@ -108,12 +108,31 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg, 0, client);break;
 			case "EditReview":
 				editReview((Review)msg, client);
+			case "GetAllGenres":
+				getAllGenres(client);
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
+	
+	public void getAllGenres(ConnectionToClient client){
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM genre";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<String> genresList = new ArrayList<String>();
+			genresList.add("GenresList");
+			while(rs.next())
+				genresList.add(rs.getString(1));
+			client.sendToClient(genresList);
+				
+		} catch (Exception e) {e.printStackTrace();}
+		
+	}
+	
+	
 	public void editReview(Review review, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -156,7 +175,8 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from books where isSuspend=0");
 			while(rs.next())
-				books.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8)));
+				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10)));
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -364,7 +384,7 @@ public class MyServer extends AbstractServer {
 			ArrayList<Book> bookList = new ArrayList<Book>();
 			while(rs.next()){
 				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
-						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8)));
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10)));
 
 			}
 			client.sendToClient(bookList);

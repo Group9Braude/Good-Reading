@@ -9,7 +9,6 @@ import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Reader;
 import Entities.Review;
-import Entities.User;
 import Entities.Worker;
 import application.Main;
 import javafx.collections.FXCollections;
@@ -19,6 +18,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -29,7 +29,7 @@ import ocsf.client.AbstractClient;
 
 public class WorkerController extends AbstractClient {
 
-	static private ArrayList<String> foundReaders, foundWorkers;
+	static private ArrayList<String> foundReaders, foundWorkers, genresList;
 	static public ArrayList<String> foundBooks, foundReviews;
 	static public String windowNow; 
 	@FXML
@@ -39,12 +39,14 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText;
 	@FXML
-	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, tocTextFieldR, keywordTextFieldR,//TextFields for book removal
+	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,//TextFields for book removal
 	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
 	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
 	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
 	@FXML
 	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
+	@FXML
+	public ComboBox<String> genresComboBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
 
@@ -58,6 +60,7 @@ public class WorkerController extends AbstractClient {
 		foundWorkers = null;
 		foundBooks = null;
 		foundReviews = null;
+		genresList = null;
 
 	}
 	
@@ -96,14 +99,23 @@ public class WorkerController extends AbstractClient {
 
 	public void changeRemoveButton(){
 		if(titleTextFieldR.getText()!="" || authorTextFieldR.getText()!="" ||  languageTextFieldR.getText()!="" || 
-				summaryTextFieldR.getText()!="" ||  tocTextFieldR.getText()!="" ||  keywordTextFieldR.getText()!="")
+				summaryTextFieldR.getText()!="" ||  GenreTextFieldR.getText()!="" ||  keywordTextFieldR.getText()!="")
 		removeBookButton.setText("FIND BOOKS");
 		else
 			removeBookButton.setText("ALL BOOKS");
 		
 	}
 
-
+	public void onGenresPress(){
+		Book book = new Book();
+		genresComboBox.getItems().clear();
+		sendServer(book, "GetAllGenres");
+		while(genresList==null)
+			try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
+		ObservableList<String> items = FXCollections.observableArrayList();
+		items.addAll(genresList);
+		genresComboBox.getItems().addAll(items);
+	}
 
 
 	public void onAddBook(){
@@ -267,28 +279,26 @@ public class WorkerController extends AbstractClient {
 		Book book = new Book();
 		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
-				toc = tocTextFieldR.getText(), keyword = keywordTextFieldR.getText();
+				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
 		String[] authors = author.split(",");//a,b,c ->[a][b][c]
 		for(String str:authors)
 			System.out.println(str);
 		book.query = "SELECT * FROM books WHERE";
 		if(!title.equals(""))
 			book.query +=" title LIKE  '%" + title + "%' AND ";
-	//	if(!author.equals(""))
-		//	book.query +=" author LIKE '%" + author + "%' AND ";
 		for(String str:authors)
 			book.query+=" author LIKE '%" + str + "%' AND ";
 		if(!language.equals(""))
 			book.query+=" language LIKE '%" + language + "%' AND ";
 		if(!summary.equals(""))
 			book.query+=" summary LIKE '%" + summary + "%' AND ";
-		if(!toc.equals(""))
-			book.query+=" tableOfContents LIKE '%" + toc + "%' AND ";
+		if(!genre.equals("Genres")||genre == null)
+			book.query+=" genre LIKE '%" + genre + "%' AND ";
 		if(!keyword.equals(""))
 			book.query+=" keyWord LIKE '%" + keyword + "%' AND ";
 		String query = "";
 		for(int i=0;i<book.query.length()-5;i++)
-			query+=book.query.charAt(i);//Remove the and from the end of the query
+			query+=book.query.charAt(i);//Remove the AND from the end of the query
 		query+=";";
 		book.query=query;
 		sendServer(book, "RemoveBook");
@@ -506,7 +516,9 @@ public class WorkerController extends AbstractClient {
 		case "SearchReviews":
 			foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 		case "EditReview":
-			EditReviewController.backOn=true;
+			EditReviewController.backOn=true;break;
+		case "GenresList":
+			genresList = new ArrayList<>(((ArrayList<String>)msg));genresList.remove(0);break;
 		//case 
 			
 
