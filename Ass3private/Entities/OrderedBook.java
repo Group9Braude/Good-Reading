@@ -2,14 +2,15 @@ package Entities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class OrderedBook extends GeneralMessage
 {	
 	private static final long serialVersionUID = 1L;
-	private String readerID,title,author;
+	private String readerID,title;
+	private String author;
 	private String purchasedate;
 	private int bookid;
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
 	public OrderedBook(){}
 	
@@ -19,7 +20,8 @@ public class OrderedBook extends GeneralMessage
 		this.bookid=bookid;
 		this.title=title;
 		this.author=author;
-		purchasedate=(LocalDate.now()).format(formatter);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+		purchasedate=LocalDate.now().format(formatter);
 	}
 	public String getPurchaseDate(){
 		return purchasedate;
@@ -48,10 +50,9 @@ public class OrderedBook extends GeneralMessage
 	public void setBookid(int bookid) {
 		this.bookid = bookid;
 	} 
-	
 	@Override
 	public String toString()
-	{
+	{	
 		return title + " by " + author;
 	}
 }

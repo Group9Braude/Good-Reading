@@ -5,7 +5,9 @@ import java.util.ArrayList;
 
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
-	private String title, author, language, summary, toc, keyword;
+	private String title, language, summary, toc;
+	private String author;
+	private String keyword;
 	public static ArrayList<Book> bookList;
 	public ArrayList<Book> deleteBookList;
 	private int isSuspend=0 , bookid; 

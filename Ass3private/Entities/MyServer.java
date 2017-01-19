@@ -102,6 +102,8 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg,1, client);break;
 			case "DenyReview":
 				examineReview((Review)msg, -1 , client);break;
+			case "updateBookList":
+				updateBookList((Book)msg,client);break;
 
 			default:
 				break;
@@ -110,6 +112,20 @@ public class MyServer extends AbstractServer {
 	}
 	
 	
+	
+	private void updateBookList(Book book, ConnectionToClient client)
+	{
+		try{
+			Statement stmt = conn.createStatement();
+			System.out.println(book.query);
+			ResultSet rs = stmt.executeQuery(book.query);
+			ArrayList<Book> res = new ArrayList<Book>();
+			while(rs.next())
+				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getInt(9)));
+			client.sendToClient(res);
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
 	
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
@@ -142,7 +158,7 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("Select * from books where isSuspend=0");
 			while(rs.next())
-				books.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8)));
+				books.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8),rs.getInt(9)));
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -157,7 +173,8 @@ public class MyServer extends AbstractServer {
 		try{
 			stmt = conn.createStatement();
 			stmt.executeUpdate("UPDATE reviews SET isApproved = '" + isApproved + "' WHERE reviewid = '" + review.getReviewID() + "';");
-		}catch(Exception e){e.printStackTrace();}
+		}
+		catch(Exception e){e.printStackTrace();}
 
 	}
 
@@ -352,7 +369,7 @@ public class MyServer extends AbstractServer {
 			ArrayList<Book> bookList = new ArrayList<Book>();
 			while(rs.next()){
 				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
-						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8)));
+						,rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8), rs.getInt(9)));
 
 			}
 			client.sendToClient(bookList);
@@ -441,14 +458,6 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
-
-
-
-
-
-
-
-
 	private void checkUser(User user,ConnectionToClient client)
 	{
 		String id = user.getID();
@@ -518,7 +527,6 @@ public class MyServer extends AbstractServer {
 							reader.setMyBooks(books);
 							//Getting the list of books the current user has ordered
 							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
-							System.out.println(reader.getFirstName());
 							client.sendToClient(reader);
 						}
 					}

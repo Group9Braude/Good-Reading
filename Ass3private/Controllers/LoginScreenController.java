@@ -11,11 +11,12 @@ import Entities.User;
 import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import ocsf.client.AbstractClient;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class LoginScreenController extends AbstractClient {
 
@@ -34,6 +35,25 @@ public class LoginScreenController extends AbstractClient {
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 	@FXML
 	ImageView loginImageView;
+	
+	 public void initialize(){
+		  idTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		      @Override
+		      public void handle(KeyEvent keyEvent) {
+		          if (keyEvent.getCode() == KeyCode.ENTER)  {
+		              onLogin();
+		          }
+		      }
+		  });
+		  passwordTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		      @Override
+		      public void handle(KeyEvent keyEvent) {
+		          if (keyEvent.getCode() == KeyCode.ENTER)  {
+		              onLogin();
+		          }
+		      }
+		  });
+		 }
 
 	
 

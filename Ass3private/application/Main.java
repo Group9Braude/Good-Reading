@@ -80,10 +80,10 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 	
-	public static void showOrderScreen()
+	public static void showSearchScreen()
 	{
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("/GUI/OrderBookScreen.fxml"));
+		loader.setLocation(Main.class.getResource("/GUI/SearchBookScreen.fxml"));
 		try {    
 			mainLayout =  loader.load();
 			primaryStage.setScene(new Scene(mainLayout));
