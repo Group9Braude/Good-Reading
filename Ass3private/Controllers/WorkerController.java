@@ -37,7 +37,7 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	private ImageView addedButton, catImageView, addImageView, removeImageView, checkImageView, updateImageView, searchImageView, enterImageView, logoutImageView;
 	@FXML
-	private Text titleText,keywordText,authorText,languageText,summaryText,tocText;
+	private Text titleText,keywordText,authorText,languageText,summaryText,tocText,genresText;
 	@FXML
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,//TextFields for book removal
 	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
@@ -46,7 +46,7 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
 	@FXML
-	public ComboBox<String> genresComboBox;
+	public ComboBox<String> genresComboBox, genresAddComboBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
 
@@ -66,6 +66,8 @@ public class WorkerController extends AbstractClient {
 	
 
 
+	
+	
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		WorkerController client = new WorkerController();
@@ -106,6 +108,18 @@ public class WorkerController extends AbstractClient {
 		
 	}
 
+	public void onGenresPressAdd(){
+		System.out.println("supsup");
+		Book book = new Book();
+		genresAddComboBox.getItems().clear();
+		sendServer(book, "GetAllGenres");
+		while(genresList==null)
+			try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
+		ObservableList<String> items = FXCollections.observableArrayList();
+		items.addAll(genresList);
+		genresAddComboBox.getItems().addAll(items);
+	}
+	
 	public void onGenresPress(){
 		Book book = new Book();
 		genresComboBox.getItems().clear();
@@ -121,7 +135,7 @@ public class WorkerController extends AbstractClient {
 	public void onAddBook(){
 		File file = null ;
 		Book book = new Book();
-		boolean title, author, language, summary, toc, keyWord;//Check if all the fields were filled.
+		boolean title, author, language, summary, toc, keyWord, genres;//Check if all the fields were filled.
 		//Check if any of the fields empty
 		if(titleTextField.getText().equals("")){
 			titleText.setFill(Color.RED); title=false;
@@ -160,15 +174,19 @@ public class WorkerController extends AbstractClient {
 		}
 		else{
 			keywordText.setFill(Color.BLACK); keyWord=true; book.setKeyword(keywordTextField.getText());
+		}
+		if(genresAddComboBox ==null || genresAddComboBox.getSelectionModel().getSelectedItem()==null){
+			 genresText.setFill(Color.RED);genres=false;
+		}
+		else{
+			genresText.setFill(Color.BLACK); keyWord=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
+		}
 
 
 			if(title&&author&&language&&summary&&toc&&keyWord){//Every field is filled
-				//set picture
-				file = new File("C:/Users/orels/Desktop/Ass3Logos/AddedBook.png");
-				addedButton.setImage(new Image(file.toURI().toString()));
 				Book.bookList.add(book);//Update our ARRAYLIST!
 				sendServer(book, "AddBook");
-			}
+			
 		}
 	}//End onAddBook
 	

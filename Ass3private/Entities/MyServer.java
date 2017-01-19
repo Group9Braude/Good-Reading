@@ -133,7 +133,7 @@ public class MyServer extends AbstractServer {
 			ArrayList<Genre> genreList = new ArrayList<Genre>();	
 			while(rs.next()){
 				System.out.println("test");
-				genreList.add( new Genre (rs.getString(1),rs.getInt(2),rs.getString(3)));
+				genreList.add( new Genre (rs.getString(1),rs.getString(2)));
 			}
 			client.sendToClient(genreList);
 		} catch (Exception  e) {
@@ -255,7 +255,7 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			ResultSet rs = stmt.executeQuery("Select * from books where isSuspend=0");
 			while(rs.next())
 				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
-						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10)));
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getString(11)));
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -463,7 +463,7 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			ArrayList<Book> bookList = new ArrayList<Book>();
 			while(rs.next()){
 				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
-						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10)));
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getString(11)));
 
 			}
 			client.sendToClient(bookList);
@@ -520,13 +520,12 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 		Statement stmt;
 		Book.bookCnt++;
 		String query = "insert into books values ('" + book.getTitle() + "','" + Book.bookCnt + "','" + book.getAuthor() + "','" + 
-				book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0');";
+				book.getGenre() + "','" + book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0', 'lol');";
+		System.out.println(query);
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		} catch (SQLException e) {e.printStackTrace();}
 		try {
 			client.sendToClient("Added!");
 		} catch (IOException e) {

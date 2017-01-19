@@ -10,7 +10,7 @@ public class Genre extends GeneralMessage implements Serializable{
 	private String genre, comments, oldGenre;
 	public String query;
 	private int bookNum;
-	public ArrayList<Theme> themeList;
+	public static ArrayList<Theme> themeList;
 	
 	public Genre(){	
 		genreList=new ArrayList<Genre>();
@@ -22,7 +22,7 @@ public class Genre extends GeneralMessage implements Serializable{
 		this.genre=genre;
 	}
 	
-	public Genre(String genre,int bookNum,String comments) {
+	public Genre(String genre,String comments) {
 		this.genre = genre;
 		this.bookNum=bookNum;
 		this.comments=comments;
