@@ -84,6 +84,9 @@ public class ReportsController extends AbstractClient {
 	public Text notfound1,generalpop;
 
 	/*check in general popularity*/
+	public void onReportsBack() throws IOException{
+		Main.showManagerLoggedScreen();
+	}
 	public void onCheckk(){
 		sendServer(new Book(Integer.parseInt(bookidd.getText())),"getGeneralPop");//getting book's genres
 		while(flag==0){

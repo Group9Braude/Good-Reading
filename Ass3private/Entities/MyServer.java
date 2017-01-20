@@ -123,8 +123,6 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg, 0, client);break;
 			case "EditReview":
 				editReview((Review)msg, client);
-			case "GetAllGenres":
-				getAllGenres(client);
 			default:
 				break;
 			}
@@ -209,7 +207,7 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("Select *  FROM books;");
 			while(rs.next())
-				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(10)));
+				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(9)));
 			Collections.sort(arr);
 			for(int i=0;i<arr.size();i++)
 				System.out.println("place: "+(arr.size()-i)+" bookid:"+arr.get(i).bookid+" num of purchases:"+arr.get(i).numofpurchases);
@@ -336,7 +334,7 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			ResultSet rs = stmt.executeQuery("Select * from books where isSuspend=0");
 			while(rs.next())
 				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
-						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getString(8), rs.getInt(9), rs.getInt(10), rs.getString(11)));
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -544,7 +542,7 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			ArrayList<Book> bookList = new ArrayList<Book>();
 			while(rs.next()){
 				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
-						,rs.getString(5),rs.getString(6),rs.getString(7),rs.getString(8), rs.getInt(9)));
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
 
 			}
 			client.sendToClient(bookList);

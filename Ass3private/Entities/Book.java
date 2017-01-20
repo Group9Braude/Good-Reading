@@ -25,13 +25,10 @@ public class Book extends GeneralMessage implements Serializable{
 		this.bookid=bookid;
 		this.title=title;
 	}
-	public Book(String title,int bookid, String author, String genre, String language, String summary, String toc, String keyword, int isSuspend
-			,int numOfPurchases, String theme) 
+	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend
+			,int numOfPurchases) 
 	{
-		super();
 		this.numOfPurchases = numOfPurchases;
-		this.theme = theme;
-		this.genre = genre;
 		this.bookid = bookid;
 		this.title = title;
 		this.author = author;
@@ -40,11 +37,8 @@ public class Book extends GeneralMessage implements Serializable{
 		this.toc = toc;
 		this.keyword = keyword;
 		this.isSuspend = isSuspend;
-	}	public Book(String title,int bookid, String author, String genre, String language, String summary, String toc, String keyword, int isSuspend
-			,int numOfPurchases, String theme) 
 		this.numOfPurchases = numOfPurchases;
-		this.theme = theme;
-		this.genre = genre;
+	}
 
 public String getGenre() {
 		return genre;
@@ -61,21 +55,7 @@ public String getGenre() {
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
-	public String getGenre() {
-		return genre;
-	}
 
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
-
-	public String getTheme() {
-		return theme;
-	}
-
-	public void setTheme(String theme) {
-		this.theme = theme;
-	}
 
 	public int getIsSuspend() {
 		return isSuspend;
