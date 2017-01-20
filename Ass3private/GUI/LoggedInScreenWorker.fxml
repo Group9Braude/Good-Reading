@@ -49,15 +49,12 @@
             <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/Logout.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="catImageView" fitHeight="64.0" fitWidth="175.0" layoutX="35.0" layoutY="455.0" onMousePressed="#onPressCat" onMouseReleased="#onRlsCat" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/OrganizeBookCat.png" />
-         </image>
-      </ImageView>
       <ImageView fitHeight="158.0" fitWidth="511.0" layoutX="61.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../Desktop/Ass3Logos/HelloWorker.png" />
          </image>
       </ImageView>
+      <Button layoutX="14.0" layoutY="456.0" mnemonicParsing="false" onAction="#onEditGenre" text="Edit Genre" />
+      <Button layoutX="127.0" layoutY="456.0" mnemonicParsing="false" text="Edit Theme" />
    </children>
 </AnchorPane>

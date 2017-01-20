@@ -21,7 +21,11 @@ public class OrderedBook extends GeneralMessage
 		this.title=title;
 		this.author=author;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+
 		purchasedate=LocalDate.now().format(formatter);
+
+		purchasedate=(LocalDate.now()).format(formatter);
+
 	}
 	public String getPurchaseDate(){
 		return purchasedate;

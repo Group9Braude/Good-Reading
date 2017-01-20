@@ -5,30 +5,84 @@ import java.util.ArrayList;
 
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
+
 	private String title, language, summary, toc;
 	private String author;
 	private String keyword;
+
+	/*             Book Properties          */
+	private int isSuspend=0 , bookid, numOfPurchases;
+	/*             Book Properties          */
+
 	public static ArrayList<Book> bookList;
 	public ArrayList<Book> deleteBookList;
-	private int isSuspend=0 , bookid; 
 	public static int bookCnt=90;
 	public String query;
 
 
 
 	public Book(){}
-
-	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend) 
+	
+	public Book(int bookid){
+		this.bookid=bookid;
+	}
+	public Book(int bookid,String title){
+		this.bookid=bookid;
+		this.title=title;
+	}
+	public Book(String title,int bookid,String author, String language, String summary, String toc, String keyword, int isSuspend
+			,int numOfPurchases) 
 	{
 		super();
+		this.numOfPurchases = numOfPurchases;
 		this.bookid = bookid;
 		this.title = title;
-		this.author = author;
 		this.language = language;
 		this.summary = summary;
 		this.toc = toc;
 		this.keyword = keyword;
 		this.isSuspend = isSuspend;
+		this.author = author;
+	}	
+
+	public int getIsSuspend() {
+		return isSuspend;
+	}
+
+	public void setIsSuspend(int isSuspend) {
+		this.isSuspend = isSuspend;
+	}
+
+	public int getNumOfPurchases() {
+		return numOfPurchases;
+	}
+
+	public void setNumOfPurchases(int numOfPurchases) {
+		this.numOfPurchases = numOfPurchases;
+	}
+
+	public static ArrayList<Book> getBookList() {
+		return bookList;
+	}
+
+	public static void setBookList(ArrayList<Book> bookList) {
+		Book.bookList = bookList;
+	}
+
+	public ArrayList<Book> getDeleteBookList() {
+		return deleteBookList;
+	}
+
+	public void setDeleteBookList(ArrayList<Book> deleteBookList) {
+		this.deleteBookList = deleteBookList;
+	}
+
+	public String getQuery() {
+		return query;
+	}
+
+	public void setQuery(String query) {
+		this.query = query;
 	}
 
 	public int getisSuspend(){

@@ -1,5 +1,4 @@
 package Controllers;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -13,6 +12,9 @@ import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import ocsf.client.AbstractClient;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -53,15 +55,22 @@ public class LoginScreenController extends AbstractClient {
 		          }
 		      }
 		  });
-		 }
+	 }
 
 	
 
 	public LoginScreenController() { 
 		super(host, port);
- 
+		passwordTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		    @Override
+		    public void handle(KeyEvent keyEvent) {
+		        if (keyEvent.getCode() == KeyCode.ENTER)  {
+		            onLogin();
+		        }
+		    }
+		});
 	}
-
+	
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
@@ -145,8 +154,10 @@ public class LoginScreenController extends AbstractClient {
 		}
 
 		else{
-			if(msg instanceof Worker)
+			if(msg instanceof Worker){
 				currentWorker = (Worker)msg;
+				Main.setCurrentUser((Worker)msg);
+			}
 			if(msg instanceof Reader)
 			{  
 				System.out.println("its a reader!");
@@ -159,9 +170,10 @@ public class LoginScreenController extends AbstractClient {
 
 			else if(msg instanceof User)//Correct details were entered
 			{
-
 				isLoggedFlag=true;
 				User res = (User)msg;
+				User.currentWorker = new Worker();
+				User.currentWorker.setType(res.getType());
 				if(res.getType()==2){
 					whatAmI="worker";      
 				}//end if

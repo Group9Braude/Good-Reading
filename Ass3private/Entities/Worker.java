@@ -8,7 +8,7 @@ public class Worker extends User implements Serializable {
 	private String  department, workerID, firstName, lastName, id, email,
 	role;
 	private int isManager, isLoggedIn;
-	public static ArrayList<Worker> workerList;
+	public static ArrayList<Worker> workerList ;
 	public String query;
 	
 	public String toString(){ 

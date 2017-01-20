@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
@@ -59,14 +60,57 @@
                            </children></AnchorPane>
                   </content>
                 </Tab>
-                  <Tab text="Book's absolute popularity">
+                  <Tab text="Book's general popularity">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="575.0" fitWidth="781.0" layoutX="-6.0" layoutY="-3.0">
+                                 <image>
+                                    <Image url="@../../../../Desktop/Ass3Logos/books1.jpg" />
+                                 </image>
+                              </ImageView>
+                              <Text layoutX="350.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter book id:">
+                                 <font>
+                                    <Font name="Century Gothic" size="15.0" />
+                                 </font>
+                              </Text>
+                              <TextField fx:id="bookidd" layoutX="513.0" layoutY="45.0" prefHeight="31.0" prefWidth="83.0" promptText="bookid" />
+                              <Button layoutX="350.0" layoutY="76.0" mnemonicParsing="false" onAction="#onCheckk" text="Check popularity" />
+                              <Text fx:id="generalpop" layoutX="657.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
+                              <Text fx:id="notfound1" layoutX="617.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book not found" visible="false" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
-                  <Tab text="Book's relative popularity">
+                  <Tab text="Book's genre popularity">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="573.0" fitWidth="783.0" layoutX="-5.0" layoutY="-3.0">
+                                 <image>
+                                    <Image url="@../../../../Desktop/Ass3Logos/o-BOOK-COFFEE-facebook.jpg" />
+                                 </image>
+                              </ImageView>
+                              <TextField fx:id="genrebookid" layoutX="319.0" layoutY="36.0" prefHeight="31.0" prefWidth="150.0" />
+                              <Text layoutX="153.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter book id:">
+                                 <font>
+                                    <Font name="Century Gothic" size="15.0" />
+                                 </font>
+                              </Text>
+                              <Text fx:id="please" layoutX="153.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose genre:" visible="false">
+                                 <font>
+                                    <Font name="Century Gothic" size="15.0" />
+                                 </font>
+                              </Text>
+                              <ChoiceBox fx:id="genre" layoutX="320.0" layoutY="95.0" prefWidth="150.0" visible="false" />
+                              <Button fx:id="enter1" layoutX="494.0" layoutY="36.0" mnemonicParsing="false" onAction="#onEnter1" text="Enter" />
+                              <Button fx:id="checkpop" layoutX="489.0" layoutY="95.0" mnemonicParsing="false" onAction="#onCheckpop" text="Check popularity" visible="false" />
+                              <TextField fx:id="result" layoutX="644.0" layoutY="272.0" prefHeight="64.0" prefWidth="100.0" text="7/8" visible="false">
+                                 <font>
+                                    <Font name="MingLiU-ExtB" size="36.0" />
+                                 </font>
+                              </TextField>
+                              <Text fx:id="notfound" layoutX="566.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book not found" visible="false" wrappingWidth="109.505859375" />
+                           </children></AnchorPane>
                     </content>
                   </Tab>
               </tabs>
