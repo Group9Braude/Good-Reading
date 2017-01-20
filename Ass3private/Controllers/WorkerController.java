@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import Entities.Book;
 import Entities.GeneralMessage;
+import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
@@ -110,9 +111,9 @@ public class WorkerController extends AbstractClient {
 
 	public void onGenresPressAdd(){
 		System.out.println("supsup");
-		Book book = new Book();
+		Genre genre = new Genre();
 		genresAddComboBox.getItems().clear();
-		sendServer(book, "GetAllGenres");
+		sendServer(genre, "GetAllGenres");
 		while(genresList==null)
 			try {Thread.sleep(10);} catch (InterruptedException e) {e.printStackTrace();}
 		ObservableList<String> items = FXCollections.observableArrayList();
@@ -539,12 +540,13 @@ public class WorkerController extends AbstractClient {
 			foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 		case "EditReview":
 			EditReviewController.backOn=true;break;
-		case "GenresList":
-			genresList = new ArrayList<>(((ArrayList<String>)msg));genresList.remove(0);break;
-		//case 
-			
-
 		}
+		if(((ArrayList<?>)msg).get(0) instanceof Genre)
+			genresList = new ArrayList<>(((ArrayList<String>)msg));
+		
+		
+		
+		
 	}
 
 

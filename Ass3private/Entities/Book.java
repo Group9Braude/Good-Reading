@@ -30,8 +30,9 @@ public class Book extends GeneralMessage implements Serializable{
 		this.bookid=bookid;
 		this.title=title;
 	}
-	public Book(String title,int bookid,String author, String language, String summary, String toc, String keyword, int isSuspend
-			,int numOfPurchases) 
+
+
+	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 	{
 		super();
 		this.numOfPurchases = numOfPurchases;
@@ -44,6 +45,9 @@ public class Book extends GeneralMessage implements Serializable{
 		this.isSuspend = isSuspend;
 		this.author = author;
 	}	
+	
+	
+	
 
 	public int getIsSuspend() {
 		return isSuspend;
