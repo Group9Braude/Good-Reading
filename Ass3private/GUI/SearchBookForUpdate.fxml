@@ -36,7 +36,7 @@
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
-      <Button layoutX="208.0" layoutY="560.0" mnemonicParsing="false" onAction="#onBack" prefHeight="42.0" prefWidth="80.0" style="-fx-background-color: #b9b8d8;" text="BACK">
+      <Button layoutX="208.0" layoutY="560.0" mnemonicParsing="false" onAction="#onBackFromSearch" prefHeight="42.0" prefWidth="80.0" style="-fx-background-color: #b9b8d8;" text="BACK">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font>

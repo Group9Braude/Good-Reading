@@ -20,7 +20,7 @@ import javafx.scene.text.Text;
 public class UpdateBookController {
 	@FXML
 	TableView<Book> booksTableView;
-	public static ArrayList<Book> bookList, genresBooksList;
+	public static ArrayList<Book> bookList, genresBooksList, previousBookList;
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText,genresText, removeBookTitle;
 	@FXML
@@ -30,7 +30,7 @@ public class UpdateBookController {
 	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
 	@FXML
 	public ComboBox<String> genresComboBox, genresAddComboBox;
-	static boolean  flag;
+	static boolean  flag;//Make sure initialized wont be called after udpatebook
 
 
 	public void sendServer(Object msg, String actionNow){/******************************/
@@ -92,6 +92,7 @@ public class UpdateBookController {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	public void initTableView(){
 		TableColumn<Book/*The type of data in the table*/,String/*The type of the data in this column*/> titleColumn =new TableColumn<Book,String>("Title");
 		titleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));//What attribute of class this column takes
@@ -122,6 +123,19 @@ public class UpdateBookController {
 		try {Main.showSearchBookForUpdate();} catch (IOException e) {e.printStackTrace();}
 	}
 
+	public void onBackFromSearch(){
+
+		Book book = new Book();
+		book.query = "select * from books;";
+		sendServer(book, "UpdateBookList");
+		while(WorkerController.foundBookList ==null)
+			Sleep(10);
+
+		try{
+			Main.showUpdateBookScreen();
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
 	public void onGenresPress(){
 		Genre genre = new Genre();
 		genresComboBox.getItems().clear();
@@ -152,10 +166,10 @@ public class UpdateBookController {
 		flag=false;
 		Book book = new Book();
 		book.genreToSearch = "";
-		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
+		String title = titleTextFieldR.getText(), /*author = authorTextFieldR.getText(), RETURN LATER*/ 
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
-		String[] authors = author.split(",");//a,b,c ->[a][b][c]
+		//String[] authors = author.split(",");//a,b,c ->[a][b][c] RETURN LATER
 		book.query = "SELECT * FROM books WHERE";
 		if(!title.equals(""))
 			book.query +=" title LIKE  '%" + title + "%' AND ";

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	private String title, language, summary, toc;
+	private String title, language, summary, toc,genre, theme;
 	private String author;
 	private String keyword;
 
@@ -23,7 +23,7 @@ public class Book extends GeneralMessage implements Serializable{
 
 	public Book(){}
 	public Book(String genre, int bookid){
-		this.genre=genre;
+		this.setGenre(genre);
 		this.bookid=bookid;
 	}
 	
@@ -153,6 +153,18 @@ public class Book extends GeneralMessage implements Serializable{
 	public String toString()
 	{
 		return title;
+	}
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	public String getTheme() {
+		return theme;
+	}
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 
 

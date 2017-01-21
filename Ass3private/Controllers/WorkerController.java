@@ -141,7 +141,6 @@ public class WorkerController extends AbstractClient {
 
 
 	public void onAddBook(){
-		File file = null ;
 		Book book = new Book();
 		boolean title, author, language, summary, toc, keyWord, genres;//Check if all the fields were filled.
 		//Check if any of the fields empty
@@ -184,15 +183,10 @@ public class WorkerController extends AbstractClient {
 		if(genresAddComboBox ==null || genresAddComboBox.getSelectionModel().getSelectedItem()==null){
 			genresText.setFill(Color.RED);genres=false;
 		}
-<<<<<<< HEAD
 		else{
 			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
 		}
-=======
-		/*else{
-			genresText.setFill(Color.BLACK); keyWord=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
-		}*/
->>>>>>> refs/remotes/origin/master
+
 
 
 		if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled

@@ -9,17 +9,12 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import com.mysql.jdbc.PreparedStatement;
-
-import java.sql.Date;
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class MyServer extends AbstractServer {
 	Connection conn;
-	private static int bookCnt;
-
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -28,6 +23,7 @@ public class MyServer extends AbstractServer {
 		catch (Throwable t) {
 			port = Main.port;
 		}
+		@SuppressWarnings("unused")
 		MyServer s1 = new MyServer(port);
 	}
 
@@ -68,7 +64,7 @@ public class MyServer extends AbstractServer {
 			case "UpdateGenre":
 				updateGenre((Genre)msg,client);break;
 			case "InitializeGenreList":
-				initializeGenreList((Genre)msg, client);break;
+				initializeGenreList(client);break;
 			case "InitializeBookList":
 				initializeBookList(client);break;
 			case "InitializeWorkerList":
@@ -121,7 +117,6 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg, -1 , client);break;
 			case "NewOrder":
 				addNewOrder((OrderedBook)msg,client); break;
-
 			case "updateBookList":
 				updateBookList((Book)msg,client);break;
 			case "HoldReview":
@@ -135,7 +130,7 @@ public class MyServer extends AbstractServer {
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client);
 			case "GetAllGenres":
-				initializeGenreList((Genre)msg, client);
+				initializeGenreList(client);
 			default:
 				break;
 			}
@@ -222,7 +217,7 @@ public class MyServer extends AbstractServer {
 	}
 
 
-	public void initializeGenreList(Genre genre, ConnectionToClient client){/*******************************************/
+	public void initializeGenreList(ConnectionToClient client){/*******************************************/
 		try {
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM genre";
@@ -232,7 +227,7 @@ public class MyServer extends AbstractServer {
 				genreList.add( new Genre (rs.getString(1),rs.getString(2)));
 			client.sendToClient(genreList);
 
-		} catch (Exception  e) {e.printStackTrace();}	
+		} catch (Exception  e) {}	
 	}
 
 	public void addGenre(Genre genre, ConnectionToClient client){
@@ -373,7 +368,6 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE bookid="+ b.getBookid() + ";");
 			while(rs.next())
 				arr.add(rs.getString(1));//Adding genres to array
-			Statement stmt1 = conn.createStatement();
 			arr.add("end");
 			client.sendToClient(arr);
 		} catch (Exception e) {
@@ -610,7 +604,6 @@ public class MyServer extends AbstractServer {
 				//At this point I know that if bookid X is in index i in the bookIDS, its also index i in the other lists.
 			}
 
-			String query="";
 			for(int id : bookIDS){
 				ResultSet rs1 = stmt.executeQuery("SELECT genre, bookid FROM genresbooks WHERE bookid = '"+id+"' AND genre LIKE '%" + book.genreToSearch + "%';");
 				while(rs1.next()){
@@ -629,7 +622,6 @@ public class MyServer extends AbstractServer {
 
 
 
-	@SuppressWarnings( "static-access" )
 	public void initializeWorkerList(Worker worker, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
