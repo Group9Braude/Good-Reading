@@ -11,12 +11,16 @@ public class Book extends GeneralMessage implements Serializable{
 	/*             Book Properties          */
 	public static ArrayList<Book> bookList;
 	public ArrayList<Book> deleteBookList;
-	public static int bookCnt=90;
-	public String query;
+	public String query, genreToSearch;
+	public boolean isGenres ;
 
 
 
 	public Book(){}
+	public Book(String genre, int bookid){
+		this.genre=genre;
+		this.bookid=bookid;
+	}
 	
 	public Book(int bookid){
 		this.bookid=bookid;
@@ -151,13 +155,8 @@ public String getGenre() {
 		return serialVersionUID;
 	}
 
-	public static int getBookCnt() {
-		return bookCnt;
-	}
 
-	public static void setBookCnt(int bookCnt) {
-		Book.bookCnt = bookCnt;
-	}
+	
 	
 	public String toString()
 	{

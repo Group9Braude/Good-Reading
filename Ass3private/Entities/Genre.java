@@ -7,6 +7,7 @@ public class Genre extends GeneralMessage implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	public static ArrayList<Genre> genreList;
+	public static ArrayList<Book> genresBooksList;
 	private String genre, comments, oldGenre;
 	public String query;
 	private int bookNum;

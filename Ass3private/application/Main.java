@@ -41,18 +41,24 @@ public class Main extends Application {
 	}
 	
 
-	public static void showScreen(String str){ 
-		primaryStage.close();
+
+	
+	public static void showUpdateBookScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
-		loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));
-		try{
+		loader.setLocation(Main.class.getResource("/GUI/UpdateBookScreen.fxml"));
 		mainLayout = loader.load();
-		}catch(IOException e){e.printStackTrace();}
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
+
+	public static void showSearchBookForUpdate() throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/SearchBookForUpdate.fxml"));
+			mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
 	
-
 	public static void onExit(){
 		primaryStage.close();
 	}

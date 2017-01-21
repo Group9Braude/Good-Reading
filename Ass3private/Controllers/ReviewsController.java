@@ -64,7 +64,7 @@ public class ReviewsController {
 			holdButton.setVisible(false);
 		}
 		try{
-			ObservableList<String> items =FXCollections.observableArrayList();
+			ObservableList<String> items = FXCollections.observableArrayList();
 			items.addAll(WorkerController.foundReviews);
 			foundReviewsListView.setItems(items);
 		}catch(Exception e){}
@@ -213,6 +213,7 @@ public class ReviewsController {
 				str+=chosen.charAt(i);
 
 			editID=Integer.parseInt(str);
+			System.out.println("ID: " + editID) ;
 		}catch(Exception e){e.printStackTrace(); }
 
 		try {

@@ -55,6 +55,7 @@ public class EditReviewController {
 	public void onEdit(){
 		Review review = new Review();
 		review.setReviewID(ReviewsController.editID);
+		System.out.println("ID: " + ReviewsController.editID);
 		review.setReview(editReviewTextField.getText());
 		WorkerController.foundReviews = null;
 		sendServer(review, "EditReview");
