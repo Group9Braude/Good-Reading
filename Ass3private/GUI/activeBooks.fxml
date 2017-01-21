@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -8,9 +9,14 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="424.0" style="-fx-background-color: #79cea2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.activeBooksController">
    <children>
+      <ImageView fitHeight="277.0" fitWidth="445.0" layoutX="-17.0" layoutY="-70.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/11.jpg" />
+         </image>
+      </ImageView>
       <ChoiceBox fx:id="booknames" layoutX="59.0" layoutY="87.0" prefHeight="31.0" prefWidth="314.0" />
       <Button layoutX="12.0" layoutY="146.0" mnemonicParsing="false" onAction="#onActivate" text="Activate" />
-      <Text fill="WHITE" layoutX="12.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose the book you would like to activate:">
+      <Text fill="#00ffdd" layoutX="13.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose the book you would like to activate:">
          <font>
             <Font name="Verdana Pro SemiBold" size="15.0" />
          </font></Text>
