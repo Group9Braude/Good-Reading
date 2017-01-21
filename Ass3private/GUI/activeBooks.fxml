@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="424.0" style="-fx-background-color: #79cea2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.activeBooksController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="241.0" prefWidth="475.0" style="-fx-background-color: #79cea2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.activeBooksController">
    <children>
-      <ImageView fitHeight="277.0" fitWidth="445.0" layoutX="-17.0" layoutY="-70.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="303.0" fitWidth="475.0" layoutX="-1.0" layoutY="-41.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../src/11.jpg" />
          </image>
