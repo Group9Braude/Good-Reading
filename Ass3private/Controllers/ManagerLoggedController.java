@@ -18,6 +18,7 @@ public class ManagerLoggedController {
 	public void goTempRemoveAbook() throws IOException{
 		Main.showTempRemoveAbook();
 	}
+	/*reviews*/
 	public void onEdit(){
 		Review review = new Review();
 		sendServer(review, "GetReviews");
@@ -29,8 +30,10 @@ public class ManagerLoggedController {
 			e.printStackTrace();
 		}
 	}
-	public void onEditgenretheme(){
+	public void ongenre(){
 		Main.showEditGenre();
+	}
+	public void ontheme(){
 	}
 	public void onRemove(){
 		try {

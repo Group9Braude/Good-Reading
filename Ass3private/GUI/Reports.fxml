@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.image.*?>
@@ -43,12 +44,12 @@
                            <children>
                               <ImageView fitHeight="575.0" fitWidth="841.0" layoutX="-34.0" layoutY="-4.0">
                                  <image>
-                                    <Image url="@../src/2.jpg" />
+                                    <Image url="@../src/2.png" />
                                  </image>
                               </ImageView>
                               <DatePicker fx:id="from" layoutX="223.0" layoutY="62.0" prefHeight="31.0" prefWidth="173.0" promptText="from" />
                               <DatePicker fx:id="until" layoutX="425.0" layoutY="62.0" prefHeight="31.0" prefWidth="173.0" promptText="until" />
-                              <BarChart fx:id="mybar" barGap="6.0" focusTraversable="true" layoutX="27.0" layoutY="147.0" prefHeight="352.0" prefWidth="415.0">
+                              <BarChart fx:id="mybar" barGap="6.0" focusTraversable="true" layoutX="69.0" layoutY="152.0" prefHeight="352.0" prefWidth="415.0">
                                 <xAxis>
                                   <CategoryAxis startMargin="1.0" fx:id="x" />
                                 </xAxis>
