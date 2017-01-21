@@ -13,10 +13,10 @@ import application.Main;
 import ocsf.client.AbstractClient;
 
 public class EditGenre extends AbstractClient {
-	int flag=0;
+	static int flag=0;
 	Genre genre=new Genre();
-	public ComboBox<String> genreBox=new ComboBox<>();
-	public ObservableList<String> obsGenre=FXCollections.observableArrayList();
+	public ComboBox<Genre> genreBox=new ComboBox<>();
+	public ObservableList<Genre> obsGenre=FXCollections.observableArrayList(Genre.genreList);
 	public TextField genreTextField=new TextField();
 	public TextField commentsTextField=new TextField();
 
@@ -26,37 +26,35 @@ public class EditGenre extends AbstractClient {
 			this.openConnection();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}	
 	}
 
 	public void initialize(){
-		flag=0;
-		int j=0;
-		int i=0;
-		
-		genre.actionNow="InitializeGenreList";
-		try {
-			this.sendToServer(genre);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		while(flag==0){
+		if(flag==0){
+			int i=0;
+			genre.actionNow="InitializeGenreList";
 			try {
-			//	System.out.println(" "+j++);
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
+				this.sendToServer(genre);
+			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			while(flag==0){
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
-		for(i=0;i<Genre.genreList.size();i++)
-			obsGenre.add(Genre.genreList.get(i).getGenre());
+		obsGenre.clear();
+		obsGenre=FXCollections.observableArrayList(Genre.genreList);
 		genreBox.setItems(obsGenre);
 		genreBox.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)
-				->genreTextField.setText(newValue));
+				->genreTextField.setText(newValue.getGenre()));
 		genreBox.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)
-				->commentsTextField.setText(Genre.genreList.get(genreBox.getSelectionModel().getSelectedIndex()).getComments()));				
+				->commentsTextField.setText(Genre.genreList.get(genreBox.getSelectionModel().getSelectedIndex()).getComments()));		
 	}
 
 
@@ -76,13 +74,15 @@ public class EditGenre extends AbstractClient {
 			AlertBox.display("Error", "Genre already exists, try press Update!");
 			return;
 		}
+		genre=new Genre();
 
 		if(!(commentsTextField.getText().equals("")))
 			genre.setComments(commentsTextField.getText());
 		genre.setGenre(genreTextField.getText());
 
 		Genre.genreList.add(genre);
-		obsGenre.add(genre.getGenre());
+		obsGenre.add(genre);
+		genreBox.getSelectionModel().selectLast();
 		genre.actionNow="AddGenre";
 		try {
 			this.openConnection();
@@ -91,7 +91,6 @@ public class EditGenre extends AbstractClient {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
 
@@ -102,10 +101,11 @@ public class EditGenre extends AbstractClient {
 				return;
 			}
 			else {
-				genre.setGenre(genreBox.getValue());
 
+				genre.setGenre(genreBox.getValue().getGenre());
 				Genre.genreList.remove(genre);
-				obsGenre.remove(genre.getGenre());
+				obsGenre.remove(genre);
+				genreBox.getSelectionModel().selectPrevious();
 				genre.actionNow="DeleteGenre";
 				try {
 					this.openConnection();
@@ -120,40 +120,45 @@ public class EditGenre extends AbstractClient {
 			AlertBox.display("Error", "You must select item from the list!");
 			return;
 		}
-
-
-
 	}
 
 
-	public void onUpdateGenre(){
-		
+	public void onUpdateGenre() throws InterruptedException{
+		int index=genreBox.getSelectionModel().getSelectedIndex();
 		try{
+			// if nothing has selected
 			if(genreBox.getValue().equals("")){
 				AlertBox.display("Error", "You must fill at least one of the fields!");
 				return;
 			}
-			else if (genreBox.getValue().equals(genreTextField.getText()) && 
-					Genre.genreList.get(genreBox.getSelectionModel().getSelectedIndex()).getComments().equals(commentsTextField.getText())){
+
+			genre=Genre.genreList.get(index);
+			genre.setOldGenre(genre.getGenre());
+
+			//else if the name is still the same and the comments are the same
+			if(genreTextField.getText()!=null  && commentsTextField.getText()!=null)
+				if (genreBox.getValue().getGenre().equals(genreTextField.getText()) && 
+						genre.getComments().equals(commentsTextField.getText())){
 					AlertBox.display("Error", "You must change field to update!");
 					return;
-			}		
+				}
+			//if the name has changed
+			if(genreTextField.getText()!=null)
+				if(!genre.getGenre().equals(genreTextField.getText())){
+					genre.setGenre(genreTextField.getText());
+					genreBox.getSelectionModel().clearAndSelect(index);
+					obsGenre.set(index, genre);
+				}
+			//if the comments has changed
+			if(commentsTextField.getText()!=null)
+				if(!commentsTextField.getText().equals(genre.getComments())){
+					genre.setComments(commentsTextField.getText());
+				}
 
 
-			else {
-				Genre.genreList.get(genreBox.getSelectionModel().getSelectedIndex())
-			.setGenre(genreTextField.getText());
-			Genre.genreList.get(genreBox.getSelectionModel().getSelectedIndex())
-			.setComments(commentsTextField.getText());
-			genre.setGenre(genreTextField.getText());
-			genre.setComments(commentsTextField.getText());
-			genre.setOldGenre(genreBox.getValue());
-			}
-
-			obsGenre.remove(genre.getOldGenre());
-			obsGenre.add(genre.getGenre());
-			
+			obsGenre=FXCollections.observableArrayList(Genre.genreList);
 			genre.actionNow="UpdateGenre";
+
 			try {
 				this.openConnection();
 				this.sendToServer(genre);
@@ -167,7 +172,7 @@ public class EditGenre extends AbstractClient {
 			return;
 		}
 	}
-	
+
 	public void onBack(){
 		try {
 			Main.showLoggedInScreenWorker();
@@ -177,17 +182,16 @@ public class EditGenre extends AbstractClient {
 	}
 
 
+	@SuppressWarnings("unchecked")
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof String)
 			System.out.println((String)msg);
-
-		if(((ArrayList<?>)msg).get(0) instanceof Genre){
-			System.out.println("h");
-			flag=1;
-			for(Genre genre:(ArrayList<Genre>)msg)
-				Genre.genreList.add(genre);
-		}
-
+		if(((ArrayList<?>)msg).size() > 0)
+			if(((ArrayList<?>)msg).get(0) instanceof Genre){
+				for(Genre genre:(ArrayList<Genre>)msg)
+					Genre.genreList.add(genre);
+			}
+		flag=1;
 	}
 
 }

@@ -3,7 +3,7 @@ package application;
 import java.io.IOException;
 
 import Controllers.LoginScreenController;
-import Entities.User; 
+import Entities.User;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,24 +41,18 @@ public class Main extends Application {
 	}
 	
 
-
-	
-	public static void showUpdateBookScreen()throws IOException{
+	public static void showScreen(String str){ 
+		primaryStage.close();
 		FXMLLoader loader = new FXMLLoader(); 
-		loader.setLocation(Main.class.getResource("/GUI/UpdateBookScreen.fxml"));
+		loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));
+		try{
 		mainLayout = loader.load();
-		primaryStage.setScene(new Scene(mainLayout));
-		primaryStage.show();
-	}
-
-	public static void showSearchBookForUpdate() throws IOException{
-		FXMLLoader loader = new FXMLLoader(); 
-		loader.setLocation(Main.class.getResource("/GUI/SearchBookForUpdate.fxml"));
-			mainLayout = loader.load();
+		}catch(IOException e){e.printStackTrace();}
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
 	
+
 	public static void onExit(){
 		primaryStage.close();
 	}
@@ -90,10 +84,10 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 	
-	public static void showSearchScreen()
+	public static void showOrderScreen()
 	{
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("/GUI/SearchBookScreen.fxml"));
+		loader.setLocation(Main.class.getResource("/GUI/OrderBookScreen.fxml"));
 		try {    
 			mainLayout =  loader.load();
 			primaryStage.setScene(new Scene(mainLayout));
@@ -121,6 +115,19 @@ public class Main extends Application {
 	{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/GUI/EditGenre.fxml"));
+		try {    
+			mainLayout =  loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void showEditTheme()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/EditTheme.fxml"));
 		try {    
 			mainLayout =  loader.load();
 			primaryStage.setScene(new Scene(mainLayout));
@@ -265,7 +272,7 @@ public class Main extends Application {
 
 	public static void setPrimaryStage(Stage primaryStage) {
 		Main.primaryStage = primaryStage;
-	}
+	}	
 
 }
 
