@@ -21,11 +21,7 @@ public class OrderedBook extends GeneralMessage
 		this.title=title;
 		this.author=author;
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-
 		purchasedate=LocalDate.now().format(formatter);
-
-		purchasedate=(LocalDate.now()).format(formatter);
-
 	}
 	public String getPurchaseDate(){
 		return purchasedate;
@@ -58,5 +54,14 @@ public class OrderedBook extends GeneralMessage
 	public String toString()
 	{	
 		return title + " by " + author;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		OrderedBook other = (OrderedBook)obj;
+		if(this.getReaderID().equals(other.getReaderID()) && this.getBookid()==other.getBookid())
+			return true;
+		return false;
 	}
 }

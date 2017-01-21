@@ -61,14 +61,6 @@ public class LoginScreenController extends AbstractClient {
 
 	public LoginScreenController() { 
 		super(host, port);
-		passwordTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-		    @Override
-		    public void handle(KeyEvent keyEvent) {
-		        if (keyEvent.getCode() == KeyCode.ENTER)  {
-		            onLogin();
-		        }
-		    }
-		});
 	}
 	
 

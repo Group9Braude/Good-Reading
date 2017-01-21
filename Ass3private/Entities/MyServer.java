@@ -79,7 +79,7 @@ public class MyServer extends AbstractServer {
 				tempremoveabook((Book)msg,client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
-			case "creditCard":
+			case "CreditCard":
 				addCreditCard((CreditCard)msg,client); break;
 			case "FindLoggedReaders":
 				find("readers", "isLoggedIn='1';", "LoggedReaders",client);break;
@@ -119,6 +119,8 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg,1, client);break;
 			case "DenyReview":
 				examineReview((Review)msg, -1 , client);break;
+			case "NewOrder":
+				addNewOrder((OrderedBook)msg,client); break;
 
 			case "updateBookList":
 				updateBookList((Book)msg,client);break;
@@ -126,7 +128,7 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg, 0, client);break;
 			case "EditReview":
 				editReview((Review)msg, client);
-			//case "GetAllGenres":
+				//case "GetAllGenres":
 				//getAllGenres(client); break;
 
 			case "GetAllGenres":
@@ -137,10 +139,22 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
-	
 
-	
-	
+	private void addNewOrder(OrderedBook book,ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("insert into orderedbook values('" + book.getReaderID()+ "'," + book.getBookid() + ",'" + book.getTitle() + "','" + book.getAuthor() + "','" +  book.getPurchaseDate() + "');" );
+			ResultSet rs = stmt.executeQuery("SELECT numofpurchases FROM books where bookid="+book.getBookid()+";");
+			int num = rs.getInt(1);
+			stmt.executeUpdate("Update books set numofpurchases=" + (num+1) + " where bookid=" + book.getBookid()+";");
+			client.sendToClient(book);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
 	public void initializeGenreList(Genre genre, ConnectionToClient client){/*******************************************/
 		try {
 			Statement stmt = conn.createStatement();
@@ -157,7 +171,7 @@ public class MyServer extends AbstractServer {
 		}	
 	}
 
-public void addGenre(Genre genre, ConnectionToClient client){
+	public void addGenre(Genre genre, ConnectionToClient client){
 		Statement stmt;
 		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getBookNum()+"', '"+genre.getComments()+"');";
 		try {
@@ -174,13 +188,13 @@ public void addGenre(Genre genre, ConnectionToClient client){
 
 	}
 
-public void updateGenre(Genre genre,ConnectionToClient client){
-	try{
-		Statement stmt=conn.createStatement();
-		String query = "UPDATE genre SET name='"+genre.getGenre()+"', comments= '"+genre.getComments()+
-				"' WHERE name='"+genre.getOldGenre()+"';";
-		stmt = conn.createStatement();
-		stmt.executeUpdate(query);
+	public void updateGenre(Genre genre,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "UPDATE genre SET name='"+genre.getGenre()+"', comments= '"+genre.getComments()+
+					"' WHERE name='"+genre.getOldGenre()+"';";
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
 		}catch (SQLException e) {
 			System.out.println("Error update genre.");
 			e.printStackTrace();
@@ -194,22 +208,22 @@ public void updateGenre(Genre genre,ConnectionToClient client){
 
 
 
-public void deleteGenre(Genre genre,ConnectionToClient client){
+	public void deleteGenre(Genre genre,ConnectionToClient client){
 		try{
 			Statement stmt=conn.createStatement();
 			String query = "DELETE FROM genre WHERE name= '"+genre.getGenre()+"';";
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
-			}catch (SQLException e) {
-				System.out.println("Error deleting genre.");
-				e.printStackTrace();
-			}
-			try {
-				client.sendToClient("Deleted!");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}	
+		}catch (SQLException e) {
+			System.out.println("Error deleting genre.");
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Deleted!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}	
 
 
 	private void getGeneralPop(Book b, ConnectionToClient client) {
@@ -301,9 +315,9 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 		}
 
 	}
-	
 
-	
+
+
 	private void updateBookList(Book book, ConnectionToClient client)
 	{
 		try{
@@ -317,7 +331,7 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 		}
 		catch(Exception e){e.printStackTrace();}
 	}
-	
+
 
 	public void editReview(Review review, ConnectionToClient client){
 		try {
@@ -592,7 +606,7 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			stmt = conn.createStatement();
 			stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"';");
 			//To add credit card checks
-			client.sendToClient("Credit card added successfully");
+			client.sendToClient(card);
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
