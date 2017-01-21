@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="322.0" prefWidth="493.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SearchReviewScreenController">
+   <children>
+      <TextArea fx:id="reviewText" layoutX="247.0" layoutY="14.0" prefHeight="252.0" prefWidth="227.0" />
+      <ListView fx:id="reviewList" layoutX="14.0" layoutY="14.0" onMouseClicked="#showReview" prefHeight="252.0" prefWidth="200.0" />
+      <Button layoutX="208.0" layoutY="275.0" mnemonicParsing="false" onAction="#onClose" text="Close" />
+   </children>
+</AnchorPane>
