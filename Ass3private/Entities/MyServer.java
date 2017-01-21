@@ -75,7 +75,7 @@ public class MyServer extends AbstractServer {
 				tempremoveabook((Book)msg,client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
-			case "creditCard":
+			case "CreditCard":
 				addCreditCard((CreditCard)msg,client); break;
 			case "FindLoggedReaders":
 				find("readers", "isLoggedIn='1';", "LoggedReaders",client);break;
@@ -208,6 +208,7 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("insert into orderedbook values('" + book.getReaderID()+ "'," + book.getBookid() + ",'" + book.getTitle() + "','" + book.getAuthor() + "','" +  book.getPurchaseDate() + "');" );
 			ResultSet rs = stmt.executeQuery("SELECT numofpurchases FROM books where bookid="+book.getBookid()+";");
+			rs.next();
 			int num = rs.getInt(1);
 			stmt.executeUpdate("Update books set numofpurchases=" + (num+1) + " where bookid=" + book.getBookid()+";");
 			client.sendToClient(book);
@@ -663,10 +664,10 @@ public class MyServer extends AbstractServer {
 	{
 		Statement stmt;
 		try {
+			System.out.println("yo");
 			stmt = conn.createStatement();
-			stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"';");
-			//To add credit card checks
-			client.sendToClient("Credit card added successfully");
+			stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"' where readerID="+ card.getId()+";");
+			client.sendToClient(card);
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
@@ -713,8 +714,8 @@ public class MyServer extends AbstractServer {
 			String query = "insert into books values ('" + book.getTitle() + "','" + cnt + "','" + book.getAuthor() + "','" + 
 					book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0');";
 			stmt.executeUpdate(query);
-			query = "insert into genresbooks values ('" + book.getGenre() + "','" + cnt + "');";
-			stmt.executeUpdate(query);
+			//query = "insert into genresbooks values ('" + book.getGenre() + "','" + cnt + "');";
+			//stmt.executeUpdate(query);
 		} catch (SQLException e) {e.printStackTrace();}
 		try {
 			client.sendToClient("Added!");

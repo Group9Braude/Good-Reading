@@ -183,17 +183,30 @@ public class WorkerController extends AbstractClient {
 		if(genresAddComboBox ==null || genresAddComboBox.getSelectionModel().getSelectedItem()==null){
 			genresText.setFill(Color.RED);genres=false;
 		}
+<<<<<<< HEAD
 		else{
+=======
+
+		/*else{
+>>>>>>> refs/remotes/origin/master
 			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
+<<<<<<< HEAD
 		}
+=======
+		}*/
+
+		/*else{
+			genresText.setFill(Color.BLACK); keyWord=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
+		}*/
+>>>>>>> refs/remotes/origin/master
 
 
 
-		if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
+		/*if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
 			sendServer(book, "AddBook");
 
-		}
+		}*/
 	}//End onAddBook
 
 

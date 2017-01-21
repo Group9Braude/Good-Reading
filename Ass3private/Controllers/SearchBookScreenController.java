@@ -24,7 +24,8 @@ public class SearchBookScreenController extends AbstractClient
 {
 	private ArrayList <Book> allBooks = null;
 	private OrderedBook returnedBook= null;
-	//private boolean origin/*From where the message to the server was sent*/ = false;//false - initialize(), true - onSearch()
+	private ArrayList <Book> updatedBookList = null;
+	private int origin/*From where the message to the server was sent*/ = -1;//0 - initialize(), 1 - onSearch()
 	@FXML
 	public ObservableList <Book> items = FXCollections.observableArrayList();
 	public TableView <Book> bookList = new TableView <Book>(items);
@@ -38,6 +39,7 @@ public class SearchBookScreenController extends AbstractClient
 		action.getItems().addAll("AND","OR");
 		try {
 			this.openConnection();
+			origin = 0;
 			GeneralMessage dummy = new GeneralMessage();
 			dummy.actionNow="getBooks";
 			this.sendToServer(dummy);
@@ -59,7 +61,7 @@ public class SearchBookScreenController extends AbstractClient
 
 			TableColumn<Book,String> keyWordColumn =new TableColumn<Book,String>("Key word");
 			keyWordColumn.setCellValueFactory(new PropertyValueFactory<>("keyword"));
-			System.out.println("---------------------------BOOOOOO--------------------------------------");
+
 			bookList.getColumns().addAll(titleColumn,IDColumn,authorColumn,langColumn,summColumn,keyWordColumn);//Adding the columns to the table
 			while(allBooks==null)
 				try {
@@ -140,21 +142,28 @@ public class SearchBookScreenController extends AbstractClient
 				finalQuery+=query.charAt(i);
 			finalQuery+=");";
 			System.out.println(finalQuery);
-			allBooks = null;
+			origin = 1;
+			updatedBookList = null;
 			Book dummy = new Book();
 			dummy.query = finalQuery;
 			dummy.actionNow = "updateBookList";
 			try {
 				this.sendToServer(dummy);
-				while(allBooks==null)
+				while(updatedBookList==null)
 					Thread.sleep(10);
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			items = FXCollections.observableArrayList(allBooks);
+			items = FXCollections.observableArrayList(updatedBookList);
 			bookList.setItems(items);
 		}
+	}
+	
+	public void onReset()
+	{
+		items = FXCollections.observableArrayList(allBooks);
+		bookList.setItems(items);
 	}
 
 	public void onOrder()
@@ -198,7 +207,12 @@ public class SearchBookScreenController extends AbstractClient
 	protected void handleMessageFromServer(Object msg) 
 	{
 		if(msg instanceof ArrayList)
-			allBooks = (ArrayList<Book>)msg;
+		{
+			if(origin==0)
+				allBooks = (ArrayList<Book>)msg;
+			else updatedBookList = (ArrayList<Book>)msg;
+			origin = -1;
+		}
 		if(msg instanceof OrderedBook)
 			returnedBook = (OrderedBook)msg;
 	}
