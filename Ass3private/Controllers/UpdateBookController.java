@@ -83,7 +83,7 @@ public class UpdateBookController {
 			for(int i=0;i<bookList.size();i++)
 				for(int j=0;j<genresBooksList.size();j++)
 					if(bookList.get(i).getBookid() == genresBooksList.get(j).getBookid()){
-						bookList.get(i).setGenre(genresBooksList.get(j).getGenre());break;
+						//bookList.get(i).setGenre(genresBooksList.get(j).getGenre());break;
 					}
 			initTableView();
 			ObservableList<Book> books = FXCollections.observableArrayList(bookList);

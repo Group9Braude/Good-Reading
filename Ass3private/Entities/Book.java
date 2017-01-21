@@ -23,7 +23,7 @@ public class Book extends GeneralMessage implements Serializable{
 
 	public Book(){}
 	public Book(String genre, int bookid){
-		this.genre=genre;
+		//this.genre=genre;
 		this.bookid=bookid;
 	}
 	
