@@ -119,6 +119,11 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg,1, client);break;
 			case "DenyReview":
 				examineReview((Review)msg, -1 , client);break;
+			case "NewOrder":
+				addNewOrder((OrderedBook)msg,client); break;
+
+			case "updateBookList":
+				updateBookList((Book)msg,client);break;
 			case "HoldReview":
 				examineReview((Review)msg, 0, client);break;
 			case "EditReview":
@@ -129,6 +134,8 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client);
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client);
+			case "GetAllGenres":
+				initializeGenreList((Genre)msg, client);
 			default:
 				break;
 			}
@@ -197,6 +204,21 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(bookList);
 
 		} catch (Exception  e) {e.printStackTrace();}	
+	}
+
+
+	private void addNewOrder(OrderedBook book,ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("insert into orderedbook values('" + book.getReaderID()+ "'," + book.getBookid() + ",'" + book.getTitle() + "','" + book.getAuthor() + "','" +  book.getPurchaseDate() + "');" );
+			ResultSet rs = stmt.executeQuery("SELECT numofpurchases FROM books where bookid="+book.getBookid()+";");
+			int num = rs.getInt(1);
+			stmt.executeUpdate("Update books set numofpurchases=" + (num+1) + " where bookid=" + book.getBookid()+";");
+			client.sendToClient(book);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 
@@ -359,6 +381,24 @@ public class MyServer extends AbstractServer {
 		}
 
 	}
+
+
+
+
+	private void updateBookList(Book book, ConnectionToClient client)
+	{
+		try{
+			Statement stmt = conn.createStatement();
+			System.out.println(book.query);
+			ResultSet rs = stmt.executeQuery(book.query);
+			ArrayList<Book> res = new ArrayList<Book>();
+			while(rs.next())
+				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8),rs.getInt(9)));
+			client.sendToClient(res);
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
+
 
 	public void editReview(Review review, ConnectionToClient client){
 		try {

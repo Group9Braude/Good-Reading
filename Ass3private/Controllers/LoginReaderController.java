@@ -67,8 +67,8 @@ public class LoginReaderController {
 		else JOptionPane.showMessageDialog(null, "You must first select a book!");
 	}
 	
-	public void onOrder()
+	public void onSearch()
 	{
-		Main.showOrderScreen();
+		Main.showSearchScreen();
 	}
 }

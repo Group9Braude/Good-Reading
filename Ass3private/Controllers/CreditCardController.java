@@ -3,20 +3,24 @@ package Controllers;
 import java.io.IOException;
 
 import Entities.CreditCard;
+import Entities.Reader;
 import application.Main;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import ocsf.client.AbstractClient;
 
 public class CreditCardController extends AbstractClient
 {
-
+	public boolean returned = false;
 	@FXML TextField cardNumField;
 	@FXML TextField monthField,yearField;
 	@FXML TextField codeField;
 	@FXML Text numText,dateText,codeText;
+	public Button confirm;
 
 	public CreditCardController() {
 		super(Main.host, Main.port);
@@ -84,7 +88,10 @@ public class CreditCardController extends AbstractClient
 			try {
 				this.sendToServer(newCard);
 				System.out.println("sent");
-			} catch (IOException e) {
+				while(!returned)
+					Thread.sleep(10);
+				Main.popup.close();
+			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -93,8 +100,14 @@ public class CreditCardController extends AbstractClient
 
 
 	@Override
-	protected void handleMessageFromServer(Object msg) {
-		System.out.println((String)msg);
+	protected void handleMessageFromServer(Object msg) 
+	{
+		CreditCard card = (CreditCard)msg;
+		Reader reader = (Reader)Main.getCurrentUser();
+		reader.setCardnum(card.getCardNum());
+		reader.setSecCode(card.getSecCode());
+		reader.setExpDate(card.getExpDate());
+		returned = true;
 	}
 
 

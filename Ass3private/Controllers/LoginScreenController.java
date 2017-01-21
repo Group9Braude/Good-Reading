@@ -16,6 +16,9 @@ import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import ocsf.client.AbstractClient;
+import javafx.event.EventHandler;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
 public class LoginScreenController extends AbstractClient {
 
@@ -34,31 +37,30 @@ public class LoginScreenController extends AbstractClient {
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 	@FXML
 	ImageView loginImageView;
+	
+	 public void initialize(){
+		  idTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		      @Override
+		      public void handle(KeyEvent keyEvent) {
+		          if (keyEvent.getCode() == KeyCode.ENTER)  {
+		              onLogin();
+		          }
+		      }
+		  });
+		  passwordTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
+		      @Override
+		      public void handle(KeyEvent keyEvent) {
+		          if (keyEvent.getCode() == KeyCode.ENTER)  {
+		              onLogin();
+		          }
+		      }
+		  });
+	 }
 
 	
 
 	public LoginScreenController() { 
 		super(host, port);
- 	}
-
-	
-	public void initialize(){
-		idTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-		    @Override
-		    public void handle(KeyEvent keyEvent) {
-		        if (keyEvent.getCode() == KeyCode.ENTER)  {
-		            onLogin();
-		        }
-		    }
-		});
-		passwordTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
-		    @Override
-		    public void handle(KeyEvent keyEvent) {
-		        if (keyEvent.getCode() == KeyCode.ENTER)  {
-		            onLogin();
-		        }
-		    }
-		});
 	}
 	
 
