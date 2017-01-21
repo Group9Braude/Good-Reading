@@ -12,7 +12,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="474.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WorkerController">
    <children>
-      <Text fill="#19cbeb" layoutX="95.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Book" underline="true" wrappingWidth="305.98046875">
+      <Text fx:id="removeBookTitle" fill="#19cbeb" layoutX="95.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Remove Book" underline="true" wrappingWidth="305.98046875">
          <font>
             <Font name="Segoe Print" size="37.0" />
          </font>

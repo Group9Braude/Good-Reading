@@ -84,11 +84,11 @@ public class SubscriptionScreenController extends AbstractClient
 
 		try {
 			mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/CreditCardScreen.fxml"));
+			Main.popup.setScene(new Scene(mainLayout));
+			Main.popup.showAndWait();
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		Main.popup.setScene(new Scene(mainLayout));
-		Main.popup.show();
 	}
 	@Override
 	protected void handleMessageFromServer(Object msg) 

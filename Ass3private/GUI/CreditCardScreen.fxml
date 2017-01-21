@@ -20,6 +20,6 @@
             <Font name="Comic Sans MS Bold" size="18.0" />
          </font>
       </Text>
-      <Button layoutX="256.0" layoutY="122.0" mnemonicParsing="false" onAction="#onConfirm" text="Confirm" />
+      <Button fx:id="confirm" layoutX="256.0" layoutY="122.0" mnemonicParsing="false" onAction="#onConfirm" text="Confirm" />
    </children>
 </AnchorPane>

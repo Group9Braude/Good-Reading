@@ -6,16 +6,13 @@ import java.util.ArrayList;
 public class Genre extends GeneralMessage implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	public static ArrayList<Genre> genreList;
+	public static ArrayList<Genre> genreList=new ArrayList<Genre>();
 	private String genre, comments, oldGenre;
 	public String query;
-	private int bookNum;
-	public static ArrayList<Theme> themeList;
+	public ArrayList<Theme> themeList;
 	
 	public Genre(){	
-		genreList=new ArrayList<Genre>();
 		this.setComments("");
-		this.setBookNum(0);
 		}
 	
 	public Genre(String genre){
@@ -24,7 +21,6 @@ public class Genre extends GeneralMessage implements Serializable{
 	
 	public Genre(String genre,String comments) {
 		this.genre = genre;
-		this.bookNum=bookNum;
 		this.comments=comments;
 	}	
 	
@@ -36,13 +32,6 @@ public class Genre extends GeneralMessage implements Serializable{
 		this.comments = comments;
 	}
 
-	public int getBookNum() {
-		return bookNum;
-	}
-
-	public void setBookNum(int bookNum) {
-		this.bookNum = bookNum;
-	}
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
@@ -58,5 +47,13 @@ public class Genre extends GeneralMessage implements Serializable{
 	public void setOldGenre(String oldGenre) {
 		this.oldGenre = oldGenre;
 	}
+	
+	@Override
+	public String toString()
+	{
+		return genre;
+	}
+
+
 
 }

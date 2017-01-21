@@ -3,7 +3,7 @@ package application;
 import java.io.IOException;
 
 import Controllers.LoginScreenController;
-import Entities.User;
+import Entities.User; 
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,18 +41,30 @@ public class Main extends Application {
 	}
 	
 
-	public static void showScreen(String str){ 
-		primaryStage.close();
+	public static void showEditBookScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
-		loader.setLocation(Main.class.getResource("/GUI/"+str+".fxml"));
-		try{
+		loader.setLocation(Main.class.getResource("/GUI/EditBook.fxml"));
 		mainLayout = loader.load();
-		}catch(IOException e){e.printStackTrace();}
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
 	
+	public static void showUpdateBookScreen()throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/UpdateBookScreen.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
 
+	public static void showSearchBookForUpdate() throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/SearchBookForUpdate.fxml"));
+			mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
+	
 	public static void onExit(){
 		primaryStage.close();
 	}
@@ -84,10 +96,10 @@ public class Main extends Application {
 		primaryStage.show();
 	}
 	
-	public static void showOrderScreen()
+	public static void showSearchScreen()
 	{
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(Main.class.getResource("/GUI/OrderBookScreen.fxml"));
+		loader.setLocation(Main.class.getResource("/GUI/SearchBookScreen.fxml"));
 		try {    
 			mainLayout =  loader.load();
 			primaryStage.setScene(new Scene(mainLayout));

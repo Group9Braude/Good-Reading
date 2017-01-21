@@ -6,20 +6,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
+import java.util.ArrayList; 
 import java.util.Collections;
 
-import com.mysql.jdbc.PreparedStatement;
-
-import java.sql.Date;
 import application.Main;
+import javafx.scene.control.TextField;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class MyServer extends AbstractServer {
 	Connection conn;
-	private static int bookCnt;
-
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -28,6 +24,7 @@ public class MyServer extends AbstractServer {
 		catch (Throwable t) {
 			port = Main.port;
 		}
+		@SuppressWarnings("unused")
 		MyServer s1 = new MyServer(port);
 	}
 
@@ -68,9 +65,9 @@ public class MyServer extends AbstractServer {
 			case "UpdateGenre":
 				updateGenre((Genre)msg,client);break;
 			case "InitializeGenreList":
-				initializeGenreList((Genre)msg, client);break;
+				initializeGenreList(client);break;
 			case "InitializeBookList":
-				initializeBookList((Book)msg, client);break;
+				initializeBookList(client);break;
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
 			case "getUserBooks":
@@ -79,7 +76,7 @@ public class MyServer extends AbstractServer {
 				tempremoveabook((Book)msg,client);break;
 			case "Logout":
 				LogoutUser((User)msg,client);break;
-			case "creditCard":
+			case "CreditCard":
 				addCreditCard((CreditCard)msg,client); break;
 			case "FindLoggedReaders":
 				find("readers", "isLoggedIn='1';", "LoggedReaders",client);break;
@@ -119,10 +116,26 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg,1, client);break;
 			case "DenyReview":
 				examineReview((Review)msg, -1 , client);break;
+			case "NewOrder":
+				addNewOrder((OrderedBook)msg,client); break;
+			case "updateBookList":
+				updateBookList((Book)msg,client);break;
 			case "HoldReview":
 				examineReview((Review)msg, 0, client);break;
 			case "EditReview":
-				editReview((Review)msg, client);
+				editReview((Review)msg, client);break;
+			case "UpdateBookList":
+				UpdateBookList(client);break;
+			case "InitializeGenresBooksList":
+				InitializeGenresBooksList(client);break;
+			case "UpdateBookListSearch":
+				UpdateBookListSearch((Book)msg, client);break;
+			case "GetAllGenres":
+				initializeGenreList(client);break;
+			case "GetBookForEdition":
+				getBookForEdition((Book)msg, client);break;
+			case "EditBookPlz":
+				editBook((Book)msg, client);break;
 			default:
 				break;
 			}
@@ -130,25 +143,135 @@ public class MyServer extends AbstractServer {
 	}
 
 	
-	public void initializeGenreList(Genre genre, ConnectionToClient client){/*******************************************/
+	public void editBook(Book book, ConnectionToClient client){
+		System.out.println("Edit Book in My Server");
+		try{
+			Statement stmt = conn.createStatement();
+			String query = "UPDATE books SET title = '" + book.getTitle() + "'," + "language = '" + book.getLanguage() + "'," + "summary = '" + book.getSummary()
+			+ "'," + "author = '" + book.getAuthor()+ "'," + "keyWord = '" + book.getKeyword() + "'," + "tableOfContents = '" + book.getToc() +"' "
+					+ "WHERE bookid = " + book.getBookid() + ";";
+			stmt.executeUpdate(query);
+			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "bookid = '" + book.getBookid() + "';";
+			stmt.executeUpdate(query);
+			ArrayList<String> a = new ArrayList<String>();
+			a.add("GoToUpdateScreen");
+			client.sendToClient(a);
+		}catch(Exception e){e.printStackTrace();}
+	}//	TextField titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, genre
+
+	public void getBookForEdition(Book book, ConnectionToClient client){
+		try{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM books where bookid = " + book.getBookid() + ";");
+			rs.next();
+			Book book1 =  new Book (rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9));
+
+
+			rs = stmt.executeQuery("SELECT * FROM genresbooks where bookid = " + book.getBookid() + ";");
+			rs.next();
+			book1.setGenre(rs.getString(1));
+			System.out.println("GetBookForEdition: " + book1.getGenre());
+			client.sendToClient(book1);
+			
+		}catch(Exception e){}
+		
+	}
+	
+	public void UpdateBookListSearch(Book book, ConnectionToClient client){
+		ArrayList<Book> bookList = new ArrayList<Book>();
+		Book b = new Book();
+		try{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(book.query);
+			System.out.println("query:" + book.query);
+			b.query = "UpdateBookList";
+			bookList.add(b);
+			while(rs.next())
+				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
+			Book b1 = new Book();
+			b1.isGenres=true;
+			bookList.add(b1);
+			ResultSet rs1 = stmt.executeQuery("SELECT * FROM genresbooks;");
+			while(rs1.next())
+				bookList.add(new Book(rs1.getString(1), rs1.getInt(2)));
+			client.sendToClient(bookList);
+		}catch(Exception e){}
+	}
+
+
+
+	public void UpdateBookList(ConnectionToClient client){
+		ArrayList<Book> bookList = new ArrayList<Book>();
+		Book book = new Book();
+		book.query = "UpdateBookList";
+		bookList.add(book);
+		try{
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM books";
+			ResultSet rs = stmt.executeQuery(query);
+			while(rs.next())
+				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
+						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
+			Book b = new Book();b.isGenres = true;
+			bookList.add(b);
+			query = "SELECT * FROM genresbooks";
+			ResultSet rs1 = stmt.executeQuery(query);
+			while(rs1.next())
+				bookList.add(new Book(rs1.getString(1), rs1.getInt(2)));
+			client.sendToClient(bookList);
+
+
+		}catch(Exception e){e.printStackTrace();}
+	}
+
+
+	public void InitializeGenresBooksList(ConnectionToClient client){
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM genresbooks";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<Book> bookList = new ArrayList<Book>();	
+			while(rs.next())
+				bookList.add( new Book (rs.getString(1),rs.getInt(2)));
+			client.sendToClient(bookList);
+
+		} catch (Exception  e) {e.printStackTrace();}	
+	}
+
+
+	private void addNewOrder(OrderedBook book,ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate("insert into orderedbook values('" + book.getReaderID()+ "'," + book.getBookid() + ",'" + book.getTitle() + "','" + book.getAuthor() + "','" +  book.getPurchaseDate() + "');" );
+			ResultSet rs = stmt.executeQuery("SELECT numofpurchases FROM books where bookid="+book.getBookid()+";");
+			rs.next();
+			int num = rs.getInt(1);
+			stmt.executeUpdate("Update books set numofpurchases=" + (num+1) + " where bookid=" + book.getBookid()+";");
+			client.sendToClient(book);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public void initializeGenreList(ConnectionToClient client){/*******************************************/
 		try {
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM genre";
 			ResultSet rs = stmt.executeQuery(query);
 			ArrayList<Genre> genreList = new ArrayList<Genre>();	
-			while(rs.next()){
-				System.out.println("test");
+			while(rs.next())
 				genreList.add( new Genre (rs.getString(1),rs.getString(2)));
-			}
 			client.sendToClient(genreList);
-		} catch (Exception  e) {
-			e.printStackTrace();
-		}	
+
+		} catch (Exception  e) {}	
 	}
 
-public void addGenre(Genre genre, ConnectionToClient client){
+	public void addGenre(Genre genre, ConnectionToClient client){
 		Statement stmt;
-		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getBookNum()+"', '"+genre.getComments()+"');";
+		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getComments()+"');";
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
@@ -163,13 +286,15 @@ public void addGenre(Genre genre, ConnectionToClient client){
 
 	}
 
-public void updateGenre(Genre genre,ConnectionToClient client){
-	try{
-		Statement stmt=conn.createStatement();
-		String query = "UPDATE genre SET name='"+genre.getGenre()+"', comments= '"+genre.getComments()+
-				"' WHERE name='"+genre.getOldGenre()+"';";
-		stmt = conn.createStatement();
-		stmt.executeUpdate(query);
+	public void updateGenre(Genre genre,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "UPDATE genre SET name='"+genre.getGenre()+"', comments= '"+genre.getComments()+
+					"' WHERE name='"+genre.getOldGenre()+"';";
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			query = "UPDATE genresbooks SET genre = '" + genre.getGenre() + "' WHERE genre = '" + genre.getOldGenre() + "';";
+			stmt.executeUpdate(query);
 		}catch (SQLException e) {
 			System.out.println("Error update genre.");
 			e.printStackTrace();
@@ -183,22 +308,22 @@ public void updateGenre(Genre genre,ConnectionToClient client){
 
 
 
-public void deleteGenre(Genre genre,ConnectionToClient client){
+	public void deleteGenre(Genre genre,ConnectionToClient client){
 		try{
 			Statement stmt=conn.createStatement();
 			String query = "DELETE FROM genre WHERE name= '"+genre.getGenre()+"';";
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);
-			}catch (SQLException e) {
-				System.out.println("Error deleting genre.");
-				e.printStackTrace();
-			}
-			try {
-				client.sendToClient("Deleted!");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}	
+		}catch (SQLException e) {
+			System.out.println("Error deleting genre.");
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Deleted!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}	
 
 
 	private void getGeneralPop(Book b, ConnectionToClient client) {
@@ -282,7 +407,6 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE bookid="+ b.getBookid() + ";");
 			while(rs.next())
 				arr.add(rs.getString(1));//Adding genres to array
-			Statement stmt1 = conn.createStatement();
 			arr.add("end");
 			client.sendToClient(arr);
 		} catch (Exception e) {
@@ -290,7 +414,25 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 		}
 
 	}
-	
+
+
+
+
+	private void updateBookList(Book book, ConnectionToClient client)
+	{
+		try{
+			Statement stmt = conn.createStatement();
+			System.out.println(book.query);
+			ResultSet rs = stmt.executeQuery(book.query);
+			ArrayList<Book> res = new ArrayList<Book>();
+			while(rs.next())
+				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8),rs.getInt(9)));
+			client.sendToClient(res);
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
+
+
 	public void editReview(Review review, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -367,30 +509,18 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 	}
 
 
+
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
 		bookList.add("BookSearch");
 		try{
 			Statement stmt = conn.createStatement();
 			stmt.executeUpdate("DELETE FROM books WHERE bookid = '" + book.getBookid() + "';");
+			stmt.executeUpdate("DELETE FROM genresbooks WHERE bookid = '" + book.getBookid() + "';");
 		}catch(Exception e){e.printStackTrace();}
 
 	}
 
-
-	/*	public void bookSearch(Book book, ConnectionToClient client){/***********NEEDED???*/
-	/*	ArrayList<String> bookList = new ArrayList<String>();
-		bookList.add("BookSearch");
-		try{
-			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("SELECT * FROM books;");
-			while(rs.next())
-				bookList.add(rs.getString(1) + " " + rs.getString(3));
-			client.sendToClient(bookList);
-
-		}catch(Exception e){e.printStackTrace();}
-
-	}*/
 
 	private void addReview(Review review, ConnectionToClient client)
 	{
@@ -498,24 +628,39 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 		}
 	}
 
-
-
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
 		ArrayList<String> list = new ArrayList<String>();
+		ArrayList<String> authorList = new ArrayList<String>();
+		ArrayList<String> titleList = new ArrayList<String>();
+		ArrayList<Integer> bookIDS = new ArrayList<Integer>();
+		int i=0;
 		list.add("RemoveBook");
 		try{
 			Statement stmt = conn.createStatement();
-			System.out.println(book.query);
 			ResultSet rs = stmt.executeQuery(book.query);
-			while(rs.next())
-				list.add(rs.getString(1) + "                                        " + rs.getString(3) + "                            " + Integer.toString(rs.getInt(2)));
+			while(rs.next()){
+				bookIDS.add(rs.getInt(3));authorList.add(rs.getString(2));titleList.add(rs.getString(1));//Get all the info about the book
+				//At this point I know that if bookid X is in index i in the bookIDS, its also index i in the other lists.
+			}
+
+			for(int id : bookIDS){
+				ResultSet rs1 = stmt.executeQuery("SELECT genre, bookid FROM genresbooks WHERE bookid = '"+id+"' AND genre LIKE '%" + book.genreToSearch + "%';");
+				while(rs1.next()){
+					if(id!=rs1.getInt(2)){
+						authorList.remove(i);titleList.remove(i);bookIDS.remove(i);
+					}
+					else
+						list.add(titleList.get(i) + " by " + authorList.get(i) + ", Genre: " + rs1.getString(1) + ", With Book ID : " + id);
+				}
+				i++;
+			}
+			System.out.println("i : " + i);
 			client.sendToClient(list);
-		}catch(SQLException | IOException e){e.printStackTrace();}
+		}catch(Exception e){e.printStackTrace();}
 	}
 
 
 
-	@SuppressWarnings( "static-access" )
 	public void initializeWorkerList(Worker worker, ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -534,22 +679,21 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 	}
 
 
-	public void initializeBookList(Book book, ConnectionToClient client){/*******************************************/
+	public void initializeBookList(ConnectionToClient client){/*******************************************/
 		try {
 			Statement stmt = conn.createStatement();
 			String query = "SELECT * FROM books";
 			ResultSet rs = stmt.executeQuery(query);
 			ArrayList<Book> bookList = new ArrayList<Book>();
-			while(rs.next()){
+			while(rs.next())
 				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
 						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
 
-			}
 			client.sendToClient(bookList);
 		} catch (Exception  e) {
 			e.printStackTrace();
 		}	
-	}
+	}//	
 
 
 
@@ -558,10 +702,10 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 	{
 		Statement stmt;
 		try {
+			System.out.println("yo");
 			stmt = conn.createStatement();
-			stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"';");
-			//To add credit card checks
-			client.sendToClient("Credit card added successfully");
+			stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"' where readerID="+ card.getId()+";");
+			client.sendToClient(card);
 		} catch (SQLException | IOException e) {
 			e.printStackTrace();
 		}
@@ -597,12 +741,18 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 
 	public void addBook(Book book, ConnectionToClient client){
 		Statement stmt;
-		Book.bookCnt++;
-		String query = "insert into books values ('" + book.getTitle() + "','" + Book.bookCnt + "','" + book.getAuthor() + "','" + 
-				book.getGenre() + "','" + book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0', 'lol');";
-		System.out.println(query);
 		try {
 			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM books");
+			int cnt = 0;
+			while(rs.next()){
+				if(rs.getInt(2)==cnt)
+					cnt++;
+			}	
+			String query = "insert into books values ('" + book.getTitle() + "','" + cnt + "','" + book.getAuthor() + "','" + 
+					book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0');";
+			stmt.executeUpdate(query);
+			query = "insert into genresbooks values('" + book.getGenre() + "'," + cnt + ");";
 			stmt.executeUpdate(query);
 		} catch (SQLException e) {e.printStackTrace();}
 		try {
@@ -734,14 +884,4 @@ public void deleteGenre(Genre genre,ConnectionToClient client){
 			e1.printStackTrace();
 		}
 	}
-
-
-
 }
-
-
-
-
-
-
-

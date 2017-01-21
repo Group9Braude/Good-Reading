@@ -5,18 +5,27 @@ import java.util.ArrayList;
 
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
+
+	private String title, language, summary, toc,genre, theme; 
+	private String author;
+	private String keyword;
+
 	/*             Book Properties          */
-	private String title, author, language, summary, toc, keyword, genre, theme;
 	private int isSuspend=0 , bookid, numOfPurchases;
 	/*             Book Properties          */
+
 	public static ArrayList<Book> bookList;
 	public ArrayList<Book> deleteBookList;
-	public static int bookCnt=90;
-	public String query;
+	public String query, genreToSearch;
+	public boolean isGenres ;
 
 
 
 	public Book(){}
+	public Book(String genre, int bookid){
+		this.setGenre(genre);
+		this.bookid=bookid;
+	}
 	
 	public Book(int bookid){
 		this.bookid=bookid;
@@ -25,35 +34,19 @@ public class Book extends GeneralMessage implements Serializable{
 		this.bookid=bookid;
 		this.title=title;
 	}
-	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend
-			,int numOfPurchases) 
+	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 	{
+		super();
 		this.numOfPurchases = numOfPurchases;
 		this.bookid = bookid;
 		this.title = title;
-		this.author = author;
 		this.language = language;
 		this.summary = summary;
 		this.toc = toc;
 		this.keyword = keyword;
 		this.isSuspend = isSuspend;
-		this.numOfPurchases = numOfPurchases;
-	}
-
-public String getGenre() {
-		return genre;
-	}
-
-	public void setGenre(String genre) {
-		this.genre = genre;
-	}
-
-	public String getTheme() {
-		return theme;
-	}
-
-	public void setTheme(String theme) {
-		this.theme = theme;
+		this.author = author;
+		
 	}
 
 
@@ -151,17 +144,24 @@ public String getGenre() {
 		return serialVersionUID;
 	}
 
-	public static int getBookCnt() {
-		return bookCnt;
-	}
 
-	public static void setBookCnt(int bookCnt) {
-		Book.bookCnt = bookCnt;
-	}
+	
 	
 	public String toString()
 	{
 		return title;
+	}
+	public String getGenre() {
+		return genre;
+	}
+	public void setGenre(String genre) {
+		this.genre = genre;
+	}
+	public String getTheme() {
+		return theme;
+	}
+	public void setTheme(String theme) {
+		this.theme = theme;
 	}
 
 

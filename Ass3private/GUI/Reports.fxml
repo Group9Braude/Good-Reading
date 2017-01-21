@@ -21,7 +21,7 @@
                            <children>
                               <ImageView fitHeight="317.0" fitWidth="779.0" layoutX="-1.0" layoutY="-4.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/blur-old-antique-book%20(1).jpg" />
+                                    <Image url="@../src/1.jpg" />
                                  </image>
                               </ImageView>
                               <Text fill="#4a2d2d" layoutX="114.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the reader ID:">
@@ -43,7 +43,7 @@
                            <children>
                               <ImageView fitHeight="575.0" fitWidth="841.0" layoutX="-34.0" layoutY="-4.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/orange_statistic_cart.jpg" />
+                                    <Image url="@../src/2.jpg" />
                                  </image>
                               </ImageView>
                               <DatePicker fx:id="from" layoutX="223.0" layoutY="62.0" prefHeight="31.0" prefWidth="173.0" promptText="from" />
@@ -68,7 +68,7 @@
                            <children>
                               <ImageView fitHeight="575.0" fitWidth="781.0" layoutX="-6.0" layoutY="-3.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/books1.jpg" />
+                                    <Image url="@../src/3.jpg" />
                                  </image>
                               </ImageView>
                               <Text layoutX="350.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter book id:">
@@ -90,7 +90,7 @@
                            <children>
                               <ImageView fitHeight="573.0" fitWidth="783.0" layoutX="-5.0" layoutY="-3.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/o-BOOK-COFFEE-facebook.jpg" />
+                                    <Image url="@../src/4.jpg" />
                                  </image>
                               </ImageView>
                               <TextField fx:id="genrebookid" layoutX="319.0" layoutY="36.0" prefHeight="31.0" prefWidth="150.0" />

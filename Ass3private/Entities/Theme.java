@@ -4,27 +4,27 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Theme extends GeneralMessage implements Serializable{
+	private static final long serialVersionUID = 1L;
 	public static ArrayList<Theme> themeList= new ArrayList<Theme>();
-	public static ArrayList<String> books;
+	public ArrayList<String> books;
 	private String theme;
-	private Genre genre;
+	private String genre;
 	
 	public Theme(){}
 	
 	
-	public Theme(String theme, Genre genre) {
+	public Theme(String theme, String genre) {
 		this.theme = theme;
 		this.genre=genre;
-		this.books=books;
 	}
 
 	
-	public Genre getGenre() {
+	public String getGenre() {
 		return genre;
 	}
 
 
-	public void setGenre(Genre genre) {
+	public void setGenre(String genre) {
 		this.genre = genre;
 	}
 
