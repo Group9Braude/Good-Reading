@@ -22,15 +22,12 @@ public class UpdateBookController {
 	TableView<Book> booksTableView;
 	public static ArrayList<Book> bookList, genresBooksList, previousBookList;
 	@FXML
-	private Text titleText,keywordText,authorText,languageText,summaryText,tocText,genresText, removeBookTitle;
-	@FXML
-	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,//TextFields for book removal
-	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
-	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
-	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
+	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR;
+	
 	@FXML
 	public ComboBox<String> genresComboBox, genresAddComboBox;
 	static boolean  flag;//Make sure initialized wont be called after udpatebook
+	static Book bookForEdition;
 
 
 	public void sendServer(Object msg, String actionNow){/******************************/
@@ -60,9 +57,13 @@ public class UpdateBookController {
 		}
 
 	}
+	
+	public UpdateBookController(){
+		getBookListWithGenres();
+	}
 
 
-	public  UpdateBookController(){
+	public void  getBookListWithGenres(){
 		bookList = new ArrayList<Book>();
 		genresBooksList = new ArrayList<Book>();
 		boolean isGenres = false;
@@ -83,9 +84,10 @@ public class UpdateBookController {
 			for(int i=0;i<bookList.size();i++)
 				for(int j=0;j<genresBooksList.size();j++)
 					if(bookList.get(i).getBookid() == genresBooksList.get(j).getBookid()){
-						//bookList.get(i).setGenre(genresBooksList.get(j).getGenre());break;
+						bookList.get(i).setGenre(genresBooksList.get(j).getGenre());break;
 					}
 			initTableView();
+			System.out.println("After init: " + (bookList.get(0)).getTitle() + "  " + bookList.get(0).getGenre());
 			ObservableList<Book> books = FXCollections.observableArrayList(bookList);
 			booksTableView.setItems(books);
 		}
@@ -122,18 +124,27 @@ public class UpdateBookController {
 		flag=true;
 		try {Main.showSearchBookForUpdate();} catch (IOException e) {e.printStackTrace();}
 	}
+	
+	public void onEditBook(){
+		Book book = booksTableView.getSelectionModel().getSelectedItem();
+		if (book ==null)
+			return;
+		WorkerController.bookForEdit = null;
+		sendServer(book, "GetBookForEdition");
+		while(WorkerController.bookForEdit == null)
+			Sleep(5);
+		try {Main.showEditBookScreen();} catch (IOException e) {e.printStackTrace();}
+	}
 
+	//	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 	public void onBackFromSearch(){
-
 		Book book = new Book();
 		book.query = "select * from books;";
 		sendServer(book, "UpdateBookList");
 		while(WorkerController.foundBookList ==null)
 			Sleep(10);
 
-		try{
-			Main.showUpdateBookScreen();
-		}catch(Exception e){e.printStackTrace();}
+		try{Main.showUpdateBookScreen();}catch(Exception e){e.printStackTrace();}
 	}
 	
 	public void onGenresPress(){
@@ -154,6 +165,12 @@ public class UpdateBookController {
 		sendServer(book, "UpdateBookList");
 		while(WorkerController.foundBookList==null)
 			Sleep(10);
+		getBookListWithGenres();
+		for(int i=0;i<bookList.size();i++)
+			for(int j=0;j<genresBooksList.size();j++)
+				if(genresBooksList.get(j).getBookid()==bookList.get(i).getBookid()){
+					bookList.get(i).setGenre(genresBooksList.get(j).getGenre());break;
+				}
 		initTableView();
 		ObservableList<Book> books = FXCollections.observableArrayList(bookList);
 		booksTableView.setItems(books);
@@ -186,7 +203,6 @@ public class UpdateBookController {
 			query+=book.query.charAt(i);//Remove the AND from the end of the query
 		query+=";";
 		book.query=query;
-		System.out.println("query before server:" + book.query);
 		WorkerController.foundBookList = null;
 		sendServer(book, "UpdateBookListSearch");
 		while(WorkerController.foundBookList==null)

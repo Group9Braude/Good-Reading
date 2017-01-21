@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="419.0" prefWidth="489.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EditBookController">
+   <children>
+      <Button layoutX="77.0" layoutY="351.0" mnemonicParsing="false" onAction="#onBackFromSearch" prefHeight="41.0" prefWidth="73.0" text="BACK" />
+      <TextField fx:id="titleTextField" layoutX="28.0" layoutY="30.0" promptText="Title" />
+      <TextField fx:id="authorTextField" layoutX="246.0" layoutY="30.0" promptText="Author" />
+      <TextField fx:id="languageTextField" layoutX="28.0" layoutY="94.0" promptText="Language" />
+      <TextField fx:id="summaryTextField" layoutX="28.0" layoutY="184.0" prefHeight="83.0" prefWidth="196.0" promptText="Summary">
+         <padding>
+            <Insets bottom="150.0" />
+         </padding>
+      </TextField>
+      <TextField fx:id="keyWordTextField" layoutX="246.0" layoutY="88.0" promptText="Key Word" />
+      <TextField fx:id="tocTextField" layoutX="246.0" layoutY="184.0" prefHeight="167.0" prefWidth="202.0" promptText="Table Of Contents">
+         <padding>
+            <Insets bottom="150.0" />
+         </padding>
+      </TextField>
+      <Button layoutX="331.0" layoutY="351.0" mnemonicParsing="false" onAction="#onEditBook" prefHeight="41.0" prefWidth="73.0" text="Edit" />
+      <ComboBox fx:id="genreComboBox" layoutX="149.0" layoutY="134.0" onMousePressed="#onGenrePress" prefWidth="150.0" />
+   </children>
+</AnchorPane>

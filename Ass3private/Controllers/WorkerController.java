@@ -53,7 +53,7 @@ public class WorkerController extends AbstractClient {
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
 	static boolean initGBL=true, flag=true, isUpdate=false;
 	static ArrayList<Book> foundBookList;
-
+	public static Book bookForEdit;
 
 
 
@@ -183,33 +183,18 @@ public class WorkerController extends AbstractClient {
 		if(genresAddComboBox ==null || genresAddComboBox.getSelectionModel().getSelectedItem()==null){
 			genresText.setFill(Color.RED);genres=false;
 		}
-<<<<<<< HEAD
 		else{
-=======
-
-		/*else{
->>>>>>> refs/remotes/origin/master
 			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
-<<<<<<< HEAD
 		}
-=======
-		}*/
-
-		/*else{
-			genresText.setFill(Color.BLACK); keyWord=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
-		}*/
->>>>>>> refs/remotes/origin/master
 
 
 
-		/*if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
+		if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
 			sendServer(book, "AddBook");
 
-		}*/
+		}
 	}//End onAddBook
-
-
 
 
 	/****************************/
@@ -515,10 +500,18 @@ public class WorkerController extends AbstractClient {
 
 		if(msg instanceof String)
 			System.out.println((String)msg);
+		
+		if(msg instanceof Book){
+			bookForEdit = new Book(((Book)msg).getTitle(), ((Book)msg).getBookid(), ((Book)msg).getAuthor(), ((Book)msg).getLanguage(),
+					((Book)msg).getSummary(), ((Book)msg).getToc(), ((Book)msg).getKeyword(), ((Book)msg).getisSuspend(), ((Book)msg).getNumOfPurchases());
+			bookForEdit.setGenre(((Book)msg).getGenre());
+
+		}
+		
+		//	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 
 		else if(((ArrayList<?>)msg).get(0) instanceof Book){
 			if((((ArrayList<Book>)msg).get(0)).query.equals("UpdateBookList")){
-				System.out.println("im here");
 				foundBookList = new ArrayList<Book>((ArrayList<Book>)msg);
 				foundBookList.remove(0);
 			}		
@@ -563,6 +556,8 @@ public class WorkerController extends AbstractClient {
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
 				EditReviewController.backOn=true;break;
+			case "GoToUpdateScreen":
+				EditBookController.isBackFromServer = true;break;
 			}
 		}
 	}
