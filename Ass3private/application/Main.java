@@ -3,7 +3,7 @@ package application;
 import java.io.IOException;
 
 import Controllers.LoginScreenController;
-import Entities.User;
+import Entities.User; 
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
