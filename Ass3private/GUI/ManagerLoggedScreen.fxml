@@ -80,5 +80,14 @@
          </font>
       </Text>
       <Button layoutX="111.0" layoutY="319.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ontheme" prefHeight="56.0" prefWidth="107.0" text="Edit Theme" textFill="#975050" />
+      <Button contentDisplay="RIGHT" layoutX="572.0" layoutY="537.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="127.0" text="Logout">
+         <graphic>
+            <ImageView fitHeight="52.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/12.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </Pane>
