@@ -54,4 +54,6 @@ public class Genre extends GeneralMessage implements Serializable{
 		return genre;
 	}
 
+
+
 }

@@ -505,6 +505,7 @@ public class WorkerController extends AbstractClient {
 			bookForEdit = new Book(((Book)msg).getTitle(), ((Book)msg).getBookid(), ((Book)msg).getAuthor(), ((Book)msg).getLanguage(),
 					((Book)msg).getSummary(), ((Book)msg).getToc(), ((Book)msg).getKeyword(), ((Book)msg).getisSuspend(), ((Book)msg).getNumOfPurchases());
 			bookForEdit.setGenre(((Book)msg).getGenre());
+			System.out.println("msg instanceof Book workercontroller");
 
 		}
 		

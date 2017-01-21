@@ -271,7 +271,7 @@ public class MyServer extends AbstractServer {
 
 	public void addGenre(Genre genre, ConnectionToClient client){
 		Statement stmt;
-		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getBookNum()+"', '"+genre.getComments()+"');";
+		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getComments()+"');";
 		try {
 			stmt = conn.createStatement();
 			stmt.executeUpdate(query);

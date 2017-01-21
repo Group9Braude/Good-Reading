@@ -29,7 +29,7 @@
             <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/CheckReviews.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="updateImageView" fitHeight="45.0" fitWidth="152.0" layoutX="2.0" layoutY="359.0" onMousePressed="#onPressUpdate" onMouseReleased="#onRlsUpdate" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="updateImageView" fitHeight="45.0" fitWidth="152.0" layoutX="2.0" layoutY="359.0" onMouseClicked="#onUpdateBookL" onMousePressed="#onPressUpdate" onMouseReleased="#onRlsUpdate" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/Update%20Book.png" />
          </image>
@@ -55,6 +55,6 @@
          </image>
       </ImageView>
       <Button layoutX="14.0" layoutY="456.0" mnemonicParsing="false" onAction="#onEditGenre" text="Edit Genre" />
-      <Button layoutX="127.0" layoutY="456.0" mnemonicParsing="false" onAction="#onEditTheme" text="Edit Theme" />
+      <Button layoutX="127.0" layoutY="456.0" mnemonicParsing="false" text="Edit Theme" />
    </children>
 </AnchorPane>
