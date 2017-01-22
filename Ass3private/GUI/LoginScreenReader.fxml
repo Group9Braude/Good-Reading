@@ -13,16 +13,17 @@
       <TextField fx:id="welcomeText" editable="false" layoutX="37.0" layoutY="25.0" />
       <TextField fx:id="subscribeText" editable="false" layoutX="245.0" layoutY="70.0" />
       <ListView fx:id="bookList" editable="true" layoutX="29.0" layoutY="105.0" prefHeight="327.0" prefWidth="179.0" />
-      <Button layoutX="248.0" layoutY="155.0" mnemonicParsing="false" onAction="#onReview" text="Write a review" />
-      <Button layoutX="250.0" layoutY="191.0" mnemonicParsing="false" text="Get book in doc" />
-      <Button layoutX="251.0" layoutY="225.0" mnemonicParsing="false" text="Get book in pdf" />
-      <Button layoutX="252.0" layoutY="262.0" mnemonicParsing="false" text="Get book in fb2" />
-      <Button layoutX="252.0" layoutY="296.0" mnemonicParsing="false" onAction="#onSearch" text="Search for books" />
+      <Button layoutX="248.0" layoutY="154.0" mnemonicParsing="false" onAction="#onReview" text="Write a review" />
+      <Button layoutX="248.0" layoutY="117.0" mnemonicParsing="false" onAction="#onSearch" text="Search for books" />
       <ImageView fitHeight="56.0" fitWidth="116.0" layoutX="278.0" layoutY="10.0" onMouseClicked="#onSubscribe" onMousePressed="#onSubscribe" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../Desktop/butttonFrame.png" />
          </image>
       </ImageView>
-      <Button layoutX="252.0" layoutY="330.0" mnemonicParsing="false" onAction="#onSearchReviews" text="Search for reviews" />
+      <Button layoutX="249.0" layoutY="190.0" mnemonicParsing="false" onAction="#onSearchReviews" text="Search for reviews" />
+      <ComboBox fx:id="fotmat" layoutX="249.0" layoutY="269.0" prefWidth="150.0" />
+      <Text layoutX="249.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book file format:" />
+      <Button layoutX="267.0" layoutY="304.0" mnemonicParsing="false" onAction="#onGenerate" text="Generate book file" />
+      <Button layoutX="291.0" layoutY="359.0" mnemonicParsing="false" onAction="#onLogOut" text="Log out" />
    </children>
 </AnchorPane>

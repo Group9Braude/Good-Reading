@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="191.0" prefWidth="424.0" style="-fx-background-color: #79cea2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.activeBooksController">
+<Pane layoutY="-4.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="247.0" prefWidth="475.0" style="-fx-background-color: #79cea2;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.activeBooksController">
    <children>
-      <ChoiceBox fx:id="booknames" layoutX="59.0" layoutY="87.0" prefHeight="31.0" prefWidth="314.0" />
-      <Button layoutX="12.0" layoutY="146.0" mnemonicParsing="false" onAction="#onActivate" text="Activate" />
-      <Text fill="WHITE" layoutX="12.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose the book you would like to activate:">
+      <ImageView fitHeight="247.0" fitWidth="475.0">
+         <image>
+            <Image url="@../src/15.jpg" />
+         </image>
+      </ImageView>
+      <ChoiceBox fx:id="booknames" layoutX="66.0" layoutY="108.0" prefHeight="31.0" prefWidth="314.0" />
+      <Button layoutX="13.0" layoutY="194.0" mnemonicParsing="false" onAction="#onActivate" text="Activate" />
+      <Text fill="WHITE" layoutX="14.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose the book you would like to activate:">
          <font>
-            <Font name="Verdana Pro SemiBold" size="15.0" />
+            <Font name="Century Gothic" size="15.0" />
          </font></Text>
-      <Button layoutX="335.0" layoutY="146.0" mnemonicParsing="false" onAction="#onBack" prefHeight="31.0" prefWidth="77.0" text="Back" />
+      <Button layoutX="380.0" layoutY="194.0" mnemonicParsing="false" onAction="#onBack" prefHeight="31.0" prefWidth="77.0" text="Back" />
    </children>
 </Pane>

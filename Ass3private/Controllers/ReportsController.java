@@ -84,6 +84,9 @@ public class ReportsController extends AbstractClient {
 	public Text notfound1,generalpop;
 
 	/*check in general popularity*/
+	public void onReportsBack() throws IOException{
+		Main.showManagerLoggedScreen();
+	}
 	public void onCheckk(){
 		sendServer(new Book(Integer.parseInt(bookidd.getText())),"getGeneralPop");//getting book's genres
 		while(flag==0){
@@ -234,7 +237,7 @@ public class ReportsController extends AbstractClient {
 			}
 		}
 		else{
-			pop=((Book)msg).getTitle();	/*its not really type of book, it is just to get a string*/
+			pop=((Book)msg).getTitle().toString();	/*its not really type of book, it is just to get a string*/
 			System.out.println("pop: "+pop);
 			System.out.println("handle message from server:"+pop);
 		}

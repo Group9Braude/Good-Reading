@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.image.*?>
@@ -9,29 +10,30 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<Pane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReportsController">
+<Pane prefHeight="593.0" prefWidth="1142.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ReportsController">
    <children>
-      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="605.0" prefWidth="773.0">
-         <top>
-            <TabPane prefHeight="606.0" prefWidth="777.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="1142.0">
+         <center>
+            <TabPane prefHeight="593.0" prefWidth="1142.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab text="Reader's purchases">
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="141.0" prefWidth="773.0">
                            <children>
-                              <ImageView fitHeight="183.0" fitWidth="779.0" layoutX="-1.0" layoutY="-4.0">
+                              <ImageView fitHeight="317.0" fitWidth="1151.0" layoutX="-1.0" layoutY="-4.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/blur-old-antique-book%20(1).jpg" />
+                                    <Image url="@../src/1.jpg" />
                                  </image>
                               </ImageView>
-                              <Text fill="#4a2d2d" layoutX="114.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the reader ID:">
+                              <Text fill="#4a2d2d" layoutX="39.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the reader ID:">
                                  <font>
-                                    <Font name="Candara Bold" size="21.0" />
+                                    <Font name="Century Gothic Bold" size="14.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="id" layoutX="364.0" layoutY="62.0" promptText="ID" />
-                              <Button layoutX="585.0" layoutY="62.0" mnemonicParsing="false" onAction="#onEnter" text="Enter" />
-                              <ListView fx:id="myBooks" layoutX="-4.0" layoutY="172.0" prefHeight="396.0" prefWidth="779.0" />
+                              <TextField fx:id="id" layoutX="242.0" layoutY="36.0" promptText="ID" />
+                              <Button layoutX="449.0" layoutY="36.0" mnemonicParsing="false" onAction="#onEnter" text="Enter" />
+                              <ListView fx:id="myBooks" layoutX="-4.0" layoutY="306.0" prefHeight="272.0" prefWidth="1148.0" />
+                              <Text fill="#ffe5e5" layoutX="511.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader's purchases" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -40,14 +42,14 @@
                   <content>
                     <AnchorPane focusTraversable="true" minHeight="0.0" minWidth="0.0" prefHeight="65.0" prefWidth="782.0">
                            <children>
-                              <ImageView fitHeight="575.0" fitWidth="841.0" layoutX="-34.0" layoutY="-4.0">
+                              <ImageView fitHeight="593.0" fitWidth="1183.0" layoutX="-34.0" layoutY="-4.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/orange_statistic_cart.jpg" />
+                                    <Image url="@../src/2.png" />
                                  </image>
                               </ImageView>
                               <DatePicker fx:id="from" layoutX="223.0" layoutY="62.0" prefHeight="31.0" prefWidth="173.0" promptText="from" />
                               <DatePicker fx:id="until" layoutX="425.0" layoutY="62.0" prefHeight="31.0" prefWidth="173.0" promptText="until" />
-                              <BarChart fx:id="mybar" barGap="6.0" focusTraversable="true" layoutX="27.0" layoutY="147.0" prefHeight="352.0" prefWidth="415.0">
+                              <BarChart fx:id="mybar" barGap="6.0" focusTraversable="true" layoutX="108.0" layoutY="151.0" prefHeight="367.0" prefWidth="504.0">
                                 <xAxis>
                                   <CategoryAxis startMargin="1.0" fx:id="x" />
                                 </xAxis>
@@ -57,37 +59,39 @@
                               </BarChart>
                               <TextField fx:id="bookid" layoutX="102.0" layoutY="62.0" prefHeight="31.0" prefWidth="90.0" promptText="Book id" />
                               <Button fx:id="check" layoutX="638.0" layoutY="62.0" mnemonicParsing="false" onAction="#onCheck" text="Check" />
-                           </children></AnchorPane>
+                           </children>
+                        </AnchorPane>
                   </content>
                 </Tab>
                   <Tab text="Book's general popularity">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ImageView fitHeight="575.0" fitWidth="781.0" layoutX="-6.0" layoutY="-3.0">
+                              <ImageView fitHeight="575.0" fitWidth="1152.0" layoutX="-6.0" layoutY="-3.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/books1.jpg" />
+                                    <Image url="@../src/3.jpg" />
                                  </image>
                               </ImageView>
-                              <Text layoutX="350.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter book id:">
+                              <Text layoutX="552.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter book id:">
                                  <font>
                                     <Font name="Century Gothic" size="15.0" />
                                  </font>
                               </Text>
-                              <TextField fx:id="bookidd" layoutX="513.0" layoutY="45.0" prefHeight="31.0" prefWidth="83.0" promptText="bookid" />
-                              <Button layoutX="350.0" layoutY="76.0" mnemonicParsing="false" onAction="#onCheckk" text="Check popularity" />
-                              <Text fx:id="generalpop" layoutX="657.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" />
+                              <TextField fx:id="bookidd" layoutX="715.0" layoutY="19.0" prefHeight="31.0" prefWidth="83.0" promptText="bookid" />
+                              <Button layoutX="552.0" layoutY="50.0" mnemonicParsing="false" onAction="#onCheckk" text="Check popularity" />
+                              <Text fx:id="generalpop" layoutX="819.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" visible="false" wrappingWidth="78.0" />
                               <Text fx:id="notfound1" layoutX="617.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book not found" visible="false" />
-                           </children></AnchorPane>
+                           </children>
+                        </AnchorPane>
                     </content>
                   </Tab>
                   <Tab text="Book's genre popularity">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ImageView fitHeight="573.0" fitWidth="783.0" layoutX="-5.0" layoutY="-3.0">
+                              <ImageView fitHeight="573.0" fitWidth="1149.0" layoutX="-5.0" layoutY="-3.0">
                                  <image>
-                                    <Image url="@../../../../Desktop/Ass3Logos/o-BOOK-COFFEE-facebook.jpg" />
+                                    <Image url="@../src/4.jpg" />
                                  </image>
                               </ImageView>
                               <TextField fx:id="genrebookid" layoutX="319.0" layoutY="36.0" prefHeight="31.0" prefWidth="150.0" />
@@ -110,12 +114,13 @@
                                  </font>
                               </TextField>
                               <Text fx:id="notfound" layoutX="566.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book not found" visible="false" wrappingWidth="109.505859375" />
-                           </children></AnchorPane>
+                           </children>
+                        </AnchorPane>
                     </content>
                   </Tab>
               </tabs>
             </TabPane>
-         </top>
-      </BorderPane>
+         </center></BorderPane>
+      <Button layoutX="678.0" layoutY="7.0" mnemonicParsing="false" onAction="#onReportsBack" prefHeight="31.0" prefWidth="58.0" text="Back" />
    </children>
 </Pane>
