@@ -49,16 +49,16 @@
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>
-         <graphic>
-            <ImageView fitHeight="66.0" fitWidth="63.0">
-               <image>
-                  <Image url="@../src/6.png" />
-               </image>
-            </ImageView>
-         </graphic>
          <effect>
             <InnerShadow />
          </effect>
+         <graphic>
+            <ImageView fitHeight="66.0" fitWidth="63.0">
+               <image>
+                  <Image url="@../src/66.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Text fill="#f6ffeb" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back" wrappingWidth="196.77734375">
          <font>

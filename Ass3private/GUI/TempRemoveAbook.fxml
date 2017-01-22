@@ -9,18 +9,18 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="241.0" prefWidth="475.0" style="-fx-background-color: #78aece;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.TempRemoveAbookController">
    <children>
-      <ImageView fitHeight="321.0" fitWidth="509.0" layoutY="-73.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="247.0" fitWidth="475.0" layoutY="-4.0">
          <image>
-            <Image url="@../src/10.jpg" />
+            <Image url="@../src/15.jpg" />
          </image>
       </ImageView>
       <ChoiceBox fx:id="booknames" layoutX="59.0" layoutY="87.0" prefHeight="31.0" prefWidth="314.0" />
-      <Button contentDisplay="TOP" layoutX="28.0" layoutY="146.0" mnemonicParsing="false" onAction="#onSuspend" text="Suspend" />
+      <Button contentDisplay="TOP" layoutX="21.0" layoutY="177.0" mnemonicParsing="false" onAction="#onSuspend" text="Suspend" />
       <Text fill="WHITE" layoutX="12.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose the book you would like to suspend:">
          <font>
-            <Font name="Verdana Pro SemiBold" size="15.0" />
+            <Font name="Century Gothic" size="15.0" />
          </font></Text>
-      <Button layoutX="354.0" layoutY="146.0" mnemonicParsing="false" onAction="#onBack" prefHeight="31.0" prefWidth="77.0" text="Back" />
-      <Button layoutX="212.0" layoutY="146.0" mnemonicParsing="false" onAction="#onActivate" text="Activate books" />
+      <Button layoutX="384.0" layoutY="177.0" mnemonicParsing="false" onAction="#onBack" prefHeight="31.0" prefWidth="77.0" text="Back" />
+      <Button layoutX="241.0" layoutY="177.0" mnemonicParsing="false" onAction="#onActivate" text="Activate books" />
    </children>
 </Pane>

@@ -25,9 +25,9 @@
                                     <Image url="@../src/1.jpg" />
                                  </image>
                               </ImageView>
-                              <Text fill="#4a2d2d" layoutX="114.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the reader ID:">
+                              <Text fill="#4a2d2d" layoutX="167.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the reader ID:">
                                  <font>
-                                    <Font name="Candara Bold" size="21.0" />
+                                    <Font name="Century Gothic Bold" size="14.0" />
                                  </font>
                               </Text>
                               <TextField fx:id="id" layoutX="364.0" layoutY="62.0" promptText="ID" />
