@@ -10,7 +10,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="1142.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManagerLoggedController">
    <children>
-      <ImageView fitHeight="613.0" fitWidth="1151.0" layoutX="-3.0" layoutY="-3.0">
+      <ImageView fitHeight="613.0" fitWidth="1151.0" layoutX="-4.0" layoutY="-3.0">
          <image>
             <Image url="@../src/9.jpg" />
          </image>
@@ -27,7 +27,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="TemporarilyRemoveABook" contentDisplay="RIGHT" layoutX="17.0" layoutY="484.0" mnemonicParsing="false" onAction="#goTempRemoveAbook" prefHeight="56.0" prefWidth="331.0" text="Temporarily Remove A Book / Actiavte" textFill="#975050">
+      <Button fx:id="TemporarilyRemoveABook" contentDisplay="RIGHT" layoutX="14.0" layoutY="413.0" mnemonicParsing="false" onAction="#goTempRemoveAbook" prefHeight="56.0" prefWidth="331.0" text="Temporarily Remove A Book / Actiavte" textFill="#975050">
          <font>
             <Font name="Century Gothic" size="12.0" />
          </font>
@@ -39,7 +39,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button contentDisplay="RIGHT" layoutX="14.0" layoutY="165.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="56.0" prefWidth="256.0" text="Edit Reviews         " textFill="#975050">
+      <Button contentDisplay="RIGHT" layoutX="15.0" layoutY="143.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="56.0" prefWidth="256.0" text="Edit Reviews         " textFill="#975050">
          <font>
             <Font name="Century Gothic" size="14.0" />
          </font>
@@ -57,17 +57,17 @@
             <Reflection />
          </effect>
       </Text>
-      <Button layoutX="17.0" layoutY="269.0" maxHeight="200.0" maxWidth="331.0" mnemonicParsing="false" onAction="#onAdd" prefHeight="50.0" prefWidth="256.0" text="Add Book" textFill="#975050" />
-      <Button layoutX="17.0" layoutY="374.0" mnemonicParsing="false" onAction="#onRemove" prefHeight="50.0" prefWidth="256.0" text="Remove Book" textFill="#975050" />
-      <Button layoutX="18.0" layoutY="318.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ongenre" prefHeight="56.0" prefWidth="128.0" text="Edit Genre" textFill="#975050" />
-      <ImageView fitHeight="67.0" fitWidth="68.0" layoutX="14.0" layoutY="269.0">
+      <Button layoutX="14.0" layoutY="226.0" maxHeight="200.0" maxWidth="331.0" mnemonicParsing="false" onAction="#onAdd" prefHeight="50.0" prefWidth="256.0" text="Add Book" textFill="#975050" />
+      <Button layoutX="14.0" layoutY="331.0" mnemonicParsing="false" onAction="#onRemove" prefHeight="50.0" prefWidth="256.0" text="Remove Book" textFill="#975050" />
+      <Button layoutX="14.0" layoutY="275.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ongenre" prefHeight="56.0" prefWidth="128.0" text="Edit Genre" textFill="#975050" />
+      <ImageView fitHeight="67.0" fitWidth="68.0" layoutX="14.0" layoutY="226.0">
          <image>
             <Image url="@../src/7.png" />
          </image>
       </ImageView>
-      <Text fill="#f8f6f6" layoutX="180.0" layoutY="359.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Managment">
+      <Text fill="#f8f6f6" layoutX="202.0" layoutY="313.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Managment">
          <font>
-            <Font size="30.0" />
+            <Font size="23.0" />
          </font>
          <effect>
             <Reflection />
@@ -78,7 +78,7 @@
             <Font name="Century Gothic Bold" size="16.0" />
          </font>
       </Text>
-      <Button layoutX="143.0" layoutY="318.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ontheme" prefHeight="56.0" prefWidth="128.0" text="Edit Theme" textFill="#975050" />
+      <Button layoutX="142.0" layoutY="275.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ontheme" prefHeight="56.0" prefWidth="128.0" text="Edit Theme" textFill="#975050" />
       <Button contentDisplay="RIGHT" layoutX="1010.0" layoutY="551.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="107.0" text="Logout">
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
@@ -91,7 +91,7 @@
             <InnerShadow />
          </effect>
       </Button>
-      <ImageView fitHeight="50.0" fitWidth="51.0" layoutX="197.0" layoutY="171.0">
+      <ImageView fitHeight="50.0" fitWidth="51.0" layoutX="185.0" layoutY="146.0">
          <image>
             <Image url="@../src/66.png" />
          </image>

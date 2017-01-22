@@ -237,7 +237,7 @@ public class ReportsController extends AbstractClient {
 			}
 		}
 		else{
-			pop=((Book)msg).getTitle();	/*its not really type of book, it is just to get a string*/
+			pop=((Book)msg).getTitle().toString();	/*its not really type of book, it is just to get a string*/
 			System.out.println("pop: "+pop);
 			System.out.println("handle message from server:"+pop);
 		}

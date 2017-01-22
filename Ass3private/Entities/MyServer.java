@@ -379,9 +379,9 @@ public class MyServer extends AbstractServer {
 				arr.add(new Book_NumOfPurchases(rs.getInt(2),6));//Updating books id's
 			for(int i=0;i<arr.size();i++){//updating their number of purchases
 				Statement stmt1 = conn.createStatement();
-				ResultSet rs1 = stmt1.executeQuery("Select numofpurchases  FROM books WHERE bookid="+ arr.get(i).bookid + ";");
+				ResultSet rs1 = stmt1.executeQuery("Select *  FROM books WHERE bookid="+ arr.get(i).bookid + ";");
 				while(rs1.next())
-					arr.get(i).setnumofpurchases(rs1.getInt(1));
+					arr.get(i).setnumofpurchases(rs1.getInt(9));
 			}
 			Collections.sort(arr);
 			for(int i=0;i<arr.size();i++)
@@ -393,7 +393,7 @@ public class MyServer extends AbstractServer {
 			System.out.println("place:"+(arr.size()-i));
 			System.out.println("total:"+arr.size());
 			System.out.println(Integer.toString((arr.size()-i))+"/"+Integer.toString(arr.size()));
-			client.sendToClient(new Book(0,Integer.toString(i+1)+"/"+Integer.toString(arr.size())));
+			client.sendToClient(new Book(0,Integer.toString(arr.size()-i)+"/"+Integer.toString(arr.size())));
 
 		} catch (Exception e) {
 			e.printStackTrace();
