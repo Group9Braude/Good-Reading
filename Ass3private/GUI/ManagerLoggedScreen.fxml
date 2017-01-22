@@ -26,6 +26,9 @@
                </image>
             </ImageView>
          </graphic>
+         <effect>
+            <InnerShadow />
+         </effect>
       </Button>
       <Button fx:id="TemporarilyRemoveABook" contentDisplay="TOP" layoutX="14.0" layoutY="443.0" mnemonicParsing="false" onAction="#goTempRemoveAbook" prefHeight="85.0" prefWidth="295.0" text="Temporarily Remove A Book / Actiavte" textFill="#975050">
          <font>
@@ -38,6 +41,9 @@
                </image>
             </ImageView>
          </graphic>
+         <effect>
+            <InnerShadow />
+         </effect>
       </Button>
       <Button contentDisplay="TOP" layoutX="14.0" layoutY="156.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="84.0" prefWidth="205.0" text="Edit Reviews" textFill="#975050">
          <font>
@@ -50,6 +56,9 @@
                </image>
             </ImageView>
          </graphic>
+         <effect>
+            <InnerShadow />
+         </effect>
       </Button>
       <Text fill="#f6ffeb" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back" wrappingWidth="196.77734375">
          <font>
@@ -60,10 +69,22 @@
          <font>
             <Font name="Century Gothic Bold" size="11.0" />
          </font>
+         <effect>
+            <Reflection />
+         </effect>
       </Text>
-      <Button layoutX="14.0" layoutY="270.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#onAdd" prefHeight="50.0" prefWidth="205.0" text="Add Book" textFill="#975050" />
-      <Button layoutX="14.0" layoutY="371.0" mnemonicParsing="false" onAction="#onRemove" prefHeight="56.0" prefWidth="205.0" text="Remove Book" textFill="#975050" />
-      <Button layoutX="14.0" layoutY="319.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ongenre" prefHeight="56.0" prefWidth="101.0" text="Edit Genre" textFill="#975050" />
+      <Button layoutX="14.0" layoutY="270.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#onAdd" prefHeight="50.0" prefWidth="205.0" text="Add Book" textFill="#975050">
+         <effect>
+            <InnerShadow />
+         </effect></Button>
+      <Button layoutX="14.0" layoutY="371.0" mnemonicParsing="false" onAction="#onRemove" prefHeight="56.0" prefWidth="205.0" text="Remove Book" textFill="#975050">
+         <effect>
+            <InnerShadow />
+         </effect></Button>
+      <Button layoutX="14.0" layoutY="319.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ongenre" prefHeight="56.0" prefWidth="101.0" text="Edit Genre" textFill="#975050">
+         <effect>
+            <InnerShadow />
+         </effect></Button>
       <ImageView fitHeight="67.0" fitWidth="68.0" layoutX="14.0" layoutY="270.0">
          <image>
             <Image url="@../src/7.png" />
@@ -73,21 +94,30 @@
          <font>
             <Font size="19.0" />
          </font>
+         <effect>
+            <Reflection />
+         </effect>
       </Text>
       <Text fill="WHITE" layoutX="319.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tip: Use the table of contents to find specific chapters or sections." wrappingWidth="390.77734375">
          <font>
             <Font name="Century Gothic Bold" size="12.0" />
          </font>
       </Text>
-      <Button layoutX="111.0" layoutY="319.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ontheme" prefHeight="56.0" prefWidth="107.0" text="Edit Theme" textFill="#975050" />
-      <Button contentDisplay="RIGHT" layoutX="572.0" layoutY="537.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="127.0" text="Logout">
+      <Button layoutX="111.0" layoutY="319.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ontheme" prefHeight="56.0" prefWidth="107.0" text="Edit Theme" textFill="#975050">
+         <effect>
+            <InnerShadow />
+         </effect></Button>
+      <Button contentDisplay="RIGHT" layoutX="594.0" layoutY="567.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="107.0" text="Logout">
          <graphic>
-            <ImageView fitHeight="52.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="22.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../src/12.png" />
                </image>
             </ImageView>
          </graphic>
+         <effect>
+            <InnerShadow />
+         </effect>
       </Button>
    </children>
 </Pane>
