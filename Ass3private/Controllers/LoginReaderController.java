@@ -71,4 +71,9 @@ public class LoginReaderController {
 	{
 		Main.showSearchScreen();
 	}
+	
+	public void onSearchReviews()
+	{
+		Main.showSearchReviewScreen();
+	}
 }

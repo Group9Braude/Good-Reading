@@ -2,7 +2,6 @@ package Entities;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 
 public class OrderedBook extends GeneralMessage
 {	
@@ -59,6 +58,8 @@ public class OrderedBook extends GeneralMessage
 	@Override
 	public boolean equals(Object obj)
 	{
+		if(this == null || obj == null)
+			return false;
 		OrderedBook other = (OrderedBook)obj;
 		if(this.getReaderID().equals(other.getReaderID()) && this.getBookid()==other.getBookid())
 			return true;

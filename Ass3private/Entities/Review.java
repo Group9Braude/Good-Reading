@@ -6,6 +6,7 @@ public class Review extends GeneralMessage
 	private OrderedBook reviewBook;
 	private String keyword,review,signature;
 	private int isApproved,ReviewID;
+	public String query;
 	
 	public Review(){}
 	
@@ -60,5 +61,10 @@ public class Review extends GeneralMessage
 	}
 	public void setReviewID(int reviewID) {
 		ReviewID = reviewID;
+	}
+	@Override
+	public String toString()
+	{
+		return "A review for " + reviewBook.getTitle() +" written by " + signature;		
 	}
 }

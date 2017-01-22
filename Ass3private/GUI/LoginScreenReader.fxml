@@ -7,21 +7,22 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane onMouseClicked="#onSubscribe" prefHeight="449.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginReaderController">
+<AnchorPane prefHeight="449.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginReaderController">
    <children>
       <Text layoutX="29.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My books:" />
       <TextField fx:id="welcomeText" editable="false" layoutX="37.0" layoutY="25.0" />
       <TextField fx:id="subscribeText" editable="false" layoutX="245.0" layoutY="70.0" />
       <ListView fx:id="bookList" editable="true" layoutX="29.0" layoutY="105.0" prefHeight="327.0" prefWidth="179.0" />
-      <Button layoutX="242.0" layoutY="181.0" mnemonicParsing="false" onAction="#onReview" text="Write a review" />
-      <Button layoutX="242.0" layoutY="218.0" mnemonicParsing="false" text="Get book in doc" />
-      <Button layoutX="242.0" layoutY="256.0" mnemonicParsing="false" text="Get book in pdf" />
-      <Button layoutX="242.0" layoutY="295.0" mnemonicParsing="false" text="Get book in fb2" />
-      <Button layoutX="242.0" layoutY="331.0" mnemonicParsing="false" onAction="#onSearch" text="Search for books" />
-      <ImageView fitHeight="56.0" fitWidth="116.0" layoutX="278.0" layoutY="10.0" onMousePressed="#onSubscribe" pickOnBounds="true" preserveRatio="true">
+      <Button layoutX="248.0" layoutY="155.0" mnemonicParsing="false" onAction="#onReview" text="Write a review" />
+      <Button layoutX="250.0" layoutY="191.0" mnemonicParsing="false" text="Get book in doc" />
+      <Button layoutX="251.0" layoutY="225.0" mnemonicParsing="false" text="Get book in pdf" />
+      <Button layoutX="252.0" layoutY="262.0" mnemonicParsing="false" text="Get book in fb2" />
+      <Button layoutX="252.0" layoutY="296.0" mnemonicParsing="false" onAction="#onSearch" text="Search for books" />
+      <ImageView fitHeight="56.0" fitWidth="116.0" layoutX="278.0" layoutY="10.0" onMouseClicked="#onSubscribe" onMousePressed="#onSubscribe" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../Desktop/butttonFrame.png" />
          </image>
       </ImageView>
+      <Button layoutX="252.0" layoutY="330.0" mnemonicParsing="false" onAction="#onSearchReviews" text="Search for reviews" />
    </children>
 </AnchorPane>
