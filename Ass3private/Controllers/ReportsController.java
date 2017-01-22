@@ -2,6 +2,7 @@ package Controllers;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.OrderedBook;
@@ -15,9 +16,13 @@ import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import ocsf.client.AbstractClient;
 
@@ -70,11 +75,45 @@ public class ReportsController extends AbstractClient {
 	public static String pop;
 	public  ObservableList<String> obsMyBooks;
 
+	@FXML
+	public ComboBox<String> readercombo;
+	@FXML
+	public ObservableList <Reader> obsMyreaders = FXCollections.observableArrayList();
+	public TableView <Reader> mytable = new TableView <Reader>(obsMyreaders);
 
 
 	@FXML
 	private void initialize(){
 		mybar.setVisible(false);
+	/*	try {
+			this.openConnection();
+			GeneralMessage dummy = new GeneralMessage();
+			dummy.actionNow="getReaders";
+			this.sendToServer(dummy);
+
+			TableColumn<Reader,String> IDColumn =new TableColumn<Reader,String>("ReaderID");
+			IDColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+			TableColumn<Reader,String> authorColumn =new TableColumn<Reader,String>("First Name");
+			authorColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+
+			TableColumn<Reader,String> langColumn =new TableColumn<Reader,String>("Last Name");
+			langColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+
+			mytable.getColumns().addAll(IDColumn,authorColumn,langColumn);//Adding the columns to the table
+			while(flag==0)
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e){
+					e.printStackTrace();
+				}
+		} catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
+		obsMyreaders = FXCollections.observableArrayList(arrreader);
+		mytable.setItems(obsMyreaders);	
+		flag=0;*/
 	}
 
 
@@ -218,6 +257,8 @@ public class ReportsController extends AbstractClient {
 
 	}
 
+	public ArrayList<Reader> arrreader=new ArrayList<Reader>();
+	
 
 
 	@Override
@@ -234,6 +275,11 @@ public class ReportsController extends AbstractClient {
 			else if (((ArrayList<?>)msg).get(0) instanceof String){
 				arrstring = new ArrayList <String>((ArrayList <String>)msg);
 				System.out.println("handle message from server:"+arrstring);
+			}
+			else if (((ArrayList<?>)msg).get(0) instanceof Reader){
+				arrreader = new ArrayList <Reader>((ArrayList <Reader>)msg);
+				for(int i=0;i<arrreader.size();i++)
+					System.out.println(arrreader.get(i).getLastName()+"readerid:"+arrreader.get(i).getID());
 			}
 		}
 		else{

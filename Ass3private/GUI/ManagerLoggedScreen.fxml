@@ -79,7 +79,7 @@
          </font>
       </Text>
       <Button layoutX="142.0" layoutY="275.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ontheme" prefHeight="56.0" prefWidth="128.0" text="Edit Theme" textFill="#975050" />
-      <Button contentDisplay="RIGHT" layoutX="1010.0" layoutY="551.0" mnemonicParsing="false" prefHeight="0.0" prefWidth="107.0" text="Logout">
+      <Button contentDisplay="RIGHT" layoutX="1010.0" layoutY="551.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="0.0" prefWidth="107.0" text="Logout">
          <graphic>
             <ImageView fitHeight="22.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                <image>

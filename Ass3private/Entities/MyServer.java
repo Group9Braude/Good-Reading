@@ -44,6 +44,9 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
+			
+			case "getReaders":
+				getReaders(msg,client);break;
 			case "getGeneralPop":
 				getGeneralPop((Book)msg,client);break;
 			case "gettingGenrePlace":
@@ -143,6 +146,17 @@ public class MyServer extends AbstractServer {
 	}
 
 	
+	private void getReaders(Object msg, ConnectionToClient client) {
+		try{
+			ArrayList<Reader> arr=new ArrayList<Reader>();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM readers;");
+			while(rs.next())
+				arr.add(new Reader(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)));
+			client.sendToClient(arr);
+		}catch(Exception e){}
+	}
+
 	public void editBook(Book book, ConnectionToClient client){
 		System.out.println("Edit Book in My Server");
 		try{

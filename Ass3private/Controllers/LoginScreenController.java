@@ -171,6 +171,7 @@ public class LoginScreenController extends AbstractClient {
 				}//end if
 				else if(res.getType()==3)
 					whatAmI="manager";
+				Main.setCurrentUser(res);
 			}
 		}//end else
 		if(msg instanceof ArrayList){
