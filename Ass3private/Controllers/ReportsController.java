@@ -52,7 +52,7 @@ public class ReportsController extends AbstractClient {
 	public DatePicker from;
 	@FXML
 	public DatePicker until;
-
+ 
 	@FXML
 	public BarChart<?,?> mybar;
 	ObservableList<String> genres = FXCollections.observableArrayList();	

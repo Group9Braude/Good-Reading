@@ -1,7 +1,7 @@
 package Entities;
 
 import java.util.ArrayList;
-
+ 
 public class Reader extends User
 {
 	private static final long serialVersionUID = 1L;

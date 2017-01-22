@@ -61,7 +61,7 @@ public class TempRemoveAbookController extends AbstractClient  {
 				Book.bookList.get(i).setisSuspend(1);
 		sendServer(book.get(index),"TempRemoveAbook");//send Book type
 		JOptionPane.showMessageDialog(null, "The book has been suspended successfuly!");
-		try {
+		try {    
 			Thread.sleep(400);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

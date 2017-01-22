@@ -195,7 +195,7 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-
+ 
 	
 	private void getReaders(Object msg, ConnectionToClient client) {
 		try{
