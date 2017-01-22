@@ -107,7 +107,6 @@ public class CreditCardController extends AbstractClient
 		reader.setCardnum(card.getCardNum());
 		reader.setSecCode(card.getSecCode());
 		reader.setExpDate(card.getExpDate());
-		System.out.println("I'm back");
 		returned = true;
 	}
 

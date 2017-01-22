@@ -108,6 +108,19 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	public static void showSearchReviewScreen()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/SearchReviewScreen.fxml"));
+		try {    
+			mainLayout =  loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 
 	public static void showSubscriptionScreen()

@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.util.ArrayList; 
 import java.util.Collections;
 
+
 import application.Main;
 import javafx.scene.control.TextField;
 import ocsf.server.AbstractServer;
@@ -16,6 +17,7 @@ import ocsf.server.ConnectionToClient;
 
 public class MyServer extends AbstractServer {
 	Connection conn;
+
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -121,20 +123,24 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg, -1 , client);break;
 			case "NewOrder":
 				addNewOrder((OrderedBook)msg,client); break;
+			case "GetReviewsForReader":
+				getReviewsForReader(client); break;
 			case "updateBookList":
 				updateBookList((Book)msg,client);break;
 			case "HoldReview":
 				examineReview((Review)msg, 0, client);break;
 			case "EditReview":
-				editReview((Review)msg, client);break;
+				editReview((Review)msg, client); break;
 			case "UpdateBookList":
-				UpdateBookList(client);break;
+				UpdateBookList(client); break;
 			case "InitializeGenresBooksList":
-				InitializeGenresBooksList(client);break;
+				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
-				UpdateBookListSearch((Book)msg, client);break;
-			case "GetAllGenres":
-				initializeGenreList(client);break;
+				UpdateBookListSearch((Book)msg, client); break;
+			/*case "GetAllGenres":
+				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
+			case "updateReviewList":
+				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
@@ -143,6 +149,51 @@ public class MyServer extends AbstractServer {
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
+	}
+	
+	private void updateReviewList(Review review, ConnectionToClient client)
+	{
+		try{
+			Statement stmt = conn.createStatement();
+			System.out.println(review.query);
+			ResultSet rs = stmt.executeQuery(review.query);
+			ArrayList<Review> res = new ArrayList<Review>();
+			Statement stmt1 = conn.createStatement();
+			ResultSet rs1;
+			while(rs.next())
+			{
+				rs1 = stmt1.executeQuery("select readerID from orderedbook where bookid=" + rs.getInt(1));
+				rs1.next();
+				OrderedBook reviewBook = new OrderedBook(rs1.getString(1),rs.getInt(1),rs.getString(2),rs.getString(3));
+				res.add(new Review(reviewBook,rs.getString(4),rs.getString(6),rs.getString(8),rs.getInt(5),rs.getInt(7)));
+			}
+			client.sendToClient(res);
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
+
+	private void getReviewsForReader(ConnectionToClient client)
+	{
+		try {
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from reviews where isApproved=1;");
+			ArrayList<Review> reviewList = new ArrayList<Review>();
+			ResultSet rs1;
+			Statement stmt1 = conn.createStatement();
+			while(rs.next())
+			{
+				rs1 = stmt1.executeQuery("select readerID from orderedbook where bookid=" + rs.getInt(1)+";");
+				if(rs1.next())
+				{
+					OrderedBook reviewBook = new OrderedBook(rs1.getString(1),rs.getInt(1),rs.getString(2),rs.getString(3));
+					reviewList.add(new Review(reviewBook,rs.getString(4),rs.getString(6),rs.getString(8),rs.getInt(5),rs.getInt(7)));
+				}
+				rs1.close();
+			}
+			client.sendToClient(reviewList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	
@@ -215,7 +266,8 @@ public class MyServer extends AbstractServer {
 
 
 
-	public void UpdateBookList(ConnectionToClient client){
+	public void UpdateBookList(ConnectionToClient client)
+	{
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		Book book = new Book();
 		book.query = "UpdateBookList";
@@ -716,7 +768,6 @@ public class MyServer extends AbstractServer {
 	{
 		Statement stmt;
 		try {
-			System.out.println("yo");
 			stmt = conn.createStatement();
 			stmt.executeUpdate("Update readers set creditcardnum = '" + card.getCardNum() + "',expdate = '" + card.getExpDate() + "',securitycode='" + card.getSecCode() +"' where readerID="+ card.getId()+";");
 			client.sendToClient(card);

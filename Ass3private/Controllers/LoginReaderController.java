@@ -9,6 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
@@ -23,6 +24,7 @@ public class LoginReaderController {
     public ListView <OrderedBook> bookList = new ListView<OrderedBook>(items);
 	@FXML
 	Button Subscribe;
+	public ComboBox<String> format;
 	private Reader reader;
 	public static OrderedBook selectedBook;
 	
@@ -34,6 +36,7 @@ public class LoginReaderController {
 		bookList.setItems(items);
 		welcomeText.setText("Hello " + reader.getFirstName());
 		this.setSubscribeText();
+		format.getItems().setAll("DOC","PDF","FB2");
 	}
 	
 	public void setSubscribeText()
@@ -52,7 +55,17 @@ public class LoginReaderController {
 			break;
 		default:break;
 		}
-	} 
+	}
+	
+	public void onGenerate()
+	{
+		
+	}
+	
+	public void onLogOut()
+	{
+		
+	}
 	     
 	public void onSubscribe()
 	{
@@ -70,5 +83,10 @@ public class LoginReaderController {
 	public void onSearch()
 	{
 		Main.showSearchScreen();
+	}
+	
+	public void onSearchReviews()
+	{
+		Main.showSearchReviewScreen();
 	}
 }
