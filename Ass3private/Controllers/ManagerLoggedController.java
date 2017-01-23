@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import Entities.GeneralMessage;
 import Entities.Review;
+import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,6 +35,13 @@ public class ManagerLoggedController {
 		Main.showEditGenre();
 	}
 	public void ontheme(){
+	}
+	public  void onLogout(){
+		Worker worker = new Worker();
+		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
+		sendServer(worker, "LogOutUser");
+		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
+
 	}
 	public void onRemove(){
 		try {

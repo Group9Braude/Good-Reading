@@ -51,6 +51,9 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
+			
+			case "getReaders":
+				getReaders(msg,client);break;
 			case "getGeneralPop":
 				getGeneralPop((Book)msg,client);break;
 			case "gettingGenrePlace":
@@ -139,16 +142,23 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
+<<<<<<< HEAD
 				/*case "GetAllGenres":
 				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
+=======
+>>>>>>> refs/remotes/origin/master
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
+<<<<<<< HEAD
 			case "CreateFile":
 				createFile((FileDetails)msg,client); break;
+=======
+			case "CheckNewReviews":
+>>>>>>> refs/remotes/origin/master
 			default:
 				break;
 			}
@@ -221,7 +231,22 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+<<<<<<< HEAD
 
+=======
+ 
+	
+	private void getReaders(Object msg, ConnectionToClient client) {
+		try{
+			ArrayList<Reader> arr=new ArrayList<Reader>();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("SELECT * FROM readers;");
+			while(rs.next())
+				arr.add(new Reader(rs.getString(1),rs.getString(2),rs.getString(3),rs.getString(4)));
+			client.sendToClient(arr);
+		}catch(Exception e){}
+	}
+>>>>>>> refs/remotes/origin/master
 
 	public void editBook(Book book, ConnectionToClient client){
 		System.out.println("Edit Book in My Server");
@@ -488,7 +513,7 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE bookid="+ b.getBookid() + ";");
 			while(rs.next())
 				arr.add(rs.getString(1));//Adding genres to array
-			arr.add("end");
+			System.out.println(arr);
 			client.sendToClient(arr);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -201,6 +201,8 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/ManagerLoggedScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.setX(456);
+		primaryStage.setY(200);
 		primaryStage.setTitle("Good Reading System");
 		primaryStage.show();
 	}
