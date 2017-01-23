@@ -1,23 +1,27 @@
 package Entities;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.Collections;
 
-
 import application.Main;
-import javafx.scene.control.TextField;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class MyServer extends AbstractServer {
 	Connection conn;
-
+	private ServerSocket serverSocket;
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -35,6 +39,7 @@ public class MyServer extends AbstractServer {
 		this.connectToDB();
 		try {
 			this.listen();
+			serverSocket = new ServerSocket(port);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -138,19 +143,48 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
+<<<<<<< HEAD
+				/*case "GetAllGenres":
+				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
+=======
+>>>>>>> refs/remotes/origin/master
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
+			case "CreateFile":
+				createFile((FileDetails)msg,client); break;
 			case "CheckNewReviews":
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-	
+
+	@SuppressWarnings("resource")
+	private void createFile(FileDetails fileDetails, ConnectionToClient client)
+	{
+		try{
+			Socket socket = serverSocket.accept();
+			System.out.println("Accepted connection : " + socket);
+			File transferFile = new File (fileDetails.getFileName());
+			byte [] bytearray = new byte [(int)transferFile.length()];
+			FileInputStream fin = new FileInputStream(transferFile);
+			BufferedInputStream bin = new BufferedInputStream(fin);
+			bin.read(bytearray,0,bytearray.length);
+			OutputStream os = socket.getOutputStream();
+			System.out.println("Sending Files...");
+			os.write(bytearray,0,bytearray.length);
+			os.flush();
+			socket.close();
+			System.out.println("File transfer complete");
+		}catch(Exception e){System.out.println("ERROR!!!");}
+
+
+	}
+
 
 
 	private void updateReviewList(Review review, ConnectionToClient client)
@@ -197,6 +231,7 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+
  
 	
 	private void getReaders(Object msg, ConnectionToClient client) {
@@ -209,6 +244,7 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(arr);
 		}catch(Exception e){}
 	}
+>>>>>>> refs/remotes/origin/master
 
 	public void editBook(Book book, ConnectionToClient client){
 		System.out.println("Edit Book in My Server");
@@ -216,7 +252,7 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			String query = "UPDATE books SET title = '" + book.getTitle() + "'," + "language = '" + book.getLanguage() + "'," + "summary = '" + book.getSummary()
 			+ "'," + "author = '" + book.getAuthor()+ "'," + "keyWord = '" + book.getKeyword() + "'," + "tableOfContents = '" + book.getToc() +"' "
-					+ "WHERE bookid = " + book.getBookid() + ";";
+			+ "WHERE bookid = " + book.getBookid() + ";";
 			stmt.executeUpdate(query);
 			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "bookid = '" + book.getBookid() + "';";
 			stmt.executeUpdate(query);
@@ -239,11 +275,11 @@ public class MyServer extends AbstractServer {
 			book1.setGenre(rs.getString(1));
 			System.out.println("GetBookForEdition: " + book1.getGenre());
 			client.sendToClient(book1);
-			
+
 		}catch(Exception e){}
-		
+
 	}
-	
+
 	public void UpdateBookListSearch(Book book, ConnectionToClient client){
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		Book b = new Book();
