@@ -21,7 +21,7 @@
          </image>
       </ImageView>
       <Button layoutX="249.0" layoutY="190.0" mnemonicParsing="false" onAction="#onSearchReviews" text="Search for reviews" />
-      <ComboBox fx:id="fotmat" layoutX="249.0" layoutY="269.0" prefWidth="150.0" />
+      <ComboBox fx:id="format" layoutX="249.0" layoutY="269.0" prefWidth="150.0" />
       <Text layoutX="249.0" layoutY="257.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book file format:" />
       <Button layoutX="267.0" layoutY="304.0" mnemonicParsing="false" onAction="#onGenerate" text="Generate book file" />
       <Button layoutX="291.0" layoutY="359.0" mnemonicParsing="false" onAction="#onLogOut" text="Log out" />
