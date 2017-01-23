@@ -473,7 +473,7 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE bookid="+ b.getBookid() + ";");
 			while(rs.next())
 				arr.add(rs.getString(1));//Adding genres to array
-			arr.add("end");
+			System.out.println(arr);
 			client.sendToClient(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
