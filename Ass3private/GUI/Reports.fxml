@@ -171,7 +171,7 @@
                                     <TableColumn fx:id="authorcol1" prefWidth="104.0" text="Author" />
                                 </columns>
                               </TableView>
-                              <Text layoutX="8.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press eneter" />
+                              <Text layoutX="8.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press enter" />
                            </children>
                         </AnchorPane>
                     </content>

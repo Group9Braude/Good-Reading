@@ -143,11 +143,8 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
-<<<<<<< HEAD
 				/*case "GetAllGenres":
 				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
-=======
->>>>>>> refs/remotes/origin/master
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
@@ -244,7 +241,6 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(arr);
 		}catch(Exception e){}
 	}
->>>>>>> refs/remotes/origin/master
 
 	public void editBook(Book book, ConnectionToClient client){
 		System.out.println("Edit Book in My Server");
