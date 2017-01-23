@@ -63,6 +63,12 @@ public class MyServer extends AbstractServer {
 				removeBook((Book) msg, client);break;
 			case "CheckUser":
 				checkUser((User)msg,client);break;
+			case "AddTheme":
+				addTheme((Theme)msg,client);break;
+			case "DeleteTheme":
+				deleteTheme((Theme)msg,client);break;
+			case "UpdateTheme":
+				updateTheme((Theme)msg,client);break;
 			case "AddGenre":
 				addGenre((Genre)msg,client);break;
 			case "DeleteGenre":
@@ -335,6 +341,61 @@ public class MyServer extends AbstractServer {
 		} catch (Exception  e) {}	
 	}
 
+	public void addTheme(Theme theme, ConnectionToClient client){
+		Statement stmt;
+		String query = "insert into theme values ('"+theme.getTheme()+"', '"+theme.getGenre()+"');";
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Added!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	public void deleteTheme(Theme theme,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "DELETE FROM theme WHERE name= '"+theme.getTheme()+"';";
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			}catch (SQLException e) {
+				System.out.println("Error deleting theme.");
+				e.printStackTrace();
+			}
+			try {
+				client.sendToClient("Deleted!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
+	
+	public void updateTheme(Theme theme,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "UPDATE theme SET name='"+theme.getTheme()+"', genre= '"+theme.getGenre().getGenre()+
+					"' WHERE name='"+theme.getOldTheme()+"';";
+			System.out.println(query);
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			}catch (SQLException e) {
+				System.out.println("Error update genre.");
+				e.printStackTrace();
+			}
+			try {
+				client.sendToClient("Updated!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	
+	
 	public void addGenre(Genre genre, ConnectionToClient client){
 		Statement stmt;
 		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getComments()+"');";
