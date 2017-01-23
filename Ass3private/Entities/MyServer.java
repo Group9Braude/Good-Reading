@@ -1,6 +1,7 @@
 package Entities;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.sql.Connection;
@@ -11,9 +12,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+//import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -23,7 +33,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
- 
+
 
 
 
@@ -174,6 +184,13 @@ public class MyServer extends AbstractServer {
 
 	private void createAndSendFile(FileDetails fileDetails, ConnectionToClient client)
 	{
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		switch(fileDetails.getType())
 		{
@@ -202,20 +219,31 @@ public class MyServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			
-			
-			default: break;
+		case "FB2":
+			try{
+				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+				Document doc = (Document) docBuilder.newDocument();
+				  Element rootElement = ((org.w3c.dom.Document) doc).createElement(fileDetails.getContent());
+				  ((Node) doc).appendChild(rootElement);
+				  TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				  Transformer transformer = transformerFactory.newTransformer();
+				  DOMSource source = new DOMSource((Node) doc);
+
+			}catch(Exception e){}
+
+		default: break;
 
 		}
-		
-		 byte[] fileBytes = out.toByteArray();
+
+		byte[] fileBytes = out.toByteArray();
 		try {
 			client.sendToClient(fileBytes);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 
 
 	}
