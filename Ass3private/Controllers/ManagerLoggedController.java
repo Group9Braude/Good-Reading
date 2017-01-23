@@ -36,12 +36,9 @@ public class ManagerLoggedController {
 	}
 	public void ontheme(){
 	}
-	public  void onLogout(){
-		Worker worker = new Worker();
-		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
-		sendServer(worker, "LogOutUser");
+	public void onLogout(){ 
+		sendServer(Main.getCurrentUser(), "Logout");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
-
 	}
 	public void onRemove(){
 		try {
