@@ -20,7 +20,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="141.0" prefWidth="773.0">
                            <children>
-                              <ImageView fitHeight="317.0" fitWidth="1151.0" layoutX="-34.0">
+                              <ImageView fitHeight="317.0" fitWidth="1198.0" layoutX="-34.0">
                                  <image>
                                     <Image url="@../src/1.jpg" />
                                  </image>
@@ -84,7 +84,7 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ImageView fitHeight="874.0" fitWidth="1204.0" layoutX="-33.0" layoutY="-225.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="874.0" fitWidth="1204.0" layoutX="-44.0" layoutY="-212.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../src/3.jpg" />
                                  </image>
@@ -97,22 +97,36 @@
                                  <font>
                                     <Font size="48.0" />
                                  </font></Text>
-                              <TableView fx:id="booktable2" layoutX="557.0" layoutY="14.0" prefHeight="256.0" prefWidth="349.0">
+                              <TableView fx:id="booktable2" layoutX="557.0" layoutY="14.0" prefHeight="269.0" prefWidth="349.0">
                                 <columns>
                                   <TableColumn fx:id="bookcol2" prefWidth="101.0" text="BookID" />
                                   <TableColumn fx:id="titlecol2" prefWidth="126.0" text="Title" />
                                     <TableColumn fx:id="authorcol2" prefWidth="121.0" text="Autor" />
                                 </columns>
                               </TableView>
-                              <Text fill="#fcfcfc" layoutX="142.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press eneter">
+                              <Text fill="#fcfcfc" layoutX="286.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press enter">
                                  <font>
-                                    <Font name="Century Gothic" size="15.0" />
+                                    <Font name="Century Gothic" size="19.0" />
                                  </font></Text>
-                              <Text fill="#fcfcfc" layoutX="142.0" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Please pick the book you would like to see popularity of" wrappingWidth="261.2099609375">
+                              <Text fill="#fcfcfc" layoutX="286.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Please pick the book you would like to see popularity of" wrappingWidth="261.2099609375">
                                  <font>
-                                    <Font name="Century Gothic" size="15.0" />
+                                    <Font name="Century Gothic" size="18.0" />
                                  </font>
                               </Text>
+                              <ListView fx:id="rank" layoutX="43.0" layoutY="283.0" prefHeight="200.0" prefWidth="374.0" />
+                              <Text fill="WHITE" layoutX="211.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ranking">
+                                 <font>
+                                    <Font name="Century Gothic" size="45.0" />
+                                 </font>
+                                 <effect>
+                                    <Reflection />
+                                 </effect>
+                              </Text>
+                              <ImageView fitHeight="140.0" fitWidth="140.0" layoutX="61.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../src/88.png" />
+                                 </image>
+                              </ImageView>
                            </children>
                         </AnchorPane>
                     </content>
@@ -136,8 +150,8 @@
                                     <Font name="Century Gothic" size="15.0" />
                                  </font>
                               </Text>
-                              <ChoiceBox fx:id="genre" layoutX="281.0" layoutY="252.0" prefWidth="150.0" visible="false" />
-                              <Button fx:id="enter1" layoutX="580.0" layoutY="96.0" mnemonicParsing="false" onAction="#onEnter1" prefHeight="31.0" prefWidth="97.0" text="Enter">
+                              <ChoiceBox fx:id="genre" layoutX="281.0" layoutY="252.0" prefHeight="31.0" prefWidth="293.0" visible="false" />
+                              <Button fx:id="enter1" layoutX="598.0" layoutY="96.0" mnemonicParsing="false" onAction="#onEnter1" prefHeight="31.0" prefWidth="97.0" text="Enter">
                                  <effect>
                                     <InnerShadow />
                                  </effect></Button>
@@ -150,11 +164,11 @@
                                     <Font name="MingLiU-ExtB" size="36.0" />
                                  </font>
                               </TextField>
-                              <TableView fx:id="booktable1" layoutX="281.0" layoutY="11.0" prefHeight="200.0" prefWidth="228.0">
+                              <TableView fx:id="booktable1" layoutX="254.0" layoutY="11.0" prefHeight="200.0" prefWidth="319.0">
                                 <columns>
                                   <TableColumn fx:id="bookcol1" prefWidth="75.0" text="BookID" />
-                                  <TableColumn fx:id="titlecol1" prefWidth="75.0" text="Title" />
-                                    <TableColumn fx:id="authorcol1" prefWidth="75.0" text="Author" />
+                                  <TableColumn fx:id="titlecol1" prefWidth="139.0" text="Title" />
+                                    <TableColumn fx:id="authorcol1" prefWidth="104.0" text="Author" />
                                 </columns>
                               </TableView>
                               <Text layoutX="8.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press eneter" />

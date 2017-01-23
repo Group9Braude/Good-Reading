@@ -46,7 +46,8 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
-			
+			case "ranking":
+				ranking(msg,client);break;
 			case "getReaders":
 				getReaders(msg,client);break;
 			case "getGeneralPop":
@@ -150,6 +151,8 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 	
+
+
 	private void updateReviewList(Review review, ConnectionToClient client)
 	{
 		try{
@@ -464,7 +467,22 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	private void ranking(Object msg, ConnectionToClient client) {
+		ArrayList<Book_NumOfPurchases>arr=new ArrayList<Book_NumOfPurchases>();
+		ArrayList<Integer>array=new ArrayList<Integer>();
 
+		try{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from books;");
+			while(rs.next())
+				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(9)));
+			Collections.sort(arr);	
+			for(int i=0;i<arr.size();i++)
+				array.add(arr.get(i).bookid);
+			client.sendToClient(array);
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
 	private void getBookGenres(Book b,ConnectionToClient client){
 		ArrayList<String> arr=new ArrayList<String>();
 		try {

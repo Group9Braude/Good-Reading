@@ -8,8 +8,8 @@ import Entities.GeneralMessage;
 import Entities.OrderedBook;
 import Entities.Reader;
 import Entities.Search;
-import Entities.User;
 import application.Main;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,7 +50,7 @@ public class ReportsController extends AbstractClient {
 	@FXML
 	public TextField id;
 	@FXML
-	public ListView<String> myBooks;
+	public ListView<String> myBooks,rank;
 	@FXML
 	public DatePicker from;
 	@FXML
@@ -75,6 +75,8 @@ public class ReportsController extends AbstractClient {
 	public static  ArrayList<String> arrstring;
 	public static String pop;
 	public  ObservableList<String> obsMyBooks;
+	public  ObservableList<String> ranking;
+
 	public  ObservableList<Book> books;
 	public  ObservableList<Book> books1;
 	public  ObservableList<Book> books2;
@@ -104,7 +106,7 @@ public class ReportsController extends AbstractClient {
 
 			while(flag==0)
 				try {
-					Thread.sleep(10);
+					Thread.sleep(5);
 				} catch (InterruptedException e){
 					e.printStackTrace();
 				}
@@ -113,7 +115,7 @@ public class ReportsController extends AbstractClient {
 			mytable.setItems(obsMyreaders);
 			flag=0;
 
-			/*BOOKS TABLE*/	
+			/*BOOKS TABLEs*/	
 			bookcol.setCellValueFactory(new PropertyValueFactory<Book,Integer>("bookid") );
 			titlecol.setCellValueFactory(new PropertyValueFactory<Book,String>("title") );
 			authorcol.setCellValueFactory(new PropertyValueFactory<Book,String>("author") );
@@ -125,183 +127,208 @@ public class ReportsController extends AbstractClient {
 			bookcol1.setCellValueFactory(new PropertyValueFactory<Book,Integer>("bookid") );
 			titlecol1.setCellValueFactory(new PropertyValueFactory<Book,String>("title") );
 			authorcol1.setCellValueFactory(new PropertyValueFactory<Book,String>("author") );
-			
+
 			bookcol2.setCellValueFactory(new PropertyValueFactory<Book,Integer>("bookid") );
 			titlecol2.setCellValueFactory(new PropertyValueFactory<Book,String>("title") );
 			authorcol2.setCellValueFactory(new PropertyValueFactory<Book,String>("author") );
 			booktable.setItems(books);
 			booktable1.setItems(books1);
 			booktable2.setItems(books2);
+			/*ranking*/
+			Book r=new Book(7);
+			sendServer(r,"ranking");
+			while(flag==0){
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+			ranking=FXCollections.observableArrayList();	
+			ranking.removeAll(ranking);
+			System.out.println("reached");
+			flag=0;
 
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}	
+			for(int i=arrint.size()-1;i>=0;i--)
+				for(int j=0;j<Book.bookList.size();j++)
+					if(arrint.get(i)==Book.bookList.get(j).getBookid()){
+						int x=arrint.size()-i;
+						ranking.add("#"+x+"    "+Book.bookList.get(j).getTitle()+" by "+Book.bookList.get(j).getAuthor()+" <"+Integer.toString(Book.bookList.get(j).getBookid())+">");
+						break;
+					}
 
-	}
+						rank.setItems(ranking);
+
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}	
+
+		}
 
 
-	@FXML
-	public TextField bookid;
-	@FXML
-	public Text generalpop;
+		@FXML
+		public TextField bookid;
+		@FXML
+		public Text generalpop;
 
-	/*check in general popularity*/
-	public void onReportsBack() throws IOException{
-		Main.showManagerLoggedScreen();
-	}
-	public void onCheckk(){
-		sendServer(new Book(booktable2.getSelectionModel().getSelectedItem().getBookid()),"getGeneralPop");//getting book's genres
-		while(flag==0){
-			try {
-				Thread.sleep(30);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		};
+		/*check in general popularity*/
+		public void onReportsBack() throws IOException{
+			Main.showManagerLoggedScreen();
+		}
+		public void onCheckk(){
+			sendServer(new Book(booktable2.getSelectionModel().getSelectedItem().getBookid()),"getGeneralPop");//getting book's genres
+			while(flag==0){
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
 			generalpop.setText(pop);
 			generalpop.setVisible(true);
 
-		flag=0;
+			flag=0;
 
-	}
-	/*enter in genre popularity*/
-	public void onEnter1(){
-		result.clear();
-		genres.clear();
-		result.setVisible(false);
-		sendServer(new Book(booktable1.getSelectionModel().getSelectedItem().getBookid()),"getBookGenres");//getting book's genres
-		while(flag==0){
-			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		};
-		System.out.println("arrstring:"+arrstring);
-		please.setVisible(true);
-		genre.setVisible(true);
-		checkpop.setVisible(true);
-		for(int i=0;i<arrstring.size();i++)
-			genres.add(arrstring.get(i));
-		genre.setItems(genres);
-		
-		flag=0;
-		//arrstring.removeAll(arrstring);
-	}
-	/*check pop in genre pop*/
-	public void onCheckpop(){
-		sendServer(new Book(booktable1.getSelectionModel().getSelectedItem().getBookid(),genre.getSelectionModel().getSelectedItem().toString()), "gettingGenrePlace");//getting how many books in the selected genre
-		while(flag==0){
-			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		};
-		result.setText(pop);
-		result.setVisible(true);
-		genres.removeAll();
-		flag=0;
-	}
-
-	@SuppressWarnings("unchecked")
-	@FXML
-	public void onCheck(){
-		mybar.setVisible(true);
-		mybar.getData().clear();
-		found=0;
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-		String fromm=from.getValue().format(formatter);
-		String untill=until.getValue().format(formatter);
-		Search s=new Search(booktable.getSelectionModel().getSelectedItem().getBookid(),fromm,untill);
-		sendServer(s,"getStatistics");
-		while(flag==0){
-			try {
-				Thread.sleep(30);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		};
-		String title="",author="";
-		for(int i=0;i<Book.bookList.size();i++){
-			if(Book.bookList.get(i).getBookid()==booktable.getSelectionModel().getSelectedItem().getBookid()){
-				title=Book.bookList.get(i).getTitle();
-				author=Book.bookList.get(i).getAuthor();
-				System.out.println(Book.bookList.get(i).getBookid());
-				found=1;
-				break;}
 		}
-		if(found==1)
-			mybar.setTitle("Statistics of "+title+" by "+author);
-		else{ 
-			mybar.setTitle("Book is not found");
+		/*enter in genre popularity*/
+		public void onEnter1(){
+			result.clear();
+			genres.clear();
+			result.setVisible(false);
+			sendServer(new Book(booktable1.getSelectionModel().getSelectedItem().getBookid()),"getBookGenres");//getting book's genres
+			while(flag==0){
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+			System.out.println("arrstring:"+arrstring);
+			please.setVisible(true);
+			genre.setVisible(true);
+			checkpop.setVisible(true);
+			for(int i=0;i<arrstring.size();i++)
+				genres.add(arrstring.get(i));
+			genre.setItems(genres);
+
+			flag=0;
+			arrstring.removeAll(arrstring);
 		}
-		XYChart.Series set=new XYChart.Series();
-		set.getData().add(new XYChart.Data("#Purchases",arrint.get(0)));
-		set.getData().add(new XYChart.Data("#Searches",arrint.get(1)));
-		mybar.getData().addAll(set);
-		flag=0;
-	}
-	@FXML
-	public void onEnter(){
-		Reader r=new Reader(id.getText(),null);
-		obsMyBooks=FXCollections.observableArrayList();	
-		obsMyBooks.removeAll(obsMyBooks);
-		sendServer(r,"getUserBooks");
-		while(flag==0){
-			try {
-				Thread.sleep(20);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		};
-		flag=0;
-		for(int i=0;i<arr.size();i++)
-			obsMyBooks.add(arr.get(i).getTitle()+" by "+arr.get(i).getAuthor());
-		System.out.println(obsMyBooks);
-		myBooks.setItems(obsMyBooks);
-
-	}
-
-	public ArrayList<Reader> arrreader=new ArrayList<Reader>();
-
-
-
-	@Override
-	protected void handleMessageFromServer(Object msg) {
-		if(msg instanceof ArrayList){
-			if(((ArrayList<?>)msg).get(0) instanceof OrderedBook){
-				arr = new ArrayList <OrderedBook>((ArrayList <OrderedBook>)msg);
-			}
-			else if (((ArrayList<?>)msg).get(0) instanceof Integer) {
-				arrint = new ArrayList <Integer>((ArrayList <Integer>)msg);
-				System.out.println("handle message from server:"+arrint);
-
-			}
-			else if (((ArrayList<?>)msg).get(0) instanceof String){
-				arrstring = new ArrayList <String>((ArrayList <String>)msg);
-				System.out.println("handle message from server:"+arrstring);
-			}
-			else if (((ArrayList<?>)msg).get(0) instanceof Reader){
-				arrreader = new ArrayList <Reader>((ArrayList <Reader>)msg);
-				for(int i=0;i<arrreader.size();i++)
-					System.out.println(arrreader.get(i).getLastName()+"readerid:"+arrreader.get(i).getID());
-			}
+		/*check pop in genre pop*/
+		public void onCheckpop(){
+			sendServer(new Book(booktable1.getSelectionModel().getSelectedItem().getBookid(),genre.getSelectionModel().getSelectedItem().toString()), "gettingGenrePlace");//getting how many books in the selected genre
+			while(flag==0){
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+			result.setText(pop);
+			result.setVisible(true);
+			genres.removeAll();
+			flag=0;
 		}
-		else{
-			pop=((Book)msg).getTitle().toString();	/*its not really type of book, it is just to get a string*/
-			System.out.println("pop: "+pop);
-			System.out.println("handle message from server:"+pop);
+
+		@SuppressWarnings("unchecked")
+		@FXML
+		public void onCheck(){
+			mybar.setVisible(true);
+			mybar.getData().clear();
+			found=0;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			String fromm=from.getValue().format(formatter);
+			String untill=until.getValue().format(formatter);
+			Search s=new Search(booktable.getSelectionModel().getSelectedItem().getBookid(),fromm,untill);
+			sendServer(s,"getStatistics");
+			while(flag==0){
+				try {
+					Thread.sleep(30);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+			String title="",author="";
+			for(int i=0;i<Book.bookList.size();i++){
+				if(Book.bookList.get(i).getBookid()==booktable.getSelectionModel().getSelectedItem().getBookid()){
+					title=Book.bookList.get(i).getTitle();
+					author=Book.bookList.get(i).getAuthor();
+					System.out.println(Book.bookList.get(i).getBookid());
+					found=1;
+					break;}
+			}
+			if(found==1)
+				mybar.setTitle("Statistics of "+title+" by "+author);
+			else{ 
+				mybar.setTitle("Book is not found");
+			}
+			XYChart.Series set=new XYChart.Series();
+			set.getData().add(new XYChart.Data("#Purchases",arrint.get(0)));
+			set.getData().add(new XYChart.Data("#Searches",arrint.get(1)));
+			mybar.getData().addAll(set);
+			flag=0;
 		}
-		ReportsController.flag=1;
+		@FXML
+		public void onEnter(){
+			Reader r=new Reader(id.getText(),null);
+			obsMyBooks=FXCollections.observableArrayList();	
+			obsMyBooks.removeAll(obsMyBooks);
+			sendServer(r,"getUserBooks");
+			while(flag==0){
+				try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+			flag=0;
+			for(int i=0;i<arr.size();i++)
+				obsMyBooks.add(arr.get(i).getTitle()+" by "+arr.get(i).getAuthor());
+			System.out.println(obsMyBooks);
+			myBooks.setItems(obsMyBooks);
+
+		}
+
+		public ArrayList<Reader> arrreader=new ArrayList<Reader>();
+
+
+
+		@Override
+		protected void handleMessageFromServer(Object msg) {
+			if(msg instanceof ArrayList){
+				if(((ArrayList<?>)msg).get(0) instanceof OrderedBook){
+					arr = new ArrayList <OrderedBook>((ArrayList <OrderedBook>)msg);
+				}
+				else if (((ArrayList<?>)msg).get(0) instanceof Integer) {
+					arrint = new ArrayList <Integer>((ArrayList <Integer>)msg);
+					System.out.println("handle message from server:"+arrint);
+
+				}
+				else if (((ArrayList<?>)msg).get(0) instanceof String){
+					arrstring = new ArrayList <String>((ArrayList <String>)msg);
+					System.out.println("handle message from server:"+arrstring);
+				}
+				else if (((ArrayList<?>)msg).get(0) instanceof Reader){
+					arrreader = new ArrayList <Reader>((ArrayList <Reader>)msg);
+					for(int i=0;i<arrreader.size();i++)
+						System.out.println(arrreader.get(i).getLastName()+"readerid:"+arrreader.get(i).getID());
+				}
+			}
+			else{
+				pop=((Book)msg).getTitle().toString();	/*its not really type of book, it is just to get a string*/
+				System.out.println("pop: "+pop);
+				System.out.println("handle message from server:"+pop);
+			}
+			ReportsController.flag=1;
+
+		}
 
 	}
-
-}
 
