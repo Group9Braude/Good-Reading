@@ -137,14 +137,13 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
-			/*case "GetAllGenres":
-				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
+			case "CheckNewReviews":
 			default:
 				break;
 			}

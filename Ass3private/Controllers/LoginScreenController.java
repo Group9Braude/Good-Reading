@@ -121,7 +121,14 @@ public class LoginScreenController extends AbstractClient {
 			case "reader":
 				Main.showReaderLoginScreen();break;
 			case "worker":
-				Main.showLoggedInScreenWorker();break;
+				Main.showLoggedInScreenWorker();
+				Thread thread = new Thread(){
+					public void run(){
+						while(true)
+							sendServer(new GeneralMessage(), "CheckNewReviews");
+					}
+				};
+				break;
 			case "manager":
 				Main.showManagerLoggedScreen();break;
 			}
