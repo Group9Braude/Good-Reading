@@ -1,6 +1,9 @@
 package Controllers;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import javax.swing.JOptionPane;
 
@@ -46,6 +49,12 @@ public class LoginReaderController extends AbstractClient{
 		welcomeText.setText("Hello " + reader.getFirstName());
 		this.setSubscribeText();
 		format.getItems().setAll("DOC","PDF","FB2");
+		try {
+			this.openConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void setSubscribeText()
@@ -75,10 +84,10 @@ public class LoginReaderController extends AbstractClient{
 			JOptionPane.showMessageDialog(null, "You must first select a format!!");
 		else
 		{
-			OrderedBook selectedBook = bookList.getSelectionModel().getSelectedItem();
+			selectedBook = bookList.getSelectionModel().getSelectedItem();
 			String chosen = format.getSelectionModel().getSelectedItem();
-			FileDetails file = new FileDetails(selectedBook.getTitle() + "." + chosen,selectedBook.toString());
-			file.actionNow = "CreateFile";
+			FileDetails file = new FileDetails(selectedBook.getTitle(),selectedBook.toString(),chosen);
+			file.actionNow = "CreateAndSendFile";
 			try {
 				this.sendToServer(file);
 			} catch (IOException e) {
@@ -118,7 +127,17 @@ public class LoginReaderController extends AbstractClient{
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		// TODO Auto-generated method stub
+		System.out.println("File created");
+		OutputStream out;
+		try {
+			out = new FileOutputStream(selectedBook + "."+format.getSelectionModel().getSelectedItem());
+			out.write((byte[])msg);
+			out.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 		
 	}
 }

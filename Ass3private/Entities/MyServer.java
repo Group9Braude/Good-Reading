@@ -1,12 +1,8 @@
 package Entities;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.ServerSocket;
-import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -15,9 +11,23 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+ 
+
+
+
+
 
 public class MyServer extends AbstractServer {
 	Connection conn;
@@ -51,7 +61,7 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
-			
+
 			case "getReaders":
 				getReaders(msg,client);break;
 			case "getGeneralPop":
@@ -142,47 +152,69 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
-<<<<<<< HEAD
 				/*case "GetAllGenres":
 				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
-=======
->>>>>>> refs/remotes/origin/master
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
-<<<<<<< HEAD
-			case "CreateFile":
-				createFile((FileDetails)msg,client); break;
-=======
+			case "CreateAndSendFile":
+				createAndSendFile((FileDetails)msg,client); break;
+
 			case "CheckNewReviews":
->>>>>>> refs/remotes/origin/master
+
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
-	@SuppressWarnings("resource")
-	private void createFile(FileDetails fileDetails, ConnectionToClient client)
+	private void createAndSendFile(FileDetails fileDetails, ConnectionToClient client)
 	{
-		try{
-			Socket socket = serverSocket.accept();
-			System.out.println("Accepted connection : " + socket);
-			File transferFile = new File (fileDetails.getFileName());
-			byte [] bytearray = new byte [(int)transferFile.length()];
-			FileInputStream fin = new FileInputStream(transferFile);
-			BufferedInputStream bin = new BufferedInputStream(fin);
-			bin.read(bytearray,0,bytearray.length);
-			OutputStream os = socket.getOutputStream();
-			System.out.println("Sending Files...");
-			os.write(bytearray,0,bytearray.length);
-			os.flush();
-			socket.close();
-			System.out.println("File transfer complete");
-		}catch(Exception e){System.out.println("ERROR!!!");}
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		switch(fileDetails.getType())
+		{
+		case "PDF":
+			try
+			{
+				Document document = new Document();
+				PdfWriter writer = PdfWriter.getInstance(document, out);
+				document.open();
+				document.add(new Paragraph(fileDetails.getContent()));
+				document.close();
+				writer.close();
+			} catch (DocumentException e)
+			{
+				e.printStackTrace();
+			}
+			break;
+		case "DOC":
+			XWPFDocument document = new XWPFDocument();
+			XWPFParagraph paragraph = document.createParagraph();
+			XWPFRun run = paragraph.createRun();
+			run.setText(fileDetails.getContent());
+			try {
+				document.write(out);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
+			
+			default: break;
+
+		}
+		
+		 byte[] fileBytes = out.toByteArray();
+		try {
+			client.sendToClient(fileBytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 
 
 	}
@@ -231,11 +263,8 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
 
-=======
- 
-	
+
 	private void getReaders(Object msg, ConnectionToClient client) {
 		try{
 			ArrayList<Reader> arr=new ArrayList<Reader>();
@@ -246,7 +275,7 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(arr);
 		}catch(Exception e){}
 	}
->>>>>>> refs/remotes/origin/master
+
 
 	public void editBook(Book book, ConnectionToClient client){
 		System.out.println("Edit Book in My Server");
