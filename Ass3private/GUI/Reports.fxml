@@ -40,9 +40,9 @@
                                     <TableColumn fx:id="firstname" prefWidth="162.0" text="First Name" />
                                     <TableColumn fx:id="lastname" prefWidth="148.0" text="Last Name" />
                                  </columns></TableView>
-                              <Text fill="WHITE" layoutX="752.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Life is too short to read books that I'm not enjoying” ">
+                              <Text fill="WHITE" layoutX="593.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Life is too short to read books that I'm not enjoying” ">
                                  <font>
-                                    <Font name="Century Gothic Italic" size="15.0" />
+                                    <Font name="Century Gothic Italic" size="21.0" />
                                  </font>
                               </Text>
                            </children>
@@ -83,7 +83,7 @@
                               </Text>
                               <Text fill="#544242" layoutX="24.0" layoutY="529.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“You're never alone when you're reading a book” ">
                                  <font>
-                                    <Font name="Century Gothic Italic" size="15.0" />
+                                    <Font name="Century Gothic Italic" size="21.0" />
                                  </font>
                               </Text>
                            </children>
@@ -137,9 +137,9 @@
                                     <Image url="@../src/88.png" />
                                  </image>
                               </ImageView>
-                              <Text fill="WHITE" layoutX="8.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Clearly one must read every good book at least once every ten years.”">
+                              <Text fill="WHITE" layoutX="14.0" layoutY="535.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Clearly one must read every good book at least once every ten years.”">
                                  <font>
-                                    <Font name="Century Gothic Italic" size="15.0" />
+                                    <Font name="Century Gothic Italic" size="26.0" />
                                  </font>
                               </Text>
                            </children>
@@ -166,11 +166,11 @@
                                  </font>
                               </Text>
                               <ChoiceBox fx:id="genre" layoutX="281.0" layoutY="252.0" prefHeight="31.0" prefWidth="286.0" visible="false" />
-                              <Button fx:id="enter1" layoutX="598.0" layoutY="96.0" mnemonicParsing="false" onAction="#onEnter1" prefHeight="31.0" prefWidth="97.0" text="Enter">
+                              <Button fx:id="enter1" layoutX="598.0" layoutY="96.0" mnemonicParsing="false" onAction="#onEnter1" prefHeight="31.0" prefWidth="144.0" text="Enter">
                                  <effect>
                                     <InnerShadow />
                                  </effect></Button>
-                              <Button fx:id="checkpop" layoutX="594.0" layoutY="252.0" mnemonicParsing="false" onAction="#onCheckpop" prefHeight="31.0" prefWidth="101.0" text="Check popularity" visible="false">
+                              <Button fx:id="checkpop" layoutX="594.0" layoutY="252.0" mnemonicParsing="false" onAction="#onCheckpop" prefHeight="31.0" prefWidth="161.0" text="Check popularity" visible="false">
                                  <effect>
                                     <InnerShadow />
                                  </effect></Button>
@@ -187,9 +187,9 @@
                                 </columns>
                               </TableView>
                               <Text layoutX="8.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press enter" />
-                              <Text fill="WHITE" layoutX="606.0" layoutY="526.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Clearly one must read every good book at least once every ten years.”">
+                              <Text fill="WHITE" layoutX="374.0" layoutY="523.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Clearly one must read every good book at least once every ten years.”">
                                  <font>
-                                    <Font name="Century Gothic Italic" size="15.0" />
+                                    <Font name="Century Gothic Italic" size="21.0" />
                                  </font>
                               </Text>
                            </children>
@@ -199,6 +199,9 @@
               </tabs>
             </TabPane>
          </center></BorderPane>
-      <Button layoutX="678.0" layoutY="7.0" mnemonicParsing="false" onAction="#onReportsBack" prefHeight="31.0" prefWidth="58.0" text="Back" />
+      <Button layoutX="678.0" layoutY="7.0" mnemonicParsing="false" onAction="#onReportsBack" prefHeight="31.0" prefWidth="455.0" text="Back">
+         <effect>
+            <InnerShadow />
+         </effect></Button>
    </children>
 </Pane>
