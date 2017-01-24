@@ -1,4 +1,5 @@
 package Controllers;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -11,6 +12,7 @@ import Entities.Worker;
 import application.Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -86,9 +88,9 @@ public class LoginScreenController extends AbstractClient {
 
 
 	public void onLogin(){
-	/*	File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Button.png");
 		Image image = new Image(file.toURI().toString());
-		loginImageView.setImage(image);*/
+		loginImageView.setImage(image);
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
@@ -130,11 +132,11 @@ public class LoginScreenController extends AbstractClient {
 	}//End onLogin
 
 	public void onPress(){
-	/*	System.out.println("Press");
-		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
+		System.out.println("Press");
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\ButtonPressed.png");
 		Image image = new Image(file.toURI().toString());
 		loginImageView.
-		setImage(image);*/
+		setImage(image);
 	}
 
 	@SuppressWarnings("unchecked")
