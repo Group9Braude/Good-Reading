@@ -464,7 +464,7 @@ public class WorkerController extends AbstractClient {
 			if((((ArrayList<Book>)msg).get(0)).query.equals("UpdateBookList")){
 				foundBookList = new ArrayList<Book>((ArrayList<Book>)msg);
 				foundBookList.remove(0);
-			}		
+			}		 
 			else 
 				Book.bookList = new ArrayList<Book>((ArrayList<Book>)msg);
 		}

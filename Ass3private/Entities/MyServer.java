@@ -417,7 +417,7 @@ public class MyServer extends AbstractServer {
 			}
 
 			client.sendToClient(bookList);
-
+ 
 
 		}catch(Exception e){e.printStackTrace();}
 	}

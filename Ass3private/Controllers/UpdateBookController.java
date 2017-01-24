@@ -77,7 +77,7 @@ public class UpdateBookController {
 				isGenres = true;
 				genresBooksList.add(book);
 			}
-		genresBooksList.remove(0);
+		genresBooksList.remove(0); 
 	}
 
 	//Initialize the table view

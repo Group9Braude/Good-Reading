@@ -38,7 +38,7 @@ public class EditBookController {
 		genresTextField.setText(WorkerController.bookForEdit.getGenre());
 		genreComboBox.setPromptText("Genres");
 		genre = WorkerController.bookForEdit.getGenre();
-	}
+	} 
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {

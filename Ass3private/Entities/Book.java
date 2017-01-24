@@ -46,7 +46,7 @@ public class Book extends GeneralMessage implements Serializable{
 		this.keyword = keyword;
 		this.isSuspend = isSuspend;
 		this.author = author;
-
+ 
 	}
 
 	public void GenreAdd(String genre){
