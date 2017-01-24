@@ -8,8 +8,8 @@ import Entities.GeneralMessage;
 import Entities.OrderedBook;
 import Entities.Reader;
 import Entities.Search;
-import Entities.User;
 import application.Main;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -50,7 +50,7 @@ public class ReportsController extends AbstractClient {
 	@FXML
 	public TextField id;
 	@FXML
-	public ListView<String> myBooks;
+	public ListView<String> myBooks,rank;
 	@FXML
 	public DatePicker from;
 	@FXML
@@ -75,6 +75,8 @@ public class ReportsController extends AbstractClient {
 	public static  ArrayList<String> arrstring;
 	public static String pop;
 	public  ObservableList<String> obsMyBooks;
+	public  ObservableList<String> ranking;
+
 	public  ObservableList<Book> books;
 	public  ObservableList<Book> books1;
 	public  ObservableList<Book> books2;
@@ -104,7 +106,7 @@ public class ReportsController extends AbstractClient {
 
 			while(flag==0)
 				try {
-					Thread.sleep(10);
+					Thread.sleep(5);
 				} catch (InterruptedException e){
 					e.printStackTrace();
 				}
@@ -113,7 +115,7 @@ public class ReportsController extends AbstractClient {
 			mytable.setItems(obsMyreaders);
 			flag=0;
 
-			/*BOOKS TABLE*/	
+			/*BOOKS TABLEs*/	
 			bookcol.setCellValueFactory(new PropertyValueFactory<Book,Integer>("bookid") );
 			titlecol.setCellValueFactory(new PropertyValueFactory<Book,String>("title") );
 			authorcol.setCellValueFactory(new PropertyValueFactory<Book,String>("author") );
@@ -125,13 +127,38 @@ public class ReportsController extends AbstractClient {
 			bookcol1.setCellValueFactory(new PropertyValueFactory<Book,Integer>("bookid") );
 			titlecol1.setCellValueFactory(new PropertyValueFactory<Book,String>("title") );
 			authorcol1.setCellValueFactory(new PropertyValueFactory<Book,String>("author") );
-			
+
 			bookcol2.setCellValueFactory(new PropertyValueFactory<Book,Integer>("bookid") );
 			titlecol2.setCellValueFactory(new PropertyValueFactory<Book,String>("title") );
 			authorcol2.setCellValueFactory(new PropertyValueFactory<Book,String>("author") );
 			booktable.setItems(books);
 			booktable1.setItems(books1);
 			booktable2.setItems(books2);
+			/*ranking*/
+			Book r=new Book(7);
+			sendServer(r,"ranking");
+			while(flag==0){
+				try {
+					Thread.sleep(5);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			};
+			ranking=FXCollections.observableArrayList();	
+			ranking.removeAll(ranking);
+			System.out.println("reached");
+			flag=0;
+
+			for(int i=arrint.size()-1;i>=0;i--)
+				for(int j=0;j<Book.bookList.size();j++)
+					if(arrint.get(i)==Book.bookList.get(j).getBookid()){
+						int x=arrint.size()-i;
+						ranking.add("#"+x+"    "+Book.bookList.get(j).getTitle()+" by "+Book.bookList.get(j).getAuthor()+" <"+Integer.toString(Book.bookList.get(j).getBookid())+">");
+						break;
+					}
+
+			rank.setItems(ranking);
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -160,8 +187,8 @@ public class ReportsController extends AbstractClient {
 				e.printStackTrace();
 			}
 		};
-			generalpop.setText(pop);
-			generalpop.setVisible(true);
+		generalpop.setText(pop);
+		generalpop.setVisible(true);
 
 		flag=0;
 
@@ -180,6 +207,7 @@ public class ReportsController extends AbstractClient {
 				e.printStackTrace();
 			}
 		};
+		System.out.println("fndskjfndskjnfdskjnfdskjdskjnfkjsd");
 		System.out.println("arrstring:"+arrstring);
 		please.setVisible(true);
 		genre.setVisible(true);
@@ -187,9 +215,8 @@ public class ReportsController extends AbstractClient {
 		for(int i=0;i<arrstring.size();i++)
 			genres.add(arrstring.get(i));
 		genre.setItems(genres);
-		
+
 		flag=0;
-		//arrstring.removeAll(arrstring);
 	}
 	/*check pop in genre pop*/
 	public void onCheckpop(){

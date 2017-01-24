@@ -16,6 +16,24 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 import Controllers.WorkerController;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
+//import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -153,11 +171,82 @@ public class MyServer extends AbstractServer {
 				editBook((Book)msg, client);break;
 			case "CreateFile":
 				createFile((FileDetails)msg,client); break;
+
+				editBook((Book)msg, client);break;
+			case "CreateAndSendFile":
+				createAndSendFile((FileDetails)msg,client); break;
+
 			case "CheckNewReviews":
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
+	}
+
+	private void createAndSendFile(FileDetails fileDetails, ConnectionToClient client)
+	{
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		switch(fileDetails.getType())
+		{
+		case "PDF":
+			try
+			{
+				Document document = new Document();
+				PdfWriter writer = PdfWriter.getInstance(document, out);
+				document.open();
+				document.add(new Paragraph(fileDetails.getContent()));
+				document.close();
+				writer.close();
+			} catch (DocumentException e)
+			{
+				e.printStackTrace();
+			}
+			break;
+		case "DOC":
+			XWPFDocument document = new XWPFDocument();
+			XWPFParagraph paragraph = document.createParagraph();
+			XWPFRun run = paragraph.createRun();
+			run.setText(fileDetails.getContent());
+			try {
+				document.write(out);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		case "FB2":
+			try{
+				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+				Document doc = (Document) docBuilder.newDocument();
+				  Element rootElement = ((org.w3c.dom.Document) doc).createElement(fileDetails.getContent());
+				  ((Node) doc).appendChild(rootElement);
+				  TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				  Transformer transformer = transformerFactory.newTransformer();
+				  DOMSource source = new DOMSource((Node) doc);
+
+			}catch(Exception e){}
+
+		default: break;
+
+		}
+
+		byte[] fileBytes = out.toByteArray();
+		try {
+			client.sendToClient(fileBytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
 	}
 
 	@SuppressWarnings("resource")
@@ -502,7 +591,22 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	private void ranking(Object msg, ConnectionToClient client) {
+		ArrayList<Book_NumOfPurchases>arr=new ArrayList<Book_NumOfPurchases>();
+		ArrayList<Integer>array=new ArrayList<Integer>();
 
+		try{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from books;");
+			while(rs.next())
+				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(9)));
+			Collections.sort(arr);	
+			for(int i=0;i<arr.size();i++)
+				array.add(arr.get(i).bookid);
+			client.sendToClient(array);
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
 	private void getBookGenres(Book b,ConnectionToClient client){
 		ArrayList<String> arr=new ArrayList<String>();
 		try {
