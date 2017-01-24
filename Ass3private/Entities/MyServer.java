@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -41,7 +42,6 @@ import ocsf.server.ConnectionToClient;
 
 public class MyServer extends AbstractServer {
 	Connection conn;
-	private ServerSocket serverSocket;
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -59,7 +59,6 @@ public class MyServer extends AbstractServer {
 		this.connectToDB();
 		try {
 			this.listen();
-			serverSocket = new ServerSocket(port);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -224,12 +223,15 @@ public class MyServer extends AbstractServer {
 				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 				Document doc = (Document) docBuilder.newDocument();
-				  Element rootElement = ((org.w3c.dom.Document) doc).createElement(fileDetails.getContent());
-				  ((Node) doc).appendChild(rootElement);
-				  TransformerFactory transformerFactory = TransformerFactory.newInstance();
-				  Transformer transformer = transformerFactory.newTransformer();
-				  DOMSource source = new DOMSource((Node) doc);
-
+				Element rootElement = ((org.w3c.dom.Document) doc).createElement("content");
+				rootElement.appendChild(((org.w3c.dom.Document) doc).createTextNode("BLOOP"));
+				((Node) doc).appendChild(rootElement);
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				DOMSource source = new DOMSource((Node) doc);
+				StreamResult test = new StreamResult(System.out);
+				//StreamResult result = new StreamResult(out);
+				transformer.transform(source, test);		
 			}catch(Exception e){}
 
 		default: break;
