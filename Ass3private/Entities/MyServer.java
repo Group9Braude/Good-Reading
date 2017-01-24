@@ -2,9 +2,7 @@
 package Entities;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -41,7 +39,7 @@ import ocsf.server.ConnectionToClient;
 
 
 
-public class MyServer extends AbstractServer {
+public class MyServer extends AbstractServer {    
 	Connection conn;
 	public static void main(String[] args) {
 		int port = 0;
@@ -224,7 +222,6 @@ public class MyServer extends AbstractServer {
 				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 				Document doc = (Document) docBuilder.newDocument();
-<<<<<<< HEAD
 				Element rootElement = ((org.w3c.dom.Document) doc).createElement("content");
 				rootElement.appendChild(((org.w3c.dom.Document) doc).createTextNode("BLOOP"));
 				((Node) doc).appendChild(rootElement);
@@ -234,14 +231,8 @@ public class MyServer extends AbstractServer {
 				StreamResult test = new StreamResult(System.out);
 				//StreamResult result = new StreamResult(out);
 				transformer.transform(source, test);		
-=======
-				Element rootElement = ((org.w3c.dom.Document) doc).createElement(fileDetails.getContent());
-				((Node) doc).appendChild(rootElement);
-				TransformerFactory transformerFactory = TransformerFactory.newInstance();
-				Transformer transformer = transformerFactory.newTransformer();
-				DOMSource source = new DOMSource((Node) doc);
 
->>>>>>> refs/remotes/origin/master
+
 			}catch(Exception e){}
 
 		default: break;
