@@ -64,7 +64,7 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
-			
+
 			case "getReaders":
 				getReaders(msg,client);break;
 			case "getGeneralPop":
@@ -165,10 +165,9 @@ public class MyServer extends AbstractServer {
 				editBook((Book)msg, client);break;
 			case "CreateFile":
 				createFile((FileDetails)msg,client); break;
-
-				editBook((Book)msg, client);break;
-			case "CreateAndSendFile":
-				createAndSendFile((FileDetails)msg,client); break;
+				//	case "CreateAndSendFile":
+				//	createAndSendFile((FileDetails)msg,client); break;
+				/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
 			case "CheckNewReviews":
 			default:
@@ -177,7 +176,9 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
-	private void createAndSendFile(FileDetails fileDetails, ConnectionToClient client)
+	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
+
+	/*	private void createAndSendFile(FileDetails fileDetails, ConnectionToClient client)
 	{
 		Statement stmt;
 		try {
@@ -242,6 +243,8 @@ public class MyServer extends AbstractServer {
 
 
 	}
+	 */
+	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
 	@SuppressWarnings("resource")
 	private void createFile(FileDetails fileDetails, ConnectionToClient client)
@@ -310,8 +313,8 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
- 
-	
+
+
 	private void getReaders(Object msg, ConnectionToClient client) {
 		try{
 			ArrayList<Reader> arr=new ArrayList<Reader>();
@@ -348,11 +351,13 @@ public class MyServer extends AbstractServer {
 			Book book1 =  new Book (rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9));
 
 
-			rs = stmt.executeQuery("SELECT * FROM genresbooks where bookid = " + book.getBookid() + ";");
-			if(rs.next())
-				book1.setGenre(rs.getString(1));
-			else
-				book1.setGenre("");
+			rs = stmt.executeQuery("SELECT genre FROM genresbooks where bookid = " + book.getBookid() + ";");
+			book1.setGenre("");
+			while(rs.next()){
+				String genre = book1.getGenre();
+				genre+=rs.getString(1) + " ";
+				book1.setGenre(genre);
+			}
 			System.out.println("GetBookForEdition: " + book1.getGenre());
 			client.sendToClient(book1);
 			System.out.println("GetBookForEdition: " + book1.getGenre());
@@ -390,6 +395,7 @@ public class MyServer extends AbstractServer {
 	{
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		Book book = new Book();
+		System.out.println("UpdateBookList");
 		book.query = "UpdateBookList";
 		bookList.add(book);
 		try{
@@ -399,18 +405,29 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				bookList.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
 						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
-			Book b = new Book();b.isGenres = true;
-			bookList.add(b);
-			query = "SELECT * FROM genresbooks";
-			ResultSet rs1 = stmt.executeQuery(query);
-			while(rs1.next())
-				bookList.add(new Book(rs1.getString(1), rs1.getInt(2)));
+			Book b2 = new Book();b2.isGenres = true;
+			bookList.add(b2);
+			for(int i=0;i<bookList.size();i++){
+				Book b  = bookList.get(i);
+				query = "SELECT * FROM genresbooks WHERE bookid = " + b.getBookid() + ";";
+				ResultSet rs1 = stmt.executeQuery(query);
+				bookList.get(i).setGenre("");
+				while(rs1.next())
+					bookList.get(i).GenreAdd(rs1.getString(1));
+			}
+
 			client.sendToClient(bookList);
 
 
 		}catch(Exception e){e.printStackTrace();}
 	}
-
+	/*				while(rs1.next()){
+					System.out.println("rs.getString(1)");
+					book1.setBookid(rs1.getInt(2));
+					String genre = book1.getGenre();
+					genre+=rs1.getString(1) + " ";
+					book1.setGenre(genre);
+				}*/
 
 	public void InitializeGenresBooksList(ConnectionToClient client){
 		try {
@@ -843,7 +860,7 @@ public class MyServer extends AbstractServer {
 				bookIDS.add(rs.getInt(3));authorList.add(rs.getString(2));titleList.add(rs.getString(1));//Get all the info about the book
 				//At this point I know that if bookid X is in index i in the bookIDS, its also index i in the other lists.
 			}
-			
+
 			for(int id : bookIDS){
 				String genre="";
 				ResultSet rs1 = stmt.executeQuery("SELECT genre, bookid FROM genresbooks WHERE bookid = '"+id+"' AND genre LIKE '%" + book.genreToSearch + "%';");
@@ -957,10 +974,10 @@ public class MyServer extends AbstractServer {
 				for(int i=counter+1;i<book.getGenre().length();i++)
 					genreNew +=book.getGenre().charAt(i);
 				System.out.println("Genre New : " + genreNew);
-			query = "insert into genresbooks values('" + genre + "'," + cnt + ");";
-			System.out.println("ServerAddBook:" + query);
-			book.setGenre(genreNew);
-			stmt.executeUpdate(query);
+				query = "insert into genresbooks values('" + genre + "'," + cnt + ");";
+				System.out.println("ServerAddBook:" + query);
+				book.setGenre(genreNew);
+				stmt.executeUpdate(query);
 			}
 		} catch (SQLException e) {e.printStackTrace();}
 		try {
