@@ -1,5 +1,5 @@
 package Entities;
- 
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -26,7 +26,7 @@ public class Book extends GeneralMessage implements Serializable{
 		this.setGenre(genre);
 		this.bookid=bookid;
 	}
-	
+
 	public Book(int bookid){
 		this.bookid=bookid;
 	}
@@ -46,10 +46,15 @@ public class Book extends GeneralMessage implements Serializable{
 		this.keyword = keyword;
 		this.isSuspend = isSuspend;
 		this.author = author;
-		
+ 
 	}
 
-
+	public void GenreAdd(String genre){
+		if(this.genre.equals(""))
+			this.genre = genre;
+		else
+			this.genre+=" " + genre;
+	}
 	public int getIsSuspend() {
 		return isSuspend;
 	}
@@ -145,8 +150,8 @@ public class Book extends GeneralMessage implements Serializable{
 	}
 
 
-	
-	
+
+
 	public String toString()
 	{
 		return title;
