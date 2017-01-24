@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import Controllers.WorkerController;
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
@@ -142,23 +143,17 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
-<<<<<<< HEAD
 				/*case "GetAllGenres":
 				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
-=======
->>>>>>> refs/remotes/origin/master
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
-<<<<<<< HEAD
 			case "CreateFile":
 				createFile((FileDetails)msg,client); break;
-=======
 			case "CheckNewReviews":
->>>>>>> refs/remotes/origin/master
 			default:
 				break;
 			}
@@ -231,9 +226,7 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-<<<<<<< HEAD
 
-=======
  
 	
 	private void getReaders(Object msg, ConnectionToClient client) {
@@ -246,25 +239,25 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(arr);
 		}catch(Exception e){}
 	}
->>>>>>> refs/remotes/origin/master
 
 	public void editBook(Book book, ConnectionToClient client){
-		System.out.println("Edit Book in My Server");
+
 		try{
 			Statement stmt = conn.createStatement();
 			String query = "UPDATE books SET title = '" + book.getTitle() + "'," + "language = '" + book.getLanguage() + "'," + "summary = '" + book.getSummary()
 			+ "'," + "author = '" + book.getAuthor()+ "'," + "keyWord = '" + book.getKeyword() + "'," + "tableOfContents = '" + book.getToc() +"' "
 			+ "WHERE bookid = " + book.getBookid() + ";";
+			System.out.println("editBook MyServer:" + query );
 			stmt.executeUpdate(query);
-			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "bookid = '" + book.getBookid() + "';";
+			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "WHERE bookid = " + book.getBookid() + ";";
+			System.out.println("editBook MyServer:" + query );
+
 			stmt.executeUpdate(query);
-			ArrayList<String> a = new ArrayList<String>();
-			a.add("GoToUpdateScreen");
-			client.sendToClient(a);
 		}catch(Exception e){e.printStackTrace();}
 	}//	TextField titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, genre
 
 	public void getBookForEdition(Book book, ConnectionToClient client){
+		System.out.println("getBookForEdition");
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM books where bookid = " + book.getBookid() + ";");
@@ -273,12 +266,16 @@ public class MyServer extends AbstractServer {
 
 
 			rs = stmt.executeQuery("SELECT * FROM genresbooks where bookid = " + book.getBookid() + ";");
-			rs.next();
-			book1.setGenre(rs.getString(1));
+			if(rs.next())
+				book1.setGenre(rs.getString(1));
+			else
+				book1.setGenre("");
 			System.out.println("GetBookForEdition: " + book1.getGenre());
 			client.sendToClient(book1);
+			System.out.println("GetBookForEdition: " + book1.getGenre());
 
-		}catch(Exception e){}
+
+		}catch(Exception e){e.printStackTrace();}
 
 	}
 
@@ -748,19 +745,14 @@ public class MyServer extends AbstractServer {
 				bookIDS.add(rs.getInt(3));authorList.add(rs.getString(2));titleList.add(rs.getString(1));//Get all the info about the book
 				//At this point I know that if bookid X is in index i in the bookIDS, its also index i in the other lists.
 			}
-
+			
 			for(int id : bookIDS){
+				String genre="";
 				ResultSet rs1 = stmt.executeQuery("SELECT genre, bookid FROM genresbooks WHERE bookid = '"+id+"' AND genre LIKE '%" + book.genreToSearch + "%';");
-				while(rs1.next()){
-					if(id!=rs1.getInt(2)){
-						authorList.remove(i);titleList.remove(i);bookIDS.remove(i);
-					}
-					else
-						list.add(titleList.get(i) + " by " + authorList.get(i) + ", Genre: " + rs1.getString(1) + ", With Book ID : " + id);
-				}
-				i++;
-			}
-			System.out.println("i : " + i);
+				while(rs1.next())
+					genre+=rs1.getString(1) + ", ";
+				list.add(titleList.get(i) + " by " + authorList.get(i) + " Genre: " + genre + " With Book ID: " + id);
+			}		
 			client.sendToClient(list);
 		}catch(Exception e){e.printStackTrace();}
 	}
@@ -857,8 +849,21 @@ public class MyServer extends AbstractServer {
 			String query = "insert into books values ('" + book.getTitle() + "','" + cnt + "','" + book.getAuthor() + "','" + 
 					book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0');";
 			stmt.executeUpdate(query);
-			query = "insert into genresbooks values('" + book.getGenre() + "'," + cnt + ");";
+			while(!book.getGenre().equals("")){
+				String genre = "", genreNew="";
+				int counter=0;//Number of chars of the next genre
+				for(int i=0;i<book.getGenre().length()&&!((book.getGenre().charAt(i))==' ');i++){
+					counter++;
+					genre+=book.getGenre().charAt(i);
+				}
+				for(int i=counter+1;i<book.getGenre().length();i++)
+					genreNew +=book.getGenre().charAt(i);
+				System.out.println("Genre New : " + genreNew);
+			query = "insert into genresbooks values('" + genre + "'," + cnt + ");";
+			System.out.println("ServerAddBook:" + query);
+			book.setGenre(genreNew);
 			stmt.executeUpdate(query);
+			}
 		} catch (SQLException e) {e.printStackTrace();}
 		try {
 			client.sendToClient("Added!");
