@@ -348,8 +348,6 @@ public class MyServer extends AbstractServer {
 		}cuthorTextField, keyWordTextField, tocTextField, genre
 
 	public void getBookForEdition(Book book, ConnectionToClient client){
-				System.out.println("getBookForEdition");
-);
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM books where bookid = " + book.getBookid() + ";");
@@ -376,8 +374,7 @@ public class MyServer extends AbstractServer {
 
 nnectionToClient client){
 		ArrayList<Book> bookList = new ArrayList<Book>();
-	
-ok b = new Book();
+		Book b = new Book();
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(book.query);
