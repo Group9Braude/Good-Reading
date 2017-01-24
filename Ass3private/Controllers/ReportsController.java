@@ -189,7 +189,7 @@ public class ReportsController extends AbstractClient {
 		};
 		generalpop.setText(pop);
 		generalpop.setVisible(true);
-
+ 
 		flag=0;
 
 	}
