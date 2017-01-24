@@ -106,7 +106,7 @@ public class ReportsController extends AbstractClient {
 
 			while(flag==0)
 				try {
-					Thread.sleep(5);
+					Thread.sleep(30);
 				} catch (InterruptedException e){
 					e.printStackTrace();
 				}
@@ -139,7 +139,7 @@ public class ReportsController extends AbstractClient {
 			sendServer(r,"ranking");
 			while(flag==0){
 				try {
-					Thread.sleep(5);
+					Thread.sleep(30);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -189,7 +189,7 @@ public class ReportsController extends AbstractClient {
 		};
 		generalpop.setText(pop);
 		generalpop.setVisible(true);
-
+ 
 		flag=0;
 
 	}
@@ -307,6 +307,7 @@ public class ReportsController extends AbstractClient {
 				arr = new ArrayList <OrderedBook>((ArrayList <OrderedBook>)msg);
 			}
 			else if (((ArrayList<?>)msg).get(0) instanceof Integer) {
+				System.out.println("ranking");
 				arrint = new ArrayList <Integer>((ArrayList <Integer>)msg);
 				System.out.println("handle message from server:"+arrint);
 

@@ -21,7 +21,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
+import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 //import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -32,7 +36,12 @@ import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
-public class MyServer extends AbstractServer {
+
+
+
+
+
+public class MyServer extends AbstractServer {    
 	Connection conn;
 	private ServerSocket serverSocket;
 	public static void main(String[] args) {
@@ -65,6 +74,8 @@ public class MyServer extends AbstractServer {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
 
+			case "ranking":
+				ranking(msg,client);break;
 			case "getReaders":
 				getReaders(msg,client);break;
 			case "getGeneralPop":
