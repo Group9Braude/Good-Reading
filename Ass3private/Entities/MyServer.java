@@ -336,17 +336,20 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			String query = "UPDATE books SET title = '" + book.getTitle() + "'," + "language = '" + book.getLanguage() + "'," + "summary = '" + book.getSummary()
 			+ "'," + "author = '" + book.getAuthor()+ "'," + "keyWord = '" + book.getKeyword() + "'," + "tableOfContents = '" + book.getToc() +"' "
-					+ "WHERE bookid = " + book.getBookid() + ";";
+			+ "WHERE bookid = " + book.getBookid() + ";";
+			System.out.println("editBook MyServer:" + query );
 			stmt.executeUpdate(query);
-			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "bookid = '" + book.getBookid() + "';";
-			stmt.executeUpdate(query);
-			ArrayList<String> a = new ArrayList<String>();
+			query = "UPDATE genresbooks SET genre = '" + book.			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "WHERE bookid = " + book.getBookid() + ";";
+			System.out.println("editBook MyServer:" + query );
+
+ = new ArrayList<String>();
 			a.add("GoToUpdateScreen");
 			client.sendToClient(a);
-		}catch(Exception e){e.printStackTrace();}
-	}//	TextField titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, genre
+		}cuthorTextField, keyWordTextField, tocTextField, genre
 
 	public void getBookForEdition(Book book, ConnectionToClient client){
+				System.out.println("getBookForEdition");
+);
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM books where bookid = " + book.getBookid() + ";");
@@ -366,9 +369,15 @@ public class MyServer extends AbstractServer {
 		
 	}
 	
-	public void UpdateBookListSearch(Book book, ConnectionToClient client){
+	public			Sys			System.out.println("GetBookForEdition: " + book1.getGenre());
+
+
+		}catch(Exception e){e.printStackTrace();}
+
+nnectionToClient client){
 		ArrayList<Book> bookList = new ArrayList<Book>();
-		Book b = new Book();
+	
+ok b = new Book();
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(book.query);
