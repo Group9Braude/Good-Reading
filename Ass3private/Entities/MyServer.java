@@ -2,9 +2,7 @@
 package Entities;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -18,6 +16,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
@@ -40,9 +39,16 @@ import ocsf.server.ConnectionToClient;
 
 
 
-public class MyServer extends AbstractServer {
+/**
+ * @author ozdav
+ *
+ */
+/**
+ * @author ozdav
+ *
+ */
+public class MyServer extends AbstractServer {    
 	Connection conn;
-	private ServerSocket serverSocket;
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -60,7 +66,6 @@ public class MyServer extends AbstractServer {
 		this.connectToDB();
 		try {
 			this.listen();
-			serverSocket = new ServerSocket(port);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -225,11 +230,16 @@ public class MyServer extends AbstractServer {
 				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 				Document doc = (Document) docBuilder.newDocument();
-				Element rootElement = ((org.w3c.dom.Document) doc).createElement(fileDetails.getContent());
+				Element rootElement = ((org.w3c.dom.Document) doc).createElement("content");
+				rootElement.appendChild(((org.w3c.dom.Document) doc).createTextNode("BLOOP"));
 				((Node) doc).appendChild(rootElement);
 				TransformerFactory transformerFactory = TransformerFactory.newInstance();
 				Transformer transformer = transformerFactory.newTransformer();
 				DOMSource source = new DOMSource((Node) doc);
+				StreamResult test = new StreamResult(System.out);
+				//StreamResult result = new StreamResult(out);
+				transformer.transform(source, test);		
+
 
 			}catch(Exception e){}
 
@@ -516,16 +526,36 @@ public class MyServer extends AbstractServer {
 
 	}
 	/*class that helps for organizing and sorting to get ranking of a book*/
+	/**
+	 * This class represents books and their number of purchases. 
+	 * It helps for sorting Book arrays, by the number of purchases, so we can send to the client the books popularity.
+	 * @author ozdav
+	 *
+	 */
 	public class Book_NumOfPurchases implements Comparable<Book_NumOfPurchases> {
 		public int bookid;
 		public int numofpurchases;
+		/**
+		 * Constructs according to specific bookid and numofpurchases
+		 * @param bookid Book's id in DB
+		 * @param numofpurchases Book's number of purchases in DB
+		 */
 		public Book_NumOfPurchases(int bookid,int numofpurchases){
 			this.bookid=bookid;
 			this.numofpurchases=numofpurchases;
 		}
+		/**
+		 * Sets book's number of purchases
+		 * @param x
+		 */
 		public void setnumofpurchases(int x){
 			this.numofpurchases=x;
 		}
+		/**
+		 * Overrides the Object's compareTo, to compare values according to their number of purchases.
+		 * <p>
+		 * Used for sorting books that been reached from server.
+		 */
 		public int compareTo(Book_NumOfPurchases info) {
 			if (this.numofpurchases < info.numofpurchases) {
 				return -1;
@@ -537,6 +567,13 @@ public class MyServer extends AbstractServer {
 		}
 
 	}
+	/**
+	 * This method gets a String(not really a book) which represents a specific genre of a book, and its id.
+	 * <p>
+	 * @return A string which represents the book popularity in the specific genre
+	 * @param b handles a BookTitle which is actually a string, represents the wanted genre, and the bookid
+	 * @param client
+	 */
 	private void gettingGenrePlace(Book b, ConnectionToClient client) {
 		ArrayList <Book_NumOfPurchases> arr=new ArrayList<Book_NumOfPurchases>();
 		try {
@@ -566,6 +603,11 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * This method returns an array of the general popularity of the books in the library
+	 * @param msg dummy
+	 * @param client 
+	 */
 	private void ranking(Object msg, ConnectionToClient client) {
 		ArrayList<Book_NumOfPurchases>arr=new ArrayList<Book_NumOfPurchases>();
 		ArrayList<Integer>array=new ArrayList<Integer>();
@@ -626,7 +668,14 @@ public class MyServer extends AbstractServer {
 			getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);
 		} catch (Exception e) {e.printStackTrace();}
 	}
-
+/**
+ *Getting statistics of a book: #of purchases & #of searches of a book by date
+ *<p>
+ * Input: Bookid, from-(date), until(date)
+ * @return: Array which handles number of purchases and number of searches from date until date.
+ * @param s Search s- includes: bookid, from-(date), until(date)
+ * @param client
+ */
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
 
@@ -730,7 +779,11 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}                        
 	}
-
+/**
+ * Activate suspended books and return them to the reader's search
+ * @param b a Book that the worker/manager would like to activate
+ * @param client
+ */
 	private void activeBooks(Book b, ConnectionToClient client){
 		Statement stmt;
 		try {
@@ -741,6 +794,11 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+/**
+ * Temporarily suspending a book from reader's search
+ * @param b Book manager/worker would like to suspend
+ * @param client
+ */
 	private void tempremoveabook(Book b, ConnectionToClient client){
 		Statement stmt;
 		try {
@@ -859,7 +917,12 @@ public class MyServer extends AbstractServer {
 		}	
 
 	}
-
+/**
+ * Initializes a list of books which are in DB while software boots
+ * <p>
+ * Useful around all the code. Economizes accesses to server.
+ * @param client
+ */
 
 	public void initializeBookList(ConnectionToClient client){/*******************************************/
 		try {
@@ -875,7 +938,7 @@ public class MyServer extends AbstractServer {
 		} catch (Exception  e) {
 			e.printStackTrace();
 		}	
-	}//	
+	}
 
 
 
@@ -895,8 +958,13 @@ public class MyServer extends AbstractServer {
 	}
 
 
-
-
+/**
+ * Logout of client
+ * <p>
+ *@return Updating client's status of offline
+ * @param user represents the client, getting from it his id
+ * @param client
+ */
 	private void LogoutUser(User user,ConnectionToClient client)
 	{
 		try {
