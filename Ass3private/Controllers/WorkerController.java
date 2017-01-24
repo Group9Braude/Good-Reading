@@ -33,7 +33,9 @@ public class WorkerController extends AbstractClient {
 	static private ArrayList<String> foundReaders, foundWorkers;
 	static ArrayList<String> genresList;
 	static public ArrayList<String> foundBooks, foundReviews;
-	static public String windowNow; 
+	static ArrayList<Book> foundBookList;
+	public static Book bookForEdit;
+
 	@FXML
 	private Button addBookButton, removeBookButton;
 	@FXML
@@ -41,7 +43,7 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText,genresText, removeBookTitle;
 	@FXML
-	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,//TextFields for book removal
+	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,genresTextField,//TextFields for book removal
 	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
 	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
 	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
@@ -51,9 +53,8 @@ public class WorkerController extends AbstractClient {
 	public ComboBox<String> genresComboBox, genresAddComboBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
-	static boolean initGBL=true, flag=true, isUpdate=false;
-	static ArrayList<Book> foundBookList;
-	public static Book bookForEdit;
+
+
 
 
 
@@ -67,18 +68,15 @@ public class WorkerController extends AbstractClient {
 
 	}
 
-
-
-
-
+	
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
-				((GeneralMessage)msg).actionNow = actionNow;
-				WorkerController client = new WorkerController();
-				try {
-					client.openConnection();
-					client.sendToServer(msg);
-				} catch (Exception e) {e.printStackTrace();}
+			((GeneralMessage)msg).actionNow = actionNow;
+			WorkerController client = new WorkerController();
+			try {
+				client.openConnection();
+				client.sendToServer(msg);
+			} catch (Exception e) {e.printStackTrace();}
 		} catch (Exception e) {	e.printStackTrace();}
 	}
 
@@ -94,7 +92,9 @@ public class WorkerController extends AbstractClient {
 
 	}
 
-
+	public void onEditTheme() throws IOException{
+		Main.showEditTheme();
+	}
 
 	public void showFound(){//POPUP
 		try{
@@ -116,6 +116,46 @@ public class WorkerController extends AbstractClient {
 			removeBookButton.setText("ALL BOOKS");
 
 	}
+
+	public void onGenreSelected(){
+		if(genresAddComboBox.getSelectionModel().getSelectedItem() == null)
+			return;
+		System.out.println("newgenre:" );
+		String genreSelected = genresAddComboBox.getSelectionModel().getSelectedItem();
+		String genreText="";
+		
+		for(int i=0;i<genresTextField.getText().length();i++)//Deep Copy from textfield to variable genreText
+			genreText += genresTextField.getText().charAt(i);
+		
+		String newGenre = "";
+		if(!genresTextField.getText().contains(genreSelected)){//The genre is not there! add it!
+			if(genreText.equals(""))
+				newGenre = genreSelected;
+			else
+				newGenre = (genreText + " " + genreSelected);
+		}
+		else{//The genre is already there! remove it!
+			int indexOf = genresTextField.getText().indexOf(genreSelected);//Where the genreSelected String begins.
+			boolean isFirst = false;
+			newGenre="";
+			System.out.println("indexof" +indexOf);
+			for(int i=0;i<genreText.length();i++){
+				if(indexOf==0&&i==0){
+					isFirst = true;
+					i+=genreSelected.length()+1;
+				}
+				if(i>=indexOf-1&&!isFirst){
+					i+=genreSelected.length()+1;//For the "," the " " will be taken care of next iteration with the i++
+					isFirst=true;//This block should be done only once
+				}
+				if(i<genreText.length())
+					newGenre+= genreText.charAt(i);
+			}//end for
+		}//end else
+		genresTextField.setText(newGenre);
+	}
+
+
 
 	public void onGenresPressAdd(){
 		Genre genre = new Genre();
@@ -184,7 +224,7 @@ public class WorkerController extends AbstractClient {
 			genresText.setFill(Color.RED);genres=false;
 		}
 		else{
-			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresAddComboBox.getSelectionModel().getSelectedItem());
+			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresTextField.getText());
 		}
 
 
@@ -195,6 +235,7 @@ public class WorkerController extends AbstractClient {
 
 		}
 	}//End onAddBook
+
 
 
 	/****************************/
@@ -292,11 +333,10 @@ public class WorkerController extends AbstractClient {
 		Image image = new Image(file.toURI().toString());
 		checkImageView.setImage(image);
 	}
-	/****************************/
-	
 
 
-/*                MAKE SURE REMOVE REMOVES FROM GENRESBOOKS ASWELL !!!!!!!!    */
+
+	/*                MAKE SURE REMOVE REMOVES FROM GENRESBOOKS ASWELL !!!!!!!!    */
 	public void onRemoveBook(){
 		Book book = new Book();
 		book.genreToSearch = "";
@@ -333,7 +373,6 @@ public class WorkerController extends AbstractClient {
 
 
 	public void onEditGenre() throws IOException{
-		System.out.println("lol");
 		Main.showEditGenre();
 	}
 
@@ -345,7 +384,6 @@ public class WorkerController extends AbstractClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 
 
@@ -502,15 +540,16 @@ public class WorkerController extends AbstractClient {
 
 		if(msg instanceof String)
 			System.out.println((String)msg);
-		
+
 		if(msg instanceof Book){
+			System.out.println("book");
 			bookForEdit = new Book(((Book)msg).getTitle(), ((Book)msg).getBookid(), ((Book)msg).getAuthor(), ((Book)msg).getLanguage(),
 					((Book)msg).getSummary(), ((Book)msg).getToc(), ((Book)msg).getKeyword(), ((Book)msg).getisSuspend(), ((Book)msg).getNumOfPurchases());
 			bookForEdit.setGenre(((Book)msg).getGenre());
 			System.out.println("msg instanceof Book workercontroller");
 
 		}
-		
+
 		//	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 
 		else if(((ArrayList<?>)msg).get(0) instanceof Book){
@@ -521,7 +560,7 @@ public class WorkerController extends AbstractClient {
 			else 
 				Book.bookList = new ArrayList<Book>((ArrayList<Book>)msg);
 		}
-		
+
 		else if(((ArrayList<?>)msg).get(0) instanceof Review){
 			for(Book book:(ArrayList<Book>)msg)
 				Book.bookList.add(book);
@@ -559,8 +598,6 @@ public class WorkerController extends AbstractClient {
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
 				EditReviewController.backOn=true;break;
-			case "GoToUpdateScreen":
-				EditBookController.isBackFromServer = true;break;
 			}
 		}
 	}
@@ -581,28 +618,24 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void  onAddBookL(){
-		onRlsAdd();
 		try {
 			Main.showAddBook();
 		} catch (IOException e) {e.printStackTrace();}
 	}
 
 	public void onRemoveBookL(){
-		onRlsRemove();
 		try{
 			Main.showRemoveBook();
 		}catch (IOException e){e.printStackTrace();}
 	}
 
 	public void onSearchUserL(){
-		onRlsSearchU();
 		try{
 			Main.showSearchUser();
 		}catch(IOException e){e.printStackTrace();}
 	}
 
 	public void onLogoutL(){ 
-		onRlsLogout();
 		sendServer(LoginScreenController.currentWorker, "Logout");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 	}
@@ -663,7 +696,7 @@ public void onUpdateBookL(){
 		System.out.println(book2.getGenre());
 
 
-	
+
 	try {
 		Main.showUpdateBookScreen();
 	} catch (IOException e) {

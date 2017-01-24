@@ -7,7 +7,7 @@ public class Reader extends User
 	private static final long serialVersionUID = 1L;
 	private int subscribed;//0 - not subscribed, 1 - month, 2 - year
 	private int isLogged;
-	private String firstName,lastName;
+	private String firstName,lastName,id;
 	private int IBookValid,allowed,debt,isFrozen,premission;
 	private String cardnum,secCode,expDate;
 	private ArrayList<OrderedBook> myBooks = new ArrayList<OrderedBook>();
@@ -19,6 +19,7 @@ public class Reader extends User
 		super(id,password);
 		this.firstName=firstname;
 		this.lastName=lastname;
+		this.id=id;
 	}
 	 
 	public Reader(String id, String password) 

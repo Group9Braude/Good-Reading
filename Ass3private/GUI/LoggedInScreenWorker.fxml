@@ -7,54 +7,125 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="514.0" prefWidth="511.0" style="-fx-background-color: #92DFE7;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WorkerController">
+<AnchorPane prefHeight="540.0" prefWidth="819.0" style="-fx-background-color: #92DFE7;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WorkerController">
    <children>
-      <Text layoutX="91.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="What would you like to do?">
+      <ImageView fitHeight="563.0" fitWidth="819.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/WorkerScreenBackground.png" />
+         </image>
+      </ImageView>
+      <Button layoutX="-1.0" layoutY="139.0" mnemonicParsing="false" onAction="#onEditGenre" prefHeight="74.0" prefWidth="182.0" text="Edit Genre">
          <font>
-            <Font name="Segoe Print" size="23.0" />
+            <Font name="System Bold" size="17.0" />
          </font>
-      </Text>
-      <ImageView fx:id="addImageView" fitHeight="42.0" fitWidth="142.0" layoutX="2.0" layoutY="242.0" onMouseClicked="#onAddBookL" onMousePressed="#onPressAdd" onMouseReleased="#onRlsAdd" pickOnBounds="true" preserveRatio="true">
+         <graphic>
+            <ImageView fitHeight="54.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/Edit.jpg" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button layoutX="-1.0" layoutY="72.0" mnemonicParsing="false" onAction="#onEditTheme" prefHeight="72.0" prefWidth="182.0" text="Edit Theme">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="58.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/Edit.jpg" />
+               </image>
+            </ImageView>
+         </graphic></Button>
+      <Button layoutX="-1.0" layoutY="378.0" mnemonicParsing="false" onAction="#onAddBookL" prefHeight="92.0" prefWidth="279.0" text="Add Book">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Button layoutX="-1.0" layoutY="468.0" mnemonicParsing="false" onAction="#onRemoveBookL" prefHeight="74.0" prefWidth="279.0" text="Remove Book">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Button layoutX="393.0" layoutY="52.0" mnemonicParsing="false" onAction="#onCheckReviewL" prefHeight="92.0" prefWidth="279.0" text="Check Reviews">
+         <font>
+            <Font name="System Bold Italic" size="16.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="64.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/Review.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutY="208.0" mnemonicParsing="false" onAction="#onUpdateBookL" prefHeight="85.0" prefWidth="279.0" text="Update Book">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+      </Button>
+      <Button layoutX="-1.0" mnemonicParsing="false" onAction="#onSearchUserL" text="Search User">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="60.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/SearchUser.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="-1.0" layoutY="293.0" mnemonicParsing="false" prefHeight="85.0" prefWidth="279.0" text="Update Reader Details">
+         <font>
+            <Font name="System Bold" size="17.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="58.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/16.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button layoutX="645.0" layoutY="446.0" mnemonicParsing="false" onAction="#onLogoutL" text="Logout">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="51.0" fitWidth="98.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/12.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <AnchorPane layoutY="-4.0">
+         <children>
+            <VBox>
+               <children>
+                  <HBox>
+                     <children>
+                        <AnchorPane />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </AnchorPane>
+      <ImageView fitHeight="85.0" fitWidth="72.0" layoutX="5.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/AddBook.png" />
+            <Image url="@../src/AddBook.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="removeImageView" fitHeight="45.0" fitWidth="162.0" layoutX="153.0" layoutY="241.0" onMouseClicked="#onRemoveBookL" onMousePressed="#onPressRemove" onMouseReleased="#onRlsRemove" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="62.0" fitWidth="104.0" layoutX="10.0" layoutY="474.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/RemoveBook.png" />
+            <Image url="@../src/RemoveBook.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="checkImageView" fitHeight="42.0" fitWidth="169.0" layoutX="332.0" layoutY="240.0" onMouseClicked="#onCheckReviewL" onMousePressed="#onPressCheck" onMouseReleased="#onRlsCheck" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="62.0" fitWidth="72.0" layoutX="5.0" layoutY="220.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/CheckReviews.png" />
+            <Image url="@../src/16.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="updateImageView" fitHeight="45.0" fitWidth="152.0" layoutX="2.0" layoutY="359.0" onMouseClicked="#onUpdateBookL" onMousePressed="#onPressUpdate" onMouseReleased="#onRlsUpdate" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/Update%20Book.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="searchImageView" fitHeight="55.0" fitWidth="162.0" layoutX="161.0" layoutY="359.0" onMouseClicked="#onSearchUserL" onMousePressed="#onPressSearchU" onMouseReleased="#onRlsSearchU" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/Search%20User.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="enterImageView" fitHeight="45.0" fitWidth="162.0" layoutX="335.0" layoutY="358.0" onMousePressed="#onPressEnter" onMouseReleased="#onRlsEnter" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/Enter%20Reader.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="logoutImageView" fitHeight="57.0" fitWidth="169.0" layoutX="251.0" layoutY="456.0" onMouseClicked="#onLogoutL" onMousePressed="#onPressLogout" onMouseReleased="#onRlsLogout" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Orel%20Buttons/Logout.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="158.0" fitWidth="511.0" layoutX="61.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/HelloWorker.png" />
-         </image>
-      </ImageView>
-      <Button layoutX="14.0" layoutY="456.0" mnemonicParsing="false" onAction="#onEditGenre" text="Edit Genre" />
-      <Button layoutX="127.0" layoutY="456.0" mnemonicParsing="false" text="Edit Theme" />
    </children>
 </AnchorPane>

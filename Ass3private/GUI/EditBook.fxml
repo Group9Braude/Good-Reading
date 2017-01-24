@@ -17,13 +17,24 @@
             <Insets bottom="150.0" />
          </padding>
       </TextField>
-      <TextField fx:id="keyWordTextField" layoutX="246.0" layoutY="88.0" promptText="Key Word" />
-      <TextField fx:id="tocTextField" layoutX="246.0" layoutY="184.0" prefHeight="167.0" prefWidth="202.0" promptText="Table Of Contents">
+      <TextField fx:id="keyWordTextField" layoutX="428.0" layoutY="112.0" promptText="Key Word" />
+      <TextField fx:id="tocTextField" layoutX="412.0" layoutY="284.0" prefHeight="167.0" prefWidth="202.0" promptText="Table Of Contents">
          <padding>
             <Insets bottom="150.0" />
          </padding>
       </TextField>
-      <Button layoutX="331.0" layoutY="351.0" mnemonicParsing="false" onAction="#onEditBook" prefHeight="41.0" prefWidth="73.0" text="Edit" />
-      <ComboBox fx:id="genreComboBox" layoutX="149.0" layoutY="134.0" onMousePressed="#onGenrePress" prefWidth="150.0" />
+      <Button layoutX="481.0" layoutY="479.0" mnemonicParsing="false" onAction="#onEditBook" prefHeight="41.0" prefWidth="73.0" text="Edit" />
+      <ComboBox fx:id="genreComboBox" layoutX="54.0" layoutY="169.0" onAction="#onNewGenreChosen" onMousePressed="#onGenrePress" prefWidth="150.0" />
+      <Text layoutX="54.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Title" />
+      <Text layoutX="428.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Author" />
+      <Text layoutX="428.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Key Word" />
+      <Text layoutX="53.0" layoutY="106.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Language" />
+      <Text layoutX="54.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Summary" />
+      <Text layoutX="417.0" layoutY="272.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Table Of Contents" />
+      <Text layoutX="58.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Genres" />
+      <Text layoutX="433.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Themes" />
+      <TextField fx:id="genresTextField" editable="false" layoutX="55.0" layoutY="215.0" />
+      <TextField editable="false" layoutX="429.0" layoutY="215.0" />
+      <ComboBox layoutX="428.0" layoutY="169.0" prefWidth="150.0" />
    </children>
 </AnchorPane>

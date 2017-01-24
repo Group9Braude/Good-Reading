@@ -191,7 +191,9 @@ public class EditGenre extends AbstractClient {
 
 	public void onBack(){
 		try {
-			Main.showLoggedInScreenWorker();
+			if(Main.getCurrentUser().getType()==3)
+				Main.showManagerLoggedScreen();
+			else Main.showLoggedInScreenWorker();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

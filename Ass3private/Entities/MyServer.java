@@ -1,23 +1,40 @@
 package Entities;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList; 
+import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+
+//import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+
+import com.sun.xml.internal.txw2.Document;
 
 import application.Main;
-import javafx.scene.control.TextField;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
 
 public class MyServer extends AbstractServer {
 	Connection conn;
-
+	private ServerSocket serverSocket;
 	public static void main(String[] args) {
 		int port = 0;
 		try {
@@ -35,6 +52,7 @@ public class MyServer extends AbstractServer {
 		this.connectToDB();
 		try {
 			this.listen();
+			serverSocket = new ServerSocket(port);
 		}
 		catch (IOException e) {
 			e.printStackTrace();
@@ -46,7 +64,8 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
-			
+			case "ranking":
+				ranking(msg,client);break;
 			case "getReaders":
 				getReaders(msg,client);break;
 			case "getGeneralPop":
@@ -81,6 +100,8 @@ public class MyServer extends AbstractServer {
 				initializeBookList(client);break;
 			case "InitializeWorkerList":
 				initializeWorkerList((Worker)msg, client);break;
+			case "InitializeThemeList":
+				initializeThemeList((Theme)msg, client);break;
 			case "getUserBooks":
 				getUserBooks((Reader)msg, client);break;
 			case "TempRemoveAbook":
@@ -143,7 +164,7 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
-			/*case "GetAllGenres":
+				/*case "GetAllGenres":
 				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
@@ -151,12 +172,106 @@ public class MyServer extends AbstractServer {
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
+			case "CreateFile":
+				createFile((FileDetails)msg,client); break;
+			case "CreateAndSendFile":
+				createAndSendFile((FileDetails)msg,client); break;
+
+			case "CheckNewReviews":
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
-	
+
+	private void createAndSendFile(FileDetails fileDetails, ConnectionToClient client)
+	{
+		Statement stmt;
+		try {
+			stmt = conn.createStatement();
+		} catch (SQLException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
+		ByteArrayOutputStream out = new ByteArrayOutputStream();
+		switch(fileDetails.getType())
+		{
+		case "PDF":
+			try
+			{
+				Document document = new Document();
+				PdfWriter writer = PdfWriter.getInstance(document, out);
+				document.open();
+				document.add(new Paragraph(fileDetails.getContent()));
+				document.close();
+				writer.close();
+			} catch (DocumentException e)
+			{
+				e.printStackTrace();
+			}
+			break;
+		case "DOC":
+			XWPFDocument document = new XWPFDocument();
+			XWPFParagraph paragraph = document.createParagraph();
+			XWPFRun run = paragraph.createRun();
+			run.setText(fileDetails.getContent());
+			try {
+				document.write(out);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		case "FB2":
+			try{
+				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+				Document doc = (Document) docBuilder.newDocument();
+				  Element rootElement = ((org.w3c.dom.Document) doc).createElement(fileDetails.getContent());
+				  ((Node) doc).appendChild(rootElement);
+				  TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				  Transformer transformer = transformerFactory.newTransformer();
+				  DOMSource source = new DOMSource((Node) doc);
+
+			}catch(Exception e){}
+
+		default: break;
+
+		}
+
+		byte[] fileBytes = out.toByteArray();
+		try {
+			client.sendToClient(fileBytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
+
+	}
+
+	@SuppressWarnings("resource")
+	private void createFile(FileDetails fileDetails, ConnectionToClient client)
+	{
+		try{
+			Socket socket = serverSocket.accept();
+			System.out.println("Accepted connection : " + socket);
+			File transferFile = new File (fileDetails.getFileName());
+			byte [] bytearray = new byte [(int)transferFile.length()];
+			FileInputStream fin = new FileInputStream(transferFile);
+			BufferedInputStream bin = new BufferedInputStream(fin);
+			bin.read(bytearray,0,bytearray.length);
+			OutputStream os = socket.getOutputStream();
+			System.out.println("Sending Files...");
+			os.write(bytearray,0,bytearray.length);
+			os.flush();
+			socket.close();
+			System.out.println("File transfer complete");
+		}catch(Exception e){System.out.println("ERROR!!!");}
+
+
+	}
+
 	private void updateReviewList(Review review, ConnectionToClient client)
 	{
 		try{
@@ -201,6 +316,7 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+
  
 	
 	private void getReaders(Object msg, ConnectionToClient client) {
@@ -215,7 +331,7 @@ public class MyServer extends AbstractServer {
 	}
 
 	public void editBook(Book book, ConnectionToClient client){
-		System.out.println("Edit Book in My Server");
+
 		try{
 			Statement stmt = conn.createStatement();
 			String query = "UPDATE books SET title = '" + book.getTitle() + "'," + "language = '" + book.getLanguage() + "'," + "summary = '" + book.getSummary()
@@ -239,8 +355,10 @@ public class MyServer extends AbstractServer {
 
 
 			rs = stmt.executeQuery("SELECT * FROM genresbooks where bookid = " + book.getBookid() + ";");
-			rs.next();
-			book1.setGenre(rs.getString(1));
+			if(rs.next())
+				book1.setGenre(rs.getString(1));
+			else
+				book1.setGenre("");
 			System.out.println("GetBookForEdition: " + book1.getGenre());
 			client.sendToClient(book1);
 			
@@ -327,6 +445,24 @@ public class MyServer extends AbstractServer {
 		}
 	}
 
+	public void initializeThemeList(Theme theme, ConnectionToClient client){/*******************************************/
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM theme";
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("test");
+			ArrayList<Theme> themeList = new ArrayList<Theme>();	
+			while(rs.next()){
+				System.out.println("theme");
+				themeList.add( new Theme (rs.getString(1),rs.getString(2)));
+			}
+			System.out.println(themeList.size());
+
+			client.sendToClient(themeList);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}	
+	}
 
 	public void initializeGenreList(ConnectionToClient client){/*******************************************/
 		try {
@@ -526,7 +662,22 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	private void ranking(Object msg, ConnectionToClient client) {
+		ArrayList<Book_NumOfPurchases>arr=new ArrayList<Book_NumOfPurchases>();
+		ArrayList<Integer>array=new ArrayList<Integer>();
 
+		try{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from books;");
+			while(rs.next())
+				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(9)));
+			Collections.sort(arr);	
+			for(int i=0;i<arr.size();i++)
+				array.add(arr.get(i).bookid);
+			client.sendToClient(array);
+		}
+		catch(Exception e){e.printStackTrace();}
+	}
 	private void getBookGenres(Book b,ConnectionToClient client){
 		ArrayList<String> arr=new ArrayList<String>();
 		try {
@@ -534,7 +685,7 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE bookid="+ b.getBookid() + ";");
 			while(rs.next())
 				arr.add(rs.getString(1));//Adding genres to array
-			arr.add("end");
+			System.out.println(arr);
 			client.sendToClient(arr);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -769,19 +920,14 @@ public class MyServer extends AbstractServer {
 				bookIDS.add(rs.getInt(3));authorList.add(rs.getString(2));titleList.add(rs.getString(1));//Get all the info about the book
 				//At this point I know that if bookid X is in index i in the bookIDS, its also index i in the other lists.
 			}
-
+			
 			for(int id : bookIDS){
+				String genre="";
 				ResultSet rs1 = stmt.executeQuery("SELECT genre, bookid FROM genresbooks WHERE bookid = '"+id+"' AND genre LIKE '%" + book.genreToSearch + "%';");
-				while(rs1.next()){
-					if(id!=rs1.getInt(2)){
-						authorList.remove(i);titleList.remove(i);bookIDS.remove(i);
-					}
-					else
-						list.add(titleList.get(i) + " by " + authorList.get(i) + ", Genre: " + rs1.getString(1) + ", With Book ID : " + id);
-				}
-				i++;
-			}
-			System.out.println("i : " + i);
+				while(rs1.next())
+					genre+=rs1.getString(1) + ", ";
+				list.add(titleList.get(i) + " by " + authorList.get(i) + " Genre: " + genre + " With Book ID: " + id);
+			}		
 			client.sendToClient(list);
 		}catch(Exception e){e.printStackTrace();}
 	}
@@ -878,8 +1024,21 @@ public class MyServer extends AbstractServer {
 			String query = "insert into books values ('" + book.getTitle() + "','" + cnt + "','" + book.getAuthor() + "','" + 
 					book.getLanguage() + "','" + book.getSummary() + "','" + book.getToc() + "','" + book.getKeyword() + "','0', '0');";
 			stmt.executeUpdate(query);
-			query = "insert into genresbooks values('" + book.getGenre() + "'," + cnt + ");";
+			while(!book.getGenre().equals("")){
+				String genre = "", genreNew="";
+				int counter=0;//Number of chars of the next genre
+				for(int i=0;i<book.getGenre().length()&&!((book.getGenre().charAt(i))==' ');i++){
+					counter++;
+					genre+=book.getGenre().charAt(i);
+				}
+				for(int i=counter+1;i<book.getGenre().length();i++)
+					genreNew +=book.getGenre().charAt(i);
+				System.out.println("Genre New : " + genreNew);
+			query = "insert into genresbooks values('" + genre + "'," + cnt + ");";
+			System.out.println("ServerAddBook:" + query);
+			book.setGenre(genreNew);
 			stmt.executeUpdate(query);
+			}
 		} catch (SQLException e) {e.printStackTrace();}
 		try {
 			client.sendToClient("Added!");

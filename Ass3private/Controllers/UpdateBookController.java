@@ -48,6 +48,8 @@ public class UpdateBookController {
 		}catch(Exception e){e.printStackTrace();}
 	}
 
+	
+	//Close the Current window and go back to screenWorker
 
 	public void onBack(){
 		try {
@@ -62,7 +64,8 @@ public class UpdateBookController {
 		getBookListWithGenres();
 	}
 
-
+//Get the booklist joined with genres, so I will have the books with their genres in one list for the tableview
+	
 	public void  getBookListWithGenres(){
 		bookList = new ArrayList<Book>();
 		genresBooksList = new ArrayList<Book>();
@@ -75,12 +78,11 @@ public class UpdateBookController {
 				genresBooksList.add(book);
 			}
 		genresBooksList.remove(0);
-
-
 	}
 
+	//Initialize the table view
 	public void initialize(){
-		if(!flag){
+		if(!flag){//Meaning we just came back from a search
 			for(int i=0;i<bookList.size();i++)
 				for(int j=0;j<genresBooksList.size();j++)
 					if(bookList.get(i).getBookid() == genresBooksList.get(j).getBookid()){
@@ -143,7 +145,7 @@ public class UpdateBookController {
 		sendServer(book, "UpdateBookList");
 		while(WorkerController.foundBookList ==null)
 			Sleep(10);
-
+		System.out.println("here");
 		try{Main.showUpdateBookScreen();}catch(Exception e){e.printStackTrace();}
 	}
 	
@@ -210,6 +212,5 @@ public class UpdateBookController {
 		try{
 			Main.showUpdateBookScreen();
 		}catch(Exception e){e.printStackTrace();} 
-
 	}
 }
