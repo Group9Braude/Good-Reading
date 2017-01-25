@@ -77,7 +77,7 @@ public class UpdateBookController {
 				isGenres = true;
 				genresBooksList.add(book);
 			}
-		genresBooksList.remove(0);
+		genresBooksList.remove(0); 
 	}
 
 	//Initialize the table view
@@ -118,8 +118,12 @@ public class UpdateBookController {
 
 		TableColumn<Book,String> keyWordColumn =new TableColumn<Book,String>("Key word");
 		keyWordColumn.setCellValueFactory(new PropertyValueFactory<>("keyword"));
+		
+		TableColumn<Book,String> themeColumn =new TableColumn<Book,String>("Theme");
+		keyWordColumn.setCellValueFactory(new PropertyValueFactory<>("theme"));
 
-		booksTableView.getColumns().addAll(titleColumn,genreColumn,authorColumn,IDColumn,langColumn,summColumn,keyWordColumn);//Adding the columns to the table
+		booksTableView.getColumns().addAll(titleColumn,genreColumn,authorColumn,IDColumn,langColumn,summColumn,
+				keyWordColumn, themeColumn);//Adding the columns to the table
 	}
 
 	public void onUpdateBook(){

@@ -1,13 +1,14 @@
 package Controllers;
 //SEND THE WHOLE CLASS
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import Entities.Book;
 import Entities.GeneralMessage;
-import Entities.Genre; 
+import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
@@ -22,7 +23,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -35,9 +35,12 @@ public class WorkerController extends AbstractClient {
 	static public ArrayList<String> foundBooks, foundReviews;
 	static ArrayList<Book> foundBookList;
 	public static Book bookForEdit;
+	private static boolean isBackFromServer/*For some methods to know if I am back from the server with answers*/
+	, isReview = false,//To know if I should notify the worker that there are new reviews
+	isAlive = false; //For the Thread in the constructor
 
 	@FXML
-	private Button addBookButton, removeBookButton;
+	private Button addBookButton, removeBookButton, reviewsButton;
 	@FXML
 	private ImageView addedButton, catImageView, addImageView, removeImageView, checkImageView, updateImageView, searchImageView, enterImageView, logoutImageView;
 	@FXML
@@ -46,11 +49,14 @@ public class WorkerController extends AbstractClient {
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,genresTextField,//TextFields for book removal
 	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
 	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
-	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField;//TextFields for book search/add
+	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField,//TextFields for book search/add
+	idTextField, passTextField, firstNameTextField, lastNameTextField;//TextFields for user update or add
 	@FXML
-	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
+	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox, subscriptionChoiceBoxR;
 	@FXML
 	public ComboBox<String> genresComboBox, genresAddComboBox;
+	@FXML
+	public ComboBox<Integer> subscriptionComboBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
 
@@ -65,9 +71,23 @@ public class WorkerController extends AbstractClient {
 		foundBooks = null;
 		foundReviews = null;
 		genresList = null;
-
 	}
 
+	public void initialize(){
+		if(!isReview){
+			isReview=true;
+			isAlive=true;
+			Thread thread = new Thread(){
+				public void run(){
+					try{
+						while(true){
+							while(!isAlive)
+								Sleep(10000);							
+							isBackFromServer=false;
+							sendServer(new Review(), "CheckReviews");
+							while(!isBackFromServer){
+								Sleep(50);
+							}
 	
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
@@ -123,10 +143,10 @@ public class WorkerController extends AbstractClient {
 		System.out.println("newgenre:" );
 		String genreSelected = genresAddComboBox.getSelectionModel().getSelectedItem();
 		String genreText="";
-		
+
 		for(int i=0;i<genresTextField.getText().length();i++)//Deep Copy from textfield to variable genreText
 			genreText += genresTextField.getText().charAt(i);
-		
+
 		String newGenre = "";
 		if(!genresTextField.getText().contains(genreSelected)){//The genre is not there! add it!
 			if(genreText.equals(""))
@@ -156,6 +176,21 @@ public class WorkerController extends AbstractClient {
 	}
 
 
+	public void onSubscriptionChoicePress(){
+		if(subscriptionChoiceBoxR == null)
+			return;
+		ObservableList<String> items = FXCollections.observableArrayList();
+		items.add("1");items.add("0");items.add("-1");
+		subscriptionChoiceBoxR.setItems(items);
+	}
+
+	public void onSubscriptionPress(){
+		if(subscriptionComboBox == null)
+			return;
+		ObservableList<Integer> items = FXCollections.observableArrayList();
+		items.add(1);items.add(0);items.add(-1);
+		subscriptionComboBox.setItems(items);
+	}
 
 	public void onGenresPressAdd(){
 		Genre genre = new Genre();
@@ -232,6 +267,7 @@ public class WorkerController extends AbstractClient {
 		if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
 			sendServer(book, "AddBook");
+
 
 		}
 	}//End onAddBook
@@ -377,6 +413,8 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onBack(){
+		System.out.println("onback");
+		isAlive=true;
 		try {
 			if(Main.getCurrentUser().getType()==3)
 				Main.showManagerLoggedScreen();
@@ -388,6 +426,17 @@ public class WorkerController extends AbstractClient {
 
 
 
+/**
+ * This function returns the status of the review checking thread
+ * @return the status of the thread.
+ */
+	public static boolean isAlive() {
+		return isAlive;
+	}
+
+	public static void setAlive(boolean isAlive) {
+		WorkerController.isAlive = isAlive;
+	}
 
 	public void onWorkerSearch(){
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
@@ -417,9 +466,11 @@ public class WorkerController extends AbstractClient {
 
 
 	public  void onLogout(){
+
 		Worker worker = new Worker();
 		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
 		sendServer(worker, "LogOutUser");
+		isAlive=false;
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 
 	}
@@ -428,8 +479,7 @@ public class WorkerController extends AbstractClient {
 
 
 	public void onReaderSearch(){
-		String lastName=lastNameTextFieldR.getText(),firstName=firstNameTextFieldR.getText(), id=idTextFieldR.getText(),
-				readerID = readerIDTextFieldR.getText();
+		String lastName=lastNameTextFieldR.getText(),firstName=firstNameTextFieldR.getText(), readerID = readerIDTextFieldR.getText();
 		// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
 		//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
 
@@ -441,8 +491,8 @@ public class WorkerController extends AbstractClient {
 			reader.query +=("lastName LIKE '%"+lastName+"%' AND ");
 		if(!readerID.equals(""))
 			reader.query +=("readerID='"+readerID+"' AND ");
-		if(!id.equals(""))
-			reader.query +=("id='"+id+"' AND ");
+		if(subscriptionChoiceBoxR.getSelectionModel().getSelectedItem()!=null &&!subscriptionChoiceBoxR.getSelectionModel().getSelectedItem().equals(""))
+			reader.query +=("subscription = '" + subscriptionChoiceBoxR.getSelectionModel().getSelectedItem() + "' AND ");
 		String query = "";
 		for(int i=0;i<reader.query.length()-5;i++)
 			query+=reader.query.charAt(i);
@@ -452,6 +502,103 @@ public class WorkerController extends AbstractClient {
 		sendServer(reader, "FindReaders");
 		readerLVUpdate();
 
+	}
+
+
+	public void onAddNewReader(){
+		boolean id, pass;
+		Reader reader = new Reader();
+		if(idTextField.getText().equals("")){
+			titleText.setFill(Color.RED); id=false;
+		}else{
+			titleText.setFill(Color.BLACK); id=true; reader.setID(idTextField.getText());
+		}
+		if(passTextField.getText().equals("")){
+			authorText.setFill(Color.RED); pass=false;
+		}else{
+			titleText.setFill(Color.BLACK); pass=true;reader.setPassword(passTextField.getText());
+		}
+		if(!id&&!pass)
+			return;
+
+		reader.setFirstName(firstNameTextField.getText());
+		reader.setLastName(lastNameTextField.getText());
+		if(subscriptionComboBox.getSelectionModel().getSelectedItem()==null)
+			reader.setSubscribed(0);
+		else
+			reader.setSubscribed(subscriptionComboBox.getSelectionModel().getSelectedItem());
+		isBackFromServer = false;
+		sendServer(reader, "AddNewReader");
+	}
+
+
+
+
+
+
+	public void onUpdateReader(){
+		Reader reader = new Reader();
+		if(!firstNameTextFieldR.getText().equals(""))
+			reader.setFirstName(firstNameTextFieldR.getText());
+		if(!lastNameTextFieldR.getText().equals(""))
+			reader.setLastName(lastNameTextFieldR.getText());
+		if(subscriptionChoiceBoxR.getSelectionModel().getSelectedItem() != null && !subscriptionChoiceBoxR.getSelectionModel().getSelectedItem().equals(""))
+			reader.setSubscribed(Integer.parseInt(subscriptionChoiceBoxR.getSelectionModel().getSelectedItem()));
+		if(foundReadersListView.getSelectionModel().getSelectedItem()==null)
+			return;
+		int indexOf = foundReadersListView.getSelectionModel().getSelectedItem().indexOf("ID:");
+		indexOf+=4;
+		String id="";
+		for(int i=indexOf;i<foundReadersListView.getSelectionModel().getSelectedItem().length();i++)
+			id+=foundReadersListView.getSelectionModel().getSelectedItem().charAt(i);
+		reader.setID(id);
+
+		isBackFromServer=false;
+		sendServer(reader, "UpdateReader");
+		while(!isBackFromServer)
+			Sleep(5);
+		isBackFromServer=false;
+		saveOldList(foundReadersListView, "UpdateReader", firstNameTextFieldR.getText() + " " + lastNameTextFieldR.getText() + " ID: " + id);
+
+	}
+
+
+
+	public void onRemoveReader(){
+		String readerString;
+		if((readerString = foundReadersListView.getSelectionModel().getSelectedItem()).equals(""))
+			return;
+		int indexOf = readerString.indexOf("ID:");
+		indexOf+=4;//First char of the id.
+		if(indexOf>readerString.length())
+			JOptionPane.showMessageDialog(null, "No ID for this reader");
+		Reader reader = new Reader();
+		String id="";
+		for(int i=indexOf;i<readerString.length();i++)
+			id+=readerString.charAt(i);
+		reader.setID(id);
+		sendServer(reader, "RemoveReader");
+		isBackFromServer=false;
+		while(!isBackFromServer)
+			Sleep(5);
+		isBackFromServer=false;
+		saveOldList(foundReadersListView, "RemoveTuple", "");
+	}
+
+	public void saveOldList(ListView<String> listView, String whatToDo, String toUpdate){
+		if(listView == null || listView.getItems() == null)
+			return;
+		ObservableList<String> list = listView.getItems();
+		int index = listView.getSelectionModel().getSelectedIndex();
+		if(list ==null)
+			return;
+		switch(whatToDo){
+		case "RemoveTuple":
+			list.remove(index);listView.setItems(list);break;
+		case "UpdateReader":
+			list.set(index, toUpdate);listView.setItems(list);break;
+
+		}
 	}
 
 
@@ -556,7 +703,7 @@ public class WorkerController extends AbstractClient {
 			if((((ArrayList<Book>)msg).get(0)).query.equals("UpdateBookList")){
 				foundBookList = new ArrayList<Book>((ArrayList<Book>)msg);
 				foundBookList.remove(0);
-			}		
+			}		 
 			else 
 				Book.bookList = new ArrayList<Book>((ArrayList<Book>)msg);
 		}
@@ -575,9 +722,9 @@ public class WorkerController extends AbstractClient {
 		else{
 			switch((String)((ArrayList<?>)msg).get(0)){
 			case "Readers":
-				foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
+				foundReaders = new ArrayList<>((ArrayList<String>)msg);foundReaders.remove(0);break;
 			case "Workers":
-				foundWorkers = new ArrayList<>((ArrayList<String>)msg);break;
+				foundWorkers = new ArrayList<>((ArrayList<String>)msg);foundWorkers.remove(0);break;
 			case "LoggedReaders":
 				foundReaders = new ArrayList<>((ArrayList<String>)msg);break;
 			case "LoggedWorkers":
@@ -598,6 +745,22 @@ public class WorkerController extends AbstractClient {
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
 				EditReviewController.backOn=true;break;
+			case "BookAdd":
+				JOptionPane.showMessageDialog(null, "Book Added!");break;
+			case "ReaderRemoved":
+				JOptionPane.showMessageDialog(null, "Reader Removed!");isBackFromServer = true;break;
+			case "ReaderAdded":
+				JOptionPane.showMessageDialog(null, "Reader Added!");isBackFromServer = true;break;
+			case "UserAlreadyInDB":
+				JOptionPane.showMessageDialog(null, "This ID is taken!");isBackFromServer = true;break;
+			case "UpdateReader":
+				JOptionPane.showMessageDialog(null, "Reader Updated!");isBackFromServer = true;break;
+			case "ReviewsToCheck":
+				JOptionPane.showMessageDialog(null, "New Reviews Require Your Attention");isBackFromServer = true;reviewsButton.setVisible(false);System.out.println("sup");break;
+			case "NoReviewsToCheck":
+				isBackFromServer = true;System.out.println("~sup");break;
+
+
 			}
 		}
 	}
@@ -606,6 +769,7 @@ public class WorkerController extends AbstractClient {
 	/*           LoggedInWorkerController          */
 
 	public void onUpdateBookL(){
+		isAlive=false;
 		foundBookList = null;
 		Book book = new Book();
 		book.query = "select * from books;";
@@ -617,29 +781,42 @@ public class WorkerController extends AbstractClient {
 		}catch(Exception e){e.printStackTrace();}
 	}
 
+	public void onAddNewReaderL(){
+		isAlive=false;
+		reviewsButton.setVisible(false);
+		try{
+			Main.showAddNewReaderScreen();
+		}catch(IOException e){e.printStackTrace();}
+	}
+
 	public void  onAddBookL(){
+		isAlive=false;
 		try {
 			Main.showAddBook();
 		} catch (IOException e) {e.printStackTrace();}
 	}
 
 	public void onRemoveBookL(){
+		isAlive=false;
 		try{
 			Main.showRemoveBook();
 		}catch (IOException e){e.printStackTrace();}
 	}
 
 	public void onSearchUserL(){
+		isAlive=false;
 		try{
 			Main.showSearchUser();
 		}catch(IOException e){e.printStackTrace();}
 	}
 
 	public void onLogoutL(){ 
+		isAlive=false;
 		sendServer(LoginScreenController.currentWorker, "Logout");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 	}
 	public void onCheckReviewL(){
+		isAlive=false;
 		Review review = new Review();
 		sendServer(review, "GetReviews");
 		while(foundReviews == null)

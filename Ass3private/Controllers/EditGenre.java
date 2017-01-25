@@ -190,6 +190,7 @@ public class EditGenre extends AbstractClient {
 	}
 
 	public void onBack(){
+		WorkerController.setAlive(true);
 		try {
 			if(Main.getCurrentUser().getType()==3)
 				Main.showManagerLoggedScreen();

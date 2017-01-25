@@ -29,13 +29,32 @@ import javafx.scene.text.Text;
 import javafx.util.Callback;
 import ocsf.client.AbstractClient;
 
+/**
+ * This class represents the manager's periodical reports
+ * <p>
+ * Reports give four options to manager:
+ * 	   1)Getting reader's purchases
+ *     2)Getting statistics of a book by date(histogram)
+ *	   3)Getting book's general popularity
+ *	   4)Getting Book's popularity accoding to specific genre
+ * @author ozdav
+ *
+ */
 public class ReportsController extends AbstractClient {
-
+/**
+ * Constructs and initializes host and port, for AbstractClient 
+ */
 	public ReportsController() {
 		super(Main.host,Main.port);
 		// TODO Auto-generated constructor stub
 	}
-
+/**
+ * A shortcut function for sending message for the server
+ * <p>
+ * Useful in most of the functions, and economizes the code 
+ * @param msg
+ * @param actionNow
+ */
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		ReportsController client = new ReportsController();
@@ -93,6 +112,13 @@ public class ReportsController extends AbstractClient {
 	@FXML
 	public TableColumn readerid,firstname,lastname,bookcol,authorcol,titlecol,bookcol1,authorcol1,titlecol1,bookcol2,authorcol2,titlecol2;
 	@FXML
+	/**
+	 * Initializes the Tables and ListViews that located in Reports options from DB
+	 * <p>
+	 * This function happens while reports screen been clicked
+	 * <p>
+	 * Getting data from database and put it in screens so the client see it and can choose his stuff
+	 */
 	private void initialize(){
 		mybar.setVisible(false);
 		try {
@@ -106,7 +132,7 @@ public class ReportsController extends AbstractClient {
 
 			while(flag==0)
 				try {
-					Thread.sleep(5);
+					Thread.sleep(30);
 				} catch (InterruptedException e){
 					e.printStackTrace();
 				}
@@ -139,7 +165,7 @@ public class ReportsController extends AbstractClient {
 			sendServer(r,"ranking");
 			while(flag==0){
 				try {
-					Thread.sleep(5);
+					Thread.sleep(30);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -173,12 +199,20 @@ public class ReportsController extends AbstractClient {
 	@FXML
 	public Text generalpop;
 
-	/*check in general popularity*/
+	/**
+	 * Back button handler to Manager Screen
+	 * @throws IOException
+	 */
 	public void onReportsBack() throws IOException{
 		Main.showManagerLoggedScreen();
 	}
+	/**
+	 * Check popularity button's handler in General popularity option
+	 * <p>
+	 * Presents on GUI a TextField with the book's general popularity, after we handled data from server
+	 */
 	public void onCheckk(){
-		sendServer(new Book(booktable2.getSelectionModel().getSelectedItem().getBookid()),"getGeneralPop");//getting book's genres
+		sendServer(new Book(booktable2.getSelectionModel().getSelectedItem().getBookid()),"getGeneralPop");
 		while(flag==0){
 			try {
 				Thread.sleep(30);
@@ -189,11 +223,18 @@ public class ReportsController extends AbstractClient {
 		};
 		generalpop.setText(pop);
 		generalpop.setVisible(true);
-
+ 
 		flag=0;
 
 	}
 	/*enter in genre popularity*/
+	/**
+	 * Enter button's handler in Genre popularity option in screen
+	 * <p>
+	 * The client choose a book from the TableView and after clicking on this enter button, we access 
+	 * the server to get the book's genres and presents them on screen, so the client can choose according to which
+	 * genre he wants the book popularity
+	 */
 	public void onEnter1(){
 		result.clear();
 		genres.clear();
@@ -207,18 +248,21 @@ public class ReportsController extends AbstractClient {
 				e.printStackTrace();
 			}
 		};
-		System.out.println("fndskjfndskjnfdskjnfdskjdskjnfkjsd");
-		System.out.println("arrstring:"+arrstring);
 		please.setVisible(true);
 		genre.setVisible(true);
 		checkpop.setVisible(true);
 		for(int i=0;i<arrstring.size();i++)
 			genres.add(arrstring.get(i));
 		genre.setItems(genres);
-
 		flag=0;
 	}
 	/*check pop in genre pop*/
+	/**
+	 * Check popularity button's handler in Genre popularity option
+	 * <p>
+	 *The client choose one of the book's genres and after clicking on this 'Check popularity' button, we access 
+	 * the server to get the book's popularity according to this genre, and presents them on screen
+	 */
 	public void onCheckpop(){
 		sendServer(new Book(booktable1.getSelectionModel().getSelectedItem().getBookid(),genre.getSelectionModel().getSelectedItem().toString()), "gettingGenrePlace");//getting how many books in the selected genre
 		while(flag==0){
@@ -237,6 +281,13 @@ public class ReportsController extends AbstractClient {
 
 	@SuppressWarnings("unchecked")
 	@FXML
+	/**
+	 * Check button's handler in Statistics by date option 
+	 * <p>
+	 * After client choose a book, and from date and until date, then he clicked on this button
+	 * <p>
+	 * This handler presents a histogram of the book's statistics by date: number of purchases and number of searches
+	 */
 	public void onCheck(){
 		mybar.setVisible(true);
 		mybar.getData().clear();
@@ -275,6 +326,11 @@ public class ReportsController extends AbstractClient {
 		flag=0;
 	}
 	@FXML
+	/**Enter button's handler in Reader purchases option
+	 * <p>
+	 * represents the reader's purchases since he has registered
+	 * 
+	 */
 	public void onEnter(){
 		Reader r=new Reader(id.getText(),null);
 		obsMyBooks=FXCollections.observableArrayList();	
@@ -301,12 +357,19 @@ public class ReportsController extends AbstractClient {
 
 
 	@Override
+	/**
+	 * Taking care of the server feedback message, after client asked for
+	 * <p>
+	 * Here the variables are been initialized according to the type of the message
+	 * so we can work with them in the handlers functions
+	 */
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof ArrayList){
 			if(((ArrayList<?>)msg).get(0) instanceof OrderedBook){
 				arr = new ArrayList <OrderedBook>((ArrayList <OrderedBook>)msg);
 			}
 			else if (((ArrayList<?>)msg).get(0) instanceof Integer) {
+				System.out.println("ranking");
 				arrint = new ArrayList <Integer>((ArrayList <Integer>)msg);
 				System.out.println("handle message from server:"+arrint);
 
