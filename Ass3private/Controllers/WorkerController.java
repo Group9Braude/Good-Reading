@@ -101,7 +101,6 @@ public class WorkerController extends AbstractClient {
 		}
 	}
 
-<<<<<<< HEAD
 	/**
 	 * This function is a general function, used all across my controllers.
 	 * <p>
@@ -110,8 +109,6 @@ public class WorkerController extends AbstractClient {
 	 * @param actionNow is the string that contains the information for to server to get us to the right case.
 	 * @author orel zilberman
 	 */
-=======
->>>>>>> refs/remotes/origin/master
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
@@ -315,15 +312,12 @@ public class WorkerController extends AbstractClient {
 
 
 
-<<<<<<< HEAD
 	/**
 	 * This method is called when the user wants to delete a book.
 	 * <p>
 	 * 	 it searches through the books in the database and displays the found books for the user to choose which one he wants to delete.
 	 */
-=======
 	/*                MAKE SURE REMOVE REMOVES FROM GENRESBOOKS ASWELL !!!!!!!!    */
->>>>>>> refs/remotes/origin/master
 	public void onRemoveBook(){
 		Book book = new Book();
 		book.genreToSearch = "";

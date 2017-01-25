@@ -220,11 +220,8 @@ public class EditBookController {
 		try {Main.showUpdateBookScreen();} catch (IOException e) {e.printStackTrace();}
 	}//end onbookedit
 
-<<<<<<< HEAD
 
-=======
 
->>>>>>> refs/remotes/origin/master
 	public void onBack(){
 		try {
 			if(Main.getCurrentUser().getType()==3)
@@ -235,8 +232,5 @@ public class EditBookController {
 		}
 	}
 }
-<<<<<<< HEAD
 
-=======
 
->>>>>>> refs/remotes/origin/master
