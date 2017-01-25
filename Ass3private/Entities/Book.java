@@ -90,92 +90,188 @@ public class Book extends GeneralMessage implements Serializable{
 		else
 			this.genre+=" " + genre;
 	}
+/**
+ * Is this book suspended?
+ * <p>
+ * Book that has been suspended would be presented in reader's search
+ * @return 0-active 1-suspended
+ */
 	public int getIsSuspend() {
 		return isSuspend;
 	}
-
+/**
+ * Sets 'suspend status' of a book
+ * @param isSuspend
+ */
 	public void setIsSuspend(int isSuspend) {
 		this.isSuspend = isSuspend;
 	}
-
+/**
+ * Get the number of purchases of this book
+ * @return
+ */
 	public int getNumOfPurchases() {
 		return numOfPurchases;
 	}
-
+/**
+ * Sets book's number of purchases
+ * @param numOfPurchases
+ */
 	public void setNumOfPurchases(int numOfPurchases) {
 		this.numOfPurchases = numOfPurchases;
 	}
-
+/**
+ * @return An ArrayList which handles the whole books in DB 
+ */
 	public static ArrayList<Book> getBookList() {
 		return bookList;
 	}
-
+/**
+ * Sets an ArrayList of books in booklist
+ * @param bookList 
+ */
 	public static void setBookList(ArrayList<Book> bookList) {
 		Book.bookList = bookList;
 	}
-
+/**
+ * @return deleteBookList
+ */
 	public ArrayList<Book> getDeleteBookList() {
 		return deleteBookList;
 	}
-
+/**
+ * Sets the deleteBookList
+ * @param deleteBookList an ArrayList of books
+ */
 	public void setDeleteBookList(ArrayList<Book> deleteBookList) {
 		this.deleteBookList = deleteBookList;
 	}
-
+/**
+ * Gets the query
+ * @return query
+ */
 	public String getQuery() {
 		return query;
 	}
-
+/**
+ * Sets query
+ * @param query
+ */
 	public void setQuery(String query) {
 		this.query = query;
 	}
-
+/**
+ * Gets books 'suspended' status
+ * <p>
+ * Suspended book wouldn't be presented to the readers
+ * @return 0-active 1-suspended
+ */
 	public int getisSuspend(){
 		return this.isSuspend;
 	}
+/**
+ * Sets book's 'status suspend'
+ * @param x 0-active 1-suspend 
+ */
 	public void setisSuspend(int x){
 		this.isSuspend=x;
 	}
+/**
+ * Gets the book's ID in DB
+ * @return
+ */
 	public int getBookid() 
 	{
 		return bookid;
 	}
+/**
+ * Sets the book's ID in DB
+ * @param bookid
+ */
 	public void setBookid(int bookid) {
 		this.bookid = bookid;
 	}
+/**
+ * Gets book's title
+ * @return Book's title
+ */
 	public String getTitle() {
 		return title;
 	}
+/**
+ * Sets the book's title
+ * @param title Title input
+ */
 	public void setTitle(String title) {
 		this.title = title;
 	}
+/**
+ * Gets the book's authors
+ * @return Book's authors
+ */
 	public String getAuthor() {
 		return author;
 	}
+/**
+ * Sets the book's authors
+ * @param author A String of authors
+ */
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+/**
+ * Gets the book's language
+ * @return Book's language
+ */
 	public String getLanguage() {
 		return language;
 	}
+/**
+ * Sets Book's language
+ * @param language the new language
+ */
 	public void setLanguage(String language) {
 		this.language = language;
 	}
+/**
+ * Get book's summary
+ * @return A string which presents the book's summary
+ */
 	public String getSummary() {
 		return summary;
 	}
+/**
+ * Sets book's summary	
+ * @param summary The new book's summary
+ */
 	public void setSummary(String summary) {
 		this.summary = summary;
 	}
+/**
+ * Get book's table of contents
+ * @return Book's table of contents
+ */
 	public String getToc() {
 		return toc;
 	}
+/**
+ * Sets the book's table of contents 
+ * @param toc The new book's table of contents 
+ */
 	public void setToc(String toc) {
 		this.toc = toc;
 	}
+/**
+ * Get book's keyword
+ * @return The book's keyword
+ */
 	public String getKeyword() {
 		return keyword;
 	}
+/**
+ * Sets the book's keyword
+ * @param keyword Book's new keyword
+ */
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
@@ -186,20 +282,38 @@ public class Book extends GeneralMessage implements Serializable{
 
 
 
-
+/**
+ * Overriding the toString of Object class, presents the book's title
+ */
 	public String toString()
 	{
 		return title;
 	}
+/**
+ * Gets books genres
+ * @return A Strig of the book's genres
+ */
 	public String getGenre() {
 		return genre;
 	}
+/**
+ * Sets the book's genres
+ * @param genre A string of genres 
+ */
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
+/**
+ * Get book's themes
+ * @return A String of the book's themes
+ */
 	public String getTheme() {
 		return theme;
 	}
+/**
+ * Sets the book's themes
+ * @param theme A String which represented the book's themes, separated with commas
+ */
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
