@@ -9,7 +9,7 @@ public class Genre extends GeneralMessage implements Serializable{
 	public static ArrayList<Genre> genreList=new ArrayList<Genre>();
 	private String genre, comments, oldGenre;
 	public String query;
-	public ArrayList<Theme> themeList;
+	public ArrayList<Theme> themeList=new ArrayList<Theme>();
 	
 	public Genre(){	
 		this.setComments("");

@@ -1,4 +1,5 @@
 package Controllers;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
@@ -14,6 +15,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -38,6 +40,10 @@ public class LoginScreenController extends AbstractClient {
 	@FXML
 	ImageView loginImageView;
 	
+	/**
+	 * This method initializes a key listener for user comfort
+	 * @author orel zilberman
+	 */
 	 public void initialize(){
 		  idTextField.setOnKeyPressed(new EventHandler<KeyEvent>() {
 		      @Override
@@ -62,7 +68,14 @@ public class LoginScreenController extends AbstractClient {
 	public LoginScreenController() { 
 		super(host, port);
 	}
-	
+	/**
+	 * This function is a general function, used all across my controllers.
+	 * <p>
+	 * It's main purpose is to send the server a message that it knows how to deal with.
+	 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+	 * @param actionNow is the string that contains the information for to server to get us to the right case.
+	 * @author orel zilberman
+	 */
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
@@ -76,9 +89,6 @@ public class LoginScreenController extends AbstractClient {
 	}
 	
 
-	public  void onExit(){
-		Main.onExit();
-	}
 
 
 
@@ -138,13 +148,6 @@ public class LoginScreenController extends AbstractClient {
 
 	}//End onLogin
 
-	public void onPress(){
-	/*	System.out.println("Press");
-		File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\ButtonPressed.png");
-		Image image = new Image(file.toURI().toString());
-		loginImageView.
-		setImage(image);*/
-	}
 
 	@SuppressWarnings("unchecked")
 	@Override

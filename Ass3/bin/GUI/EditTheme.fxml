@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.BorderPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="431.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.EditTheme">
+   <children>
+      <TextField layoutX="159.0" layoutY="89.0" prefHeight="32.0" prefWidth="260.0" promptText="Enter Theme Name" />
+      <Label layoutX="70.0" layoutY="87.0" prefHeight="25.0" prefWidth="83.0" text="Theme Name" />
+      <Label layoutX="70.0" layoutY="164.0" prefHeight="32.0" prefWidth="83.0" text="Add to Genre" />
+      <Button layoutX="68.0" layoutY="225.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="83.0" text="Add Theme" />
+      <Button layoutX="168.0" layoutY="225.0" mnemonicParsing="false" text="Update Theme" />
+      <Button layoutX="287.0" layoutY="225.0" mnemonicParsing="false" text="Delete Theme" />
+      <Label layoutX="64.0" layoutY="23.0" prefHeight="43.0" prefWidth="204.0" text="Edit Theme">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Label layoutX="70.0" layoutY="129.0" prefHeight="25.0" prefWidth="83.0" text="Choose Theme" />
+      <ComboBox fx:id="themeBox" layoutX="159.0" layoutY="126.0" onMouseClicked="#initTheme" prefHeight="32.0" prefWidth="260.0" promptText="Pick a Theme to Update or Remove" />
+      <Button layoutX="69.0" layoutY="275.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="83.0" text="Back" />
+      <ComboBox fx:id="genreBox" layoutX="159.0" layoutY="164.0" prefHeight="32.0" prefWidth="260.0" promptText="Pick a Genre that Theme will be added to" />
+   </children>
+</Pane>

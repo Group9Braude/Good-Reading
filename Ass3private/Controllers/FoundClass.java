@@ -15,6 +15,14 @@ public class FoundClass{
 	@FXML
 	private ListView<String> foundListView;
 
+	/**
+	 * This function is a general function, used all across my controllers.
+	 * <p>
+	 * It's main purpose is to send the server a message that it knows how to deal with.
+	 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+	 * @param actionNow is the string that contains the information for to server to get us to the right case.
+	 * @author orel zilberman
+	 */
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		WorkerController client = new WorkerController();
@@ -26,6 +34,10 @@ public class FoundClass{
 		}
 	}
 
+	/**
+	 * This method is called whenever the user wants to delete a certain book.
+	 * @author orel zilberman
+	 */
 	public void onRemove(){
 		String selected = foundListView.getSelectionModel().getSelectedItem();
 		if(selected==null || selected == "")
@@ -51,13 +63,21 @@ public class FoundClass{
 
 
 	}
+	/**
+	 * This method initializes the listview for user comfot.
+	 * @author orel zilberman
+	 */
 
 	public void initialize(){
-		WorkerController.foundBooks.set(0, "Name:                    Author:                       ID:");
 		ObservableList<String> items =FXCollections.observableArrayList();
 		items.addAll(WorkerController.foundBooks);
 		foundListView.setItems(items);
 	}
+	
+	/**
+	 * Closes the current window, which is just a pop up.
+	 * @author orel zilberman
+	 */
 
 	public void onBack(){
 		Main.popup.close();

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="616.0" prefWidth="474.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WorkerController">
+   <children>
+      <Text fx:id="removeBookTitle" fill="#19cbeb" layoutX="95.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add New User" underline="true" wrappingWidth="305.98046875">
+         <font>
+            <Font name="Segoe Print" size="37.0" />
+         </font>
+      </Text>
+      <TextField fx:id="idTextField" layoutX="160.0" layoutY="95.0" promptText="ID" />
+      <TextField fx:id="passTextField" layoutX="161.0" layoutY="147.0" promptText="Password" />
+      <TextField fx:id="firstNameTextField" layoutX="163.0" layoutY="197.0" promptText="First Name" />
+      <Text fx:id="titleText" layoutX="92.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="49.13671875" />
+      <Text fx:id="authorText" layoutX="86.0" layoutY="164.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password" wrappingWidth="58.13671875" />
+      <Text fx:id="languageText" layoutX="87.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" wrappingWidth="58.13671875" />
+      <Text fx:id="summaryText" layoutX="80.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" wrappingWidth="70.13671875" />
+      <Text fx:id="tocText" layoutX="80.0" layoutY="325.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription" wrappingWidth="70.13671875" />
+      <Button fx:id="removeBookButton" graphicTextGap="5.0" layoutX="179.0" layoutY="393.0" mnemonicParsing="false" onAction="#onAddNewReader" prefHeight="25.0" prefWidth="111.0" style="-fx-background-color: #b9b8d8;" text="Add Reader" textAlignment="JUSTIFY" textOverrun="WORD_ELLIPSIS">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Button>
+      <Button layoutX="197.0" layoutY="449.0" mnemonicParsing="false" onAction="#onBack" prefHeight="42.0" prefWidth="80.0" style="-fx-background-color: #b9b8d8;" text="BACK">
+         <font>
+            <Font name="System Bold Italic" size="12.0" />
+         </font>
+      </Button>
+      <ComboBox fx:id="subscriptionComboBox" layoutX="160.0" layoutY="308.0" onMousePressed="#onSubscriptionPress" prefWidth="150.0" promptText="Subscription" />
+      <TextField fx:id="lastNameTextField" layoutX="160.0" layoutY="253.0" promptText="Last Name" />
+   </children>
+</Pane>

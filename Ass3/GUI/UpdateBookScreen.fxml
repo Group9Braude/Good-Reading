@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.UpdateBookController">
+   <children>
+      <Button layoutX="430.0" layoutY="430.0" mnemonicParsing="false" onAction="#onBack" prefHeight="37.0" prefWidth="124.0" text="BACK" />
+      <Button layoutX="40.0" layoutY="430.0" mnemonicParsing="false" onAction="#onShowAllBooks" prefHeight="37.0" prefWidth="124.0" text="SHOW ALL BOOKS" />
+      <Button layoutX="237.0" layoutY="430.0" mnemonicParsing="false" onAction="#onEditBook" prefHeight="37.0" prefWidth="124.0" text="EDIT BOOK" />
+      <TableView fx:id="booksTableView" layoutX="-1.0" layoutY="-1.0" prefHeight="320.0" prefWidth="600.0" />
+      <Button layoutX="237.0" layoutY="360.0" mnemonicParsing="false" onAction="#onUpdateBook" prefHeight="37.0" prefWidth="124.0" text="SEARCH BOOK" />
+   </children>
+</Pane>

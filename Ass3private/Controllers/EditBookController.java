@@ -2,8 +2,6 @@ package Controllers;
 
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Genre;
@@ -15,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class EditBookController {
+	
 	@FXML
 	TextField titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 	genresTextField;
@@ -25,7 +24,7 @@ public class EditBookController {
 
 	public EditBookController(){
 	}
-
+	
 	public void initialize(){
 		book = new Book();
 		book.setBookid(WorkerController.bookForEdit.getBookid());
@@ -38,9 +37,16 @@ public class EditBookController {
 		genresTextField.setText(WorkerController.bookForEdit.getGenre());
 		genreComboBox.setPromptText("Genres");
 		genre = WorkerController.bookForEdit.getGenre();
-	}
-
-	public void sendServer(Object msg, String actionNow){/******************************/
+	} 
+/**
+ * This function is a general function, used all across my controllers.
+ * <p>
+ * It's main purpose is to send the server a message that it knows how to deal with.
+ * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+ * @param actionNow is the string that contains the information for to server to get us to the right case.
+ * @author orel zilberman
+ */
+	public void sendServer(Object msg, String actionNow){
 		try {
 			((GeneralMessage)msg).actionNow = actionNow;
 			WorkerController client = new WorkerController();
@@ -50,13 +56,20 @@ public class EditBookController {
 			} catch (Exception e) {e.printStackTrace();}
 		} catch (Exception e) {	e.printStackTrace();}
 	}//end sendserver
-
+/**
+ * This method gets the current running thread to sleep.
+ * @param time is a parameter that holds the time for the thread to sleep.
+ * @author orel zilberman
+ */
 	public void Sleep(int time){
 		try{
 			Thread.sleep(time);
 		}catch(Exception e){e.printStackTrace();}
 	}//endsleep
-
+/**
+ * This method initializes the genres combo box in the book edit screen
+ *  @author orel zilberman
+ */
 	public void onGenrePress(){
 		Genre genre = new Genre();
 		genreComboBox.getItems().clear();
@@ -68,6 +81,10 @@ public class EditBookController {
 		genreComboBox.setItems(items);
 	}
 
+	/**
+	 * This method initializes the books tableview if the user decided not to search eventually and pressed back, and changes the screen.
+	 *  @author orel zilberman
+	 */
 
 	public void onBackFromSearch(){
 
@@ -81,15 +98,18 @@ public class EditBookController {
 			Main.showUpdateBookScreen();
 		}catch(Exception e){e.printStackTrace();}
 	}//End onbackfromsearch
-
+	
+/**
+ * This method updates the textfield in the edit book screen, to faciliate the user and let him see what he has chosen so far.
+ *  @author orel zilberman
+ */
 
 	public void onNewGenreChosen(){
 		if(genreComboBox.getSelectionModel().getSelectedItem() == null)
 			return;
-		System.out.println("newgenre:" );
 		String genreSelected = genreComboBox.getSelectionModel().getSelectedItem();
 		String genreText="";
-
+		/* The following lines in this method are written to add and remove genres from the textfield */
 		for(int i=0;i<genresTextField.getText().length();i++)//Deep Copy from textfield to variable genreText
 			genreText += genresTextField.getText().charAt(i);
 
@@ -100,7 +120,7 @@ public class EditBookController {
 			else
 				newGenre = (genreText + " " + genreSelected);
 		}
-		else{//The genre is already there! remove it!
+		else{//The genre is already there! remove it!				
 			int indexOf = genresTextField.getText().indexOf(genreSelected);//Where the genreSelected String begins.
 			boolean isFirst = false;
 			newGenre="";
@@ -118,18 +138,60 @@ public class EditBookController {
 					newGenre+= genreText.charAt(i);
 			}//end for
 		}//end else
+		
 		genresTextField.setText(newGenre);
-	}
+	}//end onNewGenreAdd
 
 
+/**
+ * This method is called when the user wants to edit a book and after he entered the information he wants to update.
+ *  @author orel zilberman
+ */
 
-
-	public void onEditBook(){
+	public void onEditBook(){//titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 		if(genresTextField.equals("")){
-			JOptionPane.showConfirmDialog(null, "No genre chosen!");
+			JOptionPane.showMessageDialog(null, "No genre chosen!");
+			return;
+		}
+		else if(titleTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No title chosen!");
+			return;
+		}
+		else if(languageTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No language chosen!");
+			return;
+		}
+		else if(summaryTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No summary chosen!");
+			return;
+		}
+		else if(authorTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No author chosen!");
+			return;
+		}
+		else if(keyWordTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No key word !");
+			return;
+		}
+		else if (tocTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No table of contents !");
 			return;
 		}
 		Book book = new Book();
+		//The book will contain genres that are not in the WorkerController.bookForEdit
+
+		book.setGenre("");
+		String genreToAdd="";
+		book.removeGenres = "";
+		for(int i=0;i<genresTextField.getText().length();i++)
+			if(genresTextField.getText().charAt(i) == ' '){
+				book.GenreAdd(genreToAdd);
+				genreToAdd="";
+			}else
+				genreToAdd+=genresTextField.getText().charAt(i);
+		
+		
+
 
 		book.setAuthor(authorTextField.getText());
 		book.setTitle(titleTextField.getText());
@@ -155,6 +217,20 @@ public class EditBookController {
 			Sleep(5);
 		/*           Show the screen after edit book              */
 		try {Main.showUpdateBookScreen();} catch (IOException e) {e.printStackTrace();}
-	}
+	}//end onbookedit
+
+<<<<<<< HEAD
+}//end class
+=======
+	public void onBack(){
+			try {
+				if(Main.getCurrentUser().getType()==3)
+					Main.showManagerLoggedScreen();
+				else Main.showLoggedInScreenWorker();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 
 }
+>>>>>>> refs/remotes/origin/master

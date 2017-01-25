@@ -35,6 +35,7 @@ public class ManagerLoggedController {
 		Main.showEditGenre();
 	}
 	public void ontheme(){
+		Main.showEditTheme();
 	}
 	public void onLogout(){ 
 		sendServer(Main.getCurrentUser(), "Logout");
