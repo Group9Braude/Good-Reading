@@ -301,7 +301,7 @@ public class MyServer extends AbstractServer {
 	/*	@SuppressWarnings("resource")
 	private void createFile(FileDetails fileDetails, ConnectionToClient client)
 	{
-		try{
+	/*	try{
 			Socket socket = serverSocket.accept();
 			System.out.println("Accepted connection : " + socket);
 			File transferFile = new File (fileDetails.getFileName());
@@ -316,7 +316,7 @@ public class MyServer extends AbstractServer {
 			socket.close();
 			System.out.println("File transfer complete");
 		}catch(Exception e){System.out.println("ERROR!!!");}
-
+*/
 
 	}*/
 	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
@@ -1068,13 +1068,13 @@ public class MyServer extends AbstractServer {
 	}
 
 
-	/**
-	 * Logout of client
-	 * <p>
-	 *@return Updating client's status of offline
-	 * @param user represents the client, getting from it his id
-	 * @param client
-	 */
+/**
+ * Logout of client
+ * <p>
+ * Updating client's status of offline
+ * @param user represents the client, getting from it his id
+ * @param client
+ */
 	private void LogoutUser(User user,ConnectionToClient client)
 	{
 		try {
