@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.WorkerController">
+  <tabs>
+    <Tab text="Worker">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="175.0" fitWidth="162.0" layoutX="6.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../Desktop/Ass3Logos/Workers.png" />
+                     </image>
+                  </ImageView>
+                  <Text layoutX="175.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ID" wrappingWidth="49.13671875" />
+                  <Text layoutX="176.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" wrappingWidth="60.13671875" />
+                  <Text layoutX="406.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" wrappingWidth="64.13671875" />
+                  <Text layoutX="175.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Role" wrappingWidth="49.13671875" />
+                  <Text layoutX="409.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Department" wrappingWidth="70.13671875" />
+                  <Text layoutX="408.0" layoutY="86.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WorkerID" wrappingWidth="61.13671875" />
+                  <Button layoutX="13.0" layoutY="173.0" mnemonicParsing="false" onAction="#onAllManagers" prefHeight="25.0" prefWidth="151.0" text="See All The Managers" />
+                  <Button layoutX="12.0" layoutY="269.0" mnemonicParsing="false" onAction="#onLoggedWorkers" prefHeight="25.0" prefWidth="156.0" text="See Logged In Workers" />
+                  <TextField fx:id="idTextFieldW" layoutX="175.0" layoutY="37.0" />
+                  <TextField fx:id="lastNameTextFieldW" layoutX="176.0" layoutY="96.0" />
+                  <TextField fx:id="firstNameTextFieldW" layoutX="405.0" layoutY="37.0" />
+                  <TextField fx:id="workerIDTextFieldW" layoutX="409.0" layoutY="87.0" />
+                  <ChoiceBox fx:id="roleChoiceBox" layoutX="175.0" layoutY="148.0" prefWidth="150.0" />
+                  <ChoiceBox fx:id="departmentChoiceBox" layoutX="409.0" layoutY="148.0" prefWidth="150.0" />
+                  <Button layoutX="324.0" layoutY="193.0" mnemonicParsing="false" onAction="#onWorkerSearch" prefHeight="25.0" prefWidth="84.0" text="SEARCH" />
+                  <Button layoutX="11.0" layoutY="322.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="157.0" text="BACK" />
+                  <Button layoutX="14.0" layoutY="219.0" mnemonicParsing="false" onAction="#onAllWorkers" prefHeight="25.0" prefWidth="151.0" text="See All The Workers" />
+                  <ListView fx:id="foundWorkersListView" layoutX="200.0" layoutY="222.0" prefHeight="145.0" prefWidth="380.0" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Reader">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../Desktop/Ass3Logos/Readers.png" />
+                     </image>
+                  </ImageView>
+                  <Text layoutX="171.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" wrappingWidth="60.13671875" />
+                  <Text layoutX="409.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" wrappingWidth="64.13671875" />
+                  <Text fx:id="subscriptionTextFieldR" layoutX="415.0" layoutY="91.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subscription" wrappingWidth="69.13671875" />
+                  <Button layoutX="18.0" layoutY="275.0" mnemonicParsing="false" onAction="#onFrozenReaders" prefHeight="25.0" prefWidth="138.0" text="See All Frozen Readers" />
+                  <Button layoutX="17.0" layoutY="186.0" mnemonicParsing="false" onAction="#onLoggedReaders" text="See Logged In Readers" />
+                  <TextField fx:id="lastNameTextFieldR" layoutX="171.0" layoutY="95.0" promptText="last name" />
+                  <TextField fx:id="firstNameTextFieldR" layoutX="410.0" layoutY="37.0" promptText="first name" />
+                  <ChoiceBox fx:id="subscriptionChoiceBoxR" layoutX="410.0" layoutY="95.0" onMouseClicked="#onSubscriptionChoicePress" onMousePressed="#onSubscriptionChoicePress" prefWidth="150.0" />
+                  <Button layoutX="18.0" layoutY="232.0" mnemonicParsing="false" onAction="#onDebtReaders" prefHeight="25.0" prefWidth="138.0" text="See Readers In Debt" />
+                  <Button layoutX="459.0" layoutY="173.0" mnemonicParsing="false" onAction="#onReaderSearch" prefHeight="25.0" prefWidth="101.0" text="Search" />
+                  <Button layoutX="18.0" layoutY="319.0" mnemonicParsing="false" onAction="#onBack" prefHeight="25.0" prefWidth="138.0" text="BACK" />
+                  <TextField fx:id="readerIDTextFieldR" layoutX="171.0" layoutY="37.0" promptText="reader id" />
+                  <Text layoutX="168.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader ID" />
+                  <ListView fx:id="foundReadersListView" layoutX="169.0" layoutY="133.0" prefHeight="220.0" prefWidth="262.0" />
+                  <Button layoutX="458.0" layoutY="243.0" mnemonicParsing="false" onAction="#onUpdateReader" prefHeight="25.0" prefWidth="102.0" text="Update Reader" />
+                  <Button layoutX="460.0" layoutY="319.0" mnemonicParsing="false" onAction="#onRemoveReader" prefHeight="25.0" prefWidth="100.0" text="Remove Reader" />
+               </children></AnchorPane>
+      </content>
+    </Tab>
+  </tabs>
+</TabPane>

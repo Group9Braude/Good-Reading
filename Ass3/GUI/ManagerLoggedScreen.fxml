@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+ 
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="1154.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManagerLoggedController">
+   <children>
+      <ImageView fitHeight="613.0" fitWidth="1161.0" layoutX="-4.0" layoutY="-3.0">
+         <image>
+            <Image url="@../src/9.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="GetPeriodicReports" contentDisplay="RIGHT" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#onReports" prefHeight="50.0" prefWidth="256.0" text="Get Periodic Reports" textFill="#975050">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="53.0" fitWidth="70.0">
+               <image>
+                  <Image url="@../src/5.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="TemporarilyRemoveABook" contentDisplay="RIGHT" layoutX="14.0" layoutY="413.0" mnemonicParsing="false" onAction="#goTempRemoveAbook" prefHeight="56.0" prefWidth="331.0" text="Temporarily Remove A Book / Actiavte" textFill="#975050">
+         <font>
+            <Font name="Century Gothic" size="12.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="52.0" fitWidth="57.0">
+               <image>
+                  <Image url="@../src/8.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button contentDisplay="RIGHT" layoutX="15.0" layoutY="143.0" mnemonicParsing="false" onAction="#onEdit" prefHeight="56.0" prefWidth="256.0" text="Edit Reviews         " textFill="#975050">
+         <font>
+            <Font name="Century Gothic" size="14.0" />
+         </font>
+      </Button>
+      <Text fill="#f6ffeb" layoutX="14.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome back" wrappingWidth="196.77734375">
+         <font>
+            <Font name="Century Gothic Bold" size="12.0" />
+         </font>
+      </Text>
+      <Text fill="#f6ffeb" layoutX="14.0" layoutY="587.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Logged as a Manager" wrappingWidth="233.77734375">
+         <font>
+            <Font name="Century Gothic Bold" size="13.0" />
+         </font>
+         <effect>
+            <Reflection />
+         </effect>
+      </Text>
+      <Button layoutX="14.0" layoutY="226.0" maxHeight="200.0" maxWidth="331.0" mnemonicParsing="false" onAction="#onAdd" prefHeight="50.0" prefWidth="256.0" text="Add Book" textFill="#975050" />
+      <Button layoutX="14.0" layoutY="331.0" mnemonicParsing="false" onAction="#onRemove" prefHeight="50.0" prefWidth="256.0" text="Remove Book" textFill="#975050" />
+      <Button layoutX="14.0" layoutY="275.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ongenre" prefHeight="56.0" prefWidth="128.0" text="Edit Genre" textFill="#975050" />
+      <ImageView fitHeight="67.0" fitWidth="68.0" layoutX="14.0" layoutY="226.0">
+         <image>
+            <Image url="@../src/7.png" />
+         </image>
+      </ImageView>
+      <Text fill="#f8f6f6" layoutX="202.0" layoutY="313.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Managment">
+         <font>
+            <Font size="23.0" />
+         </font>
+         <effect>
+            <Reflection />
+         </effect>
+      </Text>
+      <Text fill="WHITE" layoutX="614.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tip: Use the table of contents to find specific chapters or sections." wrappingWidth="653.77734375">
+         <font>
+            <Font name="Century Gothic Bold" size="16.0" />
+         </font>
+      </Text>
+      <Button layoutX="142.0" layoutY="275.0" maxHeight="200.0" maxWidth="273.0" mnemonicParsing="false" onAction="#ontheme" prefHeight="56.0" prefWidth="128.0" text="Edit Theme" textFill="#975050" />
+      <Button contentDisplay="RIGHT" layoutX="1010.0" layoutY="551.0" mnemonicParsing="false" onAction="#onLogout" prefHeight="0.0" prefWidth="107.0" text="Logout">
+         <graphic>
+            <ImageView fitHeight="22.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../src/12.png" />
+               </image>
+            </ImageView>
+         </graphic>
+         <effect>
+            <InnerShadow />
+         </effect>
+      </Button>
+      <ImageView fitHeight="50.0" fitWidth="51.0" layoutX="185.0" layoutY="146.0">
+         <image>
+            <Image url="@../src/66.png" />
+         </image>
+      </ImageView>
+   </children>
+</Pane>

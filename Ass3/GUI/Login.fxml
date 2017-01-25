@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="199.0" prefWidth="345.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text fill="RED" layoutX="13.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authenticating the information..." wrappingWidth="238.13671875">
+         <font>
+            <Font name="MingLiU-ExtB" size="20.0" />
+         </font>
+      </Text>
+      <ImageView fitHeight="120.0" fitWidth="179.0" layoutX="173.0" layoutY="79.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../Desktop/Ass3Logos/Login.png" />
+         </image>
+      </ImageView>
+      <Text layoutX="14.0" layoutY="119.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sorry for keeping you waiting.." wrappingWidth="118.140625">
+         <font>
+            <Font name="Wingdings" size="23.0" />
+         </font>
+      </Text>
+   </children>
+</Pane>
