@@ -2,6 +2,8 @@ package Controllers;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Genre;
@@ -13,7 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class EditBookController {
-	
+
 	@FXML
 	TextField titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 	genresTextField;
@@ -24,7 +26,7 @@ public class EditBookController {
 
 	public EditBookController(){
 	}
-	
+
 	public void initialize(){
 		book = new Book();
 		book.setBookid(WorkerController.bookForEdit.getBookid());
@@ -38,14 +40,14 @@ public class EditBookController {
 		genreComboBox.setPromptText("Genres");
 		genre = WorkerController.bookForEdit.getGenre();
 	} 
-/**
- * This function is a general function, used all across my controllers.
- * <p>
- * It's main purpose is to send the server a message that it knows how to deal with.
- * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
- * @param actionNow is the string that contains the information for to server to get us to the right case.
- * @author orel zilberman
- */
+	/**
+	 * This function is a general function, used all across my controllers.
+	 * <p>
+	 * It's main purpose is to send the server a message that it knows how to deal with.
+	 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+	 * @param actionNow is the string that contains the information for to server to get us to the right case.
+	 * @author orel zilberman
+	 */
 	public void sendServer(Object msg, String actionNow){
 		try {
 			((GeneralMessage)msg).actionNow = actionNow;
@@ -56,20 +58,20 @@ public class EditBookController {
 			} catch (Exception e) {e.printStackTrace();}
 		} catch (Exception e) {	e.printStackTrace();}
 	}//end sendserver
-/**
- * This method gets the current running thread to sleep.
- * @param time is a parameter that holds the time for the thread to sleep.
- * @author orel zilberman
- */
+	/**
+	 * This method gets the current running thread to sleep.
+	 * @param time is a parameter that holds the time for the thread to sleep.
+	 * @author orel zilberman
+	 */
 	public void Sleep(int time){
 		try{
 			Thread.sleep(time);
 		}catch(Exception e){e.printStackTrace();}
 	}//endsleep
-/**
- * This method initializes the genres combo box in the book edit screen
- *  @author orel zilberman
- */
+	/**
+	 * This method initializes the genres combo box in the book edit screen
+	 *  @author orel zilberman
+	 */
 	public void onGenrePress(){
 		Genre genre = new Genre();
 		genreComboBox.getItems().clear();
@@ -98,11 +100,11 @@ public class EditBookController {
 			Main.showUpdateBookScreen();
 		}catch(Exception e){e.printStackTrace();}
 	}//End onbackfromsearch
-	
-/**
- * This method updates the textfield in the edit book screen, to faciliate the user and let him see what he has chosen so far.
- *  @author orel zilberman
- */
+
+	/**
+	 * This method updates the textfield in the edit book screen, to faciliate the user and let him see what he has chosen so far.
+	 *  @author orel zilberman
+	 */
 
 	public void onNewGenreChosen(){
 		if(genreComboBox.getSelectionModel().getSelectedItem() == null)
@@ -138,20 +140,19 @@ public class EditBookController {
 					newGenre+= genreText.charAt(i);
 			}//end for
 		}//end else
-		
+
 		genresTextField.setText(newGenre);
 	}//end onNewGenreAdd
 
 
-/**
- * This method is called when the user wants to edit a book and after he entered the information he wants to update.
- *  @author orel zilberman
- */
+	/**
+	 * This method is called when the user wants to edit a book and after he entered the information he wants to update.
+	 *  @author orel zilberman
+	 */
 
 	public void onEditBook(){//titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 		if(genresTextField.equals("")){
 			JOptionPane.showMessageDialog(null, "No genre chosen!");
-			return;
 		}
 		else if(titleTextField.equals("")){
 			JOptionPane.showMessageDialog(null, "No title chosen!");
@@ -189,8 +190,8 @@ public class EditBookController {
 				genreToAdd="";
 			}else
 				genreToAdd+=genresTextField.getText().charAt(i);
-		
-		
+
+
 
 
 		book.setAuthor(authorTextField.getText());
@@ -219,18 +220,15 @@ public class EditBookController {
 		try {Main.showUpdateBookScreen();} catch (IOException e) {e.printStackTrace();}
 	}//end onbookedit
 
-<<<<<<< HEAD
-}//end class
-=======
-	public void onBack(){
-			try {
-				if(Main.getCurrentUser().getType()==3)
-					Main.showManagerLoggedScreen();
-				else Main.showLoggedInScreenWorker();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 
+	public void onBack(){
+		try {
+			if(Main.getCurrentUser().getType()==3)
+				Main.showManagerLoggedScreen();
+			else Main.showLoggedInScreenWorker();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }
->>>>>>> refs/remotes/origin/master
+
