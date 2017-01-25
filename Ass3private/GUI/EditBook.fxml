@@ -37,5 +37,6 @@
       <TextField fx:id="genresTextField" editable="false" layoutX="55.0" layoutY="215.0" />
       <TextField editable="false" layoutX="429.0" layoutY="215.0" />
       <ComboBox layoutX="428.0" layoutY="169.0" prefWidth="150.0" />
+      <TextField fx:id="genresRomvalTextField" editable="false" layoutX="215.0" layoutY="215.0" visible="false" />
    </children>
 </AnchorPane>

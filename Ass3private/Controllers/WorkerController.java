@@ -1,13 +1,14 @@
 package Controllers;
 //SEND THE WHOLE CLASS
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import Entities.Book;
 import Entities.GeneralMessage;
-import Entities.Genre; 
+import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
@@ -22,7 +23,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -233,6 +233,7 @@ public class WorkerController extends AbstractClient {
 		if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
 			sendServer(book, "AddBook");
+			
 
 		}
 	}//End onAddBook
@@ -506,6 +507,8 @@ public class WorkerController extends AbstractClient {
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
 				EditReviewController.backOn=true;break;
+			case "BookAdd":
+				JOptionPane.showMessageDialog(null, "Book Added!");break;
 			}
 		}
 	}

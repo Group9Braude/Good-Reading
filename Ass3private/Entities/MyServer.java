@@ -21,9 +21,9 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.apache.poi.xwpf.usermodel.XWPFDocument;
+/*import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-import org.apache.poi.xwpf.usermodel.XWPFRun;
+import org.apache.poi.xwpf.usermodel.XWPFRun;*//*************************************************************/
 //import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -169,8 +169,8 @@ public class MyServer extends AbstractServer {
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
-			case "CreateFile":
-				createFile((FileDetails)msg,client); break;
+				//	case "CreateFile":
+				////			createFile((FileDetails)msg,client); break;
 				//	case "CreateAndSendFile":
 				//	createAndSendFile((FileDetails)msg,client); break;
 				/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
@@ -257,7 +257,7 @@ public class MyServer extends AbstractServer {
 	 */
 	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
-	@SuppressWarnings("resource")
+	/*	@SuppressWarnings("resource")
 	private void createFile(FileDetails fileDetails, ConnectionToClient client)
 	{
 		try{
@@ -277,7 +277,9 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){System.out.println("ERROR!!!");}
 
 
-	}
+	}*/
+	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
+
 
 	private void updateReviewList(Review review, ConnectionToClient client)
 	{
@@ -344,15 +346,44 @@ public class MyServer extends AbstractServer {
 			String query = "UPDATE books SET title = '" + book.getTitle() + "'," + "language = '" + book.getLanguage() + "'," + "summary = '" + book.getSummary()
 			+ "'," + "author = '" + book.getAuthor()+ "'," + "keyWord = '" + book.getKeyword() + "'," + "tableOfContents = '" + book.getToc() +"' "
 			+ "WHERE bookid = " + book.getBookid() + ";";
-			System.out.println("editBook MyServer:" + query );
 			stmt.executeUpdate(query);
-			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "WHERE bookid = " + book.getBookid() + ";";
-			System.out.println("editBook MyServer:" + query );
+			String genreToAdd="";
+			String queryForRemoval = "DELETE FROM genresbooks WHERE genre != '" ;
+			System.out.println("Genres : " + book.getGenre());
+			for(int i=0;i<book.getGenre().length();i++)
+				if((book.getGenre().charAt(i) == ' '||i==book.getGenre().length()-1) && !genreToAdd.equals("") && !genreToAdd.equals(" ")){
+					if(i==book.getGenre().length()-1)
+						genreToAdd+=book.getGenre().charAt(i);
+					query = "INSERT INTO genresbooks(genre, bookid) SELECT * FROM(SELECT '" + genreToAdd + "', " +book.getBookid() + ") AS TMP"
+							+ " WHERE NOT EXISTS ( SELECT * FROM genresbooks WHERE genre = '" + genreToAdd + "' AND bookid = " + book.getBookid() + ") LIMIT 1;";
+					System.out.println("\neditBook MyServer:" + query );
+					stmt.executeUpdate(query);
+					queryForRemoval += genreToAdd + "' AND genre != '" ;
+					genreToAdd="";
+				}
+				else if(! (book.getGenre().charAt(i) == ' ')){
+					genreToAdd+=book.getGenre().charAt(i);
+					System.out.print(book.getGenre().charAt(i));
+				}
+			query = queryForRemoval.substring(0, queryForRemoval.length()-15);
+			query += " AND bookid = " + book.getBookid() + ";";
+			System.out.println("editBook MyServer genres to remove from genresbooks:\n" + query );
+			stmt.executeUpdate(query);
+			
+			//end for!
+			/*String genreToRemove = "";
+			for(int i=0;i<book.removeGenres.length();i++)
+				if(book.removeGenres.charAt(i) == ' '){
+					query = "DELETE FROM genresbooks WHERE (genre = '" + genreToRemove + "' AND bookid = " + book.getBookid() + ");";
+					System.out.println("editBook MyServer:" + query );
+					stmt.executeQuery(query);
+					genreToRemove = "";
+				}else
+					genreToRemove+=book.removeGenres.charAt(i);*/
 
-			stmt.executeUpdate(query);
+
 		}catch(Exception e){e.printStackTrace();}
-	}//	TextField titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, genre
-
+	}
 	public void getBookForEdition(Book book, ConnectionToClient client){
 		System.out.println("getBookForEdition");
 		try{
@@ -428,7 +459,7 @@ public class MyServer extends AbstractServer {
 			}
 
 			client.sendToClient(bookList);
- 
+
 
 		}catch(Exception e){e.printStackTrace();}
 	}
@@ -705,14 +736,14 @@ public class MyServer extends AbstractServer {
 			getReviews("title, author, reviewid, review", "reviews" , "isApproved='0'",client);
 		} catch (Exception e) {e.printStackTrace();}
 	}
-/**
- *Getting statistics of a book: #of purchases & #of searches of a book by date
- *<p>
- * Input: Bookid, from-(date), until(date)
- * @return: Array which handles number of purchases and number of searches from date until date.
- * @param s Search s- includes: bookid, from-(date), until(date)
- * @param client
- */
+	/**
+	 *Getting statistics of a book: #of purchases & #of searches of a book by date
+	 *<p>
+	 * Input: Bookid, from-(date), until(date)
+	 * @return: Array which handles number of purchases and number of searches from date until date.
+	 * @param s Search s- includes: bookid, from-(date), until(date)
+	 * @param client
+	 */
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
 
@@ -816,11 +847,11 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}                        
 	}
-/**
- * Activate suspended books and return them to the reader's search
- * @param b a Book that the worker/manager would like to activate
- * @param client
- */
+	/**
+	 * Activate suspended books and return them to the reader's search
+	 * @param b a Book that the worker/manager would like to activate
+	 * @param client
+	 */
 	private void activeBooks(Book b, ConnectionToClient client){
 		Statement stmt;
 		try {
@@ -831,11 +862,11 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-/**
- * Temporarily suspending a book from reader's search
- * @param b Book manager/worker would like to suspend
- * @param client
- */
+	/**
+	 * Temporarily suspending a book from reader's search
+	 * @param b Book manager/worker would like to suspend
+	 * @param client
+	 */
 	private void tempremoveabook(Book b, ConnectionToClient client){
 		Statement stmt;
 		try {
@@ -910,22 +941,27 @@ public class MyServer extends AbstractServer {
 		ArrayList<String> authorList = new ArrayList<String>();
 		ArrayList<String> titleList = new ArrayList<String>();
 		ArrayList<Integer> bookIDS = new ArrayList<Integer>();
-		int i=0;
 		list.add("RemoveBook");
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(book.query);
+			System.out.println("MyServer removebook query : " + book.query);
 			while(rs.next()){
 				bookIDS.add(rs.getInt(3));authorList.add(rs.getString(2));titleList.add(rs.getString(1));//Get all the info about the book
 				//At this point I know that if bookid X is in index i in the bookIDS, its also index i in the other lists.
-			}
+				System.out.println("MyServer removebook author : " + rs.getString(2) + " by " + rs.getString(1));
 
+			}
+			int i=0;
 			for(int id : bookIDS){
 				String genre="";
 				ResultSet rs1 = stmt.executeQuery("SELECT genre, bookid FROM genresbooks WHERE bookid = '"+id+"' AND genre LIKE '%" + book.genreToSearch + "%';");
 				while(rs1.next())
 					genre+=rs1.getString(1) + ", ";
-				list.add(titleList.get(i) + " by " + authorList.get(i) + " Genre: " + genre + " With Book ID: " + id);
+				
+				list.add(titleList.get(i) + " by " + authorList.get(i) + " Genre: " + genre.substring(0, genre.length()-2) + "  With Book ID: " + id);
+				System.out.println(titleList.get(i) + " by " + authorList.get(i) + " Genre: " + genre + "  With Book ID: " + id);
+				i++;
 			}		
 			client.sendToClient(list);
 		}catch(Exception e){e.printStackTrace();}
@@ -949,12 +985,13 @@ public class MyServer extends AbstractServer {
 		}	
 
 	}
-/**
- * Initializes a list of books which are in DB while software boots
- * <p>
- * Useful around all the code. Economizes accesses to server.
- * @param client
- */
+	
+	/**
+	 * Initializes a list of books which are in DB while software boots
+	 * <p>
+	 * Useful around all the code. Economizes accesses to server.
+	 * @param client
+	 */
 
 	public void initializeBookList(ConnectionToClient client){/*******************************************/
 		try {
@@ -990,13 +1027,13 @@ public class MyServer extends AbstractServer {
 	}
 
 
-/**
- * Logout of client
- * <p>
- *@return Updating client's status of offline
- * @param user represents the client, getting from it his id
- * @param client
- */
+	/**
+	 * Logout of client
+	 * <p>
+	 *@return Updating client's status of offline
+	 * @param user represents the client, getting from it his id
+	 * @param client
+	 */
 	private void LogoutUser(User user,ConnectionToClient client)
 	{
 		try {
@@ -1050,7 +1087,9 @@ public class MyServer extends AbstractServer {
 			}
 		} catch (SQLException e) {e.printStackTrace();}
 		try {
-			client.sendToClient("Added!");
+			ArrayList<String> s = new ArrayList<String>();
+			s.add("BookAdd");
+			client.sendToClient(s);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

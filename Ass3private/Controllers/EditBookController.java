@@ -86,10 +86,9 @@ public class EditBookController {
 	public void onNewGenreChosen(){
 		if(genreComboBox.getSelectionModel().getSelectedItem() == null)
 			return;
-		System.out.println("newgenre:" );
 		String genreSelected = genreComboBox.getSelectionModel().getSelectedItem();
 		String genreText="";
-
+		/* The following lines in this method are written to add and remove genres from the textfield */
 		for(int i=0;i<genresTextField.getText().length();i++)//Deep Copy from textfield to variable genreText
 			genreText += genresTextField.getText().charAt(i);
 
@@ -100,7 +99,7 @@ public class EditBookController {
 			else
 				newGenre = (genreText + " " + genreSelected);
 		}
-		else{//The genre is already there! remove it!
+		else{//The genre is already there! remove it!				
 			int indexOf = genresTextField.getText().indexOf(genreSelected);//Where the genreSelected String begins.
 			boolean isFirst = false;
 			newGenre="";
@@ -118,18 +117,57 @@ public class EditBookController {
 					newGenre+= genreText.charAt(i);
 			}//end for
 		}//end else
+		
 		genresTextField.setText(newGenre);
-	}
+	}//end onNewGenreAdd
 
 
 
 
-	public void onEditBook(){
+	public void onEditBook(){//titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 		if(genresTextField.equals("")){
-			JOptionPane.showConfirmDialog(null, "No genre chosen!");
+			JOptionPane.showMessageDialog(null, "No genre chosen!");
+			return;
+		}
+		else if(titleTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No title chosen!");
+			return;
+		}
+		else if(languageTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No language chosen!");
+			return;
+		}
+		else if(summaryTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No summary chosen!");
+			return;
+		}
+		else if(authorTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No author chosen!");
+			return;
+		}
+		else if(keyWordTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No key word !");
+			return;
+		}
+		else if (tocTextField.equals("")){
+			JOptionPane.showMessageDialog(null, "No table of contents !");
 			return;
 		}
 		Book book = new Book();
+		//The book will contain genres that are not in the WorkerController.bookForEdit
+
+		book.setGenre("");
+		String genreToAdd="";
+		book.removeGenres = "";
+		for(int i=0;i<genresTextField.getText().length();i++)
+			if(genresTextField.getText().charAt(i) == ' '){
+				book.GenreAdd(genreToAdd);
+				genreToAdd="";
+			}else
+				genreToAdd+=genresTextField.getText().charAt(i);
+		
+		
+
 
 		book.setAuthor(authorTextField.getText());
 		book.setTitle(titleTextField.getText());
