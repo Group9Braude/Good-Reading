@@ -15,6 +15,22 @@ public class Reader extends User
 	
 	public Reader(){}// LOOK ERAN! ADDED! Answer: I didn't need it so I didn't add it
 	
+	public Reader(String readerID, String pass, String firstName, String lastName,int subscribed, int iBookValid,
+			int allowed, int debt, int isFrozen, int premission, String cardnum, String expDate, String secCode) {
+		super(readerID, pass);
+		this.subscribed = subscribed;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		IBookValid = iBookValid;
+		this.allowed = allowed;
+		this.debt = debt;
+		this.isFrozen = isFrozen;
+		this.premission = premission;
+		this.cardnum = cardnum;
+		this.secCode = secCode;
+		this.expDate = expDate;
+	}
+
 	public Reader(String id,String password,String firstname,String lastname){
 		super(id,password);
 		this.firstName=firstname;
