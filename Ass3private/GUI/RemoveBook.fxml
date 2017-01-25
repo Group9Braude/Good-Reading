@@ -36,11 +36,6 @@
             <Font name="System Bold Italic" size="12.0" />
          </font>
       </Button>
-      <ImageView fx:id="addedButton" fitHeight="103.0" fitWidth="192.0" layoutX="152.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/AddedBookClean.png" />
-         </image>
-      </ImageView>
       <Button layoutX="208.0" layoutY="560.0" mnemonicParsing="false" onAction="#onBack" prefHeight="42.0" prefWidth="80.0" style="-fx-background-color: #b9b8d8;" text="BACK">
          <font>
             <Font name="System Bold Italic" size="12.0" />

@@ -50,6 +50,14 @@ public class Main extends Application {
  * Presents the 'Edit Book' screen
  * @throws IOException
  */
+	public static void showAddNewReaderScreen()throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/AddNewUser.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
+	
 	public static void showEditBookScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/EditBook.fxml"));

@@ -172,14 +172,55 @@ public class MyServer extends AbstractServer {
 				//	case "CreateAndSendFile":
 				//	createAndSendFile((FileDetails)msg,client); break;
 				/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
-
-			case "CheckNewReviews":
+			case "RemoveReader":
+				removeReader((Reader)msg, client);break;
+			case "AddNewReader":
+				addNewReader((Reader)msg, client);
+			case "CheckNewReviews":break;
 			default:
 				break;
 			}
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
+	
+	public void addNewReader(Reader reader, ConnectionToClient client){
+		try{
+			Statement stmt = conn.createStatement();
+			System.out.println("Systhisshitout : " + "SELECT readerID FROM readers WHERE readerID = '"+reader.getID() + "';");
+			ResultSet rs = stmt.executeQuery("SELECT readerID FROM readers WHERE readerID = '"+reader.getID() + "';");
+			if(rs.next()){
+				ArrayList<String> s = new ArrayList<String>();
+				s.add("UserAlreadyInDB");
+				client.sendToClient(s);return;
+			}
+				
+			String query = "INSERT INTO readers VALUES ('" + reader.getID() + "', '" + reader.getPassword() + "','" + reader.getFirstName() 
+			+ "','" + reader.getLastName() + "'," + reader.getSubscribed() + ", 0, 0, 0, 0, 0, 0, NULL, NULL, NULL);";
+			System.out.println("addNewReader query : " + query);
+			stmt.executeUpdate(query);
+			ArrayList<String> s = new ArrayList<String>();
+			s.add("ReaderAdded");
+			System.out.println("done.addReader");
+			client.sendToClient(s);
+		}catch(Exception e){ e.printStackTrace();}
+	}
+	
+	public void removeReader(Reader reader, ConnectionToClient client){
+		String query = "DELETE FROM readers WHERE readerID = '" + reader.getID() + "';";
+		System.out.println("removeReader query : " + query);
+		try{
+			Statement stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			ArrayList<String> s = new ArrayList<String>();
+			s.add("ReaderRemoved");
+			client.sendToClient(s);
+		}catch(Exception e){e.printStackTrace();}
+	}
+	
+	
+	
+	
 	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
 	/*	private void createAndSendFile(FileDetails fileDetails, ConnectionToClient client)
@@ -885,7 +926,7 @@ public class MyServer extends AbstractServer {
 			ResultSet rs = stmt.executeQuery(reader.query);
 
 			while(rs.next())
-				readersList.add(rs.getString(1) + "  " + rs.getString(3) + "   " + rs.getString(4));
+				readersList.add(rs.getString(3) + "   " + rs.getString(4) + " ID: " + rs.getString(1));
 			client.sendToClient(readersList);
 		} catch (Exception e) {e.printStackTrace();}
 	}
@@ -898,7 +939,7 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery(worker.query);
 			while(rs.next())
-				workersList.add(rs.getString(3) + " " + rs.getString(4));
+				workersList.add(rs.getString(3) + " " + rs.getString(4) + " ID: " + rs.getString(1));
 			client.sendToClient(workersList);
 
 		} catch (Exception e) {
@@ -916,7 +957,7 @@ public class MyServer extends AbstractServer {
 			String query = "SELECT * FROM " + from + " WHERE " + where;
 			ResultSet rs = stmt.executeQuery(query);
 			while(rs.next()){
-				arr.add(rs.getString(3) + " " + rs.getString(4));
+				arr.add(rs.getString(3) + " " + rs.getString(4) + " ID: " + rs.getString(1));
 			}
 			client.sendToClient(arr);
 		}catch(Exception e){e.printStackTrace();}
