@@ -21,7 +21,7 @@ public class Main extends Application {
 	private TextField idfield;
 	private static Stage primaryStage;
 	public static Parent mainLayout;
-	public static int port=3318;
+	public static int port=3307;
 	public static String host = "localhost";
 	public static Stage popup;
 	private static User currentUser;
