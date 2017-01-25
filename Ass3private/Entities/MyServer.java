@@ -1,5 +1,4 @@
 package Entities;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
@@ -13,7 +12,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.Transformer;
@@ -275,7 +273,7 @@ public class MyServer extends AbstractServer {
 			socket.close();
 			System.out.println("File transfer complete");
 		}catch(Exception e){System.out.println("ERROR!!!");}
-*/
+
 
 	}*/
 	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/

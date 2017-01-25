@@ -26,12 +26,18 @@ public class Main extends Application {
 	public static Stage popup;
 	private static User currentUser;
 
-
-	public static void Sleep(int time){//Public class, to shorten the writing of sleep.
+/**
+ * Shorten the writing of sleep
+ * @param time
+ */
+	public static void Sleep(int time){
 		try {Thread.sleep(time);} catch (InterruptedException e) {e.printStackTrace();}
 	}
 	
 	@Override
+	/**
+	 * This method creates a stage and initializes it
+	 */
 	public void start(Stage primaryStage) throws IOException {
 		Main.primaryStage = primaryStage;
 		popup = new Stage();
@@ -40,7 +46,10 @@ public class Main extends Application {
 		showMainMenu();
 	}
 	
-
+/**
+ * Presents the 'Edit Book' screen
+ * @throws IOException
+ */
 	public static void showEditBookScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/EditBook.fxml"));
@@ -48,7 +57,10 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
-	
+/**
+ *  Presents the 'Update Book' screen	
+ * @throws IOException
+ */
 	public static void showUpdateBookScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/UpdateBookScreen.fxml"));
@@ -56,7 +68,10 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
-
+/**
+ *  Presents the 'Search Book' screen
+ * @throws IOException
+ */
 	public static void showSearchBookForUpdate() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/SearchBookForUpdate.fxml"));
@@ -64,11 +79,17 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
-	
+/**
+ * Closes the currently screen
+ */
 	public static void onExit(){
 		primaryStage.close();
 	}
 	
+/**
+ * 	Presents 'Edit Reviews' screen
+ * @throws IOException
+ */
 	public static void showFinalReviewScreen() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/FinalReviewScreen.fxml"));
@@ -76,7 +97,10 @@ public class Main extends Application {
 		primaryStage.setScene(new Scene(mainLayout));
 		primaryStage.show();
 	}
-	
+/**
+ * Presents the 'Search user' screen
+ * @throws IOException
+ */
 	public static void showSearchUser() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/SearchUser.fxml"));
@@ -86,7 +110,10 @@ public class Main extends Application {
 	}
 
 
-
+/**
+ * Presents the 'LOGIN' screen
+ * @throws IOException
+ */
 	public static void showMainMenu() throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
@@ -95,7 +122,9 @@ public class Main extends Application {
 		primaryStage.setTitle("Good Reading System");
 		primaryStage.show();
 	}
-	
+/**
+ * Presents the 'Search Book' screen	
+ */
 	public static void showSearchScreen()
 	{
 		FXMLLoader loader = new FXMLLoader();
@@ -108,7 +137,9 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+/**
+ * Presents the 'Searching a review' screen	
+ */
 	public static void showSearchReviewScreen()
 	{
 		FXMLLoader loader = new FXMLLoader();
