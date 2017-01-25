@@ -16,7 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * The main function handles the whole functions which are presents the different screens
+ * The main function handles the whole functions which are present the different screens
  * @author ozdav
  *
  */
@@ -131,7 +131,6 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
-		//primaryStage.getIcons().add(new Image("C:\\Users\\Sagi\\Desktop\\Reader")
 		primaryStage.show();
 	}
 /**

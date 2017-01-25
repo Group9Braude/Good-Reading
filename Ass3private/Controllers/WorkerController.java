@@ -101,6 +101,7 @@ public class WorkerController extends AbstractClient {
 		}
 	}
 
+<<<<<<< HEAD
 	/**
 	 * This function is a general function, used all across my controllers.
 	 * <p>
@@ -109,6 +110,8 @@ public class WorkerController extends AbstractClient {
 	 * @param actionNow is the string that contains the information for to server to get us to the right case.
 	 * @author orel zilberman
 	 */
+=======
+>>>>>>> refs/remotes/origin/master
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
@@ -312,11 +315,15 @@ public class WorkerController extends AbstractClient {
 
 
 
+<<<<<<< HEAD
 	/**
 	 * This method is called when the user wants to delete a book.
 	 * <p>
 	 * 	 it searches through the books in the database and displays the found books for the user to choose which one he wants to delete.
 	 */
+=======
+	/*                MAKE SURE REMOVE REMOVES FROM GENRESBOOKS ASWELL !!!!!!!!    */
+>>>>>>> refs/remotes/origin/master
 	public void onRemoveBook(){
 		Book book = new Book();
 		book.genreToSearch = "";
@@ -375,7 +382,11 @@ public class WorkerController extends AbstractClient {
 
 
 	/**
+<<<<<<< HEAD
 	 * This method returns the status of the review checking thread
+=======
+	 * This function returns the status of the review checking thread
+>>>>>>> refs/remotes/origin/master
 	 * @return the status of the thread.
 	 */
 	public static boolean isAlive() {
@@ -788,9 +799,9 @@ public class WorkerController extends AbstractClient {
 			case "UpdateReader":
 				JOptionPane.showMessageDialog(null, "Reader Updated!");isBackFromServer = true;break;
 			case "ReviewsToCheck":
-				JOptionPane.showMessageDialog(null, "New Reviews Require Your Attention");isBackFromServer = true;reviewsButton.setVisible(false);System.out.println("sup");break;
+				JOptionPane.showMessageDialog(null, "New Reviews Require Your Attention");isBackFromServer = true;reviewsButton.setVisible(false);break;
 			case "NoReviewsToCheck":
-				isBackFromServer = true;System.out.println("~sup");break;
+				isBackFromServer = true;break;
 
 
 			}

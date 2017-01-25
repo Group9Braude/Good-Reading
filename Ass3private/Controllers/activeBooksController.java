@@ -14,6 +14,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import ocsf.client.AbstractClient;
 
+/**
+ * This class takes care on the Activate book screens which are suspended 
+ * and not been presented to the reader in search.
+ * @author ozdav
+ *
+ */
 public class activeBooksController extends AbstractClient  {
 
 	int index;
@@ -30,6 +36,9 @@ public class activeBooksController extends AbstractClient  {
 
 
 	@FXML
+/**
+ * Initializes the book list in screen
+ */
 	private void initialize(){
 		book=new ArrayList<Book>();
 		/*Making an array list of book names*/
@@ -42,7 +51,11 @@ public class activeBooksController extends AbstractClient  {
 		}
 		booknames.setItems(options);
 	}
-
+/**
+ * Shortage the code by accessing the server
+ * @param msg What that has been sent to server
+ * @param actionNow Function to do in server
+ */
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		activeBooksController client = new activeBooksController();
@@ -53,7 +66,11 @@ public class activeBooksController extends AbstractClient  {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * Activate button's handler. 
+ * <p>
+ * Gets into the server, and update the book's status to suspend
+ */
 	public void onActivate(){
 		index=booknames.getSelectionModel().getSelectedIndex();//chosen book; indexs refer to the unsuspend books
 		for(int i=0;i<Book.bookList.size();i++)
@@ -74,6 +91,10 @@ public class activeBooksController extends AbstractClient  {
 			e.printStackTrace();
 		}
 	}
+/**
+ * Back button's handler. Gets back to the manager main screen.
+ * @throws IOException
+ */
 	public void onBack() throws IOException{
 		  Main.showManagerLoggedScreen();
 	}
