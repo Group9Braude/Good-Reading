@@ -2,7 +2,6 @@ package Controllers;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.OrderedBook;
@@ -256,7 +255,7 @@ public class ReportsController extends AbstractClient {
 		genre.setItems(genres);
 		flag=0;
 	}
-	/*check pop in genre pop*/
+
 	/**
 	 * Check popularity button's handler in Genre popularity option
 	 * <p>

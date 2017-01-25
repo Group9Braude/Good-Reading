@@ -131,7 +131,6 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
-		//primaryStage.getIcons().add(new Image("C:\\Users\\Sagi\\Desktop\\Reader")
 		primaryStage.show();
 	}
 /**

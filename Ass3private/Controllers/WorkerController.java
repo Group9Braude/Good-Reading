@@ -666,9 +666,9 @@ public class WorkerController extends AbstractClient {
 			case "UpdateReader":
 				JOptionPane.showMessageDialog(null, "Reader Updated!");isBackFromServer = true;break;
 			case "ReviewsToCheck":
-				JOptionPane.showMessageDialog(null, "New Reviews Require Your Attention");isBackFromServer = true;reviewsButton.setVisible(false);System.out.println("sup");break;
+				JOptionPane.showMessageDialog(null, "New Reviews Require Your Attention");isBackFromServer = true;reviewsButton.setVisible(false);break;
 			case "NoReviewsToCheck":
-				isBackFromServer = true;System.out.println("~sup");break;
+				isBackFromServer = true;break;
 
 
 			}
