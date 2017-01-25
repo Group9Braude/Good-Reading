@@ -78,7 +78,7 @@ public class MyServer extends AbstractServer {
 			case "ranking":
 				ranking(msg,client);break;
 			case "getReaders":
-				getReaders(msg,client);break;
+				getReaders(client);break;
 			case "getGeneralPop":
 				getGeneralPop((Book)msg,client);break;
 			case "gettingGenrePlace":
@@ -104,7 +104,7 @@ public class MyServer extends AbstractServer {
 			case "InitializeBookList":
 				initializeBookList(client);break;
 			case "InitializeWorkerList":
-				initializeWorkerList((Worker)msg, client);break;
+				initializeWorkerList(client);break;
 			case "getUserBooks":
 				getUserBooks((Reader)msg, client);break;
 			case "TempRemoveAbook":
@@ -195,8 +195,13 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){System.out.println("Exception at:" + ((GeneralMessage)msg).actionNow);e.printStackTrace();}
 	}
 
+/**
+ *  This method checks if there are any reviews that are awaiting a check.
+ * @param client To send back to the client
+ * @author orel zilberman
+ */
+	
 	public void CheckReviews(ConnectionToClient client){
-		System.out.println("i in da serva");
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM reviews WHERE isApproved = 0");
@@ -212,12 +217,16 @@ public class MyServer extends AbstractServer {
 				s.add("NoReviewsToCheck");
 				client.sendToClient(s);
 			}
-			System.out.println("i in da serva");
-
 		}catch(Exception e){e.printStackTrace();}
-
 	}
-
+/**
+ * This method updates a certain reader with certain information.
+ * 
+ * @param reader is an object that holds the crucial information for the update..
+ * @param client To send back to the client
+ * @author orel zilberman
+ */
+	
 	public void UpdateReader(Reader reader, ConnectionToClient client){
 		try{
 			Statement stmt = conn.createStatement();
@@ -230,6 +239,13 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(s);return;
 		}catch(Exception e){e.printStackTrace();}
 	}
+	
+	/**
+	 * This method adds a new reader to the database.
+	 * @param reader Holds the information to add the new reader
+	 * @param client
+	 * @author orel zilberman
+	 */
 
 	public void addNewReader(Reader reader, ConnectionToClient client){
 		try{
@@ -252,6 +268,13 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){ e.printStackTrace();}
 	}
 
+	/**
+	 * This method removes a certain reader from the database.
+	 * @param reader Holds the crucial information to functionalize this method.
+	 * @param client
+	 * @author orel zilberman
+	 */
+	
 	public void removeReader(Reader reader, ConnectionToClient client){
 		String query = "DELETE FROM readers WHERE readerID = '" + reader.getID() + "';";
 		System.out.println("removeReader query : " + query);
@@ -412,8 +435,12 @@ public class MyServer extends AbstractServer {
 	}
 
 
-
-	private void getReaders(Object msg, ConnectionToClient client) {
+/**
+ * This method reinitializes the readers list to economize the access to the server.
+ * @param client
+ * @author orel zilberman
+ */
+	private void getReaders(ConnectionToClient client) {
 		try{
 			ArrayList<Reader> arr=new ArrayList<Reader>();
 			Statement stmt = conn.createStatement();
@@ -424,6 +451,12 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){}
 	}
 
+	/**
+	 * This method edits a specific book with specific information.
+	 * @param book Holds the information of the book we want to edit and it's ID in order to do so.
+	 * @param client
+	 * @author orel zilberman
+	 */
 	public void editBook(Book book, ConnectionToClient client){
 
 		try{
@@ -469,6 +502,13 @@ public class MyServer extends AbstractServer {
 
 		}catch(Exception e){e.printStackTrace();}
 	}
+	
+	/**
+	 * This method returns the client the book in order to edit it accordingly.
+	 * @param book holds the ID of the book we want to edit
+	 * @param client
+	 * @author orel zilberman
+	 */
 	public void getBookForEdition(Book book, ConnectionToClient client){
 		System.out.println("getBookForEdition");
 		try{
@@ -493,7 +533,12 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 
 	}
-
+/**
+ * This method updates  a booklist according to the user's search fields.
+ * @param book holds the query to search the books.
+ * @param client
+ * @author orel zilberman
+ */
 	public void UpdateBookListSearch(Book book, ConnectionToClient client){
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		Book b = new Book();
@@ -555,7 +600,12 @@ public class MyServer extends AbstractServer {
 					genre+=rs1.getString(1) + " ";
 					book1.setGenre(genre);
 				}*/
-
+/**
+ * This method initialized the genresbooks list to economize the access to the server.
+ * @param client
+ * @author orel zilberman
+ */
+ 
 	public void InitializeGenresBooksList(ConnectionToClient client){
 		try {
 			Statement stmt = conn.createStatement();
@@ -565,6 +615,7 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				bookList.add( new Book (rs.getString(1),rs.getInt(2)));
 			client.sendToClient(bookList);
+			
 
 		} catch (Exception  e) {e.printStackTrace();}	
 	}
@@ -584,7 +635,11 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * This method initializes the genres list in order to economize the access to the server.
+ * @param client
+ * @author orel zilberman
+ */
 
 	public void initializeGenreList(ConnectionToClient client){/*******************************************/
 		try {
@@ -599,6 +654,12 @@ public class MyServer extends AbstractServer {
 		} catch (Exception  e) {}	
 	}
 
+	/**
+	 * 	This method adds a new genre to the genre table
+	 * @param genre holds the information for the new genre to add
+	 * @param client
+	 * @author orel zilberman
+	 */
 	public void addGenre(Genre genre, ConnectionToClient client){
 		Statement stmt;
 		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getComments()+"');";
@@ -615,6 +676,12 @@ public class MyServer extends AbstractServer {
 		}
 
 	}
+	/**
+	 * This method updates a specific genre with specific information, according to the user's input.
+	 * @param genre hold the essntial information of the specific genre we want to update.
+	 * @param client
+	 * @author orel zilberman
+	 */
 
 	public void updateGenre(Genre genre,ConnectionToClient client){
 		try{
@@ -637,7 +704,12 @@ public class MyServer extends AbstractServer {
 	}
 
 
-
+/**
+ * This method deletes a specific genre, according to the user's input
+ * @param genre holds information about the genre we want to delete
+ * @param client
+ * @author orel zilberman
+ */
 	public void deleteGenre(Genre genre,ConnectionToClient client){
 		try{
 			Statement stmt=conn.createStatement();
@@ -808,7 +880,12 @@ public class MyServer extends AbstractServer {
 		}
 		catch(Exception e){e.printStackTrace();}
 	}
-
+/**
+ * This method edits a specific review with specific information, according to the user's input.
+ * @param review holds the vital information of the review we want to edit.
+ * @param client
+ * @author orel zilberman
+ */
 
 	public void editReview(Review review, ConnectionToClient client){
 		try {
@@ -828,6 +905,7 @@ public class MyServer extends AbstractServer {
 	 * @return: Array which handles number of purchases and number of searches from date until date.
 	 * @param s Search s- includes: bookid, from-(date), until(date)
 	 * @param client
+	 * @author orel zilberman
 	 */
 	private void getStatistics(Search s,ConnectionToClient client){
 		System.out.println(s.getFrom()+"  "+s.getUntil());
@@ -868,7 +946,14 @@ public class MyServer extends AbstractServer {
 
 	}
 
-
+/**
+ * This method examines the reviews list to find the tuples with that are either
+ *  approved, not approved or not checked and update the isApproved field, according to the isApproved param input.
+ * @param review holds the review ID to differentiate the review we want from the others.
+ * @param isApproved holds an integer that says what is the review status.  -1 >NOT APPROVED, 0 - NOT CHECKED, 1 - APPROVED
+ * @param client
+ * @author orel zilberman
+ */
 
 	public void examineReview(Review review,int isApproved, ConnectionToClient client){//-1 >NOT APPROVED, 0 - NOT CHECKED YET, 1 - APPROVED
 		Statement stmt;
@@ -878,7 +963,15 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 	}
 
-
+/**
+ * This method gets the reviews the user's was searching for.
+ * @param select holds a string for the SELECT clause
+ * @param from holds a string for the FROM clause
+ * @param where holds a string for the WHERE clause
+ * @param client
+ * @author orel zilberman
+ */
+	
 	public void getReviews(String select, String from, String where, ConnectionToClient client){
 		ArrayList<String> reviewList = new ArrayList<String>(); 
 		reviewList.add("SearchReviews");
@@ -892,7 +985,12 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 	}
 
-
+/**
+ * This method deletes a certain book from the DB, according to the user's input.
+ * @param book holds some crucial information about the book the user wants to delete.
+ * @param client
+ * @author orel zilberman
+ */
 
 	public void deleteBook(Book book, ConnectionToClient client){
 		ArrayList<String> bookList = new ArrayList<String>();
@@ -916,6 +1014,8 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+
+	
 	private void getUserBooks(Reader msg, ConnectionToClient client) {
 		try {
 			Statement stmt = conn.createStatement();
@@ -963,6 +1063,14 @@ public class MyServer extends AbstractServer {
 
 		}      
 	}
+	/**
+	 * This method searches through the readers in the database and finds readers
+	 * <p>
+	 * according to user's input.
+	 * @param reader holds the query for the search.
+	 * @param client
+	 * @author orel zilberman
+	 */
 
 	public void findReaders(Reader reader, ConnectionToClient client){
 		ArrayList<String> readersList = new ArrayList<String>();
@@ -977,6 +1085,13 @@ public class MyServer extends AbstractServer {
 		} catch (Exception e) {e.printStackTrace();}
 	}
 
+	/**
+	 * This method searches through the readers in the database and finds workers
+	 * according to user's input.
+	 * @param worker holds the query for the search.
+	 * @param client
+	 * @author orel zilberman
+	 */
 
 	public void findWorkers(Worker worker, ConnectionToClient client){
 		ArrayList<String> workersList = new ArrayList<String>();
@@ -992,10 +1107,21 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * This method searches through the database with specific information it gets as parameters.
+	 * This function is generally used when you have a fixed query to send the server.
+	 * @param from is a string for the FROM clause 
+	 * @param where is a string for the WHERE clause 
+	 * @param isWhat is a string that holds crucial information for when we send an array back to the server. 
+	 * <p>
+	 * It is so vital because it's a general method for many uses for many options, so in order to diffrentiate one request from another we'll use this param.
+	 * @param client
+	 * @author orel zilberman
+	 */
 
 	public void find(String from, String where,String isWhat, ConnectionToClient client){
 		ArrayList<String> arr = new ArrayList<String>();
-		System.out.println(isWhat);
 		arr.add(isWhat);
 		Statement stmt;
 		try{
@@ -1020,6 +1146,12 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * This method removes a specific book from the database.
+	 * @param book holds a query that was prepared in advance
+	 * @param client
+	 * @author orel zilberman
+	 */
 
 	public void removeBook(Book book, ConnectionToClient client){/**********************************/
 		ArrayList<String> list = new ArrayList<String>();
@@ -1059,9 +1191,13 @@ public class MyServer extends AbstractServer {
 			}catch(Exception e){e.printStackTrace();}
 		}
 
+/**
+ * This function initializes the worker's list to economize the access to the server
+ * @param client
+ * @author orel zilberman
+ */
 
-
-		public void initializeWorkerList(Worker worker, ConnectionToClient client){
+		public void initializeWorkerList(ConnectionToClient client){
 			try {
 				Statement stmt = conn.createStatement();
 				String query = "SELECT * FROM workers";
@@ -1146,7 +1282,12 @@ public class MyServer extends AbstractServer {
 
 
 
-
+/**
+ * This method adds a specific book to the database, with specific information that is held in the book parameter.
+ * @param book holds information about the new book the user would like to add.
+ * @param client
+ * @author orel zilberman
+ */
 
 
 		public void addBook(Book book, ConnectionToClient client){
@@ -1187,6 +1328,7 @@ public class MyServer extends AbstractServer {
 			}
 
 		}
+		
 
 		public void connectToDB() {
 			try {
