@@ -2,7 +2,11 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * Book class describes the whole book's details and its functions
+ * @author ozdav
+ *
+ */
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -21,20 +25,47 @@ public class Book extends GeneralMessage implements Serializable{
 	public boolean isGenres ;
 
 
-
+/**
+ * Constructs a book
+ */
 	public Book(){}
+/**
+ * Constructs a new book with specific genre and bookid
+ * @param genre
+ * @param bookid
+ */
 	public Book(String genre, int bookid){
 		this.setGenre(genre);
 		this.bookid=bookid;
 	}
-
+/**
+ * Constructs a new book with a specific bookid
+ * @param bookid 
+ */
 	public Book(int bookid){
 		this.bookid=bookid;
 	}
+/**
+ * Constructs a new book with specific id and title
+ * @param bookid
+ * @param title
+ */
 	public Book(int bookid,String title){
 		this.bookid=bookid;
 		this.title=title;
 	}
+/**
+ * Constructs a book with specific title,id,author,language, summary, table of contents, keyword, isSuspend and number of purchases
+ * @param title Book's title
+ * @param bookid Book's id in DB
+ * @param author Book's authors
+ * @param language 
+ * @param summary 
+ * @param toc Table of contents 
+ * @param keyword
+ * @param isSuspend is this book would be presented to the reader?
+ * @param numOfPurchases number of purchases BY readers
+ */
 	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 	{
 		super();
@@ -49,7 +80,10 @@ public class Book extends GeneralMessage implements Serializable{
 		this.author = author;
  
 	}
-
+/**
+ * Adding a genre to a book
+ * @param genre Name of the genre
+ */
 	public void GenreAdd(String genre){
 		if(this.genre.equals(""))
 			this.genre = genre;
