@@ -6,25 +6,34 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="222.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginScreenController">
    <children>
-      <ImageView fitHeight="390.0" fitWidth="263.0" layoutX="14.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="590.0" fitWidth="842.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Logo.png" />
-         </image> 
-      </ImageView>
-      <Button layoutX="63.0" layoutY="354.0" mnemonicParsing="false" onAction="#onExit" prefHeight="25.0" prefWidth="84.0" text="EXIT" />
-      <TextField fx:id="idTextField" layoutX="37.0" layoutY="165.0" promptText="User ID" />
-      <TextField fx:id="passwordTextField" layoutX="37.0" layoutY="217.0" promptText="Password" />
-      <ImageView fx:id="loginImageView" fitHeight="43.0" fitWidth="121.0" layoutX="45.0" layoutY="256.0" onMousePressed="#onPress" onMouseReleased="#onLogin" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Button.png" />
+            <Image url="@../src/55.jpg" />
          </image>
       </ImageView>
-      <ImageView fitHeight="31.0" fitWidth="125.0" layoutX="50.0" layoutY="311.0" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="idTextField" layoutX="358.0" layoutY="200.0" prefHeight="31.0" prefWidth="154.0" promptText="User ID" />
+      <TextField fx:id="passwordTextField" layoutX="358.0" layoutY="246.0" prefHeight="31.0" prefWidth="154.0" promptText="Password" />
+      <ImageView fx:id="loginImageView" fitHeight="48.0" fitWidth="184.0" layoutX="360.0" layoutY="296.0" onMousePressed="#onPress" onMouseReleased="#onLogin" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../Desktop/Ass3Logos/Searcg.png" />
+            <Image url="@../src/78.png" />
          </image>
       </ImageView>
+      <ImageView fitHeight="31.0" fitWidth="90.0" layoutX="317.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/03.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="38.0" fitWidth="112.0" layoutX="314.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/89.png" />
+         </image>
+      </ImageView>
+      <Text fill="WHITE" layoutX="373.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Reading">
+         <font>
+            <Font name="Century Gothic" size="15.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
