@@ -30,7 +30,14 @@ public class ReviewsController {
 	static public String  status = "";
 	public static boolean isHoldScreen = false, firstTime=true, returnFromEdit=false;
 	public static int editID, doubleClick=0, indexClicked=-1;
-
+	/**
+	 * This function is a general function, used all across my controllers.
+	 * <p>
+	 * It's main purpose is to send the server a message that it knows how to deal with.
+	 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+	 * @param actionNow is the string that contains the information for to server to get us to the right case.
+	 * @author orel zilberman
+	 */
 
 
 	public void sendServer(Object msg, String actionNow){/******************************/
@@ -44,8 +51,12 @@ public class ReviewsController {
 			e.printStackTrace();
 		}
 	}
-
-	public ReviewsController(){//called before initialize!
+	
+/**
+ * This method is a constructor that is used to initialize the reviews list.
+ * @author orel zilberman
+ */
+	public ReviewsController(){
 		if(returnFromEdit){
 			Review review = new Review();
 			sendServer(review, "GetReviews");
@@ -56,7 +67,10 @@ public class ReviewsController {
 
 	}
 
-
+/**
+ * This initializer initializes information in the ListView. 
+ * @author orel zilberman
+ */
 	public void initialize(){
 
 		if(firstTime){
@@ -68,12 +82,13 @@ public class ReviewsController {
 			items.addAll(WorkerController.foundReviews);
 			foundReviewsListView.setItems(items);
 		}catch(Exception e){}
-
-
-
-
 	}
 
+	/**
+	 * onBack sets the review checking thread back alive and ultimately goes back to the right screen.
+	 * @authors orel zilberman and oz david
+	 */
+	
 	public void onBack(){
 		WorkerController.setAlive(true);
 		try {
@@ -85,7 +100,14 @@ public class ReviewsController {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * This method examines a chosen review from the foundReviewsListView that is presented on the screen.
+ * <p>
+ * This method ultimately signals the server to run a query to either accept/deny/hold a review.
+ * @param isApproved is a parameter that contains information to let the method know whether to signal a denial/acception/hold of a review.
+ * @author orel zilberman
+ */
+	
 	public void examineID(int isApproved){
 		String str="";
 		int i;
@@ -124,8 +146,12 @@ public class ReviewsController {
 
 	}
 
+	/**
+	 * This method presents the reviews that were accepted by a librarian.
+	 * @author orel zilberman
+	 */
+	
 	public void onAcceptedReviews(){
-
 		declineReviewButton.setVisible(true);
 		holdButton.setVisible(true);
 		acceptReviewButton.setVisible(false);
@@ -141,6 +167,11 @@ public class ReviewsController {
 		initialize();
 	}
 
+	/**
+	 * This method presents the reviews that were denied by a librarian.
+	 * @author orel zilberman
+	 */
+	
 	public void onDeclinedReviews(){
 
 		acceptReviewButton.setVisible(true);
@@ -156,6 +187,11 @@ public class ReviewsController {
 			Main.Sleep(10);
 		initialize();
 	}
+	
+	/**
+	 * This method presents the reviews that were either held by a librarian or is requiring some attention from a librarian.
+	 * @author orel zilberman
+	 */
 
 	public void onHoldReviews(){
 
@@ -174,26 +210,40 @@ public class ReviewsController {
 		initialize();
 	}
 
-
+/**
+ * This method signals the server to execute a query to accept a review.
+ * @author orel zilberman
+ * 
+ */
 	public void onAcceptReview(){
 		examineID(1);//Sets 1 to the review tuple
 	}
 
+
+/**
+ * This method signals the server to execute a query to deny a review.
+ * @author orel zilberman
+ * 
+ */
 	public void onDenyReview(){//#onDenyReview
 		examineID(-1);
 	}
 
+/**
+ * This method signals the server to execute a query to hold a review.
+ * @author orel zilberman
+ * 
+ */
 	public void onHoldReview(){
 		examineID(0);
 	}
 
-
-
-	public void onEdit(){
-
-	}
-
-
+/**
+ * This methods is called whenever the user presses the edit button.
+ * <p>
+ * The methods signals the server to execute a query to update a chosen review.
+ * @author orel zilberman
+ */
 
 	public void onEditReview(){
 		if(foundReviewsListView.getSelectionModel().getSelectedIndex()==0)
@@ -224,7 +274,10 @@ public class ReviewsController {
 			Main.popup.show();
 		} catch (IOException e1) {e1.printStackTrace();}
 	}
-	
+	/**
+	 * A double click listener for the user comfort.
+	 * @author orel zilberman
+	 */
 	public void onReviewPress(){
 		if(doubleClick==1&&indexClicked==foundReviewsListView.getSelectionModel().getSelectedIndex()&&indexClicked!=0){
 			doubleClick++;

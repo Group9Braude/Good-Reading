@@ -15,6 +15,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
 public class EditBookController {
+	
 	@FXML
 	TextField titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 	genresTextField;
@@ -25,7 +26,7 @@ public class EditBookController {
 
 	public EditBookController(){
 	}
-
+	
 	public void initialize(){
 		book = new Book();
 		book.setBookid(WorkerController.bookForEdit.getBookid());
@@ -39,8 +40,15 @@ public class EditBookController {
 		genreComboBox.setPromptText("Genres");
 		genre = WorkerController.bookForEdit.getGenre();
 	} 
-
-	public void sendServer(Object msg, String actionNow){/******************************/
+/**
+ * This function is a general function, used all across my controllers.
+ * <p>
+ * It's main purpose is to send the server a message that it knows how to deal with.
+ * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+ * @param actionNow is the string that contains the information for to server to get us to the right case.
+ * @author orel zilberman
+ */
+	public void sendServer(Object msg, String actionNow){
 		try {
 			((GeneralMessage)msg).actionNow = actionNow;
 			WorkerController client = new WorkerController();
@@ -50,13 +58,20 @@ public class EditBookController {
 			} catch (Exception e) {e.printStackTrace();}
 		} catch (Exception e) {	e.printStackTrace();}
 	}//end sendserver
-
+/**
+ * This method gets the current running thread to sleep.
+ * @param time is a parameter that holds the time for the thread to sleep.
+ * @author orel zilberman
+ */
 	public void Sleep(int time){
 		try{
 			Thread.sleep(time);
 		}catch(Exception e){e.printStackTrace();}
 	}//endsleep
-
+/**
+ * This method initializes the genres combo box in the book edit screen
+ *  @author orel zilberman
+ */
 	public void onGenrePress(){
 		Genre genre = new Genre();
 		genreComboBox.getItems().clear();
@@ -68,6 +83,10 @@ public class EditBookController {
 		genreComboBox.setItems(items);
 	}
 
+	/**
+	 * This method initializes the books tableview if the user decided not to search eventually and pressed back, and changes the screen.
+	 *  @author orel zilberman
+	 */
 
 	public void onBackFromSearch(){
 
@@ -81,7 +100,11 @@ public class EditBookController {
 			Main.showUpdateBookScreen();
 		}catch(Exception e){e.printStackTrace();}
 	}//End onbackfromsearch
-
+	
+/**
+ * This method updates the textfield in the edit book screen, to faciliate the user and let him see what he has chosen so far.
+ *  @author orel zilberman
+ */
 
 	public void onNewGenreChosen(){
 		if(genreComboBox.getSelectionModel().getSelectedItem() == null)
@@ -122,7 +145,10 @@ public class EditBookController {
 	}//end onNewGenreAdd
 
 
-
+/**
+ * This method is called when the user wants to edit a book and after he entered the information he wants to update.
+ *  @author orel zilberman
+ */
 
 	public void onEditBook(){//titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 		if(genresTextField.equals("")){
@@ -193,6 +219,6 @@ public class EditBookController {
 			Sleep(5);
 		/*           Show the screen after edit book              */
 		try {Main.showUpdateBookScreen();} catch (IOException e) {e.printStackTrace();}
-	}
+	}//end onbookedit
 
-}
+}//end class

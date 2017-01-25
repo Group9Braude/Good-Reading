@@ -2,6 +2,8 @@ package Controllers;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import Entities.GeneralMessage;
 import Entities.Review;
 import application.Main;
@@ -19,8 +21,15 @@ public class EditReviewController {
 
 	public static boolean backOn = false;
 
+	/**
+	 * This function is a general function, used all across my controllers.
+	 * <p>
+	 * It's main purpose is to send the server a message that it knows how to deal with.
+	 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+	 * @param actionNow is the string that contains the information for to server to get us to the right case.
+	 * @author orel zilberman
+	 */
 	public void sendServer(Object msg, String actionNow){/******************************/
-
 		((GeneralMessage)msg).actionNow = actionNow;
 		WorkerController client = new WorkerController();
 		try {
@@ -36,9 +45,10 @@ public class EditReviewController {
 		for(int j=0;j<(ReviewsController.list).size();j++)
 			str += ReviewsController.list.get(j);
 
-		if(str == null)
-			return;/*********************************** ADD HERE POP UP WITH SWING THAT WILL TELL THE USER TO CHOOSE A REVIEW***********************/
-
+		if(str.equals("")){
+			JOptionPane.showMessageDialog(null, "Select a review");
+			return;
+		}
 		int i, cnt=0;
 		for(i=0; i<str.length();i++)
 			if(str.charAt(i)=='\n'){
@@ -52,6 +62,10 @@ public class EditReviewController {
 		editReviewTextField.insertText(0, temp);
 	}
 
+	/**
+	 * This method is called whenever the user inserted the information he wants to put in the review he has chosen in advance.
+	 * @author orel zilberman
+	 */
 	public void onEdit(){
 		Review review = new Review();
 		review.setReviewID(ReviewsController.editID);
@@ -65,6 +79,10 @@ public class EditReviewController {
 		onBackEdit();
 
 	}
+	/**
+	 * This method returns the user to the previous screen
+	 * @author orel zilberman
+	 */
 	public void onBackEdit(){
 		try {Main.showFinalReviewScreen();} catch (IOException e) {e.printStackTrace();}
 		Main.popup.close();
