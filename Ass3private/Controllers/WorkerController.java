@@ -87,8 +87,16 @@ public class WorkerController extends AbstractClient {
 							sendServer(new Review(), "CheckReviews");
 							while(!isBackFromServer){
 								Sleep(50);
+							Sleep(30000);
 							}
-	
+						}
+					}catch (Exception e){}
+				}
+			};thread.start();
+		}
+	}
+
+
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
 			((GeneralMessage)msg).actionNow = actionNow;
@@ -274,104 +282,6 @@ public class WorkerController extends AbstractClient {
 
 
 
-	/****************************/
-	public void onPressCat(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCatSelected.png");
-		Image image = new Image(file.toURI().toString());
-		catImageView.setImage(image);
-	}
-
-	public void onRlsCat(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCat.png");
-		Image image = new Image(file.toURI().toString());
-		catImageView.setImage(image);
-	}
-
-	public void onPressAdd(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\AddBookSelected.png");
-		Image image = new Image(file.toURI().toString());
-		addImageView.setImage(image);
-	}
-
-	public void onRlsAdd(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\AddBook.png");
-		Image image = new Image(file.toURI().toString());
-		addImageView.setImage(image);
-	}
-
-	public void onPressRemove(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBookSelected.png");
-		Image image = new Image(file.toURI().toString());
-		removeImageView.setImage(image);
-	}
-
-	public void onRlsRemove(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBook.png");
-		Image image = new Image(file.toURI().toString());
-		removeImageView.setImage(image);
-	}
-
-	public void onPressUpdate(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\UpdateBookSelected.png");
-		Image image = new Image(file.toURI().toString());
-		updateImageView.setImage(image);
-	}
-
-	public void onRlsUpdate(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Update Book.png");
-		Image image = new Image(file.toURI().toString());
-		updateImageView.setImage(image);
-	}
-
-	public void onPressSearchU(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\SearchUserSelected.png");
-		Image image = new Image(file.toURI().toString());
-		searchImageView.setImage(image);
-	}
-
-	public void onRlsSearchU(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Search User.png");
-		Image image = new Image(file.toURI().toString());
-		searchImageView.setImage(image);
-	}
-
-	public void onPressEnter(){	
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\EnterReaderSelected.png");
-		Image image = new Image(file.toURI().toString());
-		enterImageView.setImage(image);
-	}
-
-	public void onRlsEnter(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Enter Reader.png");
-		Image image = new Image(file.toURI().toString());
-		enterImageView.setImage(image);
-	}
-	public void onPressLogout(){//C:\Users\Sagi\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\LogoutSelected.png");
-		Image image = new Image(file.toURI().toString());
-		logoutImageView.setImage(image);
-	}
-
-	public void onRlsLogout(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Logout.png");
-		Image image = new Image(file.toURI().toString());
-		logoutImageView.setImage(image);
-	}
-
-	public void onPressCheck(){//C:\Users\Sagi\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviewsSelected.png");
-		Image image = new Image(file.toURI().toString());
-		checkImageView.setImage(image);
-	}
-
-	public void onRlsCheck(){
-		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviews.png");
-		Image image = new Image(file.toURI().toString());
-		checkImageView.setImage(image);
-	}
-
-
-
 	/*                MAKE SURE REMOVE REMOVES FROM GENRESBOOKS ASWELL !!!!!!!!    */
 	public void onRemoveBook(){
 		Book book = new Book();
@@ -426,10 +336,10 @@ public class WorkerController extends AbstractClient {
 
 
 
-/**
- * This function returns the status of the review checking thread
- * @return the status of the thread.
- */
+	/**
+	 * This function returns the status of the review checking thread
+	 * @return the status of the thread.
+	 */
 	public static boolean isAlive() {
 		return isAlive;
 	}

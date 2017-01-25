@@ -207,7 +207,7 @@ public class ReportsController extends AbstractClient {
 		Main.showManagerLoggedScreen();
 	}
 	/**
-	 * Check popularity button's handler in General popularity option
+	 * Check popularity button's handler in General popularity option, then the popularity would be shown
 	 * <p>
 	 * Presents on GUI a TextField with the book's general popularity, after we handled data from server
 	 */
@@ -229,7 +229,7 @@ public class ReportsController extends AbstractClient {
 	}
 	/*enter in genre popularity*/
 	/**
-	 * Enter button's handler in Genre popularity option in screen
+	 * Enter button's handler in Genre popularity option in screen, then the book's genres would be shown in screen.
 	 * <p>
 	 * The client choose a book from the TableView and after clicking on this enter button, we access 
 	 * the server to get the book's genres and presents them on screen, so the client can choose according to which
