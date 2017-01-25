@@ -94,7 +94,7 @@ public class Book extends GeneralMessage implements Serializable{
  * Is this book suspended?
  * <p>
  * Book that has been suspended would be presented in reader's search
- * @return 0-active 1-suspended
+ * @return Integer 0-active 1-suspended
  */
 	public int getIsSuspend() {
 		return isSuspend;
@@ -108,7 +108,7 @@ public class Book extends GeneralMessage implements Serializable{
 	}
 /**
  * Get the number of purchases of this book
- * @return
+ * @return Integer - Number of book's purchases
  */
 	public int getNumOfPurchases() {
 		return numOfPurchases;
@@ -128,7 +128,7 @@ public class Book extends GeneralMessage implements Serializable{
 	}
 /**
  * Sets an ArrayList of books in booklist
- * @param bookList 
+ * @param bookList A new ArrayList of books 
  */
 	public static void setBookList(ArrayList<Book> bookList) {
 		Book.bookList = bookList;

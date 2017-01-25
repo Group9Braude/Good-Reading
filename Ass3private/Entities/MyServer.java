@@ -63,6 +63,14 @@ public class MyServer extends AbstractServer {
 
 
 	@Override
+	/**
+	 * This method taking care of the clients accesses to the server
+	 * <p>
+	 * 1.Data is been brought	from DB according to the clients data
+	 * 2.After getting the right data, the server sends back to the client adequate data
+	 * <p>
+	 * This method going the right method, according to the message which represented as a String(Switch-case)
+	 */
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
