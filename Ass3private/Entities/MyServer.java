@@ -74,7 +74,6 @@ public class MyServer extends AbstractServer {
 	public void handleMessageFromClient(Object msg, ConnectionToClient client) {
 		try{
 			switch(((GeneralMessage)msg).actionNow){
-
 			case "ranking":
 				ranking(msg,client);break;
 			case "getReaders":
@@ -93,6 +92,12 @@ public class MyServer extends AbstractServer {
 				removeBook((Book) msg, client);break;
 			case "CheckUser":
 				checkUser((User)msg,client);break;
+			case "AddTheme":
+				addTheme((Theme)msg,client);break;
+			case "DeleteTheme":
+				deleteTheme((Theme)msg,client);break;
+			case "UpdateTheme":
+				updateTheme((Theme)msg,client);break;
 			case "AddGenre":
 				addGenre((Genre)msg,client);break;
 			case "DeleteGenre":
@@ -105,6 +110,8 @@ public class MyServer extends AbstractServer {
 				initializeBookList(client);break;
 			case "InitializeWorkerList":
 				initializeWorkerList(client);break;
+			case "InitializeThemeList":
+				initializeThemeList((Theme)msg, client);break;
 			case "getUserBooks":
 				getUserBooks((Reader)msg, client);break;
 			case "TempRemoveAbook":
@@ -175,20 +182,12 @@ public class MyServer extends AbstractServer {
 				getBookForEdition((Book)msg, client);break;
 			case "EditBookPlz":
 				editBook((Book)msg, client);break;
-				//	case "CreateFile":
-				////			createFile((FileDetails)msg,client); break;
-				//	case "CreateAndSendFile":
-				//	createAndSendFile((FileDetails)msg,client); break;
-				/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
-			case "RemoveReader":
-				removeReader((Reader)msg, client);break;
-			case "AddNewReader":
-				addNewReader((Reader)msg, client);break;
-			case "UpdateReader":
-				UpdateReader((Reader)msg, client);break;
-			case "CheckNewReviews":break;
-			case "CheckReviews":
-				CheckReviews(client);break;
+			case "CreateFile":
+				createFile((FileDetails)msg,client); break;
+			case "CreateAndSendFile":
+				createAndSendFile((FileDetails)msg,client); break;
+
+			case "CheckNewReviews":
 			default:
 				break;
 			}
@@ -465,52 +464,15 @@ public class MyServer extends AbstractServer {
 			+ "'," + "author = '" + book.getAuthor()+ "'," + "keyWord = '" + book.getKeyword() + "'," + "tableOfContents = '" + book.getToc() +"' "
 			+ "WHERE bookid = " + book.getBookid() + ";";
 			stmt.executeUpdate(query);
-			String genreToAdd="";
-			String queryForRemoval = "DELETE FROM genresbooks WHERE genre != '" ;
-			System.out.println("Genres : " + book.getGenre());
-			for(int i=0;i<book.getGenre().length();i++)
-				if((book.getGenre().charAt(i) == ' '||i==book.getGenre().length()-1) && !genreToAdd.equals("") && !genreToAdd.equals(" ")){
-					if(i==book.getGenre().length()-1)
-						genreToAdd+=book.getGenre().charAt(i);
-					query = "INSERT INTO genresbooks(genre, bookid) SELECT * FROM(SELECT '" + genreToAdd + "', " +book.getBookid() + ") AS TMP"
-							+ " WHERE NOT EXISTS ( SELECT * FROM genresbooks WHERE genre = '" + genreToAdd + "' AND bookid = " + book.getBookid() + ") LIMIT 1;";
-					System.out.println("\neditBook MyServer:" + query );
-					stmt.executeUpdate(query);
-					queryForRemoval += genreToAdd + "' AND genre != '" ;
-					genreToAdd="";
-				}
-				else if(! (book.getGenre().charAt(i) == ' ')){
-					genreToAdd+=book.getGenre().charAt(i);
-					System.out.print(book.getGenre().charAt(i));
-				}
-			query = queryForRemoval.substring(0, queryForRemoval.length()-15);
-			query += " AND bookid = " + book.getBookid() + ";";
-			System.out.println("editBook MyServer genres to remove from genresbooks:\n" + query );
-			stmt.executeUpdate(query);
+			query = "UPDATE genresbooks SET genre = '" + book.			query = "UPDATE genresbooks SET genre = '" + book.getGenre() + "'," + "WHERE bookid = " + book.getBookid() + ";";
+			System.out.println("editBook MyServer:" + query );
 
-			//end for!
-			/*String genreToRemove = "";
-			for(int i=0;i<book.removeGenres.length();i++)
-				if(book.removeGenres.charAt(i) == ' '){
-					query = "DELETE FROM genresbooks WHERE (genre = '" + genreToRemove + "' AND bookid = " + book.getBookid() + ");";
-					System.out.println("editBook MyServer:" + query );
-					stmt.executeQuery(query);
-					genreToRemove = "";
-				}else
-					genreToRemove+=book.removeGenres.charAt(i);*/
+ = new ArrayList<String>();
+			a.add("GoToUpdateScreen");
+			client.sendToClient(a);
+		}cuthorTextField, keyWordTextField, tocTextField, genre
 
-
-		}catch(Exception e){e.printStackTrace();}
-	}
-	
-	/**
-	 * This method returns the client the book in order to edit it accordingly.
-	 * @param book holds the ID of the book we want to edit
-	 * @param client
-	 * @author orel zilberman
-	 */
 	public void getBookForEdition(Book book, ConnectionToClient client){
-		System.out.println("getBookForEdition");
 		try{
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM books where bookid = " + book.getBookid() + ";");
@@ -527,19 +489,17 @@ public class MyServer extends AbstractServer {
 			}
 			System.out.println("GetBookForEdition: " + book1.getGenre());
 			client.sendToClient(book1);
-			System.out.println("GetBookForEdition: " + book1.getGenre());
+			
+		}catch(Exception e){}
+		
+	}
+	
+	public			Sys			System.out.println("GetBookForEdition: " + book1.getGenre());
 
 
 		}catch(Exception e){e.printStackTrace();}
 
-	}
-/**
- * This method updates  a booklist according to the user's search fields.
- * @param book holds the query to search the books.
- * @param client
- * @author orel zilberman
- */
-	public void UpdateBookListSearch(Book book, ConnectionToClient client){
+nnectionToClient client){
 		ArrayList<Book> bookList = new ArrayList<Book>();
 		Book b = new Book();
 		try{
@@ -641,6 +601,24 @@ public class MyServer extends AbstractServer {
  * @author orel zilberman
  */
 
+	public void initializeThemeList(Theme theme, ConnectionToClient client){/*******************************************/
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM theme";
+			ResultSet rs = stmt.executeQuery(query);
+			System.out.println("test");
+			ArrayList<Theme> themeList = new ArrayList<Theme>();	
+			while(rs.next()){
+				System.out.println("theme");
+				themeList.add( new Theme (rs.getString(1),rs.getString(2)));
+			}
+			System.out.println(themeList.size());
+			client.sendToClient(themeList);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}	
+	}
+
 	public void initializeGenreList(ConnectionToClient client){/*******************************************/
 		try {
 			Statement stmt = conn.createStatement();
@@ -654,12 +632,61 @@ public class MyServer extends AbstractServer {
 		} catch (Exception  e) {}	
 	}
 
-	/**
-	 * 	This method adds a new genre to the genre table
-	 * @param genre holds the information for the new genre to add
-	 * @param client
-	 * @author orel zilberman
-	 */
+	public void addTheme(Theme theme, ConnectionToClient client){
+		Statement stmt;
+		String query = "insert into theme values ('"+theme.getTheme()+"', '"+theme.getGenre()+"');";
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Added!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
+	public void deleteTheme(Theme theme,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "DELETE FROM theme WHERE name= '"+theme.getTheme()+"';";
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			}catch (SQLException e) {
+				System.out.println("Error deleting theme.");
+				e.printStackTrace();
+			}
+			try {
+				client.sendToClient("Deleted!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}	
+	
+	public void updateTheme(Theme theme,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "UPDATE theme SET name='"+theme.getTheme()+"', genre= '"+theme.getGenre().getGenre()+
+					"' WHERE name='"+theme.getOldTheme()+"';";
+			System.out.println(query);
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+			}catch (SQLException e) {
+				System.out.println("Error update genre.");
+				e.printStackTrace();
+			}
+			try {
+				client.sendToClient("Updated!");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	
+	
 	public void addGenre(Genre genre, ConnectionToClient client){
 		Statement stmt;
 		String query = "insert into genre values ('"+genre.getGenre()+"', '"+genre.getComments()+"');";

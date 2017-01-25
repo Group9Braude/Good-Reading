@@ -2,8 +2,6 @@ package Controllers;
 
 import java.io.IOException;
 
-import javax.swing.JOptionPane;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Genre;
@@ -221,4 +219,18 @@ public class EditBookController {
 		try {Main.showUpdateBookScreen();} catch (IOException e) {e.printStackTrace();}
 	}//end onbookedit
 
+<<<<<<< HEAD
 }//end class
+=======
+	public void onBack(){
+			try {
+				if(Main.getCurrentUser().getType()==3)
+					Main.showManagerLoggedScreen();
+				else Main.showLoggedInScreenWorker();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+}
+>>>>>>> refs/remotes/origin/master

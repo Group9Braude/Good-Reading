@@ -25,7 +25,7 @@ public class Main extends Application {
 	private TextField idfield;
 	private static Stage primaryStage;
 	public static Parent mainLayout;
-	public static int port=3318;
+	public static int port=3307;
 	public static String host = "localhost";
 	public static Stage popup;
 	private static User currentUser;
@@ -131,7 +131,7 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
-		primaryStage.setTitle("Good Reading System");
+		//primaryStage.getIcons().add(new Image("C:\\Users\\Sagi\\Desktop\\Reader")
 		primaryStage.show();
 	}
 /**
@@ -199,6 +199,20 @@ public class Main extends Application {
 /**
  * Presents the Reader's main screen	
  */
+	public static void showEditTheme()
+	{
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(Main.class.getResource("/GUI/EditTheme.fxml"));
+		try {    
+			mainLayout =  loader.load();
+			primaryStage.setScene(new Scene(mainLayout));
+			primaryStage.show();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public static void showReaderLoginScreen(){
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreenReader.fxml"));
@@ -245,8 +259,6 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/ManagerLoggedScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
-		primaryStage.setX(456);
-		primaryStage.setY(200);
 		primaryStage.setTitle("Good Reading System");
 		primaryStage.show();
 	}

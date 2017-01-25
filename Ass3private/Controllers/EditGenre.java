@@ -1,12 +1,16 @@
 package Controllers;
 
+import java.awt.Label;
 import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import Entities.Genre;
 import GUI.AlertBox;
 import application.Main;
@@ -51,16 +55,26 @@ public class EditGenre extends AbstractClient {
 		obsGenre.clear();
 		obsGenre=FXCollections.observableArrayList(Genre.genreList);
 		genreBox.setItems(obsGenre);
+
+		//listeners
 		genreBox.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)
-				->genreTextField.setText(newValue.getGenre()));
+				->{
+					if(newValue!=null)
+						genreTextField.setText(newValue.getGenre());
+					else genreTextField.setText("");
+				});
 		genreBox.getSelectionModel().selectedItemProperty().addListener((v,oldValue,newValue)
-				->commentsTextField.setText(Genre.genreList.get(genreBox.getSelectionModel().getSelectedIndex()).getComments()));		
+				->{
+					if(newValue!=null)
+						commentsTextField.setText(Genre.genreList.get(genreBox.getSelectionModel().getSelectedIndex()).getComments());
+					else commentsTextField.setText("");
+				});		
+
 	}
 
 
 	public void onAddGenre(){
 		if(commentsTextField.getText().equals("") && genreTextField.getText().equals("")){
-			System.out.println(commentsTextField.getText());
 			AlertBox.display("Error", "You must fill at least one of the fields!");
 			return;
 		}
@@ -69,10 +83,12 @@ public class EditGenre extends AbstractClient {
 			AlertBox.display("Error", "You must fill Name first!");
 			return;
 		}
-
-		else if(obsGenre.contains(genreTextField.getText())){
-			AlertBox.display("Error", "Genre already exists, try press Update!");
-			return;
+		else for(int i=0;i<obsGenre.size();i++)
+		{
+			if(obsGenre.get(i).getGenre().equals(genreTextField.getText())){
+				AlertBox.display("Error", "Genre already exists, try press Update!");
+				return;
+			}
 		}
 		genre=new Genre();
 
@@ -96,15 +112,14 @@ public class EditGenre extends AbstractClient {
 
 	public void onDeleteGenre(){
 		try{
-			if(genreBox.getValue().equals("")){
-				AlertBox.display("Error", "You must fill at least one of the fields!");
+			if(genreBox.getValue()==null){
+				AlertBox.display("Error", "You must select one from the genres in combo box!");
 				return;
 			}
 			else {
-
 				genre.setGenre(genreBox.getValue().getGenre());
 				Genre.genreList.remove(genre);
-				obsGenre.remove(genre);
+				obsGenre.remove(genreBox.getSelectionModel().getSelectedIndex());
 				genreBox.getSelectionModel().selectPrevious();
 				genre.actionNow="DeleteGenre";
 				try {
@@ -123,11 +138,12 @@ public class EditGenre extends AbstractClient {
 	}
 
 
-	public void onUpdateGenre() throws InterruptedException{
+	public void onUpdateGenre(){
 		int index=genreBox.getSelectionModel().getSelectedIndex();
 		try{
+			System.out.println(genreBox.getValue());
 			// if nothing has selected
-			if(genreBox.getValue().equals("")){
+			if(genreBox.getValue()==null){
 				AlertBox.display("Error", "You must fill at least one of the fields!");
 				return;
 			}
@@ -176,7 +192,9 @@ public class EditGenre extends AbstractClient {
 	public void onBack(){
 		WorkerController.setAlive(true);
 		try {
-			Main.showLoggedInScreenWorker();
+			if(Main.getCurrentUser().getType()==3)
+				Main.showManagerLoggedScreen();
+			else Main.showLoggedInScreenWorker();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -189,6 +207,7 @@ public class EditGenre extends AbstractClient {
 			System.out.println((String)msg);
 		if(((ArrayList<?>)msg).size() > 0)
 			if(((ArrayList<?>)msg).get(0) instanceof Genre){
+				genre.genreList.clear();
 				for(Genre genre:(ArrayList<Genre>)msg)
 					Genre.genreList.add(genre);
 			}
