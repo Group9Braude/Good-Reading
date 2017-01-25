@@ -9,16 +9,16 @@ import Entities.Reader;
 import Entities.User;
 import Entities.Worker;
 import application.Main;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 import ocsf.client.AbstractClient;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 public class LoginScreenController extends AbstractClient {
 
@@ -33,7 +33,7 @@ public class LoginScreenController extends AbstractClient {
 	private static int port = Main.port;
 	private static Reader readerLogged;
 	public static Worker currentWorker;
-	private static boolean isLoggedFlag=false;
+	private static boolean isLoggedFlag=false, orelTheKing=true;
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 	@FXML
 	ImageView loginImageView;
@@ -80,7 +80,7 @@ public class LoginScreenController extends AbstractClient {
 		Main.onExit();
 	}
 
-	 
+
 
 	
 
@@ -89,6 +89,8 @@ public class LoginScreenController extends AbstractClient {
 	/*	File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
 		Image image = new Image(file.toURI().toString());
 		loginImageView.setImage(image);*/
+
+		
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");

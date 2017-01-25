@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
-
+	private String searchOperand;
 	private String title, language, summary, toc,genre, theme; 
 	private String author;
 	private String keyword;
@@ -18,6 +18,8 @@ public class Book extends GeneralMessage implements Serializable{
 	public ArrayList<Book> deleteBookList;
 	public String query, genreToSearch;
 	public boolean isGenres ;
+	
+	public String genreQuery;
 
 
 
@@ -163,6 +165,20 @@ public class Book extends GeneralMessage implements Serializable{
 	public void setTheme(String theme) {
 		this.theme = theme;
 	}
-
+	public String getSearchOperand() {
+		return searchOperand;
+	}
+	public void setSearchOperand(String searchOperand) {
+		this.searchOperand = searchOperand;
+	}
+	
+	@Override
+	public boolean equals(Object obj)
+	{
+		Book other =(Book)obj;
+		if(other.bookid==this.bookid)
+			return true;
+		return false;
+	}
 
 }

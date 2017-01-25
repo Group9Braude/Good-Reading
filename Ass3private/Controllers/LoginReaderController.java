@@ -1,6 +1,5 @@
 package Controllers;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -14,10 +13,13 @@ import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import ocsf.client.AbstractClient;
 
 public class LoginReaderController extends AbstractClient{
@@ -26,7 +28,7 @@ public class LoginReaderController extends AbstractClient{
 	{
 		super(Main.host, Main.port);
 	}
-
+	private boolean back = false;
 	@FXML
 	TextField welcomeText;
 	@FXML
@@ -99,7 +101,30 @@ public class LoginReaderController extends AbstractClient{
 
 	public void onLogOut()
 	{
+		reader.actionNow="Logout";
+		try {
+			this.sendToServer(reader);
+			while(!back)
+				Thread.sleep(10);
+			back = false;
+			Main.showMainMenu();
+		} catch (IOException | InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+	}
+
+	public void popUpCredit()
+	{
+
+		try {
+			Pane mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/CreditCardScreen.fxml"));
+			Main.popup.setScene(new Scene(mainLayout));
+			Main.popup.showAndWait();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	public void onSubscribe()
@@ -127,17 +152,23 @@ public class LoginReaderController extends AbstractClient{
 
 	@Override
 	protected void handleMessageFromServer(Object msg) {
-		System.out.println("File created");
-		OutputStream out;
-		try {
-			out = new FileOutputStream(selectedBook + "."+format.getSelectionModel().getSelectedItem());
-			out.write((byte[])msg);
-			out.close();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		if(msg instanceof String)
+		{
+			System.out.println((String)msg);
+			back=true;
 		}
-		
-		
+		else{
+			OutputStream out;
+			try {
+				out = new FileOutputStream(selectedBook + "."+format.getSelectionModel().getSelectedItem());
+				out.write((byte[])msg);
+				out.close();
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		}
+
+
 	}
 }

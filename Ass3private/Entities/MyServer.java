@@ -8,11 +8,16 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -21,9 +26,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-//import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -33,6 +38,8 @@ import com.itextpdf.text.pdf.PdfWriter;
 import application.Main;
 import ocsf.server.AbstractServer;
 import ocsf.server.ConnectionToClient;
+
+
 
 
 
@@ -128,7 +135,7 @@ public class MyServer extends AbstractServer {
 			case "Yearly":
 				subscribe((Reader)msg,2,client); break;
 			case "AddReview":
-				addReview((Review)msg,client);
+				addReview((Review)msg,client);break;
 			case "activeBooks":
 				activeBooks((Book)msg, client);break;
 			case "getBooks":
@@ -155,8 +162,8 @@ public class MyServer extends AbstractServer {
 				examineReview((Review)msg, 0, client);break;
 			case "EditReview":
 				editReview((Review)msg, client); break;
-			case "UpdateBookList":
-				UpdateBookList(client); break;
+				/*case "UpdateBookList":
+				UpdateBookList(client); break;*/
 			case "InitializeGenresBooksList":
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
@@ -217,22 +224,23 @@ public class MyServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+			break;
 		case "FB2":
 			try{
-				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-				Document doc = (Document) docBuilder.newDocument();
-				Element rootElement = ((org.w3c.dom.Document) doc).createElement("content");
-				rootElement.appendChild(((org.w3c.dom.Document) doc).createTextNode("BLOOP"));
-				((Node) doc).appendChild(rootElement);
+				DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder icBuilder= icFactory.newDocumentBuilder();
+				org.w3c.dom.Document doc = icBuilder.newDocument();
+				Element rootElement = doc.createElementNS("main","LOOP");
+				doc.appendChild(rootElement);
+				Text text = ((org.w3c.dom.Document) doc).createTextNode("LOOP");
+				text.setData("YOYOYO");
+				rootElement.appendChild(text);
 				TransformerFactory transformerFactory = TransformerFactory.newInstance();
 				Transformer transformer = transformerFactory.newTransformer();
+				transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
 				DOMSource source = new DOMSource((Node) doc);
-				StreamResult test = new StreamResult(System.out);
-				//StreamResult result = new StreamResult(out);
-				transformer.transform(source, test);		
-
-
+				StreamResult result = new StreamResult(out);
+				transformer.transform(source, result);	
 			}catch(Exception e){}
 
 		default: break;
@@ -600,17 +608,80 @@ public class MyServer extends AbstractServer {
 	}
 
 
-
-
 	private void updateBookList(Book book, ConnectionToClient client)
 	{
+		ArrayList<Integer> IDs = new ArrayList<Integer>();
+		ArrayList<Book> res = new ArrayList<Book>();
+		int i;
+
 		try{
 			Statement stmt = conn.createStatement();
 			System.out.println(book.query);
+			System.out.println(book.genreQuery);
 			ResultSet rs = stmt.executeQuery(book.query);
-			ArrayList<Book> res = new ArrayList<Book>();
+
 			while(rs.next())
 				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8),rs.getInt(9)));
+			if(!book.genreQuery.equals(""))
+			{
+				Statement stmt1 = conn.createStatement();
+				ResultSet rs1 = stmt1.executeQuery(book.genreQuery);//All books that belong to the selected genre
+				while(rs1.next())
+					IDs.add(rs1.getInt(2));
+				for(i=0;i<IDs.size();i++)
+					System.out.println(IDs.get(i));
+				if(book.getSearchOperand().equals("AND"))
+				{
+					if(IDs.size()==0)
+						res.clear();
+					else{
+						System.out.println(IDs.contains(2));
+						for(i=0;i<res.size();i++)
+							if(!IDs.contains(res.get(i).getBookid()))
+								res.remove(i);
+					}
+				}
+				else
+				{
+					Statement stmt2 = conn.createStatement();
+					for(i=0;i<IDs.size();i++)
+					{
+						ResultSet rs2 = stmt2.executeQuery("select * from books where bookid="+IDs.get(i)+";");
+						rs2.next();
+						Book b = new Book(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7),rs2.getInt(8),rs2.getInt(9));
+						if(!res.contains(b))
+							res.add(b);
+					}
+				}
+
+			}
+			//Increasing the number of searches for all the books that passed the checks
+			rs = stmt.executeQuery("select searchID from searchbook;");
+			int searchID=0;
+			if(rs.last())//Moving the cursor, if possible, to the last row
+				searchID = rs.getInt(1)+1;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			LocalDate x = LocalDate.now();
+			String y = x.format(formatter);
+			for(i=0;i<res.size();i++)
+			{
+				stmt.executeUpdate("insert into searchbook values("+res.get(i).getBookid()+",'"+y+"',"+searchID+");");
+				searchID++;
+			}
+			//End increasing the number of searches for all the books that passed the checks
+
+			//Get the genre of each book
+			for(i=0;i<res.size();i++)
+			{
+				rs = stmt.executeQuery("select genre from genresbooks where bookid="+res.get(i).getBookid());
+				String temp="";
+				while(rs.next())
+					temp+=rs.getString(1)+",";
+				String genre="";
+				for(int j=0;j<temp.length()-1;j++)
+					genre+=temp.charAt(j);
+				res.get(i).setGenre(genre);
+			}
 			client.sendToClient(res);
 		}
 		catch(Exception e){e.printStackTrace();}
@@ -661,6 +732,20 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
 						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
+			Statement stmt1 = conn.createStatement();
+			ResultSet rs1;
+			for(int i=0;i<books.size();i++)
+			{
+				rs1 = stmt1.executeQuery("select genre from genresbooks where bookid="+books.get(i).getBookid()+";");
+				String temp="";
+				while(rs1.next())//A book may belong to more than one genre
+					temp += rs1.getString(1)+",";
+				//remove the ',' at the end
+				String genre="";
+				for(int j=0;j<temp.length()-1;j++)
+					genre+=temp.charAt(j);
+				books.get(i).setGenre(genre);
+			}
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -710,7 +795,11 @@ public class MyServer extends AbstractServer {
 	{
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getReaderID() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "');" );
+			ResultSet rs = stmt.executeQuery("select reviewid from reviews");
+			int reviewID=0;
+			if(rs.last())
+				reviewID = rs.getInt(1)+1;
+			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "',"+reviewID+",'"+review.getSignature()+"');" );
 			client.sendToClient("Thank you for submitting a review! If your review will be approved by one of our workers, it will be published.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1017,9 +1106,9 @@ public class MyServer extends AbstractServer {
 				try {
 					if(rs1.getString(2).equals(password))
 					{
-						if(rs1.getInt(11)==1)
-							client.sendToClient("You're already signed in!");
-						else
+						//if(rs1.getInt(11)==1)
+						//client.sendToClient("You're already signed in!");
+						//else
 						{
 							reader = new Reader(rs1.getString(1),password);
 							reader.setFirstName(rs1.getString(3));

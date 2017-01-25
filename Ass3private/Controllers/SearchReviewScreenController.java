@@ -32,7 +32,7 @@ public class SearchReviewScreenController extends AbstractClient
 	public ComboBox<String> action = new ComboBox<String>();
 	public TextField titleField,reviewerField,keyWordsField;
 	public TextArea reviewText;
-	
+
 	@SuppressWarnings("unchecked")
 	public void initialize()
 	{
@@ -52,10 +52,21 @@ public class SearchReviewScreenController extends AbstractClient
 		reviewList.getColumns().addAll(titleColumn,IDColumn,reviewerColumn,keyWordColumn);//Adding the columns to the table
 		try {
 			this.openConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		setAllReviews();	
+	}
+
+	private void setAllReviews()
+	{
+		try {
 			GeneralMessage dummy = new GeneralMessage();	
 			dummy.actionNow="GetReviewsForReader";
 			origin = 0;
 			this.sendToServer(dummy);
+			allReviews=null;
 			while(allReviews == null)
 				Thread.sleep(10);
 			items = FXCollections.observableArrayList(allReviews);
@@ -63,26 +74,27 @@ public class SearchReviewScreenController extends AbstractClient
 		} catch (IOException | InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}	
+		}
+
 	}
-	
+
 	public SearchReviewScreenController() {
 		super(Main.host, Main.port);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public void onBack()
 	{
 		Main.showReaderLoginScreen();
 	}
-	
+
 	public void showReview()
 	{
 		Review review = reviewList.getSelectionModel().getSelectedItem();
 		if(review != null)
 			reviewText.setText(review.getReview());
 	}
-	
+
 	public void onSearch()
 	{
 		String userTitle = titleField.getText(), reviewer = reviewerField.getText(),
@@ -134,11 +146,10 @@ public class SearchReviewScreenController extends AbstractClient
 			reviewList.setItems(items);
 		}
 	}
-	
+
 	public void onReset()
 	{
-		items = FXCollections.observableArrayList(allReviews);
-		reviewList.setItems(items);
+		setAllReviews();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -151,7 +162,7 @@ public class SearchReviewScreenController extends AbstractClient
 			else updatedReviewList = (ArrayList<Review>)msg;
 			origin = -1;
 		}
-		
+
 	}
 
 }

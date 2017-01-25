@@ -2,6 +2,8 @@ package Controllers;
 
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
+
 import Entities.CreditCard;
 import Entities.Reader;
 import application.Main;
@@ -10,7 +12,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import ocsf.client.AbstractClient;
 
 public class CreditCardController extends AbstractClient
@@ -90,7 +91,9 @@ public class CreditCardController extends AbstractClient
 				System.out.println("sent");
 				while(!returned)
 					Thread.sleep(10);
+				returned = false;
 				Main.popup.close();
+				JOptionPane.showMessageDialog(null, "Credit card added successfully!");
 			} catch (IOException | InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
