@@ -15,7 +15,7 @@
       </ImageView>
       <TextField fx:id="idTextField" layoutX="358.0" layoutY="200.0" prefHeight="31.0" prefWidth="154.0" promptText="User ID" />
       <TextField fx:id="passwordTextField" layoutX="358.0" layoutY="246.0" prefHeight="31.0" prefWidth="154.0" promptText="Password" />
-      <ImageView fx:id="loginImageView" fitHeight="48.0" fitWidth="184.0" layoutX="360.0" layoutY="296.0" onMousePressed="#onPress" onMouseReleased="#onLogin" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="loginImageView" fitHeight="48.0" fitWidth="184.0" layoutX="360.0" layoutY="296.0" onMouseClicked="#onLogin" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../src/78.png" />
          </image>

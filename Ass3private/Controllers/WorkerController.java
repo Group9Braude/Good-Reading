@@ -35,10 +35,12 @@ public class WorkerController extends AbstractClient {
 	static public ArrayList<String> foundBooks, foundReviews;
 	static ArrayList<Book> foundBookList;
 	public static Book bookForEdit;
-	private static boolean isBackFromServer;
+	private static boolean isBackFromServer/*For some methods to know if I am back from the server with answers*/
+	, isReview = false,//To know if I should notify the worker that there are new reviews
+	isAlive = false; //For the Thread in the constructor
 
 	@FXML
-	private Button addBookButton, removeBookButton;
+	private Button addBookButton, removeBookButton, reviewsButton;
 	@FXML
 	private ImageView addedButton, catImageView, addImageView, removeImageView, checkImageView, updateImageView, searchImageView, enterImageView, logoutImageView;
 	@FXML
@@ -50,7 +52,7 @@ public class WorkerController extends AbstractClient {
 	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField,//TextFields for book search/add
 	idTextField, passTextField, firstNameTextField, lastNameTextField;//TextFields for user update or add
 	@FXML
-	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox;
+	public ChoiceBox<String> departmentChoiceBox, roleChoiceBox, subscriptionChoiceBoxR;
 	@FXML
 	public ComboBox<String> genresComboBox, genresAddComboBox;
 	@FXML
@@ -69,12 +71,32 @@ public class WorkerController extends AbstractClient {
 		foundBooks = null;
 		foundReviews = null;
 		genresList = null;
-
 	}
 
+	public void initialize(){
+		if(!isReview){
+			isReview=true;
+			isAlive=true;
+			Thread thread = new Thread(){
+				public void run(){
+					try{
+						while(true){
+							while(!isAlive)
+								Sleep(10000);							
+							isBackFromServer=false;
+							sendServer(new Review(), "CheckReviews");
+							while(!isBackFromServer){
+								Sleep(50);
+							}
 
-
-
+							isBackFromServer=false;
+							Sleep(10000);
+						}
+					}catch(Exception e){e.printStackTrace();}
+				}
+			};thread.start();
+		}//end if
+	}
 
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
@@ -160,6 +182,14 @@ public class WorkerController extends AbstractClient {
 		genresTextField.setText(newGenre);
 	}
 
+
+	public void onSubscriptionChoicePress(){
+		if(subscriptionChoiceBoxR == null)
+			return;
+		ObservableList<String> items = FXCollections.observableArrayList();
+		items.add("1");items.add("0");items.add("-1");
+		subscriptionChoiceBoxR.setItems(items);
+	}
 
 	public void onSubscriptionPress(){
 		if(subscriptionComboBox == null)
@@ -291,11 +321,13 @@ public class WorkerController extends AbstractClient {
 
 
 	public void onEditGenre() throws IOException{
-		System.out.println("lol");
+		isAlive=false;
 		Main.showEditGenre();
 	}
 
 	public void onBack(){
+		System.out.println("onback");
+		isAlive=true;
 		try {
 			if(Main.getCurrentUser().getType()==3)
 				Main.showManagerLoggedScreen();
@@ -308,6 +340,17 @@ public class WorkerController extends AbstractClient {
 
 
 
+/**
+ * This function returns the status of the review checking thread
+ * @return the status of the thread.
+ */
+	public static boolean isAlive() {
+		return isAlive;
+	}
+
+	public static void setAlive(boolean isAlive) {
+		WorkerController.isAlive = isAlive;
+	}
 
 	public void onWorkerSearch(){
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
@@ -337,9 +380,11 @@ public class WorkerController extends AbstractClient {
 
 
 	public  void onLogout(){
+
 		Worker worker = new Worker();
 		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
 		sendServer(worker, "LogOutUser");
+		isAlive=false;
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 
 	}
@@ -360,6 +405,8 @@ public class WorkerController extends AbstractClient {
 			reader.query +=("lastName LIKE '%"+lastName+"%' AND ");
 		if(!readerID.equals(""))
 			reader.query +=("readerID='"+readerID+"' AND ");
+		if(subscriptionChoiceBoxR.getSelectionModel().getSelectedItem()!=null &&!subscriptionChoiceBoxR.getSelectionModel().getSelectedItem().equals(""))
+			reader.query +=("subscription = '" + subscriptionChoiceBoxR.getSelectionModel().getSelectedItem() + "' AND ");
 		String query = "";
 		for(int i=0;i<reader.query.length()-5;i++)
 			query+=reader.query.charAt(i);
@@ -404,6 +451,28 @@ public class WorkerController extends AbstractClient {
 
 
 	public void onUpdateReader(){
+		Reader reader = new Reader();
+		if(!firstNameTextFieldR.getText().equals(""))
+			reader.setFirstName(firstNameTextFieldR.getText());
+		if(!lastNameTextFieldR.getText().equals(""))
+			reader.setLastName(lastNameTextFieldR.getText());
+		if(subscriptionChoiceBoxR.getSelectionModel().getSelectedItem() != null && !subscriptionChoiceBoxR.getSelectionModel().getSelectedItem().equals(""))
+			reader.setSubscribed(Integer.parseInt(subscriptionChoiceBoxR.getSelectionModel().getSelectedItem()));
+		if(foundReadersListView.getSelectionModel().getSelectedItem()==null)
+			return;
+		int indexOf = foundReadersListView.getSelectionModel().getSelectedItem().indexOf("ID:");
+		indexOf+=4;
+		String id="";
+		for(int i=indexOf;i<foundReadersListView.getSelectionModel().getSelectedItem().length();i++)
+			id+=foundReadersListView.getSelectionModel().getSelectedItem().charAt(i);
+		reader.setID(id);
+
+		isBackFromServer=false;
+		sendServer(reader, "UpdateReader");
+		while(!isBackFromServer)
+			Sleep(5);
+		isBackFromServer=false;
+		saveOldList(foundReadersListView, "UpdateReader", firstNameTextFieldR.getText() + " " + lastNameTextFieldR.getText() + " ID: " + id);
 
 	}
 
@@ -427,10 +496,10 @@ public class WorkerController extends AbstractClient {
 		while(!isBackFromServer)
 			Sleep(5);
 		isBackFromServer=false;
-		saveOldList(foundReadersListView, "RemoveTuple");
+		saveOldList(foundReadersListView, "RemoveTuple", "");
 	}
 
-	public void saveOldList(ListView<String> listView, String whatToDo){
+	public void saveOldList(ListView<String> listView, String whatToDo, String toUpdate){
 		if(listView == null || listView.getItems() == null)
 			return;
 		ObservableList<String> list = listView.getItems();
@@ -439,16 +508,11 @@ public class WorkerController extends AbstractClient {
 			return;
 		switch(whatToDo){
 		case "RemoveTuple":
-			list.
-			remove(index);
-			listView.
-			setItems(list);break;
-
-
+			list.remove(index);listView.setItems(list);break;
+		case "UpdateReader":
+			list.set(index, toUpdate);listView.setItems(list);break;
 
 		}
-
-
 	}
 
 
@@ -603,6 +667,12 @@ public class WorkerController extends AbstractClient {
 				JOptionPane.showMessageDialog(null, "Reader Added!");isBackFromServer = true;break;
 			case "UserAlreadyInDB":
 				JOptionPane.showMessageDialog(null, "This ID is taken!");isBackFromServer = true;break;
+			case "UpdateReader":
+				JOptionPane.showMessageDialog(null, "Reader Updated!");isBackFromServer = true;break;
+			case "ReviewsToCheck":
+				JOptionPane.showMessageDialog(null, "New Reviews Require Your Attention");isBackFromServer = true;reviewsButton.setVisible(false);System.out.println("sup");break;
+			case "NoReviewsToCheck":
+				isBackFromServer = true;System.out.println("~sup");break;
 
 
 			}
@@ -613,6 +683,7 @@ public class WorkerController extends AbstractClient {
 	/*           LoggedInWorkerController          */
 
 	public void onUpdateBookL(){
+		isAlive=false;
 		foundBookList = null;
 		Book book = new Book();
 		book.query = "select * from books;";
@@ -625,34 +696,41 @@ public class WorkerController extends AbstractClient {
 	}
 
 	public void onAddNewReaderL(){
+		isAlive=false;
+		reviewsButton.setVisible(false);
 		try{
 			Main.showAddNewReaderScreen();
 		}catch(IOException e){e.printStackTrace();}
 	}
 
 	public void  onAddBookL(){
+		isAlive=false;
 		try {
 			Main.showAddBook();
 		} catch (IOException e) {e.printStackTrace();}
 	}
 
 	public void onRemoveBookL(){
+		isAlive=false;
 		try{
 			Main.showRemoveBook();
 		}catch (IOException e){e.printStackTrace();}
 	}
 
 	public void onSearchUserL(){
+		isAlive=false;
 		try{
 			Main.showSearchUser();
 		}catch(IOException e){e.printStackTrace();}
 	}
 
 	public void onLogoutL(){ 
+		isAlive=false;
 		sendServer(LoginScreenController.currentWorker, "Logout");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 	}
 	public void onCheckReviewL(){
+		isAlive=false;
 		Review review = new Review();
 		sendServer(review, "GetReviews");
 		while(foundReviews == null)

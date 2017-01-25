@@ -174,6 +174,7 @@ public class EditGenre extends AbstractClient {
 	}
 
 	public void onBack(){
+		WorkerController.setAlive(true);
 		try {
 			Main.showLoggedInScreenWorker();
 		} catch (IOException e) {

@@ -75,6 +75,7 @@ public class ReviewsController {
 	}
 
 	public void onBack(){
+		WorkerController.setAlive(true);
 		try {
 			if(User.currentWorker.getType()==2)	
 				Main.showLoggedInScreenWorker();

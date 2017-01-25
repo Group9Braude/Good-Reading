@@ -82,17 +82,17 @@ public class UpdateBookController {
 
 	//Initialize the table view
 	public void initialize(){
-		/*if(!flag){//Meaning we just came back from a search
+		if(!flag){//Meaning we just came back from a search
 			for(int i=0;i<bookList.size();i++)
 				for(int j=0;j<genresBooksList.size();j++)
 					if(bookList.get(i).getBookid() == genresBooksList.get(j).getBookid()){
 						bookList.get(i).setGenre(genresBooksList.get(j).getGenre());break;
-					}*/
+					}
 			initTableView();
 			System.out.println("After init: " + (bookList.get(0)).getTitle() + "  " + bookList.get(0).getGenre());
 			ObservableList<Book> books = FXCollections.observableArrayList(bookList);
 			booksTableView.setItems(books);
-		//}
+		}
 	}
 
 
