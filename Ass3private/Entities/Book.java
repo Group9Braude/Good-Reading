@@ -6,7 +6,8 @@ import java.util.ArrayList;
 public class Book extends GeneralMessage implements Serializable{
 	private static final long serialVersionUID = 1L;
 
-	private String title, language, summary, toc,genre, theme; 
+	private String title, language, summary, toc,genre, theme;
+	public String removeGenres;//past genres for removal
 	private String author;
 	private String keyword;
 

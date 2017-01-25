@@ -53,7 +53,6 @@ public class FoundClass{
 	}
 
 	public void initialize(){
-		WorkerController.foundBooks.set(0, "Name:                    Author:                       ID:");
 		ObservableList<String> items =FXCollections.observableArrayList();
 		items.addAll(WorkerController.foundBooks);
 		foundListView.setItems(items);
