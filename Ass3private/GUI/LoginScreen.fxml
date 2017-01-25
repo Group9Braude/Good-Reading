@@ -30,10 +30,15 @@
             <Image url="@../src/89.png" />
          </image>
       </ImageView>
-      <Text fill="WHITE" layoutX="373.0" layoutY="178.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Reading">
+      <Text fill="WHITE" layoutX="373.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Reading">
          <font>
             <Font name="Century Gothic" size="15.0" />
          </font>
       </Text>
+      <ImageView fitHeight="38.0" fitWidth="68.0" layoutX="488.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/44.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
