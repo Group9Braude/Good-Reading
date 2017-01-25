@@ -16,7 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * The main function handles the whole functions which are presents the different screens
+ * The main function handles the whole functions which are present the different screens
  * @author ozdav
  *
  */
