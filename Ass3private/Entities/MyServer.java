@@ -42,7 +42,6 @@ import ocsf.server.ConnectionToClient;
 
 
 
-
 public class MyServer extends AbstractServer {    
 	Connection conn;
 	public static void main(String[] args) {
@@ -391,6 +390,28 @@ public class MyServer extends AbstractServer {
 			System.out.println("File transfer complete");
 		}catch(Exception e){System.out.println("ERROR!!!");}
 
+	/*	@SuppressWarnings("resource")
+	private void createFile(FileDetails fileDetails, ConnectionToClient client)
+	{
+	/*	try{
+			Socket socket = serverSocket.accept();
+			System.out.println("Accepted connection : " + socket);
+			File transferFile = new File (fileDetails.getFileName());
+			byte [] bytearray = new byte [(int)transferFile.length()];
+			FileInputStream fin = new FileInputStream(transferFile);
+			BufferedInputStream bin = new BufferedInputStream(fin);
+			bin.read(bytearray,0,bytearray.length);
+			OutputStream os = socket.getOutputStream();
+			System.out.println("Sending Files...");
+			os.write(bytearray,0,bytearray.length);
+			os.flush();
+			socket.close();
+			System.out.println("File transfer complete");
+		}catch(Exception e){System.out.println("ERROR!!!");}
+
+
+	}*/
+	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
 	}*/
 	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
@@ -898,6 +919,7 @@ nnectionToClient client){
 		}
 
 	}
+
 
 
 
