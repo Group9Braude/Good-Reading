@@ -1,5 +1,9 @@
 package Entities;
-
+/**
+ * This entity is a review. It contains all the information asked on the reviews including a query for server purposes.
+ * @author orel zilberman
+ *
+ */
 public class Review extends GeneralMessage
 {
 	private static final long serialVersionUID = 1L;
