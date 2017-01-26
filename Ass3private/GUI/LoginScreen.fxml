@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
@@ -12,6 +13,9 @@
          <image>
             <Image url="@../src/55.jpg" />
          </image>
+         <effect>
+            <DropShadow color="#725151" />
+         </effect>
       </ImageView>
       <TextField fx:id="idTextField" layoutX="344.0" layoutY="227.0" prefHeight="31.0" prefWidth="154.0" promptText="User ID" />
       <PasswordField fx:id="passwordTextField" layoutX="344.0" layoutY="274.0" prefHeight="31.0" prefWidth="154.0" promptText="Password" />
@@ -34,6 +38,9 @@
          <image>
             <Image url="@../src/41.png" />
          </image>
+         <effect>
+            <DropShadow color="#82ffea" />
+         </effect>
       </ImageView>
    </children>
 </AnchorPane>
