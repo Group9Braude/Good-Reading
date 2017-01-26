@@ -45,6 +45,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		Main.primaryStage = primaryStage;
 		popup = new Stage();
+        primaryStage.getIcons().add(new Image("/src/41.png"));
+        primaryStage.setTitle("Good Reading System");
 		popup.initModality(Modality.APPLICATION_MODAL);
 		popup.initOwner(primaryStage);
 		showMainMenu();

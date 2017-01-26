@@ -18,6 +18,7 @@ public class Reader extends User
 	public Reader(String readerID, String pass, String firstName, String lastName,int subscribed, int iBookValid,
 			int allowed, int debt, int isFrozen, int premission, String cardnum, String expDate, String secCode) {
 		super(readerID, pass);
+		this.dumy=readerID;
 		this.subscribed = subscribed;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -29,7 +30,6 @@ public class Reader extends User
 		this.cardnum = cardnum;
 		this.secCode = secCode;
 		this.expDate = expDate;
-		this.dumy=readerID;
 	}
 
 	public Reader(String id,String password,String firstname,String lastname){
