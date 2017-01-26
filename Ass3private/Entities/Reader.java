@@ -34,14 +34,19 @@ public class Reader extends User
 
 	public Reader(String id,String password,String firstname,String lastname){
 		super(id,password);
+		
 		this.firstName=firstname;
 		this.lastName=lastname;
 		this.id=id;
+		this.dumy=id;
+
 	}
 	 
 	public Reader(String id, String password) 
 	{
 		super(id, password);
+		this.dumy=id;
+
 		
 	}
 	public int getIsLogged() {
