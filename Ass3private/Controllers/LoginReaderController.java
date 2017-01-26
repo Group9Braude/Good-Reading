@@ -41,7 +41,10 @@ public class LoginReaderController extends AbstractClient{
 	public ComboBox<String> format;
 	private Reader reader;
 	public static OrderedBook selectedBook;
-
+	
+	/**
+	 * Initializes all the components and the attributes of the class
+	 */
 	@FXML
 	public void initialize()
 	{
@@ -58,6 +61,9 @@ public class LoginReaderController extends AbstractClient{
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * Shows the subscription status of current reader
+	 */
 
 	public void setSubscribeText()
 	{
@@ -76,7 +82,9 @@ public class LoginReaderController extends AbstractClient{
 		default:break;
 		}
 	}
-
+	/**
+	 * Create a book file in the selected format
+	 */
 	public void onGenerate()
 	{
 
@@ -98,7 +106,9 @@ public class LoginReaderController extends AbstractClient{
 			}
 		}
 	}
-
+	/**
+	 * Set user as logged out in the DB and returning to the main login screen
+	 */
 	public void onLogOut()
 	{
 		reader.actionNow="Logout";
@@ -114,7 +124,9 @@ public class LoginReaderController extends AbstractClient{
 		}
 
 	}
-
+	/**
+	 * Pop up a window to enter a new credit card
+	 */
 	public void popUpCredit()
 	{
 
@@ -126,12 +138,16 @@ public class LoginReaderController extends AbstractClient{
 			e1.printStackTrace();
 		}
 	}
-
+	/**
+	 * Take the user to the select subscription period screen
+	 */
 	public void onSubscribe()
 	{
 		Main.showSubscriptionScreen();
 	}
-
+	/**
+	 * If the user selected a book, then he will be directed to the write review screen
+	 */
 	public void onReview()
 	{
 		selectedBook = bookList.getSelectionModel().getSelectedItem();
@@ -139,17 +155,24 @@ public class LoginReaderController extends AbstractClient{
 			Main.showReviewScreen();
 		else JOptionPane.showMessageDialog(null, "You must first select a book!");
 	}
-
+	/**
+	 * Take the user to the search book screen
+	 */
 	public void onSearch()
 	{
 		Main.showSearchScreen();
 	}
-
+	/**
+	 * Take the user to the search reviews screen
+	 */
 	public void onSearchReviews()
 	{
 		Main.showSearchReviewScreen();
 	}
-
+	
+	/**
+	 * handle the message from the server
+	 */
 	@Override
 	protected void handleMessageFromServer(Object msg) {
 		if(msg instanceof String)

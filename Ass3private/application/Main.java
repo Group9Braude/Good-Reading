@@ -16,7 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 /**
- * The main function handles the whole functions which are presents the different screens
+ * The main function handles the whole functions which are present the different screens
  * @author ozdav
  *
  */
@@ -45,6 +45,8 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws IOException {
 		Main.primaryStage = primaryStage;
 		popup = new Stage();
+        primaryStage.getIcons().add(new Image("/src/41.png"));
+        primaryStage.setTitle("Good Reading System");
 		popup.initModality(Modality.APPLICATION_MODAL);
 		popup.initOwner(primaryStage);
 		showMainMenu();
@@ -131,7 +133,6 @@ public class Main extends Application {
 		loader.setLocation(Main.class.getResource("/GUI/LoginScreen.fxml"));
 		mainLayout = loader.load();
 		primaryStage.setScene(new Scene(mainLayout));
-		//primaryStage.getIcons().add(new Image("C:\\Users\\Sagi\\Desktop\\Reader")
 		primaryStage.show();
 	}
 /**

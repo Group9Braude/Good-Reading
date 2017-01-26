@@ -8,7 +8,7 @@ public class Reader extends User
 	private static final long serialVersionUID = 1L;
 	private int subscribed;//0 - not subscribed, 1 - month, 2 - year
 	private int isLogged;
-	private String firstName,lastName,id;
+	private String firstName,lastName,dumy;
 	private int IBookValid,allowed,debt,isFrozen,premission;
 	private String cardnum,secCode,expDate;
 	private ArrayList<OrderedBook> myBooks = new ArrayList<OrderedBook>();
@@ -19,6 +19,7 @@ public class Reader extends User
 	public Reader(String readerID, String pass, String firstName, String lastName,int subscribed, int iBookValid,
 			int allowed, int debt, int isFrozen, int premission, String cardnum, String expDate, String secCode) {
 		super(readerID, pass);
+		this.dumy=readerID;
 		this.subscribed = subscribed;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -123,6 +124,14 @@ public class Reader extends User
 
 	public void setMyBooks(ArrayList<OrderedBook> myBooks) {
 		this.myBooks = myBooks;
+	}
+
+	public String getDumy() {
+		return dumy;
+	}
+
+	public void setDumy(String dumy) {
+		this.dumy = dumy;
 	}
 
 }

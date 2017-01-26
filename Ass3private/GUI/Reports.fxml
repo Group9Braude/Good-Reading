@@ -69,11 +69,11 @@
                                 </yAxis>
                               </BarChart>
                               <Button fx:id="check" layoutX="973.0" layoutY="25.0" mnemonicParsing="false" onAction="#onCheck" text="Check" />
-                              <TableView fx:id="booktable" layoutX="76.0" layoutY="56.0" prefHeight="254.0" prefWidth="386.0">
+                              <TableView fx:id="booktable" layoutX="76.0" layoutY="56.0" prefHeight="254.0" prefWidth="361.0">
                                 <columns>
                                   <TableColumn fx:id="bookcol" prefWidth="70.0" text="BookID" />
                                   <TableColumn fx:id="titlecol" prefWidth="178.0" text="Title" />
-                                    <TableColumn fx:id="authorcol" prefWidth="137.0" text="Author" />
+                                    <TableColumn fx:id="authorcol" prefWidth="114.0" text="Author" />
                                 </columns>
                               </TableView>
                               <Text fill="#906c6c" layoutX="24.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please pick the book you would like to get statistics of:">
@@ -96,7 +96,7 @@
                            <children>
                               <ImageView fitHeight="874.0" fitWidth="1204.0" layoutX="-44.0" layoutY="-212.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../src/3.jpg" />
+                                    <Image url="@../src/3.png" />
                                  </image>
                               </ImageView>
                               <Button layoutX="927.0" layoutY="114.0" mnemonicParsing="false" onAction="#onCheckk" prefHeight="31.0" prefWidth="165.0" text="Check popularity">

@@ -2,7 +2,6 @@ package Controllers;
 import java.io.IOException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.OrderedBook;
@@ -126,7 +125,7 @@ public class ReportsController extends AbstractClient {
 			GeneralMessage dummy = new GeneralMessage();
 			dummy.actionNow="getReaders";
 			this.sendToServer(dummy);
-			readerid.setCellValueFactory(new PropertyValueFactory<Reader,String>("id") );
+			readerid.setCellValueFactory(new PropertyValueFactory<Reader,String>("dumy") );
 			firstname.setCellValueFactory(new PropertyValueFactory<Reader,String>("lastName") );
 			lastname.setCellValueFactory(new PropertyValueFactory<Reader,String>("firstName") );
 
@@ -207,7 +206,7 @@ public class ReportsController extends AbstractClient {
 		Main.showManagerLoggedScreen();
 	}
 	/**
-	 * Check popularity button's handler in General popularity option
+	 * Check popularity button's handler in General popularity option, then the popularity would be shown
 	 * <p>
 	 * Presents on GUI a TextField with the book's general popularity, after we handled data from server
 	 */
@@ -229,7 +228,7 @@ public class ReportsController extends AbstractClient {
 	}
 	/*enter in genre popularity*/
 	/**
-	 * Enter button's handler in Genre popularity option in screen
+	 * Enter button's handler in Genre popularity option in screen, then the book's genres would be shown in screen.
 	 * <p>
 	 * The client choose a book from the TableView and after clicking on this enter button, we access 
 	 * the server to get the book's genres and presents them on screen, so the client can choose according to which
@@ -256,7 +255,7 @@ public class ReportsController extends AbstractClient {
 		genre.setItems(genres);
 		flag=0;
 	}
-	/*check pop in genre pop*/
+
 	/**
 	 * Check popularity button's handler in Genre popularity option
 	 * <p>

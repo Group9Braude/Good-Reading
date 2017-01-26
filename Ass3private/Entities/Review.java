@@ -1,7 +1,12 @@
 package Entities;
 /**
+<<<<<<< HEAD
  * This class holds all the necessary information about reviews
  * @author Eran Simhon
+=======
+ * This entity is a review. It contains all the information asked on the reviews including a query for server purposes.
+ * @author orel zilberman
+>>>>>>> refs/remotes/origin/master
  *
  */
 public class Review extends GeneralMessage

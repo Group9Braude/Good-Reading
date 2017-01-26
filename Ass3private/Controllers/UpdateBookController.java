@@ -2,7 +2,6 @@ package Controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Genre;
@@ -15,7 +14,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 
 public class UpdateBookController {
 	@FXML
@@ -23,13 +21,23 @@ public class UpdateBookController {
 	public static ArrayList<Book> bookList, genresBooksList, previousBookList;
 	@FXML
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR;
-	
 	@FXML
 	public ComboBox<String> genresComboBox, genresAddComboBox;
+	
+	
+	
 	static boolean  flag;//Make sure initialized wont be called after udpatebook
 	static Book bookForEdition;
 
-
+	/**
+	 * This function is a general function, used all across my controllers.
+	 * <p>
+	 * It's main purpose is to send the server a message that it knows how to deal with.
+	 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+	 * @param actionNow is the string that contains the information for to server to get us to the right case.
+	 * @author orel zilberman
+	 */
+	
 	public void sendServer(Object msg, String actionNow){/******************************/
 		flag=false;
 		try {
@@ -50,7 +58,10 @@ public class UpdateBookController {
 
 	
 	//Close the Current window and go back to screenWorker
-
+/**
+ * This method closes the current window and sets back the loggedinscreenworker screen
+ *  @author orel zilberman
+ */
 	public void onBack(){
 		try {
 			Main.showLoggedInScreenWorker();
@@ -65,7 +76,10 @@ public class UpdateBookController {
 	}
 
 //Get the booklist joined with genres, so I will have the books with their genres in one list for the tableview
-	
+	/**
+	 * This function initializes a list of books along with their genres.
+	 *  @author orel zilberman
+	 */
 	public void  getBookListWithGenres(){
 		bookList = new ArrayList<Book>();
 		genresBooksList = new ArrayList<Book>();
@@ -80,7 +94,10 @@ public class UpdateBookController {
 		genresBooksList.remove(0); 
 	}
 
-	//Initialize the table view
+/**
+ * This method initializes the TableView to set the books list
+ *  @author orel zilberman
+ */
 	public void initialize(){
 		if(!flag){//Meaning we just came back from a search
 			for(int i=0;i<bookList.size();i++)
@@ -94,7 +111,10 @@ public class UpdateBookController {
 			booksTableView.setItems(books);
 		}
 	}
-
+/**
+ * This method sets values  in the tableview
+ *  @author orel zilberman
+ */
 
 	@SuppressWarnings("unchecked")
 	public void initTableView(){
@@ -125,12 +145,18 @@ public class UpdateBookController {
 		booksTableView.getColumns().addAll(titleColumn,genreColumn,authorColumn,IDColumn,langColumn,summColumn,
 				keyWordColumn, themeColumn);//Adding the columns to the table
 	}
-
+/**
+ * This method shows the Search book screen to update it.
+ *  @author orel zilberman
+ */
 	public void onUpdateBook(){
 		flag=true;
 		try {Main.showSearchBookForUpdate();} catch (IOException e) {e.printStackTrace();}
 	}
-	
+	/**
+	 * This method resets the TableView with edited items
+	 *  @author orel zilberman
+	 */
 	public void onEditBook(){
 		Book book = booksTableView.getSelectionModel().getSelectedItem();
 		if (book ==null)
@@ -142,7 +168,11 @@ public class UpdateBookController {
 		try {Main.showEditBookScreen();} catch (IOException e) {e.printStackTrace();}
 	}
 
-	//	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
+
+	/**
+	 * This method is called when we're back from a search that we didn't commit.
+	 *  @author orel zilberman
+	 */
 	public void onBackFromSearch(){
 		Book book = new Book();
 		book.query = "select * from books;";
@@ -153,6 +183,9 @@ public class UpdateBookController {
 		try{Main.showUpdateBookScreen();}catch(Exception e){e.printStackTrace();}
 	}
 	
+	/**
+	 * This method sets the options in the genres ComboBox
+	 */
 	public void onGenresPress(){
 		Genre genre = new Genre();
 		genresComboBox.getItems().clear();
@@ -163,7 +196,11 @@ public class UpdateBookController {
 		items.addAll(WorkerController.genresList);
 		genresComboBox.getItems().addAll(items);
 	}
-
+	
+/**
+ * This method is called when the user wants to see all the books in the TableView
+ *  @author orel zilberman
+ */
 	public void onShowAllBooks(){
 		WorkerController.foundBookList = null;
 		Book book = new Book();
@@ -184,7 +221,10 @@ public class UpdateBookController {
 			Main.showUpdateBookScreen();
 		}catch(Exception e){e.printStackTrace();} 
 	}
-	
+	/**
+	 * This method is called when the user sets his search request and commits it.
+	 *  @author orel zilberman
+	 */
 	public void onSearchBook(){
 		flag=false;
 		Book book = new Book();
@@ -192,7 +232,6 @@ public class UpdateBookController {
 		String title = titleTextFieldR.getText(), /*author = authorTextFieldR.getText(), RETURN LATER*/ 
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
-		//String[] authors = author.split(",");//a,b,c ->[a][b][c] RETURN LATER
 		book.query = "SELECT * FROM books WHERE";
 		if(!title.equals(""))
 			book.query +=" title LIKE  '%" + title + "%' AND ";
@@ -208,6 +247,7 @@ public class UpdateBookController {
 		for(int i=0;i<book.query.length()-5;i++)
 			query+=book.query.charAt(i);//Remove the AND from the end of the query
 		query+=";";
+		/*                    END AND             */
 		book.query=query;
 		WorkerController.foundBookList = null;
 		sendServer(book, "UpdateBookListSearch");

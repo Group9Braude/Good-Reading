@@ -22,7 +22,10 @@ public class CreditCardController extends AbstractClient
 	@FXML TextField codeField;
 	@FXML Text numText,dateText,codeText;
 	public Button confirm;
-
+	
+	/**
+	 * opens the connection to the server
+	 */
 	public CreditCardController() {
 		super(Main.host, Main.port);
 		try {
@@ -32,7 +35,9 @@ public class CreditCardController extends AbstractClient
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * Checks the entered card details and if they are valid, a new credit card will be stored in the server
+	 */
 	public void onConfirm()
 	{
 		boolean card,month,year,code;
@@ -101,7 +106,9 @@ public class CreditCardController extends AbstractClient
 		}
 	}
 
-
+	/**
+	 * Stores the new card in the current user
+	 */
 	@Override
 	protected void handleMessageFromServer(Object msg) 
 	{

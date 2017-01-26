@@ -13,7 +13,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import ocsf.client.AbstractClient;
-
+/**
+ * This class takes care on the 'Temporarily remove a book' option, in manager screen
+ * @author ozdav
+ *
+ */
 public class TempRemoveAbookController extends AbstractClient  {
 
 	int index;
@@ -21,7 +25,9 @@ public class TempRemoveAbookController extends AbstractClient  {
 	@FXML
 	private ChoiceBox booknames;
 	ArrayList<Book> book;
-
+ /**
+  * Initializes host and port in AbstractClient
+  */
 	public TempRemoveAbookController() {
 		super(Main.host, Main.port);
 		// TODO Auto-generated constructor stub
@@ -30,6 +36,9 @@ public class TempRemoveAbookController extends AbstractClient  {
 
 
 	@FXML
+/**
+ * Initializes the books data while screen boots
+ */
 	private void initialize(){
 		book=new ArrayList<Book>();
 		/*Making an array list of book names*/
@@ -42,7 +51,11 @@ public class TempRemoveAbookController extends AbstractClient  {
 		}
 		booknames.setItems(options);
 	}
-
+/**
+ * Shotage the writing of sending to the server
+ * @param msg What would be sent to server
+ * @param actionNow Name of function in server
+ */
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		TempRemoveAbookController client = new TempRemoveAbookController();
@@ -53,7 +66,12 @@ public class TempRemoveAbookController extends AbstractClient  {
 			e.printStackTrace();
 		}
 	}
-
+/**
+ * Suspend buton's handler.
+ * <p>
+ * This function send a request to server with the choosen book, and suspending it from
+ * being showed in reader's search.
+ */
 	public void onSuspend(){
 		index=booknames.getSelectionModel().getSelectedIndex();//chosen book; indexs refer to the unsuspend books
 		for(int i=0;i<Book.bookList.size();i++)
@@ -74,9 +92,16 @@ public class TempRemoveAbookController extends AbstractClient  {
 			e.printStackTrace();
 		}
 	}
+/**
+ * Back button handler to the main manager screen.
+ * @throws IOException
+ */
 	public void onBack() throws IOException{
 		  Main.showManagerLoggedScreen();
 	}
+/**
+ * Activate button's handler. Gets back into the main manager screen
+ */
 	public void onActivate(){
 		try {
 			Main.showActiveBooks();

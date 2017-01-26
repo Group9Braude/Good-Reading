@@ -153,7 +153,6 @@ public class EditBookController {
 	public void onEditBook(){//titleTextField, languageTextField, summaryTextField, authorTextField, keyWordTextField, tocTextField, 
 		if(genresTextField.equals("")){
 			JOptionPane.showMessageDialog(null, "No genre chosen!");
-			return;
 		}
 		else if(titleTextField.equals("")){
 			JOptionPane.showMessageDialog(null, "No title chosen!");
@@ -224,6 +223,7 @@ public class EditBookController {
 
 
 
+
 	public void onBack(){
 		try {
 			if(Main.getCurrentUser().getType()==3)
@@ -235,4 +235,6 @@ public class EditBookController {
 	}
 
 }//end class
+
+
 

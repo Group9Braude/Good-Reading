@@ -6,14 +6,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
 import java.util.ArrayList;
 import java.util.Collections;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -21,10 +22,14 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+
 import org.apache.poi.xwpf.usermodel.XWPFRun;
+
+//import org.apache.poi.xwpf.usermodel.XWPFRun;//*************************************************************/
+//import org.w3c.dom.Document;
+
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.Text;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -180,6 +185,11 @@ public class MyServer extends AbstractServer {
 				editBook((Book)msg, client);break;
 			case "CreateAndSendFile":
 				createAndSendFile((FileDetails)msg,client); break;
+				//	case "CreateFile":
+				////			createFile((FileDetails)msg,client); break;
+				//	case "CreateAndSendFile":
+				//	createAndSendFile((FileDetails)msg,client); break;
+				/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 			case "RemoveReader":
 				removeReader((Reader)msg, client);break;
 			case "AddNewReader":
@@ -206,13 +216,11 @@ public class MyServer extends AbstractServer {
 			Statement stmt = conn.createStatement();
 			ResultSet rs = stmt.executeQuery("SELECT * FROM reviews WHERE isApproved = 0");
 			if(rs.next()){
-				System.out.println("if");
 				ArrayList<String> s = new ArrayList<String>();
 				s.add("ReviewsToCheck");
 				client.sendToClient(s);
 			}
 			else{
-				System.out.println("else");
 				ArrayList<String> s = new ArrayList<String>();
 				s.add("NoReviewsToCheck");
 				client.sendToClient(s);
@@ -334,7 +342,6 @@ public class MyServer extends AbstractServer {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			break;
 		case "FB2":
 			try{
 				DocumentBuilderFactory icFactory = DocumentBuilderFactory.newInstance();
@@ -345,14 +352,15 @@ public class MyServer extends AbstractServer {
 				Element story = doc.createElement("content");
 				story.appendChild(doc.createTextNode(content));
 				rootElement.appendChild(story);
+				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 				TransformerFactory transformerFactory = TransformerFactory.newInstance();
 				Transformer transformer = transformerFactory.newTransformer();
-				transformer.setOutputProperty(OutputKeys.INDENT, "yes"); 
 				DOMSource source = new DOMSource((Node) doc);
+
 				StreamResult result = new StreamResult(out);
 				transformer.transform(source, result);	
 			}catch(Exception e){}
-
 		default: break;
 		}
 		byte[] fileBytes = out.toByteArray();
@@ -362,9 +370,6 @@ public class MyServer extends AbstractServer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
 	}
 
 
@@ -375,6 +380,28 @@ public class MyServer extends AbstractServer {
 	 * @param client holds the connection to the client that sent the request
 	 * @author Eran Simhon
 	 */
+	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
+
+	/*	@SuppressWarnings("resource")
+	private void createFile(FileDetails fileDetails, ConnectionToClient client)
+	{
+	/*	try{
+			Socket socket = serverSocket.accept();
+			System.out.println("Accepted connection : " + socket);
+			File transferFile = new File (fileDetails.getFileName());
+			byte [] bytearray = new byte [(int)transferFile.length()];
+			FileInputStream fin = new FileInputStream(transferFile);
+			BufferedInputStream bin = new BufferedInputStream(fin);
+			bin.read(bytearray,0,bytearray.length);
+			OutputStream os = socket.getOutputStream();
+			System.out.println("Sending Files...");
+			os.write(bytearray,0,bytearray.length);
+			os.flush();
+			socket.close();
+			System.out.println("File transfer complete");
+		}catch(Exception e){System.out.println("ERROR!!!");}
+	}*/
+	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
 
 	private void updateReviewList(Review review, ConnectionToClient client)
@@ -867,80 +894,17 @@ public class MyServer extends AbstractServer {
 	 * @param client client holds the connection to the client that sent the request
 	 * @author Eran Simhon
 	 */
+
+
 	private void updateBookList(Book book, ConnectionToClient client)
 	{
-		ArrayList<Integer> IDs = new ArrayList<Integer>();
-		ArrayList<Book> res = new ArrayList<Book>();
-		int i;
-
 		try{
 			Statement stmt = conn.createStatement();
 			System.out.println(book.query);
-			System.out.println(book.genreQuery);
 			ResultSet rs = stmt.executeQuery(book.query);
-
+			ArrayList<Book> res = new ArrayList<Book>();
 			while(rs.next())
 				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8),rs.getInt(9)));
-			if(!book.genreQuery.equals(""))
-			{
-				Statement stmt1 = conn.createStatement();
-				ResultSet rs1 = stmt1.executeQuery(book.genreQuery);//All books that belong to the selected genre
-				while(rs1.next())
-					IDs.add(rs1.getInt(2));
-				for(i=0;i<IDs.size();i++)
-					System.out.println(IDs.get(i));
-				if(book.getSearchOperand().equals("AND"))
-				{
-					if(IDs.size()==0)
-						res.clear();
-					else{
-						System.out.println(IDs.contains(2));
-						for(i=0;i<res.size();i++)
-							if(!IDs.contains(res.get(i).getBookid()))
-								res.remove(i);
-					}
-				}
-				else
-				{
-					Statement stmt2 = conn.createStatement();
-					for(i=0;i<IDs.size();i++)
-					{
-						ResultSet rs2 = stmt2.executeQuery("select * from books where bookid="+IDs.get(i)+";");
-						rs2.next();
-						Book b = new Book(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7),rs2.getInt(8),rs2.getInt(9));
-						if(!res.contains(b))
-							res.add(b);
-					}
-				}
-
-			}
-			//Increasing the number of searches for all the books that passed the checks
-			rs = stmt.executeQuery("select searchID from searchbook;");
-			int searchID=0;
-			if(rs.last())//Moving the cursor, if possible, to the last row
-				searchID = rs.getInt(1)+1;
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-			LocalDate x = LocalDate.now();
-			String y = x.format(formatter);
-			for(i=0;i<res.size();i++)
-			{
-				stmt.executeUpdate("insert into searchbook values("+res.get(i).getBookid()+",'"+y+"',"+searchID+");");
-				searchID++;
-			}
-			//End increasing the number of searches for all the books that passed the checks
-
-			//Get the genre of each book
-			for(i=0;i<res.size();i++)
-			{
-				rs = stmt.executeQuery("select genre from genresbooks where bookid="+res.get(i).getBookid());
-				String temp="";
-				while(rs.next())
-					temp+=rs.getString(1)+",";
-				String genre="";
-				for(int j=0;j<temp.length()-1;j++)
-					genre+=temp.charAt(j);
-				res.get(i).setGenre(genre);
-			}
 			client.sendToClient(res);
 		}
 		catch(Exception e){e.printStackTrace();}
@@ -1010,20 +974,6 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
 						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
-			Statement stmt1 = conn.createStatement();
-			ResultSet rs1;
-			for(int i=0;i<books.size();i++)
-			{
-				rs1 = stmt1.executeQuery("select genre from genresbooks where bookid="+books.get(i).getBookid()+";");
-				String temp="";
-				while(rs1.next())//A book may belong to more than one genre
-					temp += rs1.getString(1)+",";
-				//remove the ',' at the end
-				String genre="";
-				for(int j=0;j<temp.length()-1;j++)
-					genre+=temp.charAt(j);
-				books.get(i).setGenre(genre);
-			}
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1100,11 +1050,7 @@ public class MyServer extends AbstractServer {
 	{
 		try {
 			Statement stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select reviewid from reviews");
-			int reviewID=0;
-			if(rs.last())
-				reviewID = rs.getInt(1)+1;
-			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "',"+reviewID+",'"+review.getSignature()+"');" );
+			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getReaderID() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "');" );
 			client.sendToClient("Thank you for submitting a review! If your review will be approved by one of our workers, it will be published.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1346,12 +1292,15 @@ public class MyServer extends AbstractServer {
 		}	
 	}
 
+
 	/**
 	 * This method entered the credit card info into the DB
 	 * @param card the credit card
 	 * @param client client holds the connection to the client that sent the request
 	 * @author Eran Simhon
 	 */
+
+
 
 
 	private void addCreditCard(CreditCard card,ConnectionToClient client)
@@ -1370,10 +1319,8 @@ public class MyServer extends AbstractServer {
 
 
 	/**
-	 * Logout of client
-	 * <p>
-	 * Updating client's status of offline
-	 * @param user represents the client, getting from it his id
+	 * Updating client's status to offline.
+	 * @param user represents the user that is currently online and that is asking to logout.
 	 * @param client
 	 */
 	private void LogoutUser(User user,ConnectionToClient client)
@@ -1426,9 +1373,7 @@ public class MyServer extends AbstractServer {
 				}
 				for(int i=counter+1;i<book.getGenre().length();i++)
 					genreNew +=book.getGenre().charAt(i);
-				System.out.println("Genre New : " + genreNew);
 				query = "insert into genresbooks values('" + genre + "'," + cnt + ");";
-				System.out.println("ServerAddBook:" + query);
 				book.setGenre(genreNew);
 				stmt.executeUpdate(query);
 			}
@@ -1475,7 +1420,6 @@ public class MyServer extends AbstractServer {
 	 * @author Eran Simhon
 	 */
 
-
 	private void checkUser(User user,ConnectionToClient client)
 	{
 		String id = user.getID();
@@ -1493,14 +1437,15 @@ public class MyServer extends AbstractServer {
 					User.currentWorker = new Worker();
 					if(rs.getString(2).equals(password))
 					{
-						if(rs.getInt(9)==1){//It is a manager!
+						if(rs.getInt(10)==1)//isLoggedIn
+							client.sendToClient("You're already signed in!");
+						if(rs.getInt(9)==1){//It is a manager! rs.getInt(9) -> get the isManager
 							User.currentWorker.setType(3);
 							worker = new Worker();
 							user.setType(3);
 							worker = new Worker();
 							worker.setWorkerID(rs.getString(1));
 							stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");
-
 						}
 						else{
 							user.setType(2);//It is a worker!
@@ -1548,8 +1493,7 @@ public class MyServer extends AbstractServer {
 								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
 							reader.setMyBooks(books);
 							//Getting the list of books the current user has ordered
-							stmt1.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "'");
-							System.out.println(reader.getFirstName());
+							
 							client.sendToClient(reader);
 						}
 					}

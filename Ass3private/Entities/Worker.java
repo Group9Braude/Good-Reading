@@ -2,7 +2,12 @@ package Entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-
+/**
+ * This class describes a worker and it's attributes as asked.
+ * It represents also a librarian and a manager.
+ * @author orel zilberman
+ *
+ */
 public class Worker extends User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private String  department, workerID, firstName, lastName, id, email,
@@ -21,7 +26,7 @@ public class Worker extends User implements Serializable {
 		super();
 		this.department = department;
 		this.workerID = workerID;
-		this.firstName = firstName;
+		this.firstName = firstName; 
 		this.lastName = lastName;
 		this.id = id;
 		this.email = email;
