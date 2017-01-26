@@ -14,6 +14,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -29,7 +30,7 @@ public class LoginScreenController extends AbstractClient {
 	@FXML
 	private TextField idTextField;
 	@FXML
-	private TextField passwordTextField;
+	private PasswordField passwordTextField;
 	private static String whatAmI;
 	private static String host = "localhost";
 	private static int port = Main.port;
