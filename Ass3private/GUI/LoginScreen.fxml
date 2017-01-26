@@ -6,39 +6,34 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="842.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="801.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginScreenController">
    <children>
-      <ImageView fitHeight="590.0" fitWidth="842.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="593.0" fitWidth="817.0" layoutX="-11.0" layoutY="-9.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../src/55.jpg" />
          </image>
       </ImageView>
-      <TextField fx:id="idTextField" layoutX="360.0" layoutY="200.0" prefHeight="31.0" prefWidth="154.0" promptText="User ID" />
-      <ImageView fx:id="loginImageView" fitHeight="48.0" fitWidth="184.0" layoutX="360.0" layoutY="296.0" onMouseClicked="#onLogin" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="idTextField" layoutX="344.0" layoutY="227.0" prefHeight="31.0" prefWidth="154.0" promptText="User ID" />
+      <PasswordField fx:id="passwordTextField" layoutX="344.0" layoutY="274.0" prefHeight="31.0" prefWidth="154.0" promptText="Password" />
+      <ImageView fx:id="loginImageView" fitHeight="48.0" fitWidth="184.0" layoutX="344.0" layoutY="323.0" onMouseClicked="#onLogin" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../src/78.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="31.0" fitWidth="90.0" layoutX="317.0" layoutY="200.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../src/03.png" />
-         </image>
-      </ImageView>
-      <ImageView fitHeight="38.0" fitWidth="112.0" layoutX="314.0" layoutY="243.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="38.0" fitWidth="112.0" layoutX="298.0" layoutY="270.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../src/89.png" />
          </image>
       </ImageView>
-      <Text fill="WHITE" layoutX="373.0" layoutY="176.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Good Reading">
-         <font>
-            <Font name="Century Gothic" size="15.0" />
-         </font>
-      </Text>
-      <ImageView fitHeight="38.0" fitWidth="68.0" layoutX="488.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="31.0" fitWidth="90.0" layoutX="301.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../src/44.png" />
+            <Image url="@../src/03.png" />
          </image>
       </ImageView>
-      <PasswordField fx:id="passwordTextField" layoutX="360.0" layoutY="247.0" prefHeight="31.0" prefWidth="154.0" promptText="Password" />
+      <ImageView fitHeight="155.0" fitWidth="229.0" layoutX="337.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/41.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

@@ -125,7 +125,7 @@ public class ReportsController extends AbstractClient {
 			GeneralMessage dummy = new GeneralMessage();
 			dummy.actionNow="getReaders";
 			this.sendToServer(dummy);
-			readerid.setCellValueFactory(new PropertyValueFactory<Reader,String>("id") );
+			readerid.setCellValueFactory(new PropertyValueFactory<Reader,String>("dumy") );
 			firstname.setCellValueFactory(new PropertyValueFactory<Reader,String>("lastName") );
 			lastname.setCellValueFactory(new PropertyValueFactory<Reader,String>("firstName") );
 
