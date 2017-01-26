@@ -22,7 +22,7 @@ public class Book extends GeneralMessage implements Serializable{
 	public static ArrayList<Book> bookList;
 	public ArrayList<Book> deleteBookList;
 	public String query, genreToSearch;
-	public boolean isGenres ;
+	public boolean isGenres, isOr;
 	
 	public String genreQuery;
 

@@ -10,7 +10,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 import ocsf.client.AbstractClient;
 
 public class SubscriptionScreenController extends AbstractClient
@@ -18,10 +17,11 @@ public class SubscriptionScreenController extends AbstractClient
 	@FXML 
 	Button back,year,month; 
 	@FXML TextField outputText;
-	private static Stage primaryStage;
 	private static Pane mainLayout;
 	private Reader reader;
-	
+	/**
+	 * Open the connection to the server and get the currently logged in reader
+	 */
 	public SubscriptionScreenController() 
 	{
 		super(Main.host, Main.port);
@@ -31,15 +31,18 @@ public class SubscriptionScreenController extends AbstractClient
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		primaryStage=Main.getPrimaryStage();
 		reader = (Reader)Main.getCurrentUser();
 	}
-	
+	/**
+	 * Go back to the main reader login screen
+	 */
 	public void onBack()
 	{
 		Main.showReaderLoginScreen();
 	}
-
+	/**
+	 * If not already subscribed for a month, set this user as a subscribed user for a month
+	 */
 	public void onMonth()
 	{
 		if(reader.getSubscribed()==1)//If already subscribed
@@ -59,7 +62,9 @@ public class SubscriptionScreenController extends AbstractClient
 		}
 	}
 	
-
+	/**
+	 * If not already subscribed for a year, set this user as a subscribed user for a year
+	 */
 	public void onYear()
 	{
 		if(reader.getSubscribed()==2)//If already subscribed
@@ -79,9 +84,8 @@ public class SubscriptionScreenController extends AbstractClient
 	}
 	
 
-	public void popUpCredit()
+	/*public void popUpCredit()
 	{
-
 		try {
 			mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/CreditCardScreen.fxml"));
 			Main.popup.setScene(new Scene(mainLayout));
@@ -89,7 +93,10 @@ public class SubscriptionScreenController extends AbstractClient
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-	}
+	}*/
+	/**
+	 * Handle the message that returns from the server
+	 */
 	@Override
 	protected void handleMessageFromServer(Object msg) 
 	{

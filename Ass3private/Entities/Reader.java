@@ -1,6 +1,7 @@
 package Entities;
 
 import java.util.ArrayList;
+
  
 public class Reader extends User
 {

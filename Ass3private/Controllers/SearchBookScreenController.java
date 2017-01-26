@@ -33,6 +33,9 @@ public class SearchBookScreenController extends AbstractClient
 	public TextField title,author,lang,genre,keyWord;
 
 	@SuppressWarnings("unchecked")
+	/**
+	 * initialize the table and get the list from the DB
+	 */
 	@FXML
 	public void initialize()
 	{
@@ -65,7 +68,9 @@ public class SearchBookScreenController extends AbstractClient
 		}catch(Exception e){e.printStackTrace();}
 		setAllBooks();
 	}
-
+		/**
+		 * get all the books that are not suspended
+		 */
 		private void setAllBooks()
 		{
 			origin = 0;
@@ -82,12 +87,17 @@ public class SearchBookScreenController extends AbstractClient
 			items = FXCollections.observableArrayList(allBooks);
 			bookList.setItems(items);
 		}
+		/**
+		 * go back to main reader login screen
+		 */
 
 			public void onBack()
 			{
 				Main.showReaderLoginScreen();
 			}
-
+			/**
+			 * open the connection to the server
+			 */
 			public SearchBookScreenController() 
 			{
 				super(Main.host, Main.port);
@@ -98,7 +108,9 @@ public class SearchBookScreenController extends AbstractClient
 					e.printStackTrace();
 				}
 			}
-
+			/**
+			 * construct queries to find books according to the search parameters
+			 */
 			public void onSearch()
 			{
 				String userTitle = title.getText(), userAuthor = author.getText(),
@@ -173,12 +185,17 @@ public class SearchBookScreenController extends AbstractClient
 					bookList.setItems(items);
 				}
 			}
+			/**
+			 * Reset the book table that is presented to the user
+			 */
 
 			public void onReset()
 			{
 				this.setAllBooks();
 			}
-
+			/**
+			 * Order the selected book
+			 */
 			public void onOrder()
 			{
 				if(bookList.getSelectionModel().getSelectedItem() == null)
@@ -213,7 +230,9 @@ public class SearchBookScreenController extends AbstractClient
 				}
 
 			}
-
+			/**
+			 * Handle the message from the server
+			 */
 
 			@SuppressWarnings("unchecked")
 			@Override

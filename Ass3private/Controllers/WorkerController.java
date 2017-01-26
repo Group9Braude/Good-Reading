@@ -71,13 +71,14 @@ public class WorkerController extends AbstractClient {
 		foundBooks = null;
 		foundReviews = null;
 		genresList = null;
+
 	}
-/**
- * This initializer sets up a thread the will check every 30 seconds whether there is a new review/a review that requires attention.
- * <p>
- * The thread sleeps while the user is going through other screens other then the main worker screen.
- * @author orel zilberman
- */
+	/**
+	 * This initializer sets up a thread the will check every 30 seconds whether there is a new review/a review that requires attention.
+	 * <p>
+	 * The thread sleeps while the user is going through other screens other then the main worker screen.
+	 * @author orel zilberman
+	 */
 	public void initialize(){
 		if(!isReview){
 			isReview=true;
@@ -92,14 +93,16 @@ public class WorkerController extends AbstractClient {
 							sendServer(new Review(), "CheckReviews");
 							while(!isBackFromServer){
 								Sleep(50);
-							Sleep(30000);
+								Sleep(30000);
 							}
 						}
-					}catch (Exception e){}
+					}catch(Exception e){}
 				}
 			};thread.start();
 		}
 	}
+
+	
 
 	/**
 	 * This function is a general function, used all across my controllers.
@@ -109,7 +112,6 @@ public class WorkerController extends AbstractClient {
 	 * @param actionNow is the string that contains the information for to server to get us to the right case.
 	 * @author orel zilberman
 	 */
-
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
 			((GeneralMessage)msg).actionNow = actionNow;
@@ -126,22 +128,20 @@ public class WorkerController extends AbstractClient {
 	 * @author orel zilberman
 	 */
 	public void Sleep(int time){
-		try{
-			Thread.sleep(time);
-		}catch(Exception e){e.printStackTrace();}
+		try{Thread.sleep(time);}catch(Exception e){e.printStackTrace();}
 	}
-/**
- * This method is called when the user wants to edit a theme
- * @throws IOException
- *  @author orel zilberman
- */
+	/**
+	 * This method is called when the user wants to edit a theme
+	 * @throws IOException
+	 *  @author orel zilberman
+	 */
 	public void onEditTheme() throws IOException{
 		Main.showEditTheme();
 	}
-/**
- * This method shows a screen with found results of reviews
- *  @author orel zilberman
- */
+	/**
+	 * This method shows a screen with found results of reviews
+	 *  @author orel zilberman
+	 */
 	public void showFound(){
 		try{
 			Main.mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/FoundScreen.fxml"));
@@ -151,6 +151,16 @@ public class WorkerController extends AbstractClient {
 		Main.popup.setScene(new Scene(Main.mainLayout));
 		Main.popup.show();
 	}
+
+	/**
+	 * This method initializes the role ChoiceBox when searching for a worker
+	 */
+	public void onRolePress(){
+		ObservableList<String> items = FXCollections.observableArrayList();
+		items.add("Librarian");items.add("Manager");
+		roleChoiceBox.setItems(items);
+	}
+
 
 	/**
 	 * This method is called when the user chooses a genre from the combo box.
@@ -237,7 +247,7 @@ public class WorkerController extends AbstractClient {
 	/**
 	 * This method is called to instantiate the genre combobox every press
 	 */
-	
+
 	public void onGenresPress(){
 		Genre genre = new Genre();
 		genresComboBox.getItems().clear();
@@ -312,11 +322,113 @@ public class WorkerController extends AbstractClient {
 
 
 
+	/****************************/
+	/*public void onPressCat(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCatSelected.png");
+		Image image = new Image(file.toURI().toString());
+		catImageView.setImage(image);
+	}
+=======
+>>>>>>> refs/remotes/origin/master
+
+<<<<<<< HEAD
+	public void onRlsCat(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCat.png");
+		Image image = new Image(file.toURI().toString());
+		catImageView.setImage(image);
+	}
+
+	public void onPressAdd(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\AddBookSelected.png");
+		Image image = new Image(file.toURI().toString());
+		addImageView.setImage(image);
+	}
+
+	public void onRlsAdd(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\AddBook.png");
+		Image image = new Image(file.toURI().toString());
+		addImageView.setImage(image);
+	}
+
+	public void onPressRemove(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBookSelected.png");
+		Image image = new Image(file.toURI().toString());
+		removeImageView.setImage(image);
+	}
+
+	public void onRlsRemove(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\RemoveBook.png");
+		Image image = new Image(file.toURI().toString());
+		removeImageView.setImage(image);
+	}
+
+	public void onPressUpdate(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\UpdateBookSelected.png");
+		Image image = new Image(file.toURI().toString());
+		updateImageView.setImage(image);
+	}
+
+	public void onRlsUpdate(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Update Book.png");
+		Image image = new Image(file.toURI().toString());
+		updateImageView.setImage(image);
+	}
+
+	public void onPressSearchU(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\SearchUserSelected.png");
+		Image image = new Image(file.toURI().toString());
+		searchImageView.setImage(image);
+	}
+
+	public void onRlsSearchU(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Search User.png");
+		Image image = new Image(file.toURI().toString());
+		searchImageView.setImage(image);
+	}
+
+	public void onPressEnter(){	
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\EnterReaderSelected.png");
+		Image image = new Image(file.toURI().toString());
+		enterImageView.setImage(image);
+	}
+
+	public void onRlsEnter(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Enter Reader.png");
+		Image image = new Image(file.toURI().toString());
+		enterImageView.setImage(image);
+	}
+	public void onPressLogout(){//C:\Users\Sagi\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\LogoutSelected.png");
+		Image image = new Image(file.toURI().toString());
+		logoutImageView.setImage(image);
+	}
+
+	public void onRlsLogout(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\Logout.png");
+		Image image = new Image(file.toURI().toString());
+		logoutImageView.setImage(image);
+	}
+
+	public void onPressCheck(){//C:\Users\Sagi\Desktop\Ass3Logos\Orel Buttons\organizeBookCatSelected.png
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviewsSelected.png");
+		Image image = new Image(file.toURI().toString());
+		checkImageView.setImage(image);
+	}
+
+	public void onRlsCheck(){
+		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviews.png");
+		Image image = new Image(file.toURI().toString());
+		checkImageView.setImage(image);
+	}*/
+
+
+
 	/**
 	 * This method is called when the user wants to delete a book.
 	 * <p>
 	 * 	 it searches through the books in the database and displays the found books for the user to choose which one he wants to delete.
 	 */
+
 	/*                MAKE SURE REMOVE REMOVES FROM GENRESBOOKS ASWELL !!!!!!!!    */
 	public void onRemoveBook(){
 		Book book = new Book();
@@ -352,16 +464,16 @@ public class WorkerController extends AbstractClient {
 	}//end onRemoveBook
 
 
-/**
- * Show the edit genre screen
- * @throws IOException
- */
+	/**
+	 * Show the edit genre screen
+	 * @throws IOException
+	 */
 	public void onEditGenre() throws IOException{
 		Main.showEditGenre();
 	}
-/**
- * Returns the user back to the previous screen and sets the reviews thread back alive .
- */
+	/**
+	 * Returns the user back to the previous screen and sets the reviews thread back alive .
+	 */
 	public void onBack(){
 		isAlive=true;
 		try {
@@ -376,11 +488,8 @@ public class WorkerController extends AbstractClient {
 
 
 	/**
-<<<<<<< HEAD
 	 * This method returns the status of the review checking thread
-=======
 	 * This function returns the status of the review checking thread
->>>>>>> refs/remotes/origin/master
 	 * @return the status of the thread.
 	 */
 	public static boolean isAlive() {
@@ -390,15 +499,15 @@ public class WorkerController extends AbstractClient {
 	public static void setAlive(boolean isAlive) {
 		WorkerController.isAlive = isAlive;
 	}
-/**
- * This method searches  through the database for a worker, according to user's input information.
- * @author orel zilberman
- */
+	/**
+	 * This method searches  through the database for a worker, according to user's input information.
+	 * @author orel zilberman
+	 */
 	public void onWorkerSearch(){
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
-				workerID=workerIDTextFieldW.getText();
-		// role=roleChoiceBox.getSelectionModel().getSelectedItem().toString(),
-		//department=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+				workerID=workerIDTextFieldW.getText(), role = "";
+		if(roleChoiceBox.getSelectionModel().getSelectedItem() != null)
+				role=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
 
 		Worker worker = new Worker();
 		worker.query="SELECT * FROM workers WHERE ";
@@ -410,28 +519,33 @@ public class WorkerController extends AbstractClient {
 			worker.query +=("workerID='"+workerID+"' AND ");
 		if(!id.equals(""))
 			worker.query +=("id='"+id+"' AND ");
+		if(!role.equals(""))
+			if(role.equals("Librarian"))//	items.add("Librarian");items.add("Manager");
+				worker.query+=("isManager=0 AND ");
+			else
+				worker.query+=("isManager=1 AND ");	
 		String query = "";
 		for(int i=0;i<worker.query.length()-5;i++)
 			query+=worker.query.charAt(i);
 		query+=";";
 		worker.query="";
 		worker.query += query;
+		System.out.println("Worker query : " + worker.query);
 		sendServer(worker, "FindWorkers");
 		workerLVUpdate();		
 	}//End onWorkerSearch
 
-/**
- * This method sets the isLogged to 0, which means the user is offline and not connected. 
- * <p>
- * In addition, the method returns the user to the login screen. 
- */
-	
-	public  void onLogout(){
+	/**
+	 * This method sets the isLogged to 0, which means the user is offline and not connected. 
+	 * <p>
+	 * In addition, the method returns the user to the login screen. 
+	 */
 
+	public  void onLogout(){
+		isAlive=false;
 		Worker worker = new Worker();
 		worker.setWorkerID(LoginScreenController.currentWorker.getWorkerID());
 		sendServer(worker, "LogOutUser");
-		isAlive=false;
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 
 	}
@@ -502,10 +616,10 @@ public class WorkerController extends AbstractClient {
 
 
 
-/**
- * This method updates a certain reader according to specific information the user inserts.
- * @author orel zilberman
- */
+	/**
+	 * This method updates a certain reader according to specific information the user inserts.
+	 * @author orel zilberman
+	 */
 
 	public void onUpdateReader(){
 		Reader reader = new Reader();
@@ -533,10 +647,10 @@ public class WorkerController extends AbstractClient {
 
 	}
 
-/**
- * This method removes a reader from the database and updates the listview.
- * @author orel zilberman
- */
+	/**
+	 * This method removes a reader from the database and updates the listview.
+	 * @author orel zilberman
+	 */
 
 	public void onRemoveReader(){
 		String readerString;
@@ -566,7 +680,7 @@ public class WorkerController extends AbstractClient {
 	 * @param toUpdate is a string that holds a string to insert into the viewlist.
 	 * @author orel zilberman
 	 */
-	
+
 	public void saveOldList(ListView<String> listView, String whatToDo, String toUpdate){
 		if(listView == null || listView.getItems() == null)
 			return;
@@ -584,10 +698,10 @@ public class WorkerController extends AbstractClient {
 	}
 
 
-/**
- * This method extracts the ID from the string in the ListView, sets it into a Book object and sends it to the server to update a book.
- * @author orel zilberman
- */
+	/**
+	 * This method extracts the ID from the string in the ListView, sets it into a Book object and sends it to the server to update a book.
+	 * @author orel zilberman
+	 */
 	public void onBookChosen(){
 		String str="";
 		int ID;
@@ -603,10 +717,10 @@ public class WorkerController extends AbstractClient {
 		sendServer(book, "UpdateBook");
 
 	}
-/**
- * This method updates the readers ListView with the readers with the update.
- * @author orel zilberman
- */
+	/**
+	 * This method updates the readers ListView with the readers with the update.
+	 * @author orel zilberman
+	 */
 
 	public void readerLVUpdate(){
 		while(foundReaders==null)
@@ -632,7 +746,7 @@ public class WorkerController extends AbstractClient {
 	 * This method updates the books ListView with the books with the update. 
 	 * @author orel zilberman
 	 */
-	
+
 	public void bookLVUpdate(){
 		foundBooks = new ArrayList<String>();
 		ObservableList<String> items =FXCollections.observableArrayList();
@@ -643,72 +757,72 @@ public class WorkerController extends AbstractClient {
 
 	}
 
-/**
- * This method is connected to the static buttons in the reader search. 
- * It finds logged in readers from the database and updates the readers listview
- * @author orel zilberman
- */
-	
+	/**
+	 * This method is connected to the static buttons in the reader search. 
+	 * It finds logged in readers from the database and updates the readers listview
+	 * @author orel zilberman
+	 */
+
 	public void onLoggedReaders(){
 		Reader reader = new Reader();
 		sendServer(reader, "FindLoggedReaders");
 		readerLVUpdate();
 	}
-	
+
 	/**
 	 * This method is connected to the static buttons in the reader search. 
 	 * It finds readers that are in debt from the database and updates the readers listview
 	 * @author orel zilberman
 	 */
-	
+
 	public void onDebtReaders(){
 		Reader reader = new Reader();
 		sendServer(reader, "FindDebtReaders");
 		readerLVUpdate();
 	}
-	
+
 	/**
 	 * This method is connected to the static buttons in the reader search. 
 	 * It finds readers with frozen accounts from the database and updates the readers listview
 	 * @author orel zilberman
 	 */
-	
+
 	public void onFrozenReaders(){
 		Reader reader = new Reader();
 		sendServer(reader, "FindFrozenReaders");
 		readerLVUpdate();
 	}
-	
+
 	/**
 	 * This method is connected to the static buttons in the manager search. 
 	 * It finds all the managers from the database and updates managers listview
 	 * @author orel zilberman
 	 */
-	
+
 	public void onAllManagers(){
 		Worker worker = new Worker();
 		sendServer(worker, "FindAllManagers");
 		workerLVUpdate();
 	}
-	
+
 	/**
 	 * This method is connected to the static buttons in the worker search. 
 	 * It finds the all the workers from the database and updates the workers listview
 	 * @author orel zilberman
 	 */
-	
+
 	public void onAllWorkers(){
 		Worker worker = new Worker();
 		sendServer(worker, "FindAllWorkers");
 		workerLVUpdate();
 	}
-	
+
 	/**
 	 * This method is connected to the static buttons in the worker search. 
 	 * It finds the logged in workers from the database and updates the workers listview
 	 * @author orel zilberman
 	 */
-	
+
 	public void onLoggedWorkers(){
 		Worker worker=  new Worker();
 		sendServer(worker, "FindLoggedWorkers");
@@ -826,7 +940,7 @@ public class WorkerController extends AbstractClient {
 	 * This method puts the review thread to sleep and shows AddNewReaderScreen
 	 * @author orel zilberman
 	 */
-	
+
 	public void onAddNewReaderL(){
 		isAlive=false;
 		reviewsButton.setVisible(false);
@@ -839,14 +953,14 @@ public class WorkerController extends AbstractClient {
 	 * This method puts the review thread to sleep and shows AddBook screen
 	 * @author orel zilberman
 	 */
-	
+
 	public void  onAddBookL(){
 		isAlive=false;
 		try {
 			Main.showAddBook();
 		} catch (IOException e) {e.printStackTrace();}
 	}
-	
+
 	/**
 	 * This method puts the review thread to sleep and shows RemoveBook screen
 	 * @author orel zilberman
@@ -858,7 +972,7 @@ public class WorkerController extends AbstractClient {
 			Main.showRemoveBook();
 		}catch (IOException e){e.printStackTrace();}
 	}
-	
+
 	/**
 	 * This method puts the review thread to sleep and shows SearchUser screen
 	 * @author orel zilberman
@@ -875,18 +989,18 @@ public class WorkerController extends AbstractClient {
 	 * This method puts the review thread to sleep and shows the main screen
 	 * @author orel zilberman
 	 */
-	
+
 	public void onLogoutL(){ 
 		isAlive=false;
 		sendServer(LoginScreenController.currentWorker, "Logout");
 		try {Main.showMainMenu();} catch (IOException e) {e.printStackTrace();}
 	}
-	
+
 	/**
 	 * This method puts the review thread to sleep, updates the reviews list  and shows FinalReviewScreen
 	 * @author orel zilberman
 	 */
-	
+
 	public void onCheckReviewL(){
 		isAlive=false;
 		Review review = new Review();
@@ -899,56 +1013,4 @@ public class WorkerController extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
-
-
-
-	/*           LoggedInWorkerController          */
-
-
-
-
 }
-
-/*try {
-mainLayout = FXMLLoader.load(Main.class.getResource("/GUI/LoginScreen.fxml"));
-} catch (IOException e1) {
-e1.printStackTrace();
-}
-Main.popup.setScene(new Scene(mainLayout));
-Main.popup.show();
-//label1.setTextFill(Color.web("#0076a3"));
-
-public void onUpdateBookL(){
-	Book book = new Book();
-	book.query = "SELECT * FROM books";
-	if(flag){
-		Book.bookList=new ArrayList<Book>();
-		Genre.genresBooksList = new ArrayList<Book>();	
-		flag=false;
-	}
-	sendServer(book, "UpdateBookList");
-
-	while(Book.bookList==null)
-		Sleep(5);
-
-	sendServer(book, "InitializeGenresBooksList");
-
-	while(Genre.genresBooksList==null)
-		Sleep(5);
-
-
-	WorkerController.initGBL = true;
-	for(Book book1 : Book.bookList)
-		System.out.println(book1.getTitle());
-	for(Book book2 : Genre.genresBooksList)
-		System.out.println(book2.getGenre());
-
-
-
-	try {
-		Main.showUpdateBookScreen();
-	} catch (IOException e) {
-		e.printStackTrace();
-	}
-}*/

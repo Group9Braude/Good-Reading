@@ -222,6 +222,8 @@ public class EditBookController {
 
 
 
+
+
 	public void onBack(){
 		try {
 			if(Main.getCurrentUser().getType()==3)
@@ -231,6 +233,8 @@ public class EditBookController {
 			e.printStackTrace();
 		}
 	}
-}
+
+}//end class
+
 
 

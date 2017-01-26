@@ -2,7 +2,6 @@ package Controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Genre;
@@ -15,7 +14,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.text.Text;
 
 public class UpdateBookController {
 	@FXML
@@ -23,9 +21,11 @@ public class UpdateBookController {
 	public static ArrayList<Book> bookList, genresBooksList, previousBookList;
 	@FXML
 	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR;
-	
 	@FXML
 	public ComboBox<String> genresComboBox, genresAddComboBox;
+	
+	
+	
 	static boolean  flag;//Make sure initialized wont be called after udpatebook
 	static Book bookForEdition;
 
@@ -232,7 +232,6 @@ public class UpdateBookController {
 		String title = titleTextFieldR.getText(), /*author = authorTextFieldR.getText(), RETURN LATER*/ 
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
-		//String[] authors = author.split(",");//a,b,c ->[a][b][c] RETURN LATER
 		book.query = "SELECT * FROM books WHERE";
 		if(!title.equals(""))
 			book.query +=" title LIKE  '%" + title + "%' AND ";
@@ -248,6 +247,7 @@ public class UpdateBookController {
 		for(int i=0;i<book.query.length()-5;i++)
 			query+=book.query.charAt(i);//Remove the AND from the end of the query
 		query+=";";
+		/*                    END AND             */
 		book.query=query;
 		WorkerController.foundBookList = null;
 		sendServer(book, "UpdateBookListSearch");

@@ -32,7 +32,9 @@ public class SearchReviewScreenController extends AbstractClient
 	public ComboBox<String> action = new ComboBox<String>();
 	public TextField titleField,reviewerField,keyWordsField;
 	public TextArea reviewText;
-
+	/**
+	 * Initialize the review list that is presented to the reader
+	 */
 	@SuppressWarnings("unchecked")
 	public void initialize()
 	{
@@ -58,7 +60,9 @@ public class SearchReviewScreenController extends AbstractClient
 		}
 		setAllReviews();	
 	}
-
+	/**
+	 * Get all approved reviews
+	 */
 	private void setAllReviews()
 	{
 		try {
@@ -77,17 +81,23 @@ public class SearchReviewScreenController extends AbstractClient
 		}
 
 	}
-
+	/**
+	 * Initialize the review screen
+	 */
 	public SearchReviewScreenController() {
 		super(Main.host, Main.port);
 		// TODO Auto-generated constructor stub
 	}
-
+	/**
+	 * go back to the main login reader screen
+	 */
 	public void onBack()
 	{
 		Main.showReaderLoginScreen();
 	}
-
+	/**
+	 * Show the contents of the selected review
+	 */
 	public void showReview()
 	{
 		Review review = reviewList.getSelectionModel().getSelectedItem();
@@ -146,12 +156,16 @@ public class SearchReviewScreenController extends AbstractClient
 			reviewList.setItems(items);
 		}
 	}
-
+	/**
+	 * Reset the review table
+	 */
 	public void onReset()
 	{
 		setAllReviews();
 	}
-
+	/**
+	 * Handle the message from the server
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void handleMessageFromServer(Object msg) {

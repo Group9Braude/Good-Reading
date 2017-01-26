@@ -6,37 +6,25 @@ public class FileDetails extends GeneralMessage{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private String fileName,content,type;
-	
-	public FileDetails(String fileName,String content,String type)
+	private int bookid;
+	private String type;
+	public FileDetails(int bookid,String type)
 	{
-		this.fileName = fileName;
-		this.content = content;
-		this.setType(type);
+		this.bookid = bookid;
+		this.type = type;
 	}
-
-	public String getFileName() {
-		return fileName;
+	public int getBookid() {
+		return bookid;
 	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
+	public void setBookid(int bookid) {
+		this.bookid = bookid;
 	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
-	}
-
 	public String getType() {
 		return type;
 	}
-
 	public void setType(String type) {
 		this.type = type;
 	}
+	
 
 }
