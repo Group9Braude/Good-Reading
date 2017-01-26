@@ -88,7 +88,7 @@ public class LoginReaderController extends AbstractClient{
 		{
 			selectedBook = bookList.getSelectionModel().getSelectedItem();
 			String chosen = format.getSelectionModel().getSelectedItem();
-			FileDetails file = new FileDetails(selectedBook.getTitle(),selectedBook.toString(),chosen);
+			FileDetails file = new FileDetails(selectedBook.getBookid(),chosen);
 			file.actionNow = "CreateAndSendFile";
 			try {
 				this.sendToServer(file);

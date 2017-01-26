@@ -88,6 +88,12 @@ public class WorkerController extends AbstractClient {
 							while(!isBackFromServer){
 								Sleep(50);
 							}
+						}
+					}catch(Exception e){}
+				}
+			};thread.start();
+		}
+	}
 	
 	public void sendServer(Object msg, String actionNow){/******************************/
 		try {
@@ -275,7 +281,7 @@ public class WorkerController extends AbstractClient {
 
 
 	/****************************/
-	public void onPressCat(){
+	/*public void onPressCat(){
 		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\organizeBookCatSelected.png");
 		Image image = new Image(file.toURI().toString());
 		catImageView.setImage(image);
@@ -368,7 +374,7 @@ public class WorkerController extends AbstractClient {
 		File file = new File("C:\\Users\\Sagi\\Desktop\\Ass3Logos\\Orel Buttons\\CheckReviews.png");
 		Image image = new Image(file.toURI().toString());
 		checkImageView.setImage(image);
-	}
+	}*/
 
 
 

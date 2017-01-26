@@ -50,7 +50,7 @@ public class ReviewScreenController extends AbstractClient
 		if(reviewField.getText().equals("") || signatureField.getText().equals("") || keywordField.getText().equals("") )
 			JOptionPane.showMessageDialog(null, "First enter the missing details");
 		else{
-			Review review = new Review(reviewBook,keywordField.getText(),reviewField.getText(),signatureField.getText(),0,1);
+			Review review = new Review(reviewBook,keywordField.getText(),reviewField.getText(),signatureField.getText(),0);
 			review.actionNow = "AddReview"; 
 			try {
 				this.openConnection();
