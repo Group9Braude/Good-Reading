@@ -95,35 +95,29 @@ public class LoginScreenController extends AbstractClient {
 
 	
 
-
+/**
+ * This method is called upon an attempt to login. 
+ * The id and the password is checked against the database and returns a suitable message incase the id or the password is incorrect.
+ * <p>
+ * In addition, the method initializes the book list and the worker list, in order to economize the access to the database.
+ * @author orel zilberman
+ */
 	public void onLogin(){
-	/*	File file = new File("C:\\Users\\orels\\Desktop\\Ass3Logos\\Button.png");
-		Image image = new Image(file.toURI().toString());
-		loginImageView.setImage(image);*/
-
-		
 		User user = new User(idTextField.getText(),passwordTextField.getText());
 		whatAmI="";
 		sendServer(user, "CheckUser");
-		boolean flag=false;
 		while(whatAmI==""){
-			try {Thread.sleep(10);} 
-			catch (InterruptedException e) {e.printStackTrace();}
+			try {Thread.sleep(3);} catch (InterruptedException e) {e.printStackTrace();}
 		}
 		if(whatAmI!="User does not exist in the DB"){
 			Thread initialize = new Thread(){
 				public void run(){
 					Book book = new Book();
 					Worker worker = new Worker();
-					book.bookList = new ArrayList<Book>();
-					worker.workerList = new ArrayList<Worker>();
+					Book.bookList = new ArrayList<Book>();
+					Worker.workerList = new ArrayList<Worker>();
 					sendServer(book, "InitializeBookList");//Get the book list in a static array
-
 					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-
-					sendServer(worker, "InitializeWorkerList");//Get the worker list in static array
-
-
 				}
 			};
 			initialize.start();
@@ -134,14 +128,7 @@ public class LoginScreenController extends AbstractClient {
 			case "reader":
 				Main.showReaderLoginScreen();break;
 			case "worker":
-				Main.showLoggedInScreenWorker();
-				Thread thread = new Thread(){
-					public void run(){
-						while(true)
-							sendServer(new GeneralMessage(), "CheckNewReviews");
-					}
-				};
-				break;
+				Main.showLoggedInScreenWorker();break;
 			case "manager":
 				Main.showManagerLoggedScreen();break;
 			}
