@@ -1,9 +1,7 @@
 package Controllers;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
-
 import Entities.Book;
 import Entities.GeneralMessage;
 import Entities.Reader;
@@ -12,17 +10,12 @@ import Entities.Worker;
 import application.Main;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Pane;
 import ocsf.client.AbstractClient;
-
 public class LoginScreenController extends AbstractClient {
 
 
@@ -36,7 +29,6 @@ public class LoginScreenController extends AbstractClient {
 	private static int port = Main.port;
 	private static Reader readerLogged;
 	public static Worker currentWorker;
-	private static boolean isLoggedFlag=false, orelTheKing=true;
 	final ScheduledThreadPoolExecutor executor = new ScheduledThreadPoolExecutor(1);//For the login
 	@FXML
 	ImageView loginImageView;
@@ -156,13 +148,11 @@ public class LoginScreenController extends AbstractClient {
 				readerLogged=(Reader)msg;
 				System.out.println(readerLogged.getFirstName());
 				Main.setCurrentUser((Reader)msg);
-				isLoggedFlag=true;
 				whatAmI="reader";
 			}
 
 			else if(msg instanceof User)//Correct details were entered
 			{
-				isLoggedFlag=true;
 				User res = (User)msg;
 				User.currentWorker = new Worker();
 				User.currentWorker.setType(res.getType());
