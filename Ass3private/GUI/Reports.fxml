@@ -25,7 +25,7 @@
                                     <Image url="@../src/1.jpg" />
                                  </image>
                               </ImageView>
-                              <Text fill="#4a2d2d" layoutX="26.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please pick a reader to see his purchases, and then press enter:">
+                              <Text fill="WHITE" layoutX="26.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please pick a reader to see his purchases, and then press enter:">
                                  <font>
                                     <Font name="Century Gothic Bold" size="14.0" />
                                  </font>
@@ -34,8 +34,8 @@
                                  <effect>
                                     <InnerShadow />
                                  </effect></Button>
-                              <ListView fx:id="myBooks" layoutY="280.0" prefHeight="272.0" prefWidth="484.0" />
-                              <Text fill="#8af8f3" layoutX="402.0" layoutY="426.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader's purchases" wrappingWidth="212.08984375">
+                              <ListView fx:id="myBooks" layoutY="280.0" prefHeight="279.0" prefWidth="484.0" />
+                              <Text fill="WHITE" layoutX="402.0" layoutY="426.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader's purchases" wrappingWidth="212.08984375">
                                  <font>
                                     <Font size="23.0" />
                                  </font>
