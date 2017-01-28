@@ -954,7 +954,7 @@ public class MyServer extends AbstractServer {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * This method gets the all the books in the DB that are not suspended 
 	 * @param client client holds the connection to the client that sent the request
@@ -1033,7 +1033,7 @@ public class MyServer extends AbstractServer {
 		}catch(Exception e){e.printStackTrace();}
 
 	}
-	
+
 	/**
 	 * This method inserts a new row into the review table
 	 * @param review the new review to be inserted
@@ -1323,7 +1323,7 @@ public class MyServer extends AbstractServer {
 			if(user instanceof Worker){
 				System.out.println("worker logout");
 				Worker worker = (Worker)user;
-				stmt.executeUpdate("UPDATE workers SET isLoggedIn=0 WHERE workerID='" + worker.getWorkerID()+"';");
+				stmt.executeUpdate("UPDATE workers SET 	isLoggedIn=0 WHERE workerID='" + worker.getWorkerID()+"';");
 			}
 			client.sendToClient("You've logged out successfully");
 
@@ -1425,28 +1425,25 @@ public class MyServer extends AbstractServer {
 			ResultSet rs1 = stmt1.executeQuery("SELECT * FROM readers WHERE readerID='" + id + "';");
 			if (rs.next())//The ID was found in the workers table
 				try {
-					User.currentWorker = new Worker();
+					worker = new  Worker();
 					if(rs.getString(2).equals(password))
 					{
 						if(rs.getInt(10)==1)//isLoggedIn
 							client.sendToClient("You're already signed in!");
-						if(rs.getInt(9)==1){//It is a manager! rs.getInt(9) -> get the isManager
-							User.currentWorker.setType(3);
-							worker = new Worker();
-							user.setType(3);
-							worker = new Worker();
-							worker.setWorkerID(rs.getString(1));
-							stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");
-						}
 						else{
-							user.setType(2);//It is a worker!
-							User.currentWorker.setType(2);
-							worker = new Worker();
-							worker.setWorkerID(rs.getString(1));
-							stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");
+							if(rs.getInt(9)==1){//It is a manager! rs.getInt(9) -> get the isManager
+								worker.setType(3);
+								worker.setWorkerID(rs.getString(1));
+								stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "';");
+							}
+							else{
+								worker.setType(2);
+								worker.setWorkerID(rs.getString(1));
+								stmt1.executeUpdate("UPDATE workers SET isLoggedIn=1 WHERE workerID='" + worker.getWorkerID() + "'");
+								client.sendToClient(worker);
+							}
 							client.sendToClient(worker);
 						}
-						client.sendToClient(user);
 					}
 					else
 						client.sendToClient("Wrong password!");
@@ -1484,7 +1481,7 @@ public class MyServer extends AbstractServer {
 								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
 							reader.setMyBooks(books);
 							//Getting the list of books the current user has ordered
-							
+
 							client.sendToClient(reader);
 						}
 					}
