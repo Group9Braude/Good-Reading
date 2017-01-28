@@ -20,25 +20,33 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="141.0" prefWidth="773.0">
                            <children>
-                              <ImageView fitHeight="317.0" fitWidth="1198.0" layoutX="-34.0">
+                              <ImageView fitHeight="557.0" fitWidth="1166.0" layoutX="-2.0">
                                  <image>
                                     <Image url="@../src/1.jpg" />
                                  </image>
                               </ImageView>
-                              <Text fill="#4a2d2d" layoutX="39.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please enter the reader ID:">
+                              <Text fill="WHITE" layoutX="26.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please pick a reader to see his purchases, and then press enter:">
                                  <font>
                                     <Font name="Century Gothic Bold" size="14.0" />
                                  </font>
                               </Text>
-                              <Button layoutX="421.0" layoutY="36.0" mnemonicParsing="false" onAction="#onEnter" text="Enter" />
-                              <ListView fx:id="myBooks" layoutX="-4.0" layoutY="306.0" prefHeight="272.0" prefWidth="1148.0" />
-                              <Text fill="#ffe5e5" layoutX="511.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader's purchases" />
-                              <TextField fx:id="id" layoutX="228.0" layoutY="36.0" promptText="id" />
-                              <TableView fx:id="mytable" layoutX="39.0" layoutY="88.0" prefHeight="192.0" prefWidth="439.0">
+                              <Button layoutX="517.0" layoutY="186.0" mnemonicParsing="false" onAction="#onEnter" prefHeight="31.0" prefWidth="152.0" text="Enter">
+                                 <effect>
+                                    <InnerShadow />
+                                 </effect></Button>
+                              <ListView fx:id="myBooks" layoutY="280.0" prefHeight="279.0" prefWidth="484.0" />
+                              <Text fill="WHITE" layoutX="402.0" layoutY="426.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Reader's purchases" wrappingWidth="212.08984375">
+                                 <font>
+                                    <Font size="23.0" />
+                                 </font>
+                                 <effect>
+                                    <Reflection />
+                                 </effect></Text>
+                              <TableView fx:id="mytable" layoutX="-1.0" layoutY="87.0" prefHeight="197.0" prefWidth="485.0">
                                  <columns>
-                                    <TableColumn fx:id="readerid" prefWidth="128.0" text="ReaderID" />
-                                    <TableColumn fx:id="firstname" prefWidth="162.0" text="First Name" />
-                                    <TableColumn fx:id="lastname" prefWidth="148.0" text="Last Name" />
+                                    <TableColumn fx:id="readerid" prefWidth="134.0" text="ReaderID" />
+                                    <TableColumn fx:id="firstname" prefWidth="197.0" text="First Name" />
+                                    <TableColumn fx:id="lastname" prefWidth="153.0" text="Last Name" />
                                  </columns></TableView>
                               <Text fill="WHITE" layoutX="593.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Life is too short to read books that I'm not enjoying” ">
                                  <font>
@@ -150,14 +158,14 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ImageView fitHeight="573.0" fitWidth="1149.0" layoutX="-5.0" layoutY="-3.0">
+                              <ImageView fitHeight="573.0" fitWidth="1149.0" layoutY="-3.0">
                                  <image>
                                     <Image url="@../src/4.jpg" />
                                  </image>
                               </ImageView>
-                              <Text layoutX="8.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Please pick the book you would like to see popularity of" wrappingWidth="261.2099609375">
+                              <Text fill="WHITE" layoutX="19.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1.Please pick the book you would like to see popularity of" wrappingWidth="261.2099609375">
                                  <font>
-                                    <Font name="Century Gothic" size="15.0" />
+                                    <Font name="Century Gothic" size="18.0" />
                                  </font>
                               </Text>
                               <Text fx:id="please" layoutX="111.0" layoutY="273.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please choose genre:" visible="false">
@@ -165,12 +173,12 @@
                                     <Font name="Century Gothic" size="15.0" />
                                  </font>
                               </Text>
-                              <ChoiceBox fx:id="genre" layoutX="281.0" layoutY="252.0" prefHeight="31.0" prefWidth="286.0" visible="false" />
-                              <Button fx:id="enter1" layoutX="598.0" layoutY="96.0" mnemonicParsing="false" onAction="#onEnter1" prefHeight="31.0" prefWidth="144.0" text="Enter">
+                              <ChoiceBox fx:id="genre" layoutX="299.0" layoutY="252.0" prefHeight="31.0" prefWidth="379.0" visible="false" />
+                              <Button fx:id="enter1" layoutX="718.0" layoutY="96.0" mnemonicParsing="false" onAction="#onEnter1" prefHeight="31.0" prefWidth="144.0" text="Enter">
                                  <effect>
                                     <InnerShadow />
                                  </effect></Button>
-                              <Button fx:id="checkpop" layoutX="594.0" layoutY="252.0" mnemonicParsing="false" onAction="#onCheckpop" prefHeight="31.0" prefWidth="161.0" text="Check popularity" visible="false">
+                              <Button fx:id="checkpop" layoutX="710.0" layoutY="252.0" mnemonicParsing="false" onAction="#onCheckpop" prefHeight="31.0" prefWidth="161.0" text="Check popularity" visible="false">
                                  <effect>
                                     <InnerShadow />
                                  </effect></Button>
@@ -179,14 +187,17 @@
                                     <Font name="MingLiU-ExtB" size="36.0" />
                                  </font>
                               </TextField>
-                              <TableView fx:id="booktable1" layoutX="254.0" layoutY="11.0" prefHeight="200.0" prefWidth="319.0">
+                              <TableView fx:id="booktable1" layoutX="300.0" layoutY="22.0" prefHeight="200.0" prefWidth="378.0">
                                 <columns>
                                   <TableColumn fx:id="bookcol1" prefWidth="75.0" text="BookID" />
-                                  <TableColumn fx:id="titlecol1" prefWidth="139.0" text="Title" />
-                                    <TableColumn fx:id="authorcol1" prefWidth="104.0" text="Author" />
+                                  <TableColumn fx:id="titlecol1" prefWidth="168.0" text="Title" />
+                                    <TableColumn fx:id="authorcol1" prefWidth="134.0" text="Author" />
                                 </columns>
                               </TableView>
-                              <Text layoutX="8.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press enter" />
+                              <Text fill="WHITE" layoutX="19.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2.Press enter">
+                                 <font>
+                                    <Font name="Century Gothic" size="18.0" />
+                                 </font></Text>
                               <Text fill="WHITE" layoutX="374.0" layoutY="523.0" strokeType="OUTSIDE" strokeWidth="0.0" text="“Clearly one must read every good book at least once every ten years.”">
                                  <font>
                                     <Font name="Century Gothic Italic" size="21.0" />

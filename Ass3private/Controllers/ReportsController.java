@@ -331,7 +331,7 @@ public class ReportsController extends AbstractClient {
 	 * 
 	 */
 	public void onEnter(){
-		Reader r=new Reader(id.getText(),null);
+		Reader r=new Reader(mytable.getSelectionModel().getSelectedItem().getID(),null);
 		obsMyBooks=FXCollections.observableArrayList();	
 		obsMyBooks.removeAll(obsMyBooks);
 		sendServer(r,"getUserBooks");
@@ -344,8 +344,11 @@ public class ReportsController extends AbstractClient {
 			}
 		};
 		flag=0;
-		for(int i=0;i<arr.size();i++)
-			obsMyBooks.add(arr.get(i).getTitle()+" by "+arr.get(i).getAuthor());
+		if(arr.size()>1){
+			for(int i=0;i<arr.size()-1;i++)
+				obsMyBooks.add(arr.get(i).getTitle()+" by "+arr.get(i).getAuthor());
+		}
+		else obsMyBooks.add(arr.get(0).getAuthor());
 		System.out.println(obsMyBooks);
 		myBooks.setItems(obsMyBooks);
 

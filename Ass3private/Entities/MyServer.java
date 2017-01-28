@@ -1069,6 +1069,7 @@ public class MyServer extends AbstractServer {
 						,rs.getString(4)));
 
 			}
+			userbooks.add(new OrderedBook("",0,"","No books were been ordered by user."));
 			client.sendToClient(userbooks);
 		} catch (Exception  e) {
 			e.printStackTrace();
