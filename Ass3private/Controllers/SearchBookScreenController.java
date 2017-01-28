@@ -98,7 +98,7 @@ public class SearchBookScreenController extends AbstractClient
 			/**
 			 * open the connection to the server
 			 */
-			public SearchBookScreenController() 
+			public SearchBookScreenController()     
 			{
 				super(Main.host, Main.port);
 				try {
