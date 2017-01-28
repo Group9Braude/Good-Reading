@@ -7,9 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -185,11 +182,6 @@ public class MyServer extends AbstractServer {
 				editBook((Book)msg, client);break;
 			case "CreateAndSendFile":
 				createAndSendFile((FileDetails)msg,client); break;
-				//	case "CreateFile":
-				////			createFile((FileDetails)msg,client); break;
-				//	case "CreateAndSendFile":
-				//	createAndSendFile((FileDetails)msg,client); break;
-				/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 			case "RemoveReader":
 				removeReader((Reader)msg, client);break;
 			case "AddNewReader":
@@ -307,7 +299,7 @@ public class MyServer extends AbstractServer {
 		String content="";
 		try {
 			stmt = conn.createStatement();
-			ResultSet rs = stmt.executeQuery("select title,author from books where bookid="+fileDetails.getBookid()+";");
+			ResultSet rs = stmt.executeQuery("select title,author from books where bookid="+fileDetails.getBookid()+";");//To mimic the behavior of real servers, where the content of the book is kept in the DB
 			rs.next();
 			content = rs.getString(1)+" by "+rs.getString(2);
 		} catch (SQLException e2) {
@@ -424,6 +416,10 @@ public class MyServer extends AbstractServer {
 		}
 		catch(Exception e){e.printStackTrace();}
 	}
+	/**
+	 * Get all the approved reviews and return them to the reader
+	 * @param client connection to the client that sent the request
+	 */
 
 	private void getReviewsForReader(ConnectionToClient client)
 	{
@@ -1044,8 +1040,6 @@ public class MyServer extends AbstractServer {
 	 * @param client client holds the connection to the client that sent the request
 	 * @author Eran Simhon
 	 */
-
-
 	private void addReview(Review review, ConnectionToClient client)
 	{
 		try {
@@ -1294,15 +1288,11 @@ public class MyServer extends AbstractServer {
 
 
 	/**
-	 * This method entered the credit card info into the DB
+	 * This method enters the credit card info into the DB
 	 * @param card the credit card
 	 * @param client client holds the connection to the client that sent the request
 	 * @author Eran Simhon
 	 */
-
-
-
-
 	private void addCreditCard(CreditCard card,ConnectionToClient client)
 	{
 		Statement stmt;

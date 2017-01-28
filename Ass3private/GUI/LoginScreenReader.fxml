@@ -7,12 +7,17 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="449.0" prefWidth="440.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginReaderController">
+<AnchorPane prefHeight="638.0" prefWidth="533.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.LoginReaderController">
    <children>
+      <ImageView depthTest="ENABLE" fitHeight="638.0" fitWidth="533.0">
+         <image>
+            <Image url="@../../../../Desktop/Book-shelf-PPT-Background.jpg" />
+         </image>
+      </ImageView>
       <Text layoutX="20.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="My books:" />
       <TextField fx:id="welcomeText" editable="false" layoutX="37.0" layoutY="25.0" />
       <TextField fx:id="subscribeText" editable="false" layoutX="245.0" layoutY="70.0" />
-      <ListView fx:id="bookList" editable="true" layoutX="14.0" layoutY="108.0" prefHeight="327.0" prefWidth="225.0" />
+      <ListView fx:id="bookList" editable="true" layoutX="14.0" layoutY="108.0" prefHeight="273.0" prefWidth="225.0" />
       <Button layoutX="274.0" layoutY="149.0" mnemonicParsing="false" onAction="#onReview" text="Write a review" />
       <Button layoutX="267.0" layoutY="117.0" mnemonicParsing="false" onAction="#onSearch" text="Search for books" />
       <ImageView fitHeight="56.0" fitWidth="116.0" layoutX="278.0" layoutY="10.0" onMouseClicked="#onSubscribe" onMousePressed="#onSubscribe" pickOnBounds="true" preserveRatio="true">
@@ -21,10 +26,10 @@
          </image>
       </ImageView>
       <Button layoutX="264.0" layoutY="182.0" mnemonicParsing="false" onAction="#onSearchReviews" text="Search for reviews" />
-      <ComboBox fx:id="format" layoutX="249.0" layoutY="306.0" prefWidth="150.0" />
-      <Text layoutX="247.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book file format:" />
-      <Button layoutX="267.0" layoutY="348.0" mnemonicParsing="false" onAction="#onGenerate" text="Generate book file" />
-      <Button layoutX="291.0" layoutY="387.0" mnemonicParsing="false" onAction="#onLogOut" text="Log out" />
+      <ComboBox fx:id="format" layoutX="249.0" layoutY="275.0" prefWidth="150.0" />
+      <Text layoutX="257.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Book file format:" />
+      <Button layoutX="267.0" layoutY="313.0" mnemonicParsing="false" onAction="#onGenerate" text="Generate book file" />
+      <Button layoutX="292.0" layoutY="347.0" mnemonicParsing="false" onAction="#onLogOut" text="Log out" />
       <Button layoutX="251.0" layoutY="212.0" mnemonicParsing="false" onAction="#popUpCredit" text="Enter a new credit card" />
    </children>
 </AnchorPane>
