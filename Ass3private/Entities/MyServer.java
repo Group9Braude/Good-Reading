@@ -957,7 +957,7 @@ public class MyServer extends AbstractServer {
 	private void getBookGenres(Book b,ConnectionToClient client){
 		ArrayList<String> arr=new ArrayList<String>();
 		try {
-			Statement stmt = conn.createStatement();
+			Statement stmt = conn.createStatement(); 
 			ResultSet rs = stmt.executeQuery("Select *  FROM genresbooks WHERE bookid="+ b.getBookid() + ";");
 			while(rs.next())
 				arr.add(rs.getString(1));//Adding genres to array
