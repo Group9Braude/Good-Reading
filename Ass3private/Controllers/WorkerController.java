@@ -12,6 +12,7 @@ import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
+import Tests.BookTest;
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -46,7 +47,7 @@ public class WorkerController extends AbstractClient {
 	@FXML
 	private Text titleText,keywordText,authorText,languageText,summaryText,tocText,genresText, removeBookTitle;
 	@FXML
-	private TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,genresTextField,//TextFields for book removal
+	public TextField titleTextFieldR, authorTextFieldR, languageTextFieldR, summaryTextFieldR, GenreTextFieldR, keywordTextFieldR,genresTextField,//TextFields for book removal
 	idTextFieldR, firstNameTextFieldR, lastNameTextFieldR, readerIDTextFieldR,//For reader search
 	workerIDTextFieldW, TextFieldW, lastNameTextFieldW, idTextFieldW, firstNameTextFieldW,//TextFields for Worker search
 	titleTextField, authorTextField, languageTextField, summaryTextField, tocTextField, keywordTextField,//TextFields for book search/add
@@ -259,6 +260,15 @@ public class WorkerController extends AbstractClient {
 		genresComboBox.getItems().addAll(items);
 	}
 
+	public void InitializeBookList(){
+		Book.bookList = null;
+		sendServer(new Book(), "InitializeBookList");
+		while(Book.bookList==null)
+			Sleep(3);
+	}
+	
+	
+	
 	/**
 	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
 	 */
@@ -357,7 +367,8 @@ public class WorkerController extends AbstractClient {
 		sendServer(book, "RemoveBook");
 		while(foundBooks==null)
 			Sleep(5);
-		showFound();
+		if(BookTest.testFlag==0)
+			showFound();
 	}//end onRemoveBook
 
 
