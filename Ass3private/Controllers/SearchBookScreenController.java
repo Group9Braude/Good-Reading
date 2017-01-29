@@ -24,7 +24,7 @@ public class SearchBookScreenController extends AbstractClient
 {
 	private ArrayList <Book> allBooks = null;
 	private OrderedBook returnedBook= null;
-	private ArrayList <Book> updatedBookList = null;
+	public ArrayList <Book> updatedBookList = null;
 	private int origin/*From where the message to the server was sent*/ = -1;//0 - setAllBooks(), 1 - onSearch()
 	@FXML
 	public ObservableList <Book> items = FXCollections.observableArrayList();
@@ -108,6 +108,19 @@ public class SearchBookScreenController extends AbstractClient
 					e.printStackTrace();
 				}
 			}
+			
+			public void InitializeBookList(){
+				Book.bookList = null;
+				sendServer(new Book(), "InitializeBookList");
+					try {
+						while(Book.bookList==null)
+							Thread.sleep(3);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			}			
+			
 			/**
 			 * construct queries to find books according to the search parameters
 			 */
@@ -248,5 +261,23 @@ public class SearchBookScreenController extends AbstractClient
 				if(msg instanceof OrderedBook)
 					returnedBook = (OrderedBook)msg;
 			}
-
+					
+			/**
+			 * This function is a general function, used all across my controllers.
+			 * <p>
+			 * It's main purpose is to send the server a message that it knows how to deal with.
+			 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
+			 * @param actionNow is the string that contains the information for to server to get us to the right case.
+			 * @author orel zilberman
+			 */
+			public void sendServer(Object msg, String actionNow){/******************************/
+				try {
+					((GeneralMessage)msg).actionNow = actionNow;
+					WorkerController client = new WorkerController();
+					try {
+						client.openConnection();
+						client.sendToServer(msg);
+					} catch (Exception e) {e.printStackTrace();}
+				} catch (Exception e) {	e.printStackTrace();}
+			}
 		}

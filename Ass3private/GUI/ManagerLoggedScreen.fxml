@@ -10,7 +10,7 @@
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="609.0" prefWidth="1154.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.ManagerLoggedController">
    <children>
-      <ImageView fitHeight="613.0" fitWidth="1161.0" layoutX="-4.0" layoutY="-3.0">
+      <ImageView fitHeight="613.0" fitWidth="1161.0" layoutX="-3.0" layoutY="-3.0">
          <image>
             <Image url="@../src/9.jpg" />
          </image>
@@ -75,11 +75,6 @@
          <effect>
             <InnerShadow color="#b93838" />
          </effect></Button>
-      <ImageView fitHeight="67.0" fitWidth="68.0" layoutX="14.0" layoutY="226.0">
-         <image>
-            <Image url="@../src/7.png" />
-         </image>
-      </ImageView>
       <Text fill="#f8f6f6" layoutX="202.0" layoutY="313.0" rotate="-90.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Managment">
          <font>
             <Font size="23.0" />
@@ -113,6 +108,19 @@
          <image>
             <Image url="@../src/66.png" />
          </image>
+      </ImageView>
+      <ImageView fitHeight="50.0" fitWidth="59.0" layoutX="15.0" layoutY="226.0">
+         <image>
+            <Image url="@../src/7.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="985.0" layoutY="389.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../src/41.png" />
+         </image>
+         <effect>
+            <SepiaTone />
+         </effect>
       </ImageView>
    </children>
 </Pane>

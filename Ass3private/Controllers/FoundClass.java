@@ -1,7 +1,7 @@
 package Controllers;
 
 import java.io.IOException;
- 
+
 import Entities.Book;
 import Entities.GeneralMessage;
 import application.Main;
@@ -13,12 +13,13 @@ import ocsf.client.AbstractClient;
 
 public class FoundClass{
 	@FXML
-	private ListView<String> foundListView;
+	public ListView<String> foundListView = new ListView<String>();
+	public ObservableList<String> items;
 
 	/**
 	 * This function is a general function, used all across my controllers.
 	 * <p>
-	 * It's main purpose is to send the server a message that it knows how to deal with.
+	 * Its main purpose is to send the server a message that it knows how to deal with.
 	 * @param msg is a parameter that extends GeneralMessage and is used mainly to hold the string for the server, to get to the right case.
 	 * @param actionNow is the string that contains the information for to server to get us to the right case.
 	 * @author orel zilberman
@@ -45,9 +46,9 @@ public class FoundClass{
 		int chosen = foundListView.getSelectionModel().getSelectedIndex();
 		String ID="";
 		Book book = new Book();
-		
+
 		for(int i=0;i<selected.length();i++)
-			if(selected.charAt(i)-'0'<=9 &&selected.charAt(i)-'0'>=0)//It might be the id.
+			if(selected.charAt(i)-'0'<= 9 && selected.charAt(i)-'0' >= 0)//It might be the id.
 				ID+=selected.charAt(i);
 			else
 				ID="";
@@ -60,8 +61,6 @@ public class FoundClass{
 			}//Update global public books arraylist
 		sendServer(book, "DeleteBook");
 		foundListView.getItems().remove(chosen);
-
-
 	}
 	/**
 	 * This method initializes the listview for user comfot.
@@ -69,11 +68,11 @@ public class FoundClass{
 	 */
 
 	public void initialize(){
-		ObservableList<String> items =FXCollections.observableArrayList();
+		items =FXCollections.observableArrayList();
 		items.addAll(WorkerController.foundBooks);
 		foundListView.setItems(items);
 	}
-	
+
 	/**
 	 * Closes the current window, which is just a pop up.
 	 * @author orel zilberman
