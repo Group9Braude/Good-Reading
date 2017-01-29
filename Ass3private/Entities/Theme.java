@@ -44,7 +44,6 @@ public class Theme extends GeneralMessage implements Serializable{
 		return theme;
 	}
 
-
 	public String getOldTheme() {
 		return oldTheme;
 	}

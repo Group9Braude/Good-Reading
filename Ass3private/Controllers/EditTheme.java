@@ -26,6 +26,7 @@ public class EditTheme extends AbstractClient {
 	public ComboBox<Theme> themeBox=new ComboBox<>();
 	public ObservableList<Theme> obsTheme=FXCollections.observableArrayList(Theme.themeList);
 	public TextField themeTextField=new TextField();
+	private int initThemeFlag;
 
 
 	public EditTheme() {
@@ -74,30 +75,33 @@ public class EditTheme extends AbstractClient {
 
 
 	public void initTheme(){
-		flag=0;
-		theme.actionNow="InitializeThemeList";
+		if(initThemeFlag==0){
+			initThemeFlag=1;
+			flag=0;
+			theme.actionNow="InitializeThemeList";
 
-		try {
-			this.openConnection();
-			this.sendToServer(theme);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		while(flag==0){
 			try {
-				Thread.sleep(1);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				this.openConnection();
+				this.sendToServer(theme);
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			while(flag==0){
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			obsTheme=FXCollections.observableArrayList(Theme.themeList);
+			themeBox.setItems(obsTheme);
 		}
-		obsTheme=FXCollections.observableArrayList(Theme.themeList);
-		themeBox.setItems(obsTheme);
 	}
-
 
 	@SuppressWarnings("unused")
 	public void onAddTheme(){
+		initThemeFlag=0;
 		if(themeTextField.getText().equals("")){
 			AlertBox.display("Error", "You must fill theme text field in order theme!");
 			return;
@@ -151,6 +155,7 @@ public class EditTheme extends AbstractClient {
 			else {
 				//setting the theme we want to delete
 				theme.setTheme(themeBox.getValue().getTheme());
+				theme.setGenre(genreBox.getValue());
 				//delete from lists
 				obsTheme.remove(themeBox.getSelectionModel().getSelectedIndex());
 				theme.getGenre().themeList.remove(theme);
@@ -158,6 +163,7 @@ public class EditTheme extends AbstractClient {
 
 				themeBox.getSelectionModel().selectPrevious();
 				theme.actionNow="DeleteTheme";
+				initThemeFlag=0;
 				try {
 					this.openConnection();
 					this.sendToServer(theme);
@@ -230,9 +236,7 @@ public class EditTheme extends AbstractClient {
 
 	public void onBack(){
 		try {
-			if(Main.getCurrentUser().getType()==3)
-				Main.showManagerLoggedScreen();
-			else Main.showLoggedInScreenWorker();
+			Main.showLoggedInScreenWorker();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
