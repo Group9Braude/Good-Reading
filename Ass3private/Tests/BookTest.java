@@ -1,4 +1,4 @@
-package Tests;
+/*package Tests;
 import javax.swing.*;
 import javafx.*;
 import javafx.embed.swing.JFXPanel;
@@ -17,10 +17,10 @@ import junit.framework.TestCase;
 public class BookTest extends TestCase {
 	static int flag =0;
 	public static int testFlag=0;
-	/*flag=0 -> string
-	 * flag=1 -> book
-	 * flag=2 -> ArrayList
-	 */
+	flag=0 -> string
+	 flag=1 -> book
+	 flag=2 -> ArrayList
+	 
 
 	ArrayList<String> books=new ArrayList<String>();
 
@@ -118,4 +118,4 @@ public class BookTest extends TestCase {
 			assertFalse(control.updatedBookList.get(i).getBookid()==bookToTest.getBookid());
 		testFlag=0;
 	}
-}
+}*/

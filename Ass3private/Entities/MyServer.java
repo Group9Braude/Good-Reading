@@ -6,7 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,12 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-
-//import org.apache.poi.xwpf.usermodel.XWPFRun;//*************************************************************/
-//import org.w3c.dom.Document;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -139,7 +135,7 @@ public class MyServer extends AbstractServer {
 			case "Yearly":
 				subscribe((Reader)msg,2,client); break;
 			case "AddReview":
-				addReview((Review)msg,client);
+				addReview((Review)msg,client); break;
 			case "activeBooks":
 				activeBooks((Book)msg, client);break;
 			case "getBooks":
@@ -172,8 +168,6 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
-				/*case "GetAllGenres":
-				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
@@ -372,28 +366,6 @@ public class MyServer extends AbstractServer {
 	 * @param client holds the connection to the client that sent the request
 	 * @author Eran Simhon
 	 */
-	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
-
-	/*	@SuppressWarnings("resource")
-	private void createFile(FileDetails fileDetails, ConnectionToClient client)
-	{
-	/*	try{
-			Socket socket = serverSocket.accept();
-			System.out.println("Accepted connection : " + socket);
-			File transferFile = new File (fileDetails.getFileName());
-			byte [] bytearray = new byte [(int)transferFile.length()];
-			FileInputStream fin = new FileInputStream(transferFile);
-			BufferedInputStream bin = new BufferedInputStream(fin);
-			bin.read(bytearray,0,bytearray.length);
-			OutputStream os = socket.getOutputStream();
-			System.out.println("Sending Files...");
-			os.write(bytearray,0,bytearray.length);
-			os.flush();
-			socket.close();
-			System.out.println("File transfer complete");
-		}catch(Exception e){System.out.println("ERROR!!!");}
-	}*/
-	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
 
 	private void updateReviewList(Review review, ConnectionToClient client)
@@ -901,6 +873,17 @@ public class MyServer extends AbstractServer {
 			ArrayList<Book> res = new ArrayList<Book>();
 			while(rs.next())
 				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8),rs.getInt(9)));
+			int searchID = 0;
+			rs = stmt.executeQuery("select searchID from searchbook");
+			if(rs.last())
+				searchID = rs.getInt(1)+1;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			String date=LocalDate.now().format(formatter);
+			for(int i=0;i<res.size();i++)
+			{
+				stmt.executeUpdate("insert into searchbook values("+res.get(i).getBookid()+",'"+date+"',"+searchID+");");
+				searchID++;
+			}
 			client.sendToClient(res);
 		}
 		catch(Exception e){e.printStackTrace();}
@@ -1044,7 +1027,12 @@ public class MyServer extends AbstractServer {
 	{
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getReaderID() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "');" );
+			ResultSet rs = stmt.executeQuery("select reviewID from reviews;");
+			int reviewID = 0;
+			if(rs.last())
+				reviewID = rs.getInt(1)+1;
+			System.out.println("insert into reviews values('" + review.getReviewBook().getBookid() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "'," + reviewID + ",'" + review.getSignature() + "');");
+			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "'," + reviewID + ",'" + review.getSignature() + "');" );
 			client.sendToClient("Thank you for submitting a review! If your review will be approved by one of our workers, it will be published.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1481,7 +1469,7 @@ public class MyServer extends AbstractServer {
 								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
 							reader.setMyBooks(books);
 							//Getting the list of books the current user has ordered
-
+							stmt.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "';");
 							client.sendToClient(reader);
 						}
 					}
