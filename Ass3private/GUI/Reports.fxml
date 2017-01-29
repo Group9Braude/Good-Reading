@@ -141,8 +141,7 @@
                                     <Font name="Century Gothic" size="18.0" />
                                  </font>
                               </Text>
-                              <ListView fx:id="rank" layoutX="43.0" layoutY="283.0" prefHeight="200.0" prefWidth="374.0" />
-                              <Text fill="WHITE" layoutX="211.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ranking">
+                              <Text fill="WHITE" layoutX="922.0" layoutY="63.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ranking">
                                  <font>
                                     <Font name="Century Gothic" size="45.0" />
                                  </font>
@@ -150,7 +149,7 @@
                                     <Reflection />
                                  </effect>
                               </Text>
-                              <ImageView fitHeight="140.0" fitWidth="140.0" layoutX="61.0" layoutY="170.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="140.0" fitWidth="140.0" layoutX="417.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../src/88.png" />
                                  </image>

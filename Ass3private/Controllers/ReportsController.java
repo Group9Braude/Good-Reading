@@ -40,20 +40,20 @@ import ocsf.client.AbstractClient;
  *
  */
 public class ReportsController extends AbstractClient {
-/**
- * Constructs and initializes host and port, for AbstractClient 
- */
+	/**
+	 * Constructs and initializes host and port, for AbstractClient 
+	 */
 	public ReportsController() {
 		super(Main.host,Main.port);
 		// TODO Auto-generated constructor stub
 	}
-/**
- * A shortcut function for sending message for the server
- * <p>
- * Useful in most of the functions, and economizes the code 
- * @param msg
- * @param actionNow
- */
+	/**
+	 * A shortcut function for sending message for the server
+	 * <p>
+	 * Useful in most of the functions, and economizes the code 
+	 * @param msg
+	 * @param actionNow
+	 */
 	public void sendServer(Object msg, String actionNow){/******************************/
 		((GeneralMessage)msg).actionNow = actionNow;
 		ReportsController client = new ReportsController();
@@ -160,7 +160,7 @@ public class ReportsController extends AbstractClient {
 			booktable1.setItems(books1);
 			booktable2.setItems(books2);
 			/*ranking*/
-			Book r=new Book(7);
+		/*	Book r=new Book(7);
 			sendServer(r,"ranking");
 			while(flag==0){
 				try {
@@ -174,16 +174,31 @@ public class ReportsController extends AbstractClient {
 			ranking.removeAll(ranking);
 			System.out.println("reached");
 			flag=0;
+			int i=0,j=0;
+			for(i=arrint.size()-1;i>=0;i--){
+				int n=i;
+				for(j=0;j<Book.bookList.size();j++){
+					if(arrint.get(i)==Book.bookList.get(j).getBookid())//finding the book id in booklist
+						for(int z=0;z<Book.bookList.size();z++){
+							try{
+								if(Book.bookList.get(z).getBookid()==arrint.get(n+1)){
+									if(Book.bookList.get(z).getNumOfPurchases()==Book.bookList.get(j).getNumOfPurchases())
+										n--;
+								}
+							}
+							catch(Exception e1){};
 
-			for(int i=arrint.size()-1;i>=0;i--)
-				for(int j=0;j<Book.bookList.size();j++)
-					if(arrint.get(i)==Book.bookList.get(j).getBookid()){
-						int x=arrint.size()-i;
-						ranking.add("#"+x+"    "+Book.bookList.get(j).getTitle()+" by "+Book.bookList.get(j).getAuthor()+" <"+Integer.toString(Book.bookList.get(j).getBookid())+">");
-						break;
-					}
 
-			rank.setItems(ranking);
+						
+						}
+					int x=arrint.size()-n;
+					ranking.add("#"+x+"    "+Book.bookList.get(j).getTitle()+" by "+Book.bookList.get(j).getAuthor()+"numofpurchases:"+Book.bookList.get(j).getNumOfPurchases()+"<"+Integer.toString(Book.bookList.get(j).getBookid())+">");
+
+				}
+			}
+
+
+			rank.setItems(ranking);*/
 
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
@@ -222,7 +237,7 @@ public class ReportsController extends AbstractClient {
 		};
 		generalpop.setText(pop);
 		generalpop.setVisible(true);
- 
+
 		flag=0;
 
 	}
