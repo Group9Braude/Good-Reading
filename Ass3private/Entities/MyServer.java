@@ -343,7 +343,7 @@ public class MyServer extends AbstractServer {
 				doc.appendChild(rootElement);
 				Element story = doc.createElement("content");
 				story.appendChild(doc.createTextNode(content));
-				rootElement.appendChild(story);
+				rootElement.appendChild(story);     
 				DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 				DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 				TransformerFactory transformerFactory = TransformerFactory.newInstance();
