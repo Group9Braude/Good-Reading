@@ -699,6 +699,7 @@ public class MyServer extends AbstractServer {
 	 * @param client
 	 * @author orel zilberman
 	 */
+
 	public void deleteGenre(Genre genre,ConnectionToClient client){
 		try{
 			Statement stmt=conn.createStatement();
@@ -725,12 +726,16 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(9)));
 			Collections.sort(arr);
-			for(int i=0;i<arr.size();i++)
-				System.out.println("place: "+(arr.size()-i)+" bookid:"+arr.get(i).bookid+" num of purchases:"+arr.get(i).numofpurchases);
 			int i=0;
 			for(i=0;i<arr.size();i++)
 				if(arr.get(i).bookid==b.getBookid())
 					break;
+			for(int j=i;j<arr.size();j++)
+				try{
+					if(arr.get(j).numofpurchases==arr.get(j+1).numofpurchases)
+						i++;
+				}
+			catch(Exception e){};
 			System.out.println("place:"+(arr.size()-i));
 			System.out.println("total:"+arr.size());
 			client.sendToClient(new Book(0,Integer.toString((arr.size()-i))+"/"+Integer.toString(arr.size())));
@@ -811,6 +816,12 @@ public class MyServer extends AbstractServer {
 			System.out.println("place:"+(arr.size()-i));
 			System.out.println("total:"+arr.size());
 			System.out.println(Integer.toString((arr.size()-i))+"/"+Integer.toString(arr.size()));
+			for(int j=i;j<arr.size();j++)
+				try{
+					if(arr.get(j).numofpurchases==arr.get(j+1).numofpurchases)
+						i++;
+				}
+			catch(Exception e){};
 			client.sendToClient(new Book(0,Integer.toString(arr.size()-i)+"/"+Integer.toString(arr.size())));
 
 		} catch (Exception e) {
@@ -1393,6 +1404,7 @@ public class MyServer extends AbstractServer {
 		}
 		try {
 			this.conn = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com/sql11153849", "sql11153849", "TlZbvGxXKu");
+			//this.conn = DriverManager.getConnection("jdbc:mysql://localhost/goodreading", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {

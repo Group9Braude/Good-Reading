@@ -12,7 +12,7 @@ import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
-//import Tests.BookTest;
+
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -367,8 +367,7 @@ public class WorkerController extends AbstractClient {
 		sendServer(book, "RemoveBook");
 		while(foundBooks==null)
 			Sleep(5);
-		//if(BookTest.testFlag==0)
-			//showFound();
+
 	}//end onRemoveBook
 
 
