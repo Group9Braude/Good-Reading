@@ -379,7 +379,6 @@ public class MyServer extends AbstractServer {
 			ResultSet rs1;
 			while(rs.next())
 			{
-				System.out.println("ENTERED!!!");
 				rs1 = stmt1.executeQuery("select readerID from orderedbook where bookid=" + rs.getInt(1));
 				rs1.next();
 				OrderedBook reviewBook = new OrderedBook(rs1.getString(1),rs.getInt(1),rs.getString(2),rs.getString(3));
