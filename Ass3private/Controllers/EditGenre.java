@@ -117,7 +117,7 @@ public class EditGenre extends AbstractClient {
 				return;
 			}
 			else {
-				genre.setGenre(genreBox.getValue().getGenre());
+				genre=genreBox.getValue();
 				Genre.genreList.remove(genre);
 				obsGenre.remove(genreBox.getSelectionModel().getSelectedIndex());
 				genreBox.getSelectionModel().selectPrevious();

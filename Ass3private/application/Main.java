@@ -342,6 +342,8 @@ public class Main extends Application {
 	} 
 /**
  * Main function
+ * 
+ *
  * @param args
  */
 	public static void main(String[] args) {

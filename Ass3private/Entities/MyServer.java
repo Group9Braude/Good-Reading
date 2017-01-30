@@ -379,6 +379,7 @@ public class MyServer extends AbstractServer {
 			ResultSet rs1;
 			while(rs.next())
 			{
+				System.out.println("ENTERED!!!");
 				rs1 = stmt1.executeQuery("select readerID from orderedbook where bookid=" + rs.getInt(1));
 				rs1.next();
 				OrderedBook reviewBook = new OrderedBook(rs1.getString(1),rs.getInt(1),rs.getString(2),rs.getString(3));
@@ -877,23 +878,75 @@ public class MyServer extends AbstractServer {
 
 	private void updateBookList(Book book, ConnectionToClient client)
 	{
+		ArrayList<Integer> IDs = new ArrayList<Integer>();
+		ArrayList<Book> res = new ArrayList<Book>();
+		int i;
+
 		try{
 			Statement stmt = conn.createStatement();
 			System.out.println(book.query);
+			System.out.println(book.genreQuery);
 			ResultSet rs = stmt.executeQuery(book.query);
-			ArrayList<Book> res = new ArrayList<Book>();
+
 			while(rs.next())
 				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8),rs.getInt(9)));
-			int searchID = 0;
-			rs = stmt.executeQuery("select searchID from searchbook");
-			if(rs.last())
-				searchID = rs.getInt(1)+1;    
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-			String date=LocalDate.now().format(formatter);
-			for(int i=0;i<res.size();i++)
+			if(!book.genreQuery.equals(""))
 			{
-				stmt.executeUpdate("insert into searchbook values("+res.get(i).getBookid()+",'"+date+"',"+searchID+");");
+				Statement stmt1 = conn.createStatement();
+				ResultSet rs1 = stmt1.executeQuery(book.genreQuery);//All books that belong to the selected genre
+				while(rs1.next())
+					IDs.add(rs1.getInt(2));
+				if(book.getSearchOperand().equals("AND"))
+				{
+					if(IDs.size()==0)
+						res.clear();
+					else{
+						System.out.println(IDs.contains(2));
+						for(i=0;i<res.size();i++)
+							if(!IDs.contains(res.get(i).getBookid()))
+								res.remove(i);
+					}
+				}
+				else
+				{
+					Statement stmt2 = conn.createStatement();
+					for(i=0;i<IDs.size();i++)
+					{
+						ResultSet rs2 = stmt2.executeQuery("select * from books where bookid="+IDs.get(i)+";");
+						rs2.next();
+						Book b = new Book(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7),rs2.getInt(8),rs2.getInt(9));
+						if(!res.contains(b))
+							res.add(b);
+					}
+				}
+
+			}
+			//Increasing the number of searches for all the books that passed the checks
+			rs = stmt.executeQuery("select searchID from searchbook;");
+			int searchID=0;
+			if(rs.last())//Moving the cursor, if possible, to the last row
+				searchID = rs.getInt(1)+1;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			LocalDate x = LocalDate.now();
+			String y = x.format(formatter);
+			for(i=0;i<res.size();i++)
+			{
+				stmt.executeUpdate("insert into searchbook values("+res.get(i).getBookid()+",'"+y+"',"+searchID+");");
 				searchID++;
+			}
+			//End increasing the number of searches for all the books that passed the checks
+
+			//Get the genre of each book
+			for(i=0;i<res.size();i++)
+			{
+				rs = stmt.executeQuery("select genre from genresbooks where bookid="+res.get(i).getBookid());
+				String temp="";
+				while(rs.next())
+					temp+=rs.getString(1)+",";
+				String genre="";
+				for(int j=0;j<temp.length()-1;j++)
+					genre+=temp.charAt(j);
+				res.get(i).setGenre(genre);
 			}
 			client.sendToClient(res);
 		}
@@ -1057,7 +1110,7 @@ public class MyServer extends AbstractServer {
 			int reviewID = 0;
 			if(rs.last())
 				reviewID = rs.getInt(1)+1;
-			System.out.println("insert into reviews values('" + review.getReviewBook().getBookid() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "'," + reviewID + ",'" + review.getSignature() + "');");
+			//System.out.println("insert into reviews values('" + review.getReviewBook().getBookid() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "'," + reviewID + ",'" + review.getSignature() + "');");
 			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "'," + reviewID + ",'" + review.getSignature() + "');" );
 			client.sendToClient("Thank you for submitting a review! If your review will be approved by one of our workers, it will be published.");
 		} catch (Exception e) {
@@ -1390,7 +1443,6 @@ public class MyServer extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	/**
 	 * This method initializes the code's connection to the DB

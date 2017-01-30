@@ -186,6 +186,7 @@ public class LoginReaderController extends AbstractClient{
 				out = new FileOutputStream(selectedBook + "."+format.getSelectionModel().getSelectedItem());
 				out.write((byte[])msg);
 				out.close();
+				JOptionPane.showMessageDialog(null, "Book file created, check your hard drive.");
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
