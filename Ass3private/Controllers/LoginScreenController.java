@@ -24,7 +24,7 @@ public class LoginScreenController extends AbstractClient
 	@FXML
 	private PasswordField passwordTextField;
 	private static String whatAmI;
-	private static String host = "localhost";
+	private static String host = Main.host;
 	private static int port = Main.port;
 	private static Reader readerLogged;
 	public static Worker currentWorker;
