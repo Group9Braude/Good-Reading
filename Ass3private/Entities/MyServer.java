@@ -953,6 +953,21 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
 						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
+			//Get the genre of each book in books
+			int j;
+			String temp,genre;
+			for(int i=0;i<books.size();i++)
+			{
+				rs = stmt.executeQuery("select genre from genresbooks where bookid="+books.get(i).getBookid()+";");
+				temp="";
+				while(rs.next())
+					temp+=rs.getString(1)+",";
+				//Remove the comma(,) at the end of the string
+				genre="";
+				for(j=0;j<temp.length()-1;j++)
+					genre+=temp.charAt(j);
+				books.get(i).setGenre(genre);	
+			}	
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
