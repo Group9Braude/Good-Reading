@@ -26,7 +26,7 @@ public class Main extends Application {
 	private TextField idfield;
 	private static Stage primaryStage;
 	public static Parent mainLayout;
-	public static int port=3307;
+	public static int port=5555;
 	public static String host = "localhost";
 	public static Stage popup;
 	private static User currentUser;
@@ -66,7 +66,7 @@ public class Main extends Application {
 	}
 	public TextField serverip;
 	public void onOkay() throws IOException{
-		if(serverip.getText()!="")
+		if(!serverip.getText().equals(""))
 			host=serverip.getText();
 		showMainMenu();
 	}
