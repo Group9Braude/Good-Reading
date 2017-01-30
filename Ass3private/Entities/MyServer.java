@@ -887,7 +887,7 @@ public class MyServer extends AbstractServer {
 			int searchID = 0;
 			rs = stmt.executeQuery("select searchID from searchbook");
 			if(rs.last())
-				searchID = rs.getInt(1)+1;
+				searchID = rs.getInt(1)+1;    
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 			String date=LocalDate.now().format(formatter);
 			for(int i=0;i<res.size();i++)
