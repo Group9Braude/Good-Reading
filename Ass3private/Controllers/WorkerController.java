@@ -12,7 +12,7 @@ import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
-import Tests.BookTest;
+import JUnitTests.TestBookRemove;
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,7 +39,8 @@ public class WorkerController extends AbstractClient {
 	private static boolean isBackFromServer/*For some methods to know if I am back from the server with answers*/
 	, isReview = false,//To know if I should notify the worker that there are new reviews
 	isAlive = false; //For the Thread in the constructor
-
+	public boolean addedSuccess=false;
+	
 	@FXML
 	private Button addBookButton, removeBookButton, reviewsButton;
 	@FXML
@@ -267,16 +268,10 @@ public class WorkerController extends AbstractClient {
 			Sleep(3);
 	}
 	
-	
-	
-	/**
-	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
-	 */
-
 	public void onAddBook(){
 		Book book = new Book();
-		boolean title, author, language, summary, toc, keyWord, genres;//Check if all the fields were filled.
 		//Check if any of the fields empty
+		boolean title, author, language, summary, toc, keyWord, genres;//Check if all the fields were filled.
 		if(titleTextField.getText().equals("")){
 			titleText.setFill(Color.RED); title=false;
 		}
@@ -319,30 +314,45 @@ public class WorkerController extends AbstractClient {
 		else{
 			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresTextField.getText());
 		}
+		if(title &&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled{
+			Book.bookList.add(book);//Update our ARRAYLIST!
+		}
+	}	
+	
+	/**
+	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
+	 */
 
-
-
-		if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
+	public void onAddBookController(Book book){
+		if(!book.getTitle().isEmpty()
+				&& !book.getAuthor().isEmpty()
+				&& !book.getLanguage().isEmpty()
+				&& !book.getSummary().isEmpty()
+				&& !book.getToc().isEmpty() &&
+				!book.getKeyword().isEmpty() &&
+				!book.getGenre().isEmpty()){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
 			sendServer(book, "AddBook");
-
-
 		}
 	}//End onAddBook
 
 
+	public void onRemoveBook(){
+		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
+				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
+				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
+		onRemoveBookController(title,author,language,summary,genre,keyword);
+	}	
 	/**
 	 * This method is called when the user wants to delete a book.
 	 * <p>
 	 * 	 it searches through the books in the database and displays the found books for the user to choose which one he wants to delete.
 	 */
 
-	public void onRemoveBook(){
+	public void onRemoveBookController(String title,String author,String language,String summary, 
+			String genre, String keyword ){
 		Book book = new Book();
-		book.genreToSearch = "";
-		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
-				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
-				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
+		book.genreToSearch = "";	
 		System.out.println("G" + genre);
 		String[] authors = author.split(",");//a,b,c ->[a][b][c]
 		for(String str:authors)
@@ -367,7 +377,7 @@ public class WorkerController extends AbstractClient {
 		sendServer(book, "RemoveBook");
 		while(foundBooks==null)
 			Sleep(5);
-		if(BookTest.testFlag==0)
+		if(TestBookRemove.testFlag==0)
 			showFound();
 	}//end onRemoveBook
 
@@ -804,8 +814,11 @@ public class WorkerController extends AbstractClient {
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
 				EditReviewController.backOn=true;break;
-			case "BookAdd":
-				JOptionPane.showMessageDialog(null, "Book Added!");break;
+			case "BookAdd":{
+				JOptionPane.showMessageDialog(null, "Book Added!");
+				addedSuccess=true;
+				break;
+			}
 			case "ReaderRemoved":
 				JOptionPane.showMessageDialog(null, "Reader Removed!");isBackFromServer = true;break;
 			case "ReaderAdded":

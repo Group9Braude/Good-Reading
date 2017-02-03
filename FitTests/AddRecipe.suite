@@ -1,0 +1,4 @@
+<fitsuite name="AddRecipe" desc="Fit Suite description goes here">
+    <testref>AddRecipe_IntegerValue.fit</testref>
+    <testref>AddRecipe_RegularValues.fit</testref>
+</fitsuite>

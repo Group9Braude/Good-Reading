@@ -1,0 +1,210 @@
+<html><head><title>Suite DeleteRecipe run at: Sun Aug 03 22:42:53 IDT 2014</title>
+	<link rel="stylesheet" type="text/css" href="css/fitnesse.css" media="screen"/>
+ 	<link rel="stylesheet" type="text/css" href="css/fitnesse.css" media="print"/>
+<script language="JavaScript" type="text/javascript">
+var collapsableOpenCss = "collapsable"
+var collapsableClosedCss = "hidden"
+var collapsableOpenImg = "images/collapsableOpen.gif"
+var collapsableClosedImg = "images/collapsableClosed.gif"
+function toggleCollapsable(id){
+var div = document.getElementById(id);
+var img = document.getElementById("img" + id);
+if(div.className.indexOf(collapsableClosedCss) != -1) {
+div.className = collapsableOpenCss;
+img.src = collapsableOpenImg;
+} else {
+div.className = collapsableClosedCss;
+img.src = collapsableClosedImg;
+} }
+</script>
+
+</head>
+<body>
+<div> Suite is: C:/Users/Serj/Desktop/eclipseProjects/CoffeeMaker_Student/CoffeeMaker_Student - lab/AcceptanceTest/FitTests/DeleteRecipe.suite</div><div class="test_output_name">Name: DeleteRecipe</div><div class="test_output_name">Description: Fit Suite description goes here</div><div> Suite executed at: Sun Aug 03 22:42:53 IDT 2014 Elapsed time: 180 millseconds  </div><div class="main"><div class="setup"><a href="javascript:toggleCollapsable('-4ddf8fe5:1479d6563a9:-8000');"><img src="images/collapsableOpen.gif" class="left" id="img-4ddf8fe5:1479d6563a9:-8000"/></a><i><table><tr><td></td><td><a href="#4ddf8fe5:1479d6563a9:-8000">DeleteRecipe</a></td><td class="error">4 right, 0 wrong, 0 ignored, 1 exceptions</td></tr></table></i><div class="collapsable" id="-4ddf8fe5:1479d6563a9:-8000"><ul><table><tr><td></td><td><a href="#4ddf8fe5:1479d6563a9:-7fff">DeleteRecipe.DeleteRecipeIFexist.fit</a></td><td class="error">2 right, 0 wrong, 0 ignored, 1 exceptions</td></tr></table><table><tr><td></td><td><a href="#4ddf8fe5:1479d6563a9:-7ffe">DeleteRecipe.DeleteRecipeIfNotExist.fit</a></td><td class="pass">2 right, 0 wrong, 0 ignored, 0 exceptions</td></tr></table></ul></div></div></div><div class="fit.runner.test_output_name"><a name="4ddf8fe5:1479d6563a9:-8000"/><p>Test suite: DeleteRecipe</p></div><div class="test_output_name"><a name="4ddf8fe5:1479d6563a9:-7fff"/><p>Test file: DeleteRecipe.DeleteRecipeIFexist.fit</p></div><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>Delete Recipe FIT Test</title>
+	<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+	<style type="text/css"><!--
+.style1 {font-family: Arial, Helvetica, sans-serif}
+-->
+	</style>
+</head>
+<body>
+<p class="style1">DeleteRecipe Acceptance Test</p>
+
+<p class="style1">A recipe may be deleted from the CoffeeMaker <strong><span style="color: rgb(255, 0, 0);">if it exists </span></strong>in the list of recipes in the CoffeeMaker. The recipe to be deleted is chosen by its name.</p>
+
+<table border="1" cellpadding="5" cellspacing="0" width="765">
+	<tbody>
+		<tr>
+			<td class="style1" colspan="3">fit.ActionFixture</td>
+		</tr>
+		<tr>
+			<td class="style1">start</td>
+			<td class="style1">Fixtures.Coffeemaker.DeleteRecipe</td>
+			<td class="style1">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe to delete</td>
+			<td class="style1">Coffee</td>
+		</tr>
+		<tr>
+			<td class="style1">check</td>
+			<td class="style1">delete recipe</td>
+			<td class="style1" class="error">false<hr><pre><div class="fit_stacktrace">java.lang.NullPointerException
+	at Coffeemaker.CoffeeMaker.deleteRecipe(CoffeeMaker.java:76)
+	at Fixtures.Coffeemaker.DeleteRecipe.deleteRecipe(DeleteRecipe.java:48)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at fit.TypeAdapter.invoke(Unknown Source)
+	at fit.TypeAdapter.get(Unknown Source)
+	at fit.Fixture$CellComparator.compareCellToResult(Unknown Source)
+	at fit.Fixture$CellComparator.access$100(Unknown Source)
+	at fit.Fixture.compareCellToResult(Unknown Source)
+	at fit.Fixture.check(Unknown Source)
+	at fit.ActionFixture.check(Unknown Source)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at fit.ActionFixture.doCells(Unknown Source)
+	at fit.Fixture.doRow(Unknown Source)
+	at fit.Fixture.doRows(Unknown Source)
+	at fit.Fixture.doTable(Unknown Source)
+	at fit.Fixture.interpretTables(Unknown Source)
+	at fit.Fixture.doTables(Unknown Source)
+	at fitlibrary.suite.IndependentSuiteRunner.runEachStorytest(IndependentSuiteRunner.java:53)
+	at fitlibrary.suite.IndependentSuiteRunner.runFirstStorytest(IndependentSuiteRunner.java:28)
+	at fitlibrary.suite.BatchFitLibrary.doTables(BatchFitLibrary.java:39)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(Unknown Source)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(Unknown Source)
+	at java.lang.reflect.Method.invoke(Unknown Source)
+	at com.luxoft.fitpro.adapters.fit.FitLibraryFitProvider.doTables(FitLibraryFitProvider.java:168)
+	at com.luxoft.fitpro.adapters.fit.FitLibraryFitProvider.generateParseResult(FitLibraryFitProvider.java:96)
+	at com.luxoft.fitpro.adapters.fit.FitLibraryFitProvider.runSingleFITTest(FitLibraryFitProvider.java:78)
+	at com.luxoft.fitpro.adapters.fit.FitLibraryFitProvider.runValidTestFile(FitLibraryFitProvider.java:58)
+	at com.luxoft.fitpro.adapters.fit.FitLibraryFitProvider.runFIT(FitLibraryFitProvider.java:39)
+	at com.luxoft.fitpro.core.testcase.SequentialRunnerStrategy.run(SequentialRunnerStrategy.java:18)
+	at com.luxoft.fitpro.core.tester.RunnerVisitor.runTest(RunnerVisitor.java:59)
+	at com.luxoft.fitpro.core.tester.RunnerVisitor.visit(RunnerVisitor.java:51)
+	at com.luxoft.fitpro.core.testcase.TestFile.accept(TestFile.java:51)
+	at com.luxoft.fitpro.core.testcase.Suite.accept(Suite.java:54)
+	at com.luxoft.fitpro.runner.TestCaseRunner.run(TestCaseRunner.java:100)
+	at com.luxoft.fitpro.runner.TestCaseRunner.main(TestCaseRunner.java:55)
+</div></pre></td>
+		</tr>
+		<tr>
+			<td class="style1">press</td>
+			<td class="style1">start recipe</td>
+			<td class="style1">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe name</td>
+			<td class="style1">Coffee</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe price</td>
+			<td class="style1">50</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe coffee units</td>
+			<td class="style1">2</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe milk units</td>
+			<td class="style1">1</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe sugar units</td>
+			<td class="style1">1</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe chocolate units</td>
+			<td class="style1">0</td>
+		</tr>
+		<tr>
+			<td class="style1">check</td>
+			<td class="style1">add recipe</td>
+			<td class="style1" class="pass">true</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe to delete</td>
+			<td class="style1">Coffee</td>
+		</tr>
+		<tr>
+			<td class="style1">check</td>
+			<td class="style1">delete recipe</td>
+			<td class="style1" class="pass">true</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><span class="style1"><a href="http://open.ncsu.edu/se/tutorials/coffee_maker/">Return to CoffeeMaker Example</a> </span></p>
+
+<p class="style1">Delete Recipe FIT Test &copy; 2004 Dr. Laurie Williams, Sarah Smith</p>
+</body>
+</html>
+<div class="test_output_name"><a name="4ddf8fe5:1479d6563a9:-7ffe"/><p>Test file: DeleteRecipe.DeleteRecipeIfNotExist.fit</p></div><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>Delete Recipe FIT Test</title>
+	<meta content="text/html; charset=iso-8859-1" http-equiv="Content-Type" />
+	<style type="text/css"><!--
+.style1 {font-family: Arial, Helvetica, sans-serif}
+-->
+	</style>
+</head>
+<body>
+<p class="style1">DeleteRecipe Acceptance Test</p>
+
+<p class="style1">A recipe&nbsp;<span style="color: rgb(255, 0, 0);"><strong>couldn&#39;t be deleted </strong></span>from the CoffeeMaker if it doesn&#39;t exist in the list of recipes in the CoffeeMaker.</p>
+
+<table border="1" cellpadding="5" cellspacing="0" width="765">
+	<tbody>
+		<tr>
+			<td class="style1" colspan="3">fit.ActionFixture</td>
+		</tr>
+		<tr>
+			<td class="style1">start</td>
+			<td class="style1">Fixtures.Coffeemaker.DeleteRecipe</td>
+			<td class="style1">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="style1">enter</td>
+			<td class="style1">recipe to delete</td>
+			<td class="style1">&nbsp;</td>
+		</tr>
+		<tr>
+			<td class="style1">check</td>
+			<td class="style1">delete recipe</td>
+			<td class="style1" class="pass">false</td>
+		</tr>
+		<tr>
+			<td class="style1">check</td>
+			<td class="style1">delete recipe</td>
+			<td class="style1" class="pass">false</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><span class="style1"><a href="http://open.ncsu.edu/se/tutorials/coffee_maker/">Return to CoffeeMaker Example</a> </span></p>
+
+<p class="style1">Delete Recipe FIT Test &copy; 2004 Dr. Laurie Williams, Sarah Smith</p>
+</body>
+</html>
+
+</body></html>

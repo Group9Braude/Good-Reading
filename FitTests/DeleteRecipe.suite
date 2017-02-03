@@ -1,0 +1,4 @@
+<fitsuite name="DeleteRecipe" desc="Fit Suite description goes here">
+    <testref>DeleteRecipeIFexist.fit</testref>
+    <testref>DeleteRecipeIfNotExist.fit</testref>
+</fitsuite>
