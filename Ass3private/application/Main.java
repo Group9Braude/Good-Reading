@@ -3,6 +3,7 @@ package application;
 import java.io.IOException;
 
 import Controllers.LoginScreenController;
+import Entities.MyServer;
 import Entities.User; 
 import javafx.application.Application;
 import javafx.fxml.FXML;
@@ -25,7 +26,7 @@ public class Main extends Application {
 	private TextField idfield;
 	private static Stage primaryStage;
 	public static Parent mainLayout;
-	public static int port=3307;
+	public static int port=5555;
 	public static String host = "localhost";
 	public static Stage popup;
 	private static User currentUser;
@@ -51,11 +52,8 @@ public class Main extends Application {
 		popup.initOwner(primaryStage);
 		showMainMenu();
 	}
+
 	
-/**
- * Presents the 'Edit Book' screen
- * @throws IOException
- */
 	public static void showAddNewReaderScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/AddNewUser.fxml"));
@@ -342,6 +340,8 @@ public class Main extends Application {
 	} 
 /**
  * Main function
+ * 
+ *
  * @param args
  */
 	public static void main(String[] args) {

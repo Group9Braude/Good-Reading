@@ -16,7 +16,7 @@ public class AddBookFit extends ActionFixture {
 		book = new Book();
 	}
 
-	public boolean AddBook(){
+	public boolean AddBook() throws InterruptedException{
 		System.out.println("check1");
 		control.InitializeBookList();
 		System.out.println("2");
@@ -24,7 +24,7 @@ public class AddBookFit extends ActionFixture {
 		System.out.println("3");
 		control.onAddBookController(book);
 		System.out.println("4");
-		if( control.addedSuccess)
+		if(control.addedSuccess)
 			control.onRemoveBookController(book.getTitle(), book.getAuthor(), book.getLanguage(), book.getSummary(), book.getGenre(), book.getKeyword());
 		return control.addedSuccess;
 	}

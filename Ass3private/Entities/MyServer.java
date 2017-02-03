@@ -6,7 +6,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,12 +20,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
-
 import org.apache.poi.xwpf.usermodel.XWPFRun;
-
-//import org.apache.poi.xwpf.usermodel.XWPFRun;//*************************************************************/
-//import org.w3c.dom.Document;
-
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -44,12 +40,12 @@ import ocsf.server.ConnectionToClient;
 public class MyServer extends AbstractServer {    
 	Connection conn;
 	public static void main(String[] args) {
-		int port = 0;
+		int port =5555;
 		try {
 			port = Integer.parseInt(args[0]);
 		}
 		catch (Throwable t) {
-			port = Main.port;
+			port = 5555;
 		}
 		@SuppressWarnings("unused")
 		MyServer s1 = new MyServer(port);
@@ -98,6 +94,14 @@ public class MyServer extends AbstractServer {
 				removeBook((Book) msg, client);break;
 			case "CheckUser":
 				checkUser((User)msg,client);break;
+			case "AddTheme":
+				addTheme((Theme)msg,client);break;
+			case "DeleteTheme":
+				deleteTheme((Theme)msg,client);break;
+			case "UpdateTheme":
+				updateTheme((Theme)msg,client);break;	
+			case "InitializeThemeList":
+				initializeThemeList((Theme)msg, client);break;
 			case "AddGenre":
 				addGenre((Genre)msg,client);break;
 			case "DeleteGenre":
@@ -139,7 +143,7 @@ public class MyServer extends AbstractServer {
 			case "Yearly":
 				subscribe((Reader)msg,2,client); break;
 			case "AddReview":
-				addReview((Review)msg,client);
+				addReview((Review)msg,client); break;
 			case "activeBooks":
 				activeBooks((Book)msg, client);break;
 			case "getBooks":
@@ -172,8 +176,6 @@ public class MyServer extends AbstractServer {
 				InitializeGenresBooksList(client); break;
 			case "UpdateBookListSearch":
 				UpdateBookListSearch((Book)msg, client); break;
-				/*case "GetAllGenres":
-				initializeGenreList((Genre)msg, client); break;*/ ////********ERROR HERE???? *********/////
 			case "updateReviewList":
 				updateReviewList((Review)msg,client); break;
 			case "GetBookForEdition":
@@ -286,6 +288,107 @@ public class MyServer extends AbstractServer {
 			client.sendToClient(s);
 		}catch(Exception e){e.printStackTrace();}
 	}
+	
+	/**
+	 * This method initializes the themes list in order to economize the access to the server.
+	 * @param client
+	 * @author sagi vaknin
+	 */
+
+	public void initializeThemeList(Theme theme, ConnectionToClient client){/*******************************************/
+		try {
+			Statement stmt = conn.createStatement();
+			String query = "SELECT * FROM theme";
+			ResultSet rs = stmt.executeQuery(query);
+			ArrayList<Theme> themeList = new ArrayList<Theme>();	
+			while(rs.next()){
+				System.out.println("theme");
+				themeList.add( new Theme (rs.getString(1),rs.getString(2)));
+			}
+			System.out.println(themeList.size());
+
+			client.sendToClient(themeList);
+		} catch (Exception  e) {
+			e.printStackTrace();
+		}	
+	}
+
+	/**
+	 * This method adds theme to the database, with specific genre that he belongs to.
+	 * @param theme holds information about the theme we want to delete.
+	 * @param client
+	 * @author sagi vaknin
+	 */
+
+	public void addTheme(Theme theme, ConnectionToClient client){
+		Statement stmt;
+		String query = "insert into theme values ('"+theme.getTheme()+"', '"+theme.getGenre()+"');";
+		try {
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Added!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * This method deletes a specific theme, according to the user's input
+	 * @param theme holds information about the theme we want to delete
+	 * @param client
+	 * @author sagi vaknin
+	 */
+
+	public void deleteTheme(Theme theme,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "DELETE FROM theme WHERE name= '"+theme.getTheme()+"';";
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		}catch (SQLException e) {
+			System.out.println("Error deleting theme.");
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Deleted!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}	
+
+	/**
+	 * This method updates a specific theme with specific information, according to the user's input.
+	 * @param theme hold the essntial information of the specific theme we want to update.
+	 * @param client
+	 * @author sagi vaknin
+	 */
+
+	public void updateTheme(Theme theme,ConnectionToClient client){
+		try{
+			Statement stmt=conn.createStatement();
+			String query = "UPDATE theme SET name='"+theme.getTheme()+"', genre= '"+theme.getGenre().getGenre()+
+					"' WHERE name='"+theme.getOldTheme()+"';";
+			System.out.println(query);
+			stmt = conn.createStatement();
+			stmt.executeUpdate(query);
+		}catch (SQLException e) {
+			System.out.println("Error update genre.");
+			e.printStackTrace();
+		}
+		try {
+			client.sendToClient("Updated!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
+	
 	/**
 	 * 
 	 * @param fileDetails holds the format the client selected and the bookid of the selected book
@@ -372,28 +475,6 @@ public class MyServer extends AbstractServer {
 	 * @param client holds the connection to the client that sent the request
 	 * @author Eran Simhon
 	 */
-	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
-
-	/*	@SuppressWarnings("resource")
-	private void createFile(FileDetails fileDetails, ConnectionToClient client)
-	{
-	/*	try{
-			Socket socket = serverSocket.accept();
-			System.out.println("Accepted connection : " + socket);
-			File transferFile = new File (fileDetails.getFileName());
-			byte [] bytearray = new byte [(int)transferFile.length()];
-			FileInputStream fin = new FileInputStream(transferFile);
-			BufferedInputStream bin = new BufferedInputStream(fin);
-			bin.read(bytearray,0,bytearray.length);
-			OutputStream os = socket.getOutputStream();
-			System.out.println("Sending Files...");
-			os.write(bytearray,0,bytearray.length);
-			os.flush();
-			socket.close();
-			System.out.println("File transfer complete");
-		}catch(Exception e){System.out.println("ERROR!!!");}
-	}*/
-	/***********PAY ATTENTION HERE ERAN. I RECORDED THIS CASE AND THE FUNCTION. HF BITCH.************/
 
 
 	private void updateReviewList(Review review, ConnectionToClient client)
@@ -727,6 +808,7 @@ public class MyServer extends AbstractServer {
 	 * @param client
 	 * @author orel zilberman
 	 */
+
 	public void deleteGenre(Genre genre,ConnectionToClient client){
 		try{
 			Statement stmt=conn.createStatement();
@@ -753,12 +835,16 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				arr.add(new Book_NumOfPurchases(rs.getInt(2),rs.getInt(9)));
 			Collections.sort(arr);
-			for(int i=0;i<arr.size();i++)
-				System.out.println("place: "+(arr.size()-i)+" bookid:"+arr.get(i).bookid+" num of purchases:"+arr.get(i).numofpurchases);
 			int i=0;
 			for(i=0;i<arr.size();i++)
 				if(arr.get(i).bookid==b.getBookid())
 					break;
+			for(int j=i;j<arr.size();j++)
+				try{
+					if(arr.get(j).numofpurchases==arr.get(j+1).numofpurchases)
+						i++;
+				}
+			catch(Exception e){};
 			System.out.println("place:"+(arr.size()-i));
 			System.out.println("total:"+arr.size());
 			client.sendToClient(new Book(0,Integer.toString((arr.size()-i))+"/"+Integer.toString(arr.size())));
@@ -839,6 +925,12 @@ public class MyServer extends AbstractServer {
 			System.out.println("place:"+(arr.size()-i));
 			System.out.println("total:"+arr.size());
 			System.out.println(Integer.toString((arr.size()-i))+"/"+Integer.toString(arr.size()));
+			for(int j=i;j<arr.size();j++)
+				try{
+					if(arr.get(j).numofpurchases==arr.get(j+1).numofpurchases)
+						i++;
+				}
+			catch(Exception e){};
 			client.sendToClient(new Book(0,Integer.toString(arr.size()-i)+"/"+Integer.toString(arr.size())));
 
 		} catch (Exception e) {
@@ -894,13 +986,76 @@ public class MyServer extends AbstractServer {
 
 	private void updateBookList(Book book, ConnectionToClient client)
 	{
+		ArrayList<Integer> IDs = new ArrayList<Integer>();
+		ArrayList<Book> res = new ArrayList<Book>();
+		int i;
+
 		try{
 			Statement stmt = conn.createStatement();
 			System.out.println(book.query);
+			System.out.println(book.genreQuery);
 			ResultSet rs = stmt.executeQuery(book.query);
-			ArrayList<Book> res = new ArrayList<Book>();
+
 			while(rs.next())
 				res.add(new Book(rs.getString(1),rs.getInt(2),rs.getString(3),rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7),rs.getInt(8),rs.getInt(9)));
+			if(!book.genreQuery.equals(""))
+			{
+				Statement stmt1 = conn.createStatement();
+				ResultSet rs1 = stmt1.executeQuery(book.genreQuery);//All books that belong to the selected genre
+				while(rs1.next())
+					IDs.add(rs1.getInt(2));
+				if(book.getSearchOperand().equals("AND"))
+				{
+					if(IDs.size()==0)
+						res.clear();
+					else{
+						System.out.println(IDs.contains(2));
+						for(i=0;i<res.size();i++)
+							if(!IDs.contains(res.get(i).getBookid()))
+								res.remove(i);
+					}
+				}
+				else
+				{
+					Statement stmt2 = conn.createStatement();
+					for(i=0;i<IDs.size();i++)
+					{
+						ResultSet rs2 = stmt2.executeQuery("select * from books where bookid="+IDs.get(i)+";");
+						rs2.next();
+						Book b = new Book(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7),rs2.getInt(8),rs2.getInt(9));
+						if(!res.contains(b))
+							res.add(b);
+					}
+				}
+
+			}
+			//Increasing the number of searches for all the books that passed the checks
+			rs = stmt.executeQuery("select searchID from searchbook;");
+			int searchID=0;
+			if(rs.last())//Moving the cursor, if possible, to the last row
+				searchID = rs.getInt(1)+1;
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+			LocalDate x = LocalDate.now();
+			String y = x.format(formatter);
+			for(i=0;i<res.size();i++)
+			{
+				stmt.executeUpdate("insert into searchbook values("+res.get(i).getBookid()+",'"+y+"',"+searchID+");");
+				searchID++;
+			}
+			//End increasing the number of searches for all the books that passed the checks
+
+			//Get the genre of each book
+			for(i=0;i<res.size();i++)
+			{
+				rs = stmt.executeQuery("select genre from genresbooks where bookid="+res.get(i).getBookid());
+				String temp="";
+				while(rs.next())
+					temp+=rs.getString(1)+",";
+				String genre="";
+				for(int j=0;j<temp.length()-1;j++)
+					genre+=temp.charAt(j);
+				res.get(i).setGenre(genre);
+			}
 			client.sendToClient(res);
 		}
 		catch(Exception e){e.printStackTrace();}
@@ -970,6 +1125,21 @@ public class MyServer extends AbstractServer {
 			while(rs.next())
 				books.add( new Book (rs.getString(1),rs.getInt(2),rs.getString(3)
 						,rs.getString(4),rs.getString(5),rs.getString(6),rs.getString(7), rs.getInt(8), rs.getInt(9)));
+			//Get the genre of each book in books
+			int j;
+			String temp,genre;
+			for(int i=0;i<books.size();i++)
+			{
+				rs = stmt.executeQuery("select genre from genresbooks where bookid="+books.get(i).getBookid()+";");
+				temp="";
+				while(rs.next())
+					temp+=rs.getString(1)+",";
+				//Remove the comma(,) at the end of the string
+				genre="";
+				for(j=0;j<temp.length()-1;j++)
+					genre+=temp.charAt(j);
+				books.get(i).setGenre(genre);	
+			}	
 			client.sendToClient(books);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1044,7 +1214,12 @@ public class MyServer extends AbstractServer {
 	{
 		try {
 			Statement stmt = conn.createStatement();
-			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid()+ "','" + review.getReviewBook().getReaderID() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "');" );
+			ResultSet rs = stmt.executeQuery("select reviewID from reviews;");
+			int reviewID = 0;
+			if(rs.last())
+				reviewID = rs.getInt(1)+1;
+			//System.out.println("insert into reviews values('" + review.getReviewBook().getBookid() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "'," + reviewID + ",'" + review.getSignature() + "');");
+			stmt.executeUpdate("insert into reviews values('" + review.getReviewBook().getBookid() + "','" + review.getReviewBook().getTitle() + "','" + review.getReviewBook().getAuthor() + "','" + review.getKeyword() + "',0,'" + review.getReview() + "'," + reviewID + ",'" + review.getSignature() + "');" );
 			client.sendToClient("Thank you for submitting a review! If your review will be approved by one of our workers, it will be published.");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -1376,7 +1551,6 @@ public class MyServer extends AbstractServer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 	}
 	/**
 	 * This method initializes the code's connection to the DB
@@ -1390,6 +1564,7 @@ public class MyServer extends AbstractServer {
 		}
 		try {
 			this.conn = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com/sql11153849", "sql11153849", "TlZbvGxXKu");
+			//this.conn = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
@@ -1481,7 +1656,7 @@ public class MyServer extends AbstractServer {
 								books.add(new OrderedBook(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4)));
 							reader.setMyBooks(books);
 							//Getting the list of books the current user has ordered
-
+							stmt.executeUpdate("UPDATE readers SET isLoggedIn=1 WHERE readerID='" + reader.getID() + "';");
 							client.sendToClient(reader);
 						}
 					}

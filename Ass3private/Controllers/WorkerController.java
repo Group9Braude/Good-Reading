@@ -12,7 +12,7 @@ import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
-import JUnitTests.TestBookRemove;
+import Tests.TestBookRemove;
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -39,8 +39,7 @@ public class WorkerController extends AbstractClient {
 	private static boolean isBackFromServer/*For some methods to know if I am back from the server with answers*/
 	, isReview = false,//To know if I should notify the worker that there are new reviews
 	isAlive = false; //For the Thread in the constructor
-	public boolean addedSuccess=false;
-	
+
 	@FXML
 	private Button addBookButton, removeBookButton, reviewsButton;
 	@FXML
@@ -61,6 +60,7 @@ public class WorkerController extends AbstractClient {
 	public ComboBox<Integer> subscriptionComboBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
+	public static boolean addedSuccess=false;
 
 
 
@@ -104,7 +104,7 @@ public class WorkerController extends AbstractClient {
 		}
 	}
 
-	
+
 
 	/**
 	 * This function is a general function, used all across my controllers.
@@ -267,7 +267,13 @@ public class WorkerController extends AbstractClient {
 		while(Book.bookList==null)
 			Sleep(3);
 	}
-	
+
+
+
+	/**
+	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
+	 */
+
 	public void onAddBook(){
 		Book book = new Book();
 		//Check if any of the fields empty
@@ -314,11 +320,9 @@ public class WorkerController extends AbstractClient {
 		else{
 			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresTextField.getText());
 		}
-		if(title &&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled{
-			Book.bookList.add(book);//Update our ARRAYLIST!
-		}
+		onAddBookController(book);
 	}	
-	
+
 	/**
 	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
 	 */
@@ -332,7 +336,15 @@ public class WorkerController extends AbstractClient {
 				!book.getKeyword().isEmpty() &&
 				!book.getGenre().isEmpty()){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
-			sendServer(book, "AddBook");
+
+			try {
+				sendServer(book, "AddBook");
+				while(!addedSuccess)
+					Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}//End onAddBook
 
@@ -381,7 +393,6 @@ public class WorkerController extends AbstractClient {
 			showFound();
 	}//end onRemoveBook
 
-
 	/**
 	 * Show the edit genre screen
 	 * @throws IOException
@@ -425,7 +436,7 @@ public class WorkerController extends AbstractClient {
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
 				workerID=workerIDTextFieldW.getText(), role = "";
 		if(roleChoiceBox.getSelectionModel().getSelectedItem() != null)
-				role=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+			role=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
 
 		Worker worker = new Worker();
 		worker.query="SELECT * FROM workers WHERE ";
@@ -769,10 +780,12 @@ public class WorkerController extends AbstractClient {
 		//	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 
 		else if(((ArrayList<?>)msg).get(0) instanceof Book){
-			if((((ArrayList<Book>)msg).get(0)).query.equals("UpdateBookList")){
-				foundBookList = new ArrayList<Book>((ArrayList<Book>)msg);
-				foundBookList.remove(0);
-			}		 
+			if((((ArrayList<Book>)msg).get(0)).query!=null){
+				if((((ArrayList<Book>)msg).get(0)).query.equals("UpdateBookList")){
+					foundBookList = new ArrayList<Book>((ArrayList<Book>)msg);
+					foundBookList.remove(0);
+				}		 
+			}
 			else 
 				Book.bookList = new ArrayList<Book>((ArrayList<Book>)msg);
 		}
@@ -814,11 +827,9 @@ public class WorkerController extends AbstractClient {
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
 				EditReviewController.backOn=true;break;
-			case "BookAdd":{
-				JOptionPane.showMessageDialog(null, "Book Added!");
+			case "BookAdd":
 				addedSuccess=true;
 				break;
-			}
 			case "ReaderRemoved":
 				JOptionPane.showMessageDialog(null, "Reader Removed!");isBackFromServer = true;break;
 			case "ReaderAdded":
