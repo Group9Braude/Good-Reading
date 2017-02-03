@@ -28,8 +28,8 @@ public class TestBookRemove extends TestCase {
 	 * flag=1 -> book
 	 * flag=2 -> ArrayList
 	 */
-
 	ArrayList<String> books=new ArrayList<String>();
+	
 @Test
 public void TestExistBookRemove() throws IOException {
 	//Test 1 - Checks if the book removed successfully
@@ -51,6 +51,7 @@ public void TestExistBookRemove() throws IOException {
 	for(int i=0;i<Book.bookList.size();i++)
 			assertFalse(Book.bookList.get(i).getBookid()==bookToRemove.getBookid());
 }
+
 public void TestNotExistBookRemove() throws IOException {
 	//Test 2 - Try to remove book that doesn't exists
 	testFlag=1;
