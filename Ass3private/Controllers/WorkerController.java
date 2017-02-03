@@ -12,7 +12,6 @@ import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
-
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,6 +59,8 @@ public class WorkerController extends AbstractClient {
 	public ComboBox<Integer> subscriptionComboBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
+	public int testFlag=0;
+	public static boolean addedSuccess=false, removeSuccess=false;
 
 
 
@@ -101,9 +102,10 @@ public class WorkerController extends AbstractClient {
 				}
 			};thread.start();
 		}
+		addedSuccess=false;
 	}
 
-	
+
 
 	/**
 	 * This function is a general function, used all across my controllers.
@@ -266,18 +268,18 @@ public class WorkerController extends AbstractClient {
 		while(Book.bookList==null)
 			Sleep(3);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
 	 */
 
 	public void onAddBook(){
 		Book book = new Book();
-		boolean title, author, language, summary, toc, keyWord, genres;//Check if all the fields were filled.
 		//Check if any of the fields empty
-		if(titleTextField.getText().equals("")){
+		boolean title, author, language, summary, toc, keyWord, genres;//Check if all the fields were filled.
+		if(titleTextField.getText() == null || titleTextField.getText().equals("")){
 			titleText.setFill(Color.RED); title=false;
 		}
 		else{
@@ -319,36 +321,72 @@ public class WorkerController extends AbstractClient {
 		else{
 			genresText.setFill(Color.BLACK); genres=true; book.setGenre(genresTextField.getText());
 		}
+		onAddBookController(book);
+	}	
 
-
-
-		if(title&&author&&language&&summary&&toc&&keyWord&&genres){//Every field is filled
+	/**
+	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
+	 */
+	public void onAddBookController(Book book){
+		for(int i=0; i<Book.bookList.size();i++)
+			if(book.equals(Book.bookList.get(i))){
+				addedSuccess=false;
+				return;
+			}
+		if(book.getTitle() != null && !book.getTitle().isEmpty()
+				&& !book.getAuthor().isEmpty()
+				&& !book.getLanguage().isEmpty()
+				&& !book.getSummary().isEmpty()
+				&& !book.getToc().isEmpty() &&
+				!book.getKeyword().isEmpty() &&
+				!book.getGenre().isEmpty()){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
-			sendServer(book, "AddBook");
-
-
+			try {
+				sendServer(book, "AddBook");
+				while(!addedSuccess)
+					Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}//End onAddBook
 
 
+	public void onRemoveBook(){
+		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
+				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
+				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
+		onRemoveBookController(title,author,language,summary,genre,keyword);
+	}	
 	/**
 	 * This method is called when the user wants to delete a book.
 	 * <p>
 	 * 	 it searches through the books in the database and displays the found books for the user to choose which one he wants to delete.
 	 */
 
-	public void onRemoveBook(){
+	public void onRemoveBookController(String title,String author,String language,String summary, 
+			String genre, String keyword ){
+		int cnt=0;
 		Book book = new Book();
-		book.genreToSearch = "";
-		String title = titleTextFieldR.getText(), author = authorTextFieldR.getText(),
-				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
-				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
+		for(int i=0; i<Book.bookList.size();i++)
+			if((!Book.bookList.get(i).getTitle().equals(title) 
+					&& (!Book.bookList.get(i).getAuthor().equals( author))
+					&& !Book.bookList.get(i).getLanguage().equals(language)
+					&& !Book.bookList.get(i).getSummary().equals(summary)
+					&& !Book.bookList.get(i).getKeyword().equals(keyword)) )
+				cnt++;
+		if(cnt==Book.bookList.size()){
+			removeSuccess=false;
+			return;
+		}
+		book.genreToSearch = "";	
 		System.out.println("G" + genre);
 		String[] authors = author.split(",");//a,b,c ->[a][b][c]
 		for(String str:authors)
 			System.out.println(str);
 		book.query = "SELECT title, author, bookid FROM books WHERE";
-		if(!title.equals(""))
+		if(title!=null && !title.equals(""))
 			book.query +=" title LIKE  '%" + title + "%' AND ";
 		if(!language.equals(""))
 			book.query+=" language LIKE '%" + language + "%' AND ";
@@ -367,9 +405,9 @@ public class WorkerController extends AbstractClient {
 		sendServer(book, "RemoveBook");
 		while(foundBooks==null)
 			Sleep(5);
-
+		if(testFlag==0)
+			showFound();
 	}//end onRemoveBook
-
 
 	/**
 	 * Show the edit genre screen
@@ -392,8 +430,6 @@ public class WorkerController extends AbstractClient {
 		}
 	}
 
-
-
 	/**
 	 * This method returns the status of the review checking thread
 	 * This function returns the status of the review checking thread
@@ -414,7 +450,7 @@ public class WorkerController extends AbstractClient {
 		String lastName=lastNameTextFieldW.getText(),firstName=firstNameTextFieldW.getText(), id=idTextFieldW.getText(),
 				workerID=workerIDTextFieldW.getText(), role = "";
 		if(roleChoiceBox.getSelectionModel().getSelectedItem() != null)
-				role=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
+			role=roleChoiceBox.getSelectionModel().getSelectedItem().toString();
 
 		Worker worker = new Worker();
 		worker.query="SELECT * FROM workers WHERE ";
@@ -758,10 +794,12 @@ public class WorkerController extends AbstractClient {
 		//	public Book(String title,int bookid, String author, String language, String summary, String toc, String keyword, int isSuspend,int numOfPurchases) 
 
 		else if(((ArrayList<?>)msg).get(0) instanceof Book){
-			if((((ArrayList<Book>)msg).get(0)).query.equals("UpdateBookList")){
-				foundBookList = new ArrayList<Book>((ArrayList<Book>)msg);
-				foundBookList.remove(0);
-			}		 
+			if((((ArrayList<Book>)msg).get(0)).query!=null){
+				if((((ArrayList<Book>)msg).get(0)).query.equals("UpdateBookList")){
+					foundBookList = new ArrayList<Book>((ArrayList<Book>)msg);
+					foundBookList.remove(0);
+				}		 
+			}
 			else 
 				Book.bookList = new ArrayList<Book>((ArrayList<Book>)msg);
 		}
@@ -798,13 +836,16 @@ public class WorkerController extends AbstractClient {
 			case "BookSearch":
 				foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "RemoveBook":
-				foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
+				foundBooks = new ArrayList<>(((ArrayList<String>)msg));
+				removeSuccess=true;
+				break;
 			case "SearchReviews":
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
 				EditReviewController.backOn=true;break;
 			case "BookAdd":
-				JOptionPane.showMessageDialog(null, "Book Added!");break;
+				addedSuccess=true;
+				break;
 			case "ReaderRemoved":
 				JOptionPane.showMessageDialog(null, "Reader Removed!");isBackFromServer = true;break;
 			case "ReaderAdded":

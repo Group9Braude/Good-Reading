@@ -29,7 +29,8 @@ public class ReviewScreenController extends AbstractClient
 	public TextField reviewField;
 	public TextField signatureField;
 	public TextField keywordField;
-	public Button send;
+	public Button send;//If the review was successfully sent to the server
+	public boolean sent = false;
 	/**
 	 * get the review book
 	 */
@@ -72,6 +73,7 @@ public class ReviewScreenController extends AbstractClient
 			try {
 				this.openConnection();
 				this.sendToServer(review);
+				sent = true;
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
