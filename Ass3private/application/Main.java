@@ -50,10 +50,31 @@ public class Main extends Application {
         primaryStage.setTitle("Good Reading System");
 		popup.initModality(Modality.APPLICATION_MODAL);
 		popup.initOwner(primaryStage);
-		showMainMenu();
+		showServerIP();
 	}
 
 	
+<<<<<<< HEAD
+=======
+/**
+ * Presents the 'Edit Book' screen
+ * @throws IOException
+ */
+	public static void showServerIP()throws IOException{
+		FXMLLoader loader = new FXMLLoader(); 
+		loader.setLocation(Main.class.getResource("/GUI/serverip.fxml"));
+		mainLayout = loader.load();
+		primaryStage.setScene(new Scene(mainLayout));
+		primaryStage.show();
+	}
+	public TextField serverip;
+	public void onOkay() throws IOException{
+		if(!serverip.getText().equals(""))
+			host=serverip.getText();
+		showMainMenu();
+	}
+	
+>>>>>>> refs/remotes/origin/master
 	public static void showAddNewReaderScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/AddNewUser.fxml"));
@@ -344,7 +365,8 @@ public class Main extends Application {
  *
  * @param args
  */
-	public static void main(String[] args) {
+	public static void main(String[] args) 
+	{
 		launch(args);
 	}
 /**

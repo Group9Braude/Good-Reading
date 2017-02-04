@@ -19,7 +19,7 @@
       </ImageView>
       <TextField fx:id="idTextField" layoutX="344.0" layoutY="227.0" prefHeight="31.0" prefWidth="154.0" promptText="User ID" />
       <PasswordField fx:id="passwordTextField" layoutX="344.0" layoutY="274.0" prefHeight="31.0" prefWidth="154.0" promptText="Password" />
-      <ImageView fx:id="loginImageView" fitHeight="48.0" fitWidth="184.0" layoutX="344.0" layoutY="323.0" onMouseClicked="#onLogin" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="loginImageView" fitHeight="48.0" fitWidth="184.0" layoutX="346.0" layoutY="324.0" onMouseClicked="#onLogin" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../src/78.png" />
          </image>

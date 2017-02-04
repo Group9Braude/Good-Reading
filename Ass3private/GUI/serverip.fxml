@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="189.0" prefWidth="402.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.Main">
+   <children>
+      <Text layoutX="95.0" layoutY="77.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please insert IP address for server:" />
+      <TextField fx:id="serverip" layoutX="113.0" layoutY="95.0" promptText="Server IP" />
+      <Button layoutX="144.0" layoutY="144.0" mnemonicParsing="false" onAction="#onOkay" prefHeight="31.0" prefWidth="115.0" text="OK" />
+   </children>
+</Pane>

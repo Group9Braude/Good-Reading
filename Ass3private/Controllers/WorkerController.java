@@ -358,13 +358,21 @@ public class WorkerController extends AbstractClient {
 				language=languageTextFieldR.getText(), summary=summaryTextFieldR.getText(),
 				genre = genresComboBox.getSelectionModel().getSelectedItem(), keyword = keywordTextFieldR.getText();
 		onRemoveBookController(title,author,language,summary,genre,keyword);
+<<<<<<< HEAD
 	}	
+=======
+	}	
+>>>>>>> refs/remotes/origin/master
 	/**
 	 * This method is called when the user wants to delete a book.
 	 * <p>
 	 * 	 it searches through the books in the database and displays the found books for the user to choose which one he wants to delete.
 	 */
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> refs/remotes/origin/master
 	public void onRemoveBookController(String title,String author,String language,String summary, 
 			String genre, String keyword ){
 		int cnt=0;
