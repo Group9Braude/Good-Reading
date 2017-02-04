@@ -2,9 +2,13 @@ package Fixtures;
 
 import java.util.IllegalFormatException;
 import javax.sound.sampled.Control;
+
+import org.apache.xmlbeans.impl.xb.ltgfmt.TestsDocument.Tests;
+
 import Controllers.WorkerController;
 import Entities.Book;
 import fit.ActionFixture;
+import javafx.embed.swing.JFXPanel;
 
 public class AddBookFit extends ActionFixture {
 	Entities.Book book;
@@ -17,6 +21,8 @@ public class AddBookFit extends ActionFixture {
 	}
 
 	public boolean AddBook() throws InterruptedException{
+		new JFXPanel();				
+		control.testFlag=1;
 		System.out.println("check1");
 		control.InitializeBookList();
 		System.out.println("2");
@@ -26,6 +32,25 @@ public class AddBookFit extends ActionFixture {
 		System.out.println("4");
 		if(control.addedSuccess)
 			control.onRemoveBookController(book.getTitle(), book.getAuthor(), book.getLanguage(), book.getSummary(), book.getGenre(), book.getKeyword());
+		control.testFlag=0;
+		return control.addedSuccess;
+	}
+	
+	public boolean AddBookTwice() throws InterruptedException{
+		new JFXPanel();				
+		control.testFlag=1;
+		System.out.println("check1");
+		control.InitializeBookList();
+		System.out.println("2");
+		control.initialize();
+		System.out.println("3");
+		control.onAddBookController(book);
+		System.out.println("4");
+		control.onAddBookController(book);
+		System.out.println("5");
+		if(control.addedSuccess)
+			control.onRemoveBookController(book.getTitle(), book.getAuthor(), book.getLanguage(), book.getSummary(), book.getGenre(), book.getKeyword());
+		control.testFlag=0;
 		return control.addedSuccess;
 	}
 

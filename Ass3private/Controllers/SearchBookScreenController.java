@@ -31,6 +31,7 @@ public class SearchBookScreenController extends AbstractClient
 	public TableView <Book> bookList = new TableView <Book>(items);
 	public ComboBox<String> action = new ComboBox<String>();
 	public TextField title,author,lang,genre,keyWord;
+	public int testFlag=0;
 
 	@SuppressWarnings("unchecked")
 	/**
@@ -120,18 +121,21 @@ public class SearchBookScreenController extends AbstractClient
 						e.printStackTrace();
 					}
 			}			
+			public void onSearch(){
+				String userTitle = title.getText(), userAuthor = author.getText(),
+						userLang=lang.getText(), genreUser = genre.getText(), keyWordUser = keyWord.getText();
+				String op = action.getSelectionModel().getSelectedItem();
+				onSearchController(userTitle,userAuthor,userLang,genreUser,keyWordUser, op);
+			}
 			
 			/**
 			 * construct queries to find books according to the search parameters
 			 */
-			public void onSearch()
+			public void onSearchController(String userTitle, String userAuthor, String userLang, String genreUser, String keyWordUser, String op)
 			{
-				String userTitle = title.getText(), userAuthor = author.getText(),
-						userLang=lang.getText(), genreUser = genre.getText(), keyWordUser = keyWord.getText();
-				int i;	
+				int i;
 				String finalQuery="";
 				String query = "SELECT * FROM books WHERE isSuspend=0 AND (";
-				String op = action.getSelectionModel().getSelectedItem();
 				if(op==null)
 					JOptionPane.showMessageDialog(null, "You must first select the operation");
 				else if(userTitle.equals("") && userAuthor.equals("") && userLang.equals("") && genreUser.equals("") && keyWordUser.equals(""))

@@ -12,7 +12,6 @@ import Entities.Genre;
 import Entities.Reader;
 import Entities.Review;
 import Entities.Worker;
-import Tests.TestBookRemove;
 import application.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -60,7 +59,8 @@ public class WorkerController extends AbstractClient {
 	public ComboBox<Integer> subscriptionComboBox;
 	@FXML
 	private ListView<String> foundReadersListView, foundWorkersListView, foundBookListView;
-	public static boolean addedSuccess=false;
+	public int testFlag=0;
+	public static boolean addedSuccess=false, removeSuccess=false;
 
 
 
@@ -102,6 +102,7 @@ public class WorkerController extends AbstractClient {
 				}
 			};thread.start();
 		}
+		addedSuccess=false;
 	}
 
 
@@ -278,7 +279,7 @@ public class WorkerController extends AbstractClient {
 		Book book = new Book();
 		//Check if any of the fields empty
 		boolean title, author, language, summary, toc, keyWord, genres;//Check if all the fields were filled.
-		if(titleTextField.getText().equals("")){
+		if(titleTextField.getText() == null || titleTextField.getText().equals("")){
 			titleText.setFill(Color.RED); title=false;
 		}
 		else{
@@ -326,9 +327,13 @@ public class WorkerController extends AbstractClient {
 	/**
 	 * This method is called when the user wants to add a book, after he sets the textfields according to his will
 	 */
-
 	public void onAddBookController(Book book){
-		if(!book.getTitle().isEmpty()
+		for(int i=0; i<Book.bookList.size();i++)
+			if(book.equals(Book.bookList.get(i))){
+				addedSuccess=false;
+				return;
+			}
+		if(book.getTitle() != null && !book.getTitle().isEmpty()
 				&& !book.getAuthor().isEmpty()
 				&& !book.getLanguage().isEmpty()
 				&& !book.getSummary().isEmpty()
@@ -336,7 +341,6 @@ public class WorkerController extends AbstractClient {
 				!book.getKeyword().isEmpty() &&
 				!book.getGenre().isEmpty()){//Every field is filled
 			Book.bookList.add(book);//Update our ARRAYLIST!
-
 			try {
 				sendServer(book, "AddBook");
 				while(!addedSuccess)
@@ -363,14 +367,26 @@ public class WorkerController extends AbstractClient {
 
 	public void onRemoveBookController(String title,String author,String language,String summary, 
 			String genre, String keyword ){
+		int cnt=0;
 		Book book = new Book();
+		for(int i=0; i<Book.bookList.size();i++)
+			if((!Book.bookList.get(i).getTitle().equals(title) 
+					&& (!Book.bookList.get(i).getAuthor().equals( author))
+					&& !Book.bookList.get(i).getLanguage().equals(language)
+					&& !Book.bookList.get(i).getSummary().equals(summary)
+					&& !Book.bookList.get(i).getKeyword().equals(keyword)) )
+				cnt++;
+		if(cnt==Book.bookList.size()){
+			removeSuccess=false;
+			return;
+		}
 		book.genreToSearch = "";	
 		System.out.println("G" + genre);
 		String[] authors = author.split(",");//a,b,c ->[a][b][c]
 		for(String str:authors)
 			System.out.println(str);
 		book.query = "SELECT title, author, bookid FROM books WHERE";
-		if(!title.equals(""))
+		if(title!=null && !title.equals(""))
 			book.query +=" title LIKE  '%" + title + "%' AND ";
 		if(!language.equals(""))
 			book.query+=" language LIKE '%" + language + "%' AND ";
@@ -389,7 +405,7 @@ public class WorkerController extends AbstractClient {
 		sendServer(book, "RemoveBook");
 		while(foundBooks==null)
 			Sleep(5);
-		if(TestBookRemove.testFlag==0)
+		if(testFlag==0)
 			showFound();
 	}//end onRemoveBook
 
@@ -413,8 +429,6 @@ public class WorkerController extends AbstractClient {
 			e.printStackTrace();
 		}
 	}
-
-
 
 	/**
 	 * This method returns the status of the review checking thread
@@ -822,7 +836,9 @@ public class WorkerController extends AbstractClient {
 			case "BookSearch":
 				foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "RemoveBook":
-				foundBooks = new ArrayList<>(((ArrayList<String>)msg));break;
+				foundBooks = new ArrayList<>(((ArrayList<String>)msg));
+				removeSuccess=true;
+				break;
 			case "SearchReviews":
 				foundReviews = new ArrayList<>(((ArrayList<String>)msg));break;
 			case "EditReview":
