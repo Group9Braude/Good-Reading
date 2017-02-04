@@ -40,12 +40,12 @@ import ocsf.server.ConnectionToClient;
 public class MyServer extends AbstractServer {    
 	Connection conn;
 	public static void main(String[] args) {
-		int port = 0;
+		int port =5555;
 		try {
 			port = Integer.parseInt(args[0]);
 		}
 		catch (Throwable t) {
-			port = Main.port;
+			port = 5555;
 		}
 		@SuppressWarnings("unused")
 		MyServer s1 = new MyServer(port);
@@ -1454,8 +1454,8 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-			this.conn = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com/sql11153849", "sql11153849", "TlZbvGxXKu");
-			//this.conn = DriverManager.getConnection("jdbc:mysql://localhost/goodreading", "root", "Braude");
+			//this.conn = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com/sql11153849", "sql11153849", "TlZbvGxXKu");
+			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "root", "Braude");
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
