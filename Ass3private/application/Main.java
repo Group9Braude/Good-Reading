@@ -54,8 +54,6 @@ public class Main extends Application {
 	}
 
 	
-<<<<<<< HEAD
-=======
 /**
  * Presents the 'Edit Book' screen
  * @throws IOException
@@ -74,7 +72,6 @@ public class Main extends Application {
 		showMainMenu();
 	}
 	
->>>>>>> refs/remotes/origin/master
 	public static void showAddNewReaderScreen()throws IOException{
 		FXMLLoader loader = new FXMLLoader(); 
 		loader.setLocation(Main.class.getResource("/GUI/AddNewUser.fxml"));

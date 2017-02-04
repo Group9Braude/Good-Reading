@@ -1,4 +1,4 @@
-
+package Tests;
 import java.io.IOException;
 import java.util.ArrayList;
 import org.junit.Test;

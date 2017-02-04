@@ -1,4 +1,4 @@
-
+package Tests;
 import javax.swing.*;
 import javafx.*;
 import javafx.embed.swing.JFXPanel;

@@ -65,6 +65,8 @@ public class ReviewScreenController extends AbstractClient
 	 */
 	public void onSend()
 	{
+		if(reviewField.getText() == null || signatureField.getText() == null || keywordField.getText() == null)
+			return;
 		if(reviewField.getText().equals("") || signatureField.getText().equals("") || keywordField.getText().equals("") )
 			JOptionPane.showMessageDialog(null, "First enter the missing details");
 		else{

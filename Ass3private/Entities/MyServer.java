@@ -1022,7 +1022,6 @@ public class MyServer extends AbstractServer {
 					{
 						ResultSet rs2 = stmt2.executeQuery("select * from books where bookid="+IDs.get(i)+";");
 						rs2.next();
-<<<<<<< HEAD
 						Book b = new Book(rs2.getString(1)
 								,rs2.getInt(2)
 								,rs2.getString(3)
@@ -1032,9 +1031,7 @@ public class MyServer extends AbstractServer {
 								,rs2.getString(7)
 								,rs2.getInt(8)
 								,rs2.getInt(9));
-=======
-						Book b = new Book(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7),rs2.getInt(8),rs2.getInt(9));
->>>>>>> refs/remotes/origin/master
+						//Book b = new Book(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7),rs2.getInt(8),rs2.getInt(9));
 						if(!res.contains(b))
 							res.add(b);
 					}
@@ -1575,13 +1572,11 @@ public class MyServer extends AbstractServer {
 		catch (Exception var1_1) {
 		}
 		try {
-<<<<<<< HEAD
+
+			//this.conn = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com/sql11153849", "sql11153849", "TlZbvGxXKu");
+			//this.conn = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "root", "Braude");
 			this.conn = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com/sql11153849", "sql11153849", "TlZbvGxXKu");
 			//this.conn = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "root", "Braude");
-=======
-			//this.conn = DriverManager.getConnection("jdbc:mysql://sql11.freesqldatabase.com/sql11153849", "sql11153849", "TlZbvGxXKu");
-			this.conn = DriverManager.getConnection("jdbc:mysql://localhost/mydb", "root", "Braude");
->>>>>>> refs/remotes/origin/master
 			System.out.println("MySQL Login Successful!");
 		}
 		catch (SQLException ex) {
