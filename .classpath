@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="AcceptanceTests/|JUnitTests/|JUnitTests/JUnitTests/" kind="src" path="Ass3private"/>
+	<classpathentry excluding="AcceptanceTests/|JUnitTests/|JUnitTests/JUnitTests/|Tests/" kind="src" path="Ass3private"/>
 	<classpathentry kind="src" path="Ass3private/AcceptanceTests"/>
-	<classpathentry kind="src" path="Ass3private/JUnitTests/JUnitTests"/>
+	<classpathentry kind="src" path="Ass3private/Tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Sagi/Desktop/mysql-connector-java-3.1.11-bin.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Sagi/Desktop/JARs for project/JARs for project/curvesapi-1.04.jar"/>

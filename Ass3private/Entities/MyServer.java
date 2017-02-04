@@ -1022,7 +1022,15 @@ public class MyServer extends AbstractServer {
 					{
 						ResultSet rs2 = stmt2.executeQuery("select * from books where bookid="+IDs.get(i)+";");
 						rs2.next();
-						Book b = new Book(rs2.getString(1),rs2.getInt(2),rs2.getString(3),rs2.getString(4),rs2.getString(5),rs2.getString(6),rs2.getString(7),rs2.getInt(8),rs2.getInt(9));
+						Book b = new Book(rs2.getString(1)
+								,rs2.getInt(2)
+								,rs2.getString(3)
+								,rs2.getString(4)
+								,rs2.getString(5)
+								,rs2.getString(6)
+								,rs2.getString(7)
+								,rs2.getInt(8)
+								,rs2.getInt(9));
 						if(!res.contains(b))
 							res.add(b);
 					}
